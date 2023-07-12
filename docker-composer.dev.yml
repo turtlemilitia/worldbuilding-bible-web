@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: dnd-app
+    image: dnd-app-frontend-dev
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "${APP_PORT:-3000}:3000"
