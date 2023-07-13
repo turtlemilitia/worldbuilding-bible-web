@@ -8,6 +8,9 @@ services:
       context: .
       target: development
     volumes:
+      - /node-modules
       - ./src:/app/src
     ports:
       - "${APP_PORT:-3000}:3000"
+    environment:
+      WATCHPACK_POLLING: "true"
