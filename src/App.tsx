@@ -13,7 +13,7 @@ function App(): JSX.Element {
               <div onClick={() => setOpen(!open)}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 cursor-pointer text-white" fill="none"
                      viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16"/>
                 </svg>
               </div>
               <h1 className="text-white font-bold text-xl tracking-wide cursor-pointer">D&D Tracker</h1>
