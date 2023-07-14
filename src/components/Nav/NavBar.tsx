@@ -1,8 +1,7 @@
 import React, {JSX} from "react";
 
 interface NavBarParams {
-  open: boolean;
-  setSideBarOpen: (open: boolean) => {};
+  setSideBarOpen: (open: boolean) => any;
 }
 const NavBar = ({setSideBarOpen}: NavBarParams): JSX.Element => {
   return (
