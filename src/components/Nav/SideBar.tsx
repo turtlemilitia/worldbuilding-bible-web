@@ -1,5 +1,5 @@
 import React, {JSX} from "react";
-import cross from "../../assets/hamburger.svg";
+import cross from "../../assets/cross.svg";
 
 interface SideBarParams {
   open: boolean;
@@ -11,7 +11,7 @@ const SideBar = ({setOpen}: SideBarParams): JSX.Element => {
       <div className="absolute top-0 w-60 bg-white p-6">
         <div className="flex space-x-6 mb-6">
         <span onClick={() => setOpen(false)} className="p-1">
-          <img src={cross} className="w-5" />
+          {cross}
         </span>
           <h1>Dashboard</h1>
         </div>

@@ -6,10 +6,15 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      letterSpacing: {
+        widest: '0.4em'
+      }
+    },
     fontFamily: {
+      'display': ['Poppins', ...defaultTheme.fontFamily.sans],
       'sans-serif': ['Fira Sans', ...defaultTheme.fontFamily.sans],
-      'serif': ['Merriweather', ...defaultTheme.fontFamily.sans]
+      'serif': ['Merriweather', ...defaultTheme.fontFamily.serif]
     }
   },
   plugins: [],
