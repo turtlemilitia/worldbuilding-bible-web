@@ -72,8 +72,8 @@ const Routes = (): JSX.Element => {
       element: <NavBarWrapper/>,
       children: [
         ...routesForPublic,
-        ...(!token ? routesForAuthenticatedOnly : []), // only add these conditionally
-        ...routesForNotAuthenticatedOnly
+        ...(!token ? routesForNotAuthenticatedOnly : []), // only add these conditionally
+        ...routesForAuthenticatedOnly
       ]
     }
   ])

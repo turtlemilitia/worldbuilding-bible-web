@@ -6,7 +6,7 @@ export const ProtectedRoute = (): JSX.Element => {
     const {token} = useAuth();
 
     // Check if the user is authenticated
-    if (token) {
+    if (!token) {
         // If not authenticated, redirect to the login page
         return <Navigate to="/login"/>
     }

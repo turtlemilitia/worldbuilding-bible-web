@@ -23,19 +23,18 @@ const LoginForm = (): JSX.Element => {
         e.preventDefault();
 
         try {
-            const response: AxiosResponse = await login(loginData);
-
-            if (response.data) {
-                setToken(response.data);
+            login(loginData).then(({data}) => {
+                console.log(data)
+                setToken(data);
                 navigate("/", {replace: true});
-            }
-        }  catch (err) {
+            });
+        } catch (err) {
             setError("Login failed. Please try again."); // Set the error message in case of login failure
         }
     };
 
     const handleLoginDataChange = (field: string, value: string) => {
-        setLoginData((prevState) => ({ ...prevState, [field]: value }));
+        setLoginData((prevState) => ({...prevState, [field]: value}));
     };
 
     return (
@@ -46,7 +45,8 @@ const LoginForm = (): JSX.Element => {
                 <EmailField value={loginData.email} onChange={(value) => handleLoginDataChange('email', value)}/>
             </div>
             <div className="mb-4">
-                <PasswordField value={loginData.password} onChange={(value) => handleLoginDataChange('password', value)}/>
+                <PasswordField value={loginData.password}
+                               onChange={(value) => handleLoginDataChange('password', value)}/>
             </div>
             <div className="mt-8 flex justify-center">
                 <PrimaryButton text={"Login"}/>
