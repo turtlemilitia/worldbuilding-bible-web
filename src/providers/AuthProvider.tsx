@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, {createContext, JSX, useContext, useEffect, useMemo, useState} from "react";
+import {csrfCookie} from "../services/AuthService";
 
 const AuthContext: React.Context<undefined | any> = createContext(undefined);
 
@@ -15,6 +16,10 @@ const AuthProvider = ({children}: AuthProviderParams): JSX.Element => {
     const setToken = (newToken: string | null) => {
         setToken_(newToken);
     };
+
+    useEffect(() => {
+        csrfCookie().then(() => console.log('CSRF Cookie set.'));
+    }, [])
 
     useEffect(() => {
         if (token) {

@@ -1,4 +1,4 @@
-import React, {FormEvent, JSX, useState} from "react";
+import React, {FormEvent, JSX, useEffect, useState} from "react";
 import PrimaryButton from "./Fields/PrimaryButton";
 import {useAuth} from "../../providers/AuthProvider";
 import {useNavigate} from "react-router-dom";
@@ -13,7 +13,7 @@ const LoginForm = (): JSX.Element => {
     const navigate = useNavigate();
 
     const [loginData, setLoginData] = useState<LoginParams>({
-        username: '',
+        email: '',
         password: ''
     })
 
@@ -43,7 +43,7 @@ const LoginForm = (): JSX.Element => {
             {/* Display the error message if it exists */}
             {error && <div className="text-red-500 mb-4">{error}</div>}
             <div className="mb-4">
-                <EmailField value={loginData.username} onChange={(value) => handleLoginDataChange('username', value)}/>
+                <EmailField value={loginData.email} onChange={(value) => handleLoginDataChange('email', value)}/>
             </div>
             <div className="mb-4">
                 <PasswordField value={loginData.password} onChange={(value) => handleLoginDataChange('password', value)}/>
