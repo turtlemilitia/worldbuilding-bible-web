@@ -1,17 +1,26 @@
-import React, {JSX, useState} from "react";
-import NavBar from "./NavBar";
-import SideBar from "./SideBar";
+import React, { JSX, useState } from 'react'
+import LoggedOutNavBar from './LoggedOutNavBar'
+import SideBar from './SideBar'
+import { useAuth } from '../../providers/AuthProvider'
+import LoggedInNavBar from './LoggedInNavBar'
 
 const Nav = (): JSX.Element => {
-  const [open, setOpen] = useState<boolean>(false);
+
+  const [open, setOpen] = useState<boolean>(false)
+  const { token } = useAuth()
+
   return (
     <header className="absolute top-0 w-full">
-      <NavBar setSideBarOpen={setOpen}/>
+      {token ? (
+        <LoggedInNavBar setSideBarOpen={setOpen}/>
+      ) : (
+        <LoggedOutNavBar setSideBarOpen={setOpen}/>
+      )}
       {open ? (
         <SideBar open={open} setOpen={setOpen}/>
       ) : ''}
     </header>
   )
-};
+}
 
-export default Nav;
+export default Nav
