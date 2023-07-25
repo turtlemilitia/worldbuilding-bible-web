@@ -1,5 +1,5 @@
 import React, {JSX} from "react";
-import cross from "../../assets/cross.svg";
+import { Cross } from 'lucide-react'
 
 interface SideBarParams {
   open: boolean;
@@ -11,7 +11,7 @@ const SideBar = ({setOpen}: SideBarParams): JSX.Element => {
       <div className="absolute top-0 w-60 bg-white p-6">
         <div className="flex space-x-6 mb-6">
         <span onClick={() => setOpen(false)} className="p-1">
-          {cross}
+          <Cross/>
         </span>
           <h1>Dashboard</h1>
         </div>

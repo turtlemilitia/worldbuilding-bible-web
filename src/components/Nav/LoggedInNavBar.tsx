@@ -1,10 +1,7 @@
 import React, { JSX } from 'react'
 import { Link } from 'react-router-dom'
-import HamburgerIcon from '../Icons/HamburgerIcon'
-import AccountIcon from '../Icons/AccountIcon'
-import { useAuth } from '../../providers/AuthProvider'
-import { menuItems } from './MenuItems'
 import Menu from './Menu'
+import { AlignLeft, User2 } from 'lucide-react'
 
 interface NavBarParams {
   setSideBarOpen: (open: boolean) => any;
@@ -12,20 +9,19 @@ interface NavBarParams {
 
 const LoggedOutNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
 
-  const token = useAuth();
 
   return (
-    <div className="flex justify-between bg-gray-900 text-gray-300 px-5 py-2 items-center">
+    <div className="flex justify-between bg-stone-950 text-stone-300 px-5 py-2 items-center">
       <div
         className="cursor-pointer"
         onClick={() => setSideBarOpen(true)}>
-        <HamburgerIcon/>
+        <AlignLeft size={25}/>
       </div>
-      <Menu menuItems={menuItems}/>
+      <Menu/>
       <Link
         className="cursor-pointer"
         to={'/account'}>
-        <AccountIcon className="w-5 h-5"/>
+        <User2 size={25}/>
       </Link>
     </div>
   )

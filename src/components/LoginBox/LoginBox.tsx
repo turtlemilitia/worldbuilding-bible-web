@@ -8,7 +8,7 @@ const LoginBox = (): JSX.Element => {
       <div className="text-white">
         <div className="mb-8 border-b border-b-amber-300 border-opacity-50 pb-8 flex flex-col items-center">
           <h1 className="mb-2 text-2xl">Login</h1>
-          <span className="text-gray-300">Enter Login Details</span>
+          <span className="text-stone-300">Enter Login Details</span>
         </div>
         <LoginForm/>
       </div>
