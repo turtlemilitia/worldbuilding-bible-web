@@ -8,7 +8,7 @@ interface MenuParams {
 
 const Menu = ({ menuItems }: MenuParams): JSX.Element => {
   return (
-    <ul className="flex space-x-3 items-center text-sm uppercase font-thin text-white">
+    <ul className="flex space-x-3 items-center text-sm font-thin text-white">
       {menuItems.map((menuItem, index) => {
         return (
           <MenuItem menuItem={menuItem} key={index}/>

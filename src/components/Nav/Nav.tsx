@@ -16,7 +16,7 @@ const Nav = (): JSX.Element => {
       ) : (
         <LoggedOutNavBar setSideBarOpen={setOpen}/>
       )}
-      {open ? (
+      {open ? ( // todo
         <SideBar open={open} setOpen={setOpen}/>
       ) : ''}
     </header>

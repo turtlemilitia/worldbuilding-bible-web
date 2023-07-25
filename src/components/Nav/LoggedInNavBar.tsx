@@ -15,15 +15,15 @@ const LoggedOutNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
   const token = useAuth();
 
   return (
-    <div className="flex justify-between px-8 py-5 items-center">
+    <div className="flex justify-between bg-gray-900 text-gray-300 px-5 py-2 items-center">
       <div
-        className="w-15 h-15 shadow-lg shadow-zinc-900 backdrop-blur-md rounded-full bg-gray-800 bg-opacity-50 py-4 px-4 items-cente cursor-pointer"
+        className="cursor-pointer"
         onClick={() => setSideBarOpen(true)}>
         <HamburgerIcon/>
       </div>
       <Menu menuItems={menuItems}/>
       <Link
-        className="w-15 h-15 shadow-lg shadow-zinc-900 backdrop-blur-md rounded-full bg-gray-800 bg-opacity-50 py-4 px-4 cursor-pointer text-white"
+        className="cursor-pointer"
         to={'/account'}>
         <AccountIcon className="w-5 h-5"/>
       </Link>

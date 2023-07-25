@@ -12,7 +12,6 @@ const MenuItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Element =>
       {children ? (
         <>
           <button
-            className="uppercase font-thin text-white"
             aria-expanded={showDropdown ? 'true' : 'false'}
             onClick={() => setShowDropdown((prev) => !prev)}>
             {title} <ChevronDown className="w-3 h-3 inline-block"/>
