@@ -1,17 +1,17 @@
-import { JSX } from 'react'
-import { Outlet } from 'react-router-dom'
+import {JSX} from 'react'
+import {Outlet} from 'react-router-dom'
 import Sidebar from "../../components/Sidebar/Sidebar";
 import {Swords} from "lucide-react";
 
 const SystemsWrapper = (): JSX.Element => {
 
-  const systems: {slug: string, name: string}[] = [{
+  const systems: { slug: string, name: string }[] = [{
     slug: 'boo',
     name: 'baa'
   }];
 
   return (
-    <div className="relative">
+    <>
       <Sidebar
         title={"Systems"}
         items={systems.map(({slug, name}) => ({
@@ -19,8 +19,10 @@ const SystemsWrapper = (): JSX.Element => {
           to: `/systems/${slug}`,
           icon: (props) => <Swords {...props}/>
         }))}/>
-      <Outlet/>
-    </div>
+      <div className="relative w-full">
+        <Outlet/>
+      </div>
+    </>
   )
 }
 

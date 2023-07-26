@@ -2,28 +2,31 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface SystemState {
   slug?: string;
-  name?: string;
-  description?: string
+  name: string;
+  description: string
 }
 
-const initialState: SystemState = {}
+const initialState: SystemState = {
+  name: '',
+  description: '',
+}
 
 const systemSlice = createSlice({
   name: 'system',
   initialState,
   reducers: {
-    createData: (state, action: PayloadAction<SystemState>) => {
+    setData: (state, action: PayloadAction<SystemState>) => {
       state = action.payload
     },
-    updateData: (state, action: PayloadAction<SystemState>) => {
+    updateData: (state, action: PayloadAction<Partial<SystemState>>) => {
       state = { ...state, ...action.payload }
     },
-    removeData: (state, action: PayloadAction<SystemState>) => {
-      state = {}
+    clearData: (state, action: PayloadAction<Partial<SystemState>>) => {
+      state = initialState
     }
   }
 })
 
-export const { createData, updateData, removeData } = systemSlice.actions
+export const { setData, updateData, clearData } = systemSlice.actions
 
 export default systemSlice.reducer

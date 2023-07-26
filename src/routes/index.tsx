@@ -13,7 +13,7 @@ import SystemsWrapper from '../pages/Systems/SystemsWrapper'
 function NavBarWrapper (): JSX.Element {
   return (
     <div
-      className="font-serif flex h-screen w-full items-center justify-center bg-stone-900 bg-cover bg-no-repeat bg-center"
+      className="font-serif bg-cover bg-no-repeat bg-center"
       style={{ backgroundImage: `url(${bgImage})` }}>
       <Nav/>
       <Outlet/>

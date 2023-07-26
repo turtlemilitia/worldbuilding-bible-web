@@ -7,7 +7,7 @@ interface NavBarParams {
   setSideBarOpen: (open: boolean) => any;
 }
 
-const LoggedOutNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
+const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
 
 
   return (
@@ -27,4 +27,4 @@ const LoggedOutNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
   )
 }
 
-export default LoggedOutNavBar
+export default LoggedInNavBar

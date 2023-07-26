@@ -10,7 +10,7 @@ const Nav = (): JSX.Element => {
   const { token } = useAuth()
 
   return (
-    <header className="absolute top-0 w-full">
+    <header className="relative top-0 w-full">
       {token ? (
         <LoggedInNavBar setSideBarOpen={setOpen}/>
       ) : (
