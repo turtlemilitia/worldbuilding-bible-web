@@ -9,6 +9,13 @@ module.exports = {
     extend: {
       letterSpacing: {
         widest: '0.4em'
+      },
+      spacing: {
+        '128': '32rem',
+        underScreen: '80vh'
+      },
+      minHeight: {
+        '96': '24rem'
       }
     },
     fontFamily: {

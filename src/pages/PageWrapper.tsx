@@ -2,6 +2,7 @@ import React, {JSX} from "react";
 import bgImage from "../assets/images/city-noir.png";
 import Nav from "../components/Nav/Nav";
 import {Outlet} from "react-router-dom";
+import Footer from '../components/Footer/Footer'
 
 const PageWrapper = (): JSX.Element => {
   return (
@@ -10,6 +11,7 @@ const PageWrapper = (): JSX.Element => {
       style={{ backgroundImage: `url(${bgImage})` }}>
       <Nav/>
       <Outlet/>
+      <Footer/>
     </div>
   )
 }

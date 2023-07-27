@@ -5,9 +5,9 @@ const HeaderWrapper: React.FunctionComponent<PropsWithChildren> = ({ children })
 
   return (
     <>
-      <div className="bg-cover bg-no-repeat bg-center md:h-40 flex justify-center"
+      <div className="bg-cover bg-no-repeat bg-center min-h-96 md:h-underScreen max-h-128 flex items-center justify-center"
            style={{ backgroundImage: `url(${bgImage})` }}>
-        <div className="max-w-5xl">
+        <div className="max-w-3xl">
           {children}
         </div>
       </div>
