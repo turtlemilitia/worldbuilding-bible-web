@@ -1,25 +1,14 @@
 import { useAuth } from '../providers/AuthProvider'
 import { ProtectedRoute } from './ProtectedRoute'
-import { createBrowserRouter, Outlet, RouteObject, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom'
 import React, { JSX } from 'react'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import Login from '../pages/Login'
 import Logout from '../pages/Logout'
-import bgImage from '../assets/images/city-noir.png'
-import Nav from '../components/Nav/Nav'
 import System from '../pages/Systems/System'
 import SystemsWrapper from '../pages/Systems/SystemsWrapper'
+import PageWrapper from "../pages/PageWrapper";
 
-function NavBarWrapper (): JSX.Element {
-  return (
-    <div
-      className="font-serif bg-cover bg-no-repeat bg-center"
-      style={{ backgroundImage: `url(${bgImage})` }}>
-      <Nav/>
-      <Outlet/>
-    </div>
-  )
-}
 
 const Routes = (): JSX.Element => {
 
@@ -107,7 +96,7 @@ const Routes = (): JSX.Element => {
   const router: RemixRouter = createBrowserRouter([
     {
       path: '/',
-      element: <NavBarWrapper/>,
+      element: <PageWrapper/>,
       children: [
         ...routesForPublic,
         ...(!token ? routesForNotAuthenticatedOnly : []), // only add these conditionally
