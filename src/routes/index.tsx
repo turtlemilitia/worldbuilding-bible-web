@@ -37,7 +37,7 @@ const Routes = (): JSX.Element => {
           element: <SystemsWrapper/>, // sidebar with list of systems
           children: [
             {
-              path: '/systems/:id',
+              path: '/systems/:slug',
               element: <System/>
             }
           ]
@@ -47,7 +47,7 @@ const Routes = (): JSX.Element => {
           element: <>TODO: Settings/Compendium</>, // sidebar with bestiary, characters, locations, ...
           children: [
             {
-              path: '/settings/:id',
+              path: '/settings/:slug',
               element: <>Setting</>
             }
           ]

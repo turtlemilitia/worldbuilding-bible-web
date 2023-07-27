@@ -1,9 +1,17 @@
 import React, { JSX, PropsWithChildren } from 'react'
+import ErrorBanner from './Banners/ErrorBanner'
 
-const ContentWrapper: React.FunctionComponent<PropsWithChildren> = ({ children }): JSX.Element => {
+
+interface TProps extends PropsWithChildren {
+  errorText?: string
+}
+const ContentWrapper: React.FunctionComponent<TProps> = ({ children, errorText }): JSX.Element => {
   return (
-    <div className="relative w-full bg-stone-300 pt-10 flex justify-center">
+    <div className="relative w-full bg-stone-300 py-5 px-3 flex justify-center">
       <div className="block w-full max-w-3xl">
+        {errorText &&
+          <ErrorBanner errorText={errorText}/>
+        }
         {children}
       </div>
     </div>

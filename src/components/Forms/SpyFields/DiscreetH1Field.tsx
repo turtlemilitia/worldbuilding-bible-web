@@ -14,7 +14,7 @@ const DiscreetH1Field = (props: EmailFieldProps): JSX.Element => {
   return (
     <input
       {...props}
-      className="w-full text-7xl border-none bg-transparent px-6 py-3 text-inherit placeholder:text-stone-400 outline-none text-center"
+      className="w-full text-7xl border-none bg-transparent px-6 py-3 text-white placeholder:text-stone-400 outline-none text-center break-words"
       onChange={(e) => onChange(e.target.value)}
     />
   )

@@ -1,27 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
-export interface SystemState {
-  slug?: string;
-  name: string;
-  description: string
-}
+import { TSystem } from '../../types'
 
-const initialState: SystemState = {
+
+const initialState: TSystem = {
   name: '',
   description: '',
 }
 
-const systemSlice = createSlice({
+const systemSlice: Slice<TSystem> = createSlice({
   name: 'system',
   initialState,
   reducers: {
-    setData: (state, action: PayloadAction<SystemState>) => {
+    setData: (state, action: PayloadAction<TSystem>) => {
       state = action.payload
     },
-    updateData: (state, action: PayloadAction<Partial<SystemState>>) => {
+    updateData: (state, action: PayloadAction<Partial<TSystem>>) => {
       state = { ...state, ...action.payload }
     },
-    clearData: (state, action: PayloadAction<Partial<SystemState>>) => {
+    clearData: (state, action: PayloadAction<Partial<TSystem>>) => {
       state = initialState
     }
   }

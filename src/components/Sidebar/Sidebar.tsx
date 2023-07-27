@@ -27,8 +27,8 @@ const Sidebar = ({title, items}: TOwnProps): JSX.Element => {
       <div className={`absolute transition-all duration-1000 ${show ? 'top-5 opacity-100' : '-top-14 opacity-0'} scroll-auto rounded-3xl bg-stone-900 border border-stone-700 w-80 py-6 px-10 text-stone-300`}>
         <h2 className="text-xl">{title}</h2>
         <div className="mt-5">
-          {items.map((item) => {
-            return <NavLink to={item.to} className={({isActive}) => isActive ? "font-bold" : ''}>
+          {items.map((item, index) => {
+            return <NavLink key={index} to={item.to} className={({isActive}) => isActive ? "font-bold" : ''}>
               <>
                 {item.icon && item.icon({color: 'white', size: 14, className: 'inline-block mr-3'})}{item.title}
               </>

@@ -10,7 +10,7 @@ const DiscreetTextareaField = (props: EmailFieldProps): JSX.Element => {
   return (
     <textarea
       {...props}
-      className="w-full border-none bg-transparent px-6 py-3 text-inherit placeholder:text-stone-400 outline-none"
+      className="w-full border-none bg-transparent px-3 py-3 text-inherit placeholder:text-stone-400 outline-none"
       onChange={(e) => onChange(e.target.value)}
     />
   )

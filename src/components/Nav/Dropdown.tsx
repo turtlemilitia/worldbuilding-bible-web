@@ -21,7 +21,7 @@ const Dropdown = ({ menuItems, show }: DropdownParams): JSX.Element => {
           const hasBorder = menuItems.length > 1 && isLastAndNew
 
           return (
-            <div className={hasBorder ? 'py-1 border-t border-t-stone-500' : ''}>
+            <div className={hasBorder ? 'py-1 border-t border-t-stone-500' : ''} key={index}>
               <DropdownItem
                 menuItem={menuItem}
                 key={index}

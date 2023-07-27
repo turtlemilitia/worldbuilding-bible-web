@@ -16,6 +16,9 @@ module.exports = {
       },
       minHeight: {
         '96': '24rem'
+      },
+      colors: {
+        burnOrange: '#C05746'
       }
     },
     fontFamily: {
