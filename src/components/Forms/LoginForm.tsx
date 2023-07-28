@@ -24,8 +24,7 @@ const LoginForm = (): JSX.Element => {
 
         try {
             login(loginData).then(({data}) => {
-                console.log(data)
-                setToken(data);
+                setToken(true);
                 navigate("/", {replace: true});
             });
         } catch (err) {

@@ -43,7 +43,7 @@ const System = (): JSX.Element => {
   }, [slug])
 
   const submit = (event: React.SyntheticEvent) => {
-    ((!isNew) ? storeSystem(data) : updateSystem(slug, data))
+    ((isNew) ? storeSystem(data) : updateSystem(slug, data))
       .then(response => {
         setData(response.data)
       })
