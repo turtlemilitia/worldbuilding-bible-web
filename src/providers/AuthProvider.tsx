@@ -1,21 +1,19 @@
 import axios from "axios";
 import React, {createContext, JSX, useContext, useEffect, useMemo, useState} from "react";
 import {csrfCookie} from "../services/AuthService";
-
-const AuthContext: React.Context<undefined | any> = createContext(undefined);
+import { useAppSelector } from '../hooks'
+import { RootState } from '../store'
+import { useNavigate } from 'react-router-dom'
 
 interface AuthProviderParams {
     children: JSX.Element | Array<JSX.Element>
 }
 
 const AuthProvider = ({children}: AuthProviderParams): JSX.Element => {
-    // State to hold the authentication token
-    const [token, setToken_] = useState<string | null>(localStorage.getItem("token"));
 
-    // Function to set the authentication token
-    const setToken = (newToken: string | null) => {
-        setToken_(newToken);
-    };
+    const { token } = useAppSelector((state: RootState) => state.auth) // redux
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         csrfCookie().then(() => console.log('CSRF Cookie set.'));
@@ -26,28 +24,15 @@ const AuthProvider = ({children}: AuthProviderParams): JSX.Element => {
             localStorage.setItem('token', token);
         } else {
             localStorage.removeItem('token')
+            navigate('/login');
         }
     }, [token])
 
-    // Memoized value of the authentication context
-    const contextValue = useMemo(
-        () => ({
-            token,
-            setToken,
-        }),
-        [token]
-    );
-
-    // Provide the authentication context to the children components
     return (
-        <AuthContext.Provider value={contextValue}>
+        <>
             {children}
-        </AuthContext.Provider>
+        </>
     )
-}
-
-export const useAuth = () => {
-    return useContext(AuthContext);
 }
 
 export default AuthProvider;

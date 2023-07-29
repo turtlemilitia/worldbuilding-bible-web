@@ -9,14 +9,14 @@ interface NavBarParams {
 const LoggedOutNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
 
   return (
-    <div className="flex justify-between px-8 py-5 items-center">
+    <div className="flex justify-between bg-stone-950 text-stone-300 px-5 py-2 items-center">
       <div
-        className="w-15 h-15 shadow-lg shadow-stone-900 backdrop-blur-md rounded-full bg-stone-800 bg-opacity-50 py-4 px-4 items-cente cursor-pointer"
+        className="cursor-pointer"
         onClick={() => setSideBarOpen(true)}>
         <AlignLeft size={25}/>
       </div>
       <Link
-        className="w-15 h-15 shadow-lg backdrop-blur-md rounded-full bg-stone-800 bg-opacity-50 py-4 px-4 cursor-pointer text-white"
+        className="cursor-pointer"
         to={'/login'}>
         <KeyIcon size={25}/>
       </Link>

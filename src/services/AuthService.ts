@@ -1,10 +1,8 @@
-import axios, {AxiosResponse} from "axios";
-import jwtDecode from "jwt-decode";
-
-const apiUrl = process.env.REACT_APP_API_URL;
+import {AxiosResponse} from "axios";
+import api from '../api'
 
 export const csrfCookie = (): Promise<void|AxiosResponse<any>> => {
-    return axios.get(`${apiUrl}/sanctum/csrf-cookie`);
+    return api.get(`/sanctum/csrf-cookie`);
 }
 
 export interface RegisterParams {
@@ -14,7 +12,7 @@ export interface RegisterParams {
     password_confirmation: string;
 }
 export const register = (data: RegisterParams): Promise<AxiosResponse<any>> => {
-    return axios.post(`${apiUrl}/register`, data);
+    return api.post(`/register`, data);
 };
 
 export interface LoginParams {
@@ -23,5 +21,8 @@ export interface LoginParams {
 }
 
 export const login = (data: LoginParams): Promise<AxiosResponse<any>> => {
-    return axios.post(`${apiUrl}/login`, data);
+    return api.post(`/login`, data);
+};
+export const logout = (): Promise<AxiosResponse<any>> => {
+    return api.post(`/logout`);
 };

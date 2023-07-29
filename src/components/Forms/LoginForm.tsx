@@ -1,16 +1,17 @@
 import React, {FormEvent, JSX, useEffect, useState} from "react";
 import PrimaryButton from "./Fields/PrimaryButton";
-import {useAuth} from "../../providers/AuthProvider";
 import {useNavigate} from "react-router-dom";
 import PasswordField from "./Fields/PasswordField";
 import EmailField from "./Fields/EmailField";
 import {login, LoginParams} from "../../services/AuthService";
-import {AxiosResponse} from "axios";
+import { setToken } from '../../reducers/auth/authSlice'
+import { useAppDispatch } from '../../hooks'
 
 const LoginForm = (): JSX.Element => {
 
-    const {setToken} = useAuth();
     const navigate = useNavigate();
+
+    const dispatch = useAppDispatch();
 
     const [loginData, setLoginData] = useState<LoginParams>({
         email: '',
@@ -24,7 +25,8 @@ const LoginForm = (): JSX.Element => {
 
         try {
             login(loginData).then(({data}) => {
-                setToken(true);
+                console.log("logged in at server side... setting token...")
+                dispatch(setToken(true));
                 navigate("/", {replace: true});
             });
         } catch (err) {

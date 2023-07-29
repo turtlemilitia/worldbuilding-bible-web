@@ -1,18 +1,18 @@
-import { useAuth } from '../providers/AuthProvider'
 import { ProtectedRoute } from './ProtectedRoute'
 import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom'
 import React, { JSX } from 'react'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import Login from '../pages/Login'
-import Logout from '../pages/Logout'
 import System from '../pages/Systems/System'
 import SystemsWrapper from '../pages/Systems/SystemsWrapper'
 import PageWrapper from "../pages/PageWrapper";
+import { useAppSelector } from '../hooks'
+import { RootState } from '../store'
 
 
 const Routes = (): JSX.Element => {
 
-  const { token } = useAuth()
+  const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
@@ -71,10 +71,6 @@ const Routes = (): JSX.Element => {
         {
           path: '/profile',
           element: <>TODO: User Profile</>
-        },
-        {
-          path: '/logout',
-          element: <Logout/>,
         },
       ]
     }

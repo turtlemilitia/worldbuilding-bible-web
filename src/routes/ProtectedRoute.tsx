@@ -1,9 +1,10 @@
 import {JSX} from "react";
 import {Navigate, Outlet} from "react-router-dom";
-import {useAuth} from "../providers/AuthProvider";
+import { useAppSelector } from '../hooks'
+import { RootState } from '../store'
 
 export const ProtectedRoute = (): JSX.Element => {
-    const {token} = useAuth();
+    const {token} = useAppSelector((state: RootState) => state.auth) // redux
 
     // Check if the user is authenticated
     if (!token) {
