@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, {createContext, JSX, useContext, useEffect, useMemo, useState} from "react";
+import React, {JSX, useEffect} from "react";
 import {csrfCookie} from "../services/AuthService";
 import { useAppSelector } from '../hooks'
 import { RootState } from '../store'

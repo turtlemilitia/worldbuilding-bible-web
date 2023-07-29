@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
 interface TState {
-  token?: string;
+  token: string|null;
 }
 
 const initialState: TState = {
+  token: localStorage.getItem('token')
 }
 
 const authSlice: Slice<TState> = createSlice({
@@ -14,14 +15,10 @@ const authSlice: Slice<TState> = createSlice({
     setToken: (state: TState, action: PayloadAction<string>): void => {
       console.log({state, action})
       state.token = action.payload
-    },
-    unsetToken: (state: TState): void => {
-      console.log({state})
-      state = {};
     }
   }
 })
 
-export const { setToken,  unsetToken } = authSlice.actions
+export const { setToken } = authSlice.actions
 
 export default authSlice.reducer

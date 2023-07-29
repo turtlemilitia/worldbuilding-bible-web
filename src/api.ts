@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { store } from './store'
-import { unsetToken } from './reducers/auth/authSlice'
+import { setToken } from './reducers/auth/authSlice'
 
 
 const api = axios.create({
@@ -11,11 +11,11 @@ api.defaults.withCredentials = true
 api.interceptors.response.use(
   response => response,
   error => {
-    if (error.response.status === 401 || error.response.status === 419) {
-      console.log('errored on status ' + error.response.status + '. Unsetting token...')
-      store.dispatch(unsetToken(undefined)) // dispatch action to then handle the redirection if logged in
+    if (error.response.status === 401) {
+      store.dispatch(setToken(null)) // dispatch action to then handle the redirection if logged in
+    } else {
+      return Promise.reject(error)
     }
-    return Promise.reject(error)
   }
 )
 

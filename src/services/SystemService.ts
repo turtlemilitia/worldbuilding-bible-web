@@ -2,28 +2,35 @@ import { AxiosResponse } from 'axios'
 import { TSystem } from '../types'
 import api from '../api'
 
-export const indexSystems = (): Promise<AxiosResponse> => {
+interface TSystemResponse {
+  data: TSystem;
+}
+interface TSystemIndexResponse {
+  data: TSystem[];
+}
+
+export const indexSystems = (): Promise<AxiosResponse<TSystemIndexResponse>> => {
 
   return api.get(`/api/systems`)
 
 }
 
-export const viewSystem = (slug: string): Promise<AxiosResponse<TSystem>> => {
+export const viewSystem = (slug: string): Promise<AxiosResponse<TSystemResponse>> => {
 
   return api.get(`/api/systems/${slug}`)
 
 }
 
-export const storeSystem = (data: TSystem): Promise<AxiosResponse<TSystem>> => {
+export const storeSystem = (data: TSystem): Promise<AxiosResponse<TSystemResponse>> => {
 
   return api.post(`/api/systems`, data)
 
 }
 
-export const updateSystem = (slug: string, data: Partial<TSystem>) => {
+export const updateSystem = (slug: string, data: Partial<TSystem>): Promise<AxiosResponse<TSystemResponse>> => {
   return api.put(`/api/systems/${slug}`, data)
 }
 
-export const destroySystem = (slug: string) => {
+export const destroySystem = (slug: string): Promise<AxiosResponse<void>> => {
   return api.put(`/api/systems/${slug}`)
 }

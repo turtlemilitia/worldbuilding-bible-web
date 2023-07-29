@@ -33,8 +33,8 @@ const System = (): JSX.Element => {
     if (slug && !isNew) {
       viewSystem(slug)
         .then(response => {
-          dispatch(updateData)
-          setData(response.data)
+          dispatch(updateData(response.data.data))
+          setData(response.data.data)
         })
         .catch(err => {
           setError(err)
@@ -45,7 +45,7 @@ const System = (): JSX.Element => {
   const submit = (event: React.SyntheticEvent) => {
     ((isNew) ? storeSystem(data) : updateSystem(slug, data))
       .then(response => {
-        setData(response.data)
+        setData(response.data.data)
       })
       .catch((err: AxiosError) => {
         setError(err.message)

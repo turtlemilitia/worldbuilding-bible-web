@@ -3,7 +3,7 @@ import { Link, NavigateFunction, useNavigate } from 'react-router-dom'
 import Menu from './Menu'
 import { AlignLeft, LogOut, User2 } from 'lucide-react'
 import { logout } from '../../services/AuthService'
-import { unsetToken } from '../../reducers/auth/authSlice'
+import { setToken } from '../../reducers/auth/authSlice'
 import { useAppDispatch } from '../../hooks'
 
 interface NavBarParams {
@@ -18,7 +18,8 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
   const handleLogout = (): void => {
     logout()
       .then(() => {
-        dispatch(unsetToken(undefined));
+        console.log('logged out on the server')
+        dispatch(setToken(undefined));
         navigate('/', { replace: true })
       })
   }
