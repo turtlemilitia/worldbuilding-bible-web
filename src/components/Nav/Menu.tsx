@@ -13,7 +13,7 @@ export interface MenuItemInterface {
 const Menu = (): JSX.Element => {
 
   const { systems } = useAppSelector((state: RootState) => state.systems) // redux
-  const settings: any[] = []; // todo redux
+  const { settings } = useAppSelector((state: RootState) => state.settings) // redux
 
   const menuItems: MenuItemInterface[] = [
     {
@@ -34,9 +34,9 @@ const Menu = (): JSX.Element => {
       title: 'Settings',
       to: '/settings',
       children: [
-        ...settings?.map(({ id, name }) => ({
+        ...settings?.map(({ slug, name }) => ({
           title: name,
-          to: `/settings/${id}`
+          to: `/settings/${slug}`
         })) || [],
         {
           title: 'Create new',

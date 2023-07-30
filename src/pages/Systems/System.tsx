@@ -16,10 +16,6 @@ import LoadingWrapper from '../../components/LoadingWrapper'
 
 const System = (): JSX.Element => {
 
-  const [loading, setLoading] = useState(false);
-
-  const remote = useAppSelector((state: RootState) => state.system) // redux
-
   const dispatch = useAppDispatch() // redux
 
   const { slug } = useParams() as { slug: string } // router
@@ -28,8 +24,11 @@ const System = (): JSX.Element => {
     name: '',
     description: ''
   };
-  const [data, setData] = useState<TSystem>(initialState)
 
+  const remote = useAppSelector((state: RootState) => state.system) // redux
+
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<TSystem>(initialState)
   const [error, setError] = useState<string>()
 
   const isNew: boolean = slug === 'new'

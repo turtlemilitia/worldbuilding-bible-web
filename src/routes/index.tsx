@@ -8,6 +8,8 @@ import SystemsWrapper from '../pages/Systems/SystemsWrapper'
 import PageWrapper from "../pages/PageWrapper";
 import { useAppSelector } from '../hooks'
 import { RootState } from '../store'
+import SettingsWrapper from '../pages/Settings/SettingsWrapper'
+import Setting from '../pages/Settings/Setting'
 
 
 const Routes = (): JSX.Element => {
@@ -44,11 +46,11 @@ const Routes = (): JSX.Element => {
         },
         {
           path: '/settings',
-          element: <>TODO: Settings/Compendium</>, // sidebar with bestiary, characters, locations, ...
+          element: <SettingsWrapper/>, // sidebar with bestiary, characters, locations, ...
           children: [
             {
               path: '/settings/:slug',
-              element: <>Setting</>
+              element: <Setting/>
             }
           ]
         },

@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../store'
 import { indexSystems } from '../services/SystemService'
 import { setSystems } from '../reducers/system/systemsIndexSlice'
+import { indexSettings } from '../services/SettingService'
+import { setSettings } from '../reducers/setting/settingsIndexSlice'
 
 export const ProtectedRoute = (): JSX.Element => {
     const {token} = useAppSelector((state: RootState) => state.auth) // redux
@@ -16,6 +18,10 @@ export const ProtectedRoute = (): JSX.Element => {
             // Fetch the systems data from the API
             indexSystems()
               .then(response => dispatch(setSystems(response.data.data)))
+              .catch(error => console.error('Error fetching systems:', error)); // todo show error
+            // Fetch the systems data from the API
+            indexSettings()
+              .then(response => dispatch(setSettings(response.data.data)))
               .catch(error => console.error('Error fetching systems:', error)); // todo show error
         }
     }, [token]);

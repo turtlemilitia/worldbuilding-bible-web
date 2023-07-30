@@ -19,6 +19,9 @@ module.exports = {
       },
       colors: {
         burnOrange: '#C05746'
+      },
+      scale: {
+        '-100': '-1'
       }
     },
     fontFamily: {

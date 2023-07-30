@@ -4,3 +4,11 @@ export interface TSystem {
   name: string;
   description: string;
 }
+
+export interface TSetting {
+  id?: string;
+  slug?: string;
+  name: string;
+  description: string;
+  hasLocations?: boolean;
+}
