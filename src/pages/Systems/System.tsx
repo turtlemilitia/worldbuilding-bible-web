@@ -2,7 +2,7 @@ import React, { JSX, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { updateData } from '../../reducers/system/systemSlice'
+import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
 import { Save } from 'lucide-react'
 import DiscreetH1Field from '../../components/Forms/SpyFields/DiscreetH1Field'
 import DiscreetTextareaField from '../../components/Forms/SpyFields/DiscreetTextareaField'
@@ -11,8 +11,12 @@ import ContentWrapper from '../../components/ContentWrapper'
 import { storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
 import { TSystem } from '../../types'
 import { AxiosError } from 'axios'
+import LoadingSpinner from '../../components/LoadingSpinner'
+import LoadingWrapper from '../../components/LoadingWrapper'
 
 const System = (): JSX.Element => {
+
+  const [loading, setLoading] = useState(false);
 
   const remote = useAppSelector((state: RootState) => state.system) // redux
 
@@ -20,10 +24,11 @@ const System = (): JSX.Element => {
 
   const { slug } = useParams() as { slug: string } // router
 
-  const [data, setData] = useState<TSystem>({
+  const initialState = {
     name: '',
     description: ''
-  })
+  };
+  const [data, setData] = useState<TSystem>(initialState)
 
   const [error, setError] = useState<string>()
 
@@ -31,30 +36,55 @@ const System = (): JSX.Element => {
 
   useEffect(() => {
     if (slug && !isNew) {
+      setLoading(true);
       viewSystem(slug)
         .then(response => {
-          dispatch(updateData(response.data.data))
+          setLoading(false);
           setData(response.data.data)
+          dispatch(setSystemData(response.data.data))
         })
         .catch(err => {
           setError(err)
         })
     }
+    if (isNew) {
+      setData(initialState);
+      dispatch(clearSystemData(undefined));
+    }
+    return () => {
+      dispatch(clearSystemData(undefined));
+    }
   }, [slug])
 
   const submit = (event: React.SyntheticEvent) => {
-    ((isNew) ? storeSystem(data) : updateSystem(slug, data))
-      .then(response => {
-        setData(response.data.data)
-      })
-      .catch((err: AxiosError) => {
-        setError(err.message)
-      })
-    event.preventDefault();
+    setLoading(true);
+    if (isNew) {
+      storeSystem(data)
+        .then(response => {
+          setLoading(false);
+          setData(response.data.data)
+          dispatch(setSystemData(response.data.data))
+        })
+        .catch((err: AxiosError) => {
+          setError(err.message)
+        })
+    } else {
+      updateSystem(slug, data)
+        .then(response => {
+          setLoading(false);
+          setData(response.data.data)
+          dispatch(updateSystemData(response.data.data))
+        })
+        .catch((err: AxiosError) => {
+          setError(err.message)
+        })
+    }
+
+    event.preventDefault()
   }
 
   return (
-    <>
+    <LoadingWrapper loading={loading}>
       <form onSubmit={submit}>
         <HeaderWrapper>
           <DiscreetH1Field value={data.name}
@@ -74,7 +104,7 @@ const System = (): JSX.Element => {
           />
         </ContentWrapper>
       </form>
-    </>
+    </LoadingWrapper>
   )
 }
 
