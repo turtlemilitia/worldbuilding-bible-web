@@ -16,7 +16,7 @@ const Dropdown = ({ menuItems, show }: DropdownParams): JSX.Element => {
       <ul className={`bg-stone-800 divide-y divide-stone-300 ${rounded} overflow-hidden shadow text-sm text-stone-700`}>
         {menuItems.map((menuItem, index) => {
 
-          const isLastAndNew = (menuItems.length - 1 === index) && menuItem.to.indexOf('new')
+          const isLastAndNew = (menuItems.length - 1 === index) && (menuItem.to.indexOf('new') !== -1)
           const hasBorder = menuItems.length > 1 && isLastAndNew
 
           return (
