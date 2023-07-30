@@ -12,8 +12,6 @@ const AuthProvider = ({children}: AuthProviderParams): JSX.Element => {
 
     const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
-    const navigate = useNavigate();
-
     useEffect(() => {
         csrfCookie().then(() => console.log('CSRF Cookie set.'));
     }, [])
@@ -23,7 +21,6 @@ const AuthProvider = ({children}: AuthProviderParams): JSX.Element => {
             localStorage.setItem('token', token);
         } else {
             localStorage.removeItem('token')
-            navigate('/login');
         }
     }, [token])
 

@@ -1,5 +1,8 @@
 import React, { JSX } from 'react'
 import MenuItem from './MenuItem'
+import { useAppSelector } from '../../hooks'
+import { RootState } from '../../store'
+import { TSystem } from '../../types'
 
 export interface MenuItemInterface {
   title: string;
@@ -9,7 +12,7 @@ export interface MenuItemInterface {
 
 const Menu = (): JSX.Element => {
 
-  const systems: any[] = []; // todo redux
+  const { systems } = useAppSelector((state: RootState) => state.systems) // redux
   const settings: any[] = []; // todo redux
 
   const menuItems: MenuItemInterface[] = [
@@ -17,9 +20,9 @@ const Menu = (): JSX.Element => {
       title: 'Systems',
       to: '/systems',
       children: [
-        ...systems?.map(({ id, name }) => ({
+        ...systems?.map(({ slug, name }) => ({
           title: name,
-          to: `/systems/${id}`
+          to: `/systems/${slug}`
         })) || [],
         {
           title: 'Create new',
