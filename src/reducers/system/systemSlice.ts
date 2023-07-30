@@ -10,7 +10,7 @@ interface TState {
 const initialState: TState = {
   system: {
     name: '',
-    description: '',
+    content: '',
   }
 }
 

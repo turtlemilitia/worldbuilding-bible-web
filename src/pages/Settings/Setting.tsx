@@ -22,9 +22,9 @@ const Setting: FunctionComponent = (): JSX.Element => {
 
   const remote = useAppSelector((state: RootState) => state.setting) // redux
 
-  const initialState = {
+  const initialState: TSetting = {
     name: '',
-    description: ''
+    content: ''
   };
 
   const [loading, setLoading] = useState(false);
@@ -97,8 +97,8 @@ const Setting: FunctionComponent = (): JSX.Element => {
         <ContentWrapper errorText={error}>
           <FormToolbar onSave={submit} onRefresh={fetch}/>
           <DiscreetTextareaField
-            value={data.description}
-            onChange={(value) => setData((prevState: TSetting) => ({ ...prevState, description: value }))}
+            value={data.content}
+            onChange={(value) => setData((prevState: TSetting) => ({ ...prevState, content: value }))}
             placeholder={'Write a simple description for the setting.'}
           />
         </ContentWrapper>

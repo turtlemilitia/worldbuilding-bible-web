@@ -20,9 +20,9 @@ const System = (): JSX.Element => {
 
   const { slug } = useParams() as { slug: string } // router
 
-  const initialState = {
+  const initialState: TSystem = {
     name: '',
-    description: ''
+    content: ''
   };
 
   const remote = useAppSelector((state: RootState) => state.system) // redux
@@ -97,8 +97,8 @@ const System = (): JSX.Element => {
             </button>
           </div>
           <DiscreetTextareaField
-            value={data.description}
-            onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, description: value }))}
+            value={data.content}
+            onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
             placeholder={'Write a simple description for the system.'}
           />
         </ContentWrapper>
