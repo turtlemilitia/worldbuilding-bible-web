@@ -2,7 +2,7 @@ import React, { JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import SimpleMdeReact from 'react-simplemde-editor'
 import SimpleMDE from "easymde";
 import type { Editor, EditorEventMap, KeyMap, Position } from "codemirror";
-import "easymde/dist/easymde.min.css";
+import "easymde/dist/easymde.min.css"; // todo replace for tailwind somehow?
 import ReactMarkdown from 'react-markdown'
 import { renderToString } from 'react-dom/server'
 import remarkGfm from 'remark-gfm'
@@ -71,9 +71,6 @@ const DiscreetTextareaField = (props: EmailFieldProps): JSX.Element => {
       getMdeInstance={getMdeInstanceCallback}
       getCodemirrorInstance={getCmInstanceCallback}
       getLineAndCursor={getLineAndCursorCallback}
-      textareaProps={{
-        className: "w-full border-none bg-transparent px-3 py-3 text-inherit placeholder:text-stone-400 outline-none"
-      }}
     />
   )
 }

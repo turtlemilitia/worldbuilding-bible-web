@@ -1,7 +1,7 @@
-import {JSX} from 'react'
-import {Outlet} from 'react-router-dom'
-import Sidebar from "../../components/Sidebar/Sidebar";
-import {Swords} from "lucide-react";
+import { JSX } from 'react'
+import { Outlet, useParams } from 'react-router-dom'
+import Sidebar from '../../components/Sidebar/Sidebar'
+import { Swords } from 'lucide-react'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 
@@ -11,13 +11,15 @@ const SystemsWrapper = (): JSX.Element => {
 
   return (
     <>
-      <Sidebar
-        title={"Systems"}
-        items={systems.map(({slug, name}) => ({
-          title: name,
-          to: `/systems/${slug}`,
-          icon: (props) => <Swords {...props}/>
-        }))}/>
+      {systems.length > 1 && (
+        <Sidebar
+          title={'Systems'}
+          items={systems.map(({ slug, name }) => ({
+            title: name,
+            to: `/systems/${slug}`,
+            icon: (props) => <Swords {...props}/>
+          }))}/>
+      )}
       <div className="relative w-full">
         <Outlet/>
       </div>

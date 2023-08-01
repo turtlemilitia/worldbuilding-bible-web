@@ -27,6 +27,6 @@ const settingsIndexSlice: Slice<TState> = createSlice({
   }
 })
 
-export const { setSettings, clearSettings } = settingsIndexSlice.actions
+export const { setSettings, addSetting, clearSettings } = settingsIndexSlice.actions
 
 export default settingsIndexSlice.reducer

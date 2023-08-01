@@ -27,6 +27,6 @@ const systemsIndexSlice: Slice<TState> = createSlice({
   }
 })
 
-export const { setSystems, clearSystems } = systemsIndexSlice.actions
+export const { setSystems, addSystem, clearSystems } = systemsIndexSlice.actions
 
 export default systemsIndexSlice.reducer

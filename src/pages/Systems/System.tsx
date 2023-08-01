@@ -1,5 +1,5 @@
 import React, { JSX, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
@@ -13,12 +13,15 @@ import { TSystem } from '../../types'
 import { AxiosError } from 'axios'
 import LoadingSpinner from '../../components/LoadingSpinner'
 import LoadingWrapper from '../../components/LoadingWrapper'
+import { addSystem } from '../../reducers/system/systemsIndexSlice'
 
 const System = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
   const { slug } = useParams() as { slug: string } // router
+
+  const navigate = useNavigate();
 
   const initialState: TSystem = {
     name: '',
@@ -63,6 +66,8 @@ const System = (): JSX.Element => {
           setLoading(false);
           setData(response.data.data)
           dispatch(setSystemData(response.data.data))
+          dispatch(addSystem(response.data.data))
+          navigate(`/systems/${response.data.data.slug}`)
         })
         .catch((err: AxiosError) => {
           setError(err.message)
@@ -85,7 +90,7 @@ const System = (): JSX.Element => {
   return (
     <LoadingWrapper loading={loading}>
       <form onSubmit={submit}>
-        <HeaderWrapper>
+        <HeaderWrapper page="System">
           <DiscreetH1Field value={data.name}
                            onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, name: value }))}
                            placeholder={'System Name Here'}/>

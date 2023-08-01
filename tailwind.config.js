@@ -25,8 +25,8 @@ module.exports = {
       }
     },
     fontFamily: {
-      'display': ['Poppins', ...defaultTheme.fontFamily.sans],
-      'sans-serif': ['Fira Sans', ...defaultTheme.fontFamily.sans],
+      'display': ['Oswald', ...defaultTheme.fontFamily.sans],
+      'sans-serif': ['Poppins', ...defaultTheme.fontFamily.sans],
       'serif': ['Merriweather', ...defaultTheme.fontFamily.serif]
     }
   },

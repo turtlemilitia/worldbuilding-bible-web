@@ -10,9 +10,10 @@ import { storeSetting, updateSetting, viewSetting } from '../../services/Setting
 import { clearSettingData, setSettingData, updateSettingData } from '../../reducers/setting/settingSlice'
 import { AxiosError } from 'axios'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
+import { addSetting } from '../../reducers/setting/settingsIndexSlice'
 
 const Setting: FunctionComponent = (): JSX.Element => {
 
@@ -21,6 +22,8 @@ const Setting: FunctionComponent = (): JSX.Element => {
   const { slug } = useParams() as { slug: string } // router
 
   const remote = useAppSelector((state: RootState) => state.setting) // redux
+
+  const navigate = useNavigate();
 
   const initialState: TSetting = {
     name: '',
@@ -63,10 +66,12 @@ const Setting: FunctionComponent = (): JSX.Element => {
     setLoading(true);
     if (isNew) {
       storeSetting(data)
-        .then(response => {
+        .then(({ data }) => {
           setLoading(false);
-          setData(response.data.data)
-          dispatch(setSettingData(response.data.data))
+          setData(data.data)
+          dispatch(setSettingData(data.data))
+          dispatch(addSetting(data.data))
+          navigate(`/settings/${data.data.slug}`)
         })
         .catch((err: AxiosError) => {
           setError(err.message)
@@ -89,7 +94,7 @@ const Setting: FunctionComponent = (): JSX.Element => {
   return (
     <LoadingWrapper loading={loading}>
       <form onSubmit={submit}>
-        <HeaderWrapper>
+        <HeaderWrapper page="Setting">
           <DiscreetH1Field value={data.name}
                            onChange={(value) => setData((prevState: TSetting) => ({ ...prevState, name: value }))}
                            placeholder={'Setting Name Here'}/>

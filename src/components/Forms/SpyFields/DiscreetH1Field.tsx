@@ -1,7 +1,7 @@
 import React, {JSX} from "react";
 
 
-interface EmailFieldProps {
+interface TProps {
   value: string;
   onChange: (value: string) => void;
   type?: string;
@@ -9,13 +9,13 @@ interface EmailFieldProps {
   placeholder?: string;
 }
 
-const DiscreetH1Field = (props: EmailFieldProps): JSX.Element => {
+const DiscreetH1Field = (props: TProps): JSX.Element => {
   const {value, onChange} = props;
   return (
     <input
       {...props}
       value={value}
-      className="w-full text-7xl border-none bg-transparent px-6 py-3 text-white placeholder:text-stone-400 outline-none text-center break-words"
+      className="w-full font-display text-8xl uppercase border-none bg-transparent -mt-7 px-6 text-white placeholder:text-stone-400 outline-none break-words text-center"
       onChange={(e) => onChange(e.target.value)}
     />
   )
