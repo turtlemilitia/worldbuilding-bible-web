@@ -4,6 +4,7 @@ import systemsIndexReducer from './reducers/system/systemsIndexSlice'
 import systemReducer from './reducers/system/systemSlice'
 import settingsIndexReducer from './reducers/setting/settingsIndexSlice'
 import settingReducer from './reducers/setting/settingSlice'
+import locationReducer from './reducers/compendium/location/locationSlice'
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     settings: settingsIndexReducer,
     // individual
     system: systemReducer,
-    setting: settingReducer
+    setting: settingReducer,
+    location: locationReducer
   }
 })
 

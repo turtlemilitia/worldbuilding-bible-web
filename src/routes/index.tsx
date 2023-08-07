@@ -10,6 +10,7 @@ import { useAppSelector } from '../hooks'
 import { RootState } from '../store'
 import SettingsWrapper from '../pages/Settings/SettingsWrapper'
 import Setting from '../pages/Settings/Setting'
+import Location from '../pages/Compendium/Location'
 
 
 const Routes = (): JSX.Element => {
@@ -39,7 +40,7 @@ const Routes = (): JSX.Element => {
           element: <SystemsWrapper/>, // sidebar with list of systems
           children: [
             {
-              path: '/systems/:slug',
+              path: '/systems/:systemId',
               element: <System/>
             }
           ]
@@ -49,9 +50,13 @@ const Routes = (): JSX.Element => {
           element: <SettingsWrapper/>, // sidebar with bestiary, characters, locations, ...
           children: [
             {
-              path: '/settings/:slug',
-              element: <Setting/>
-            }
+              path: '/settings/:settingId',
+              element: <Setting/>,
+            },
+            {
+              path: '/settings/:settingId/locations/:locationId',
+              element: <Location/>,
+            },
           ]
         },
         {

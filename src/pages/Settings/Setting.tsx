@@ -19,7 +19,7 @@ const Setting: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
-  const { slug } = useParams() as { slug: string } // router
+  const { settingId } = useParams() as { settingId: string } // router
 
   const remote = useAppSelector((state: RootState) => state.setting) // redux
 
@@ -34,11 +34,11 @@ const Setting: FunctionComponent = (): JSX.Element => {
   const [error, setError] = useState<string>()
   const [data, setData] = useState<TSetting>(initialState)
 
-  const isNew: boolean = slug === 'new'
+  const isNew: boolean = settingId === 'new'
 
   const fetch = (): void => {
     setLoading(true);
-    viewSetting(slug)
+    viewSetting(settingId)
       .then(response => {
         setLoading(false);
         setData(response.data.data)
@@ -50,7 +50,7 @@ const Setting: FunctionComponent = (): JSX.Element => {
   }
 
   useEffect(() => {
-    if (slug && !isNew) {
+    if (settingId && !isNew) {
       fetch();
     }
     if (isNew) {
@@ -60,7 +60,7 @@ const Setting: FunctionComponent = (): JSX.Element => {
     return () => {
       dispatch(clearSettingData(undefined));
     }
-  }, [slug])
+  }, [settingId])
 
   const submit = (event: React.SyntheticEvent) => {
     setLoading(true);
@@ -77,7 +77,7 @@ const Setting: FunctionComponent = (): JSX.Element => {
           setError(err.message)
         })
     } else {
-      updateSetting(slug, data)
+      updateSetting(settingId, data)
         .then(response => {
           setLoading(false);
           setData(response.data.data)

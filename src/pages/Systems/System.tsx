@@ -19,7 +19,7 @@ const System = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
-  const { slug } = useParams() as { slug: string } // router
+  const { systemId } = useParams() as { systemId: string } // router
 
   const navigate = useNavigate();
 
@@ -34,12 +34,12 @@ const System = (): JSX.Element => {
   const [data, setData] = useState<TSystem>(initialState)
   const [error, setError] = useState<string>()
 
-  const isNew: boolean = slug === 'new'
+  const isNew: boolean = systemId === 'new'
 
   useEffect(() => {
-    if (slug && !isNew) {
+    if (systemId && !isNew) {
       setLoading(true);
-      viewSystem(slug)
+      viewSystem(systemId)
         .then(response => {
           setLoading(false);
           setData(response.data.data)
@@ -56,7 +56,7 @@ const System = (): JSX.Element => {
     return () => {
       dispatch(clearSystemData(undefined));
     }
-  }, [slug])
+  }, [systemId])
 
   const submit = (event: React.SyntheticEvent) => {
     setLoading(true);
@@ -73,7 +73,7 @@ const System = (): JSX.Element => {
           setError(err.message)
         })
     } else {
-      updateSystem(slug, data)
+      updateSystem(systemId, data)
         .then(response => {
           setLoading(false);
           setData(response.data.data)

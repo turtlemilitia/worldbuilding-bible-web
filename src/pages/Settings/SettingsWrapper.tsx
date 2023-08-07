@@ -9,11 +9,11 @@ const SettingsWrapper = (): JSX.Element => {
 
   const { setting } = useAppSelector((state: RootState) => state.setting) // redux
 
-  const { slug } = useParams() as { slug: string } // router
+  const { settingId } = useParams() as { settingId: string } // router
 
   return (
     <>
-      {slug !== 'new' && (
+      {settingId !== 'new' && (
         <Sidebar
           title={'Compendium'}
           items={
@@ -21,7 +21,7 @@ const SettingsWrapper = (): JSX.Element => {
               {
                 title: 'Geography',
                 hasChildren: setting.hasLocations,
-                addNewLink: `/setting/${setting.slug}/locations/new`,
+                addNewLink: `/settings/${setting.slug}/locations/new`,
                 icon: (props) => <Map {...props}/>
               }
             ]
