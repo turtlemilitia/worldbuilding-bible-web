@@ -1,11 +1,11 @@
-export interface TSystem {
+export type TSystem = {
   id?: number;
   slug?: string;
   name: string;
   content: string;
 }
 
-export interface TSetting {
+export type TSetting = {
   id?: number;
   slug?: string;
   name: string;
@@ -13,22 +13,22 @@ export interface TSetting {
   hasLocations?: boolean;
 }
 
-export interface TLocationType {
+export type TLocationType = {
   id: number;
-  name: number;
+  name: string;
 }
 
-export interface TLocationSize {
+export type TLocationSize = {
   id: number;
-  name: number;
+  name: string;
 }
 
-export interface TLocationGovernmentType {
+export type TLocationGovernmentType = {
   id: number;
-  name: number;
+  name: string;
 }
 
-export interface TLocation {
+export type TLocation = {
   id?: number;
   slug?: string;
   setting?: TSetting;

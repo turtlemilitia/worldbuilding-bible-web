@@ -14,10 +14,10 @@ export interface TLocationRequest {
   governmentType?: TLocationGovernmentType['id'];
   hasSubLocations?: boolean;
 }
-interface TLocationResponse {
+type TLocationResponse = {
   data: TLocation;
 }
-interface TLocationIndexResponse {
+type TLocationIndexResponse = {
   data: TLocation[];
 }
 
