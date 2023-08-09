@@ -41,4 +41,5 @@ export type TLocation = {
   population?: number;
   governmentType?: TLocationGovernmentType;
   hasSubLocations?: boolean;
+  aliases?: string[];
 }

@@ -1,6 +1,6 @@
 import React, { JSX } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Plus } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import { MenuItemInterface } from './Menu'
 
 const DropdownItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Element => {
@@ -12,7 +12,7 @@ const DropdownItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Elemen
     <li>
         <NavLink to={to}
               className={`block ${!plus && 'w-36'} px-3 py-3 text-sm text-stone-300 text-center hover:bg-stone-600`}>
-          {plus ? <Plus color="white" className="inline-block"/> : title}
+          {plus ? <PlusIcon color="white" className="inline-block"/> : title}
         </NavLink>
     </li>
   )

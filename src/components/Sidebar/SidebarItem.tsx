@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { SidebarItemInterface } from './Sidebar'
-import { ChevronDown, Plus } from 'lucide-react'
+import { ChevronDownIcon, PlusIcon } from 'lucide-react'
 
 interface TProps {
   item: SidebarItemInterface;
@@ -40,14 +40,14 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
               className={`${!open && '-scale-y-100'} transition-transform duration-1000`}
               onClick={() => setOpen(prev => !prev)}
             >
-              <ChevronDown className="h-5"/>
+              <ChevronDownIcon className="h-5"/>
             </button>
           )}
           {canAddNew && addNewLink && (
             <Link
               to={addNewLink}
             >
-              <Plus className="h-5"/>
+              <PlusIcon className="h-5"/>
             </Link>
           )}
         </div>

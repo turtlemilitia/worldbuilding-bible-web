@@ -1,7 +1,7 @@
 import React, { JSX } from 'react'
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom'
 import Menu from './Menu'
-import { AlignLeft, LogOut, User2 } from 'lucide-react'
+import { AlignLeftIcon, LogOutIcon, User2Icon } from 'lucide-react'
 import { logout } from '../../services/AuthService'
 import { setToken } from '../../reducers/auth/authSlice'
 import { useAppDispatch } from '../../hooks'
@@ -29,17 +29,17 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
       <div
         className="cursor-pointer"
         onClick={() => setSideBarOpen(true)}>
-        <AlignLeft size={25}/>
+        <AlignLeftIcon size={25}/>
       </div>
       <Menu/>
       <div>
         <Link
           className="inline-block cursor-pointer"
           to={'/account'}>
-          <User2 size={25}/>
+          <User2Icon size={25}/>
         </Link>
         <button onClick={handleLogout} className="inline-block">
-          <LogOut size={25}/>
+          <LogOutIcon size={25}/>
         </button>
       </div>
     </div>

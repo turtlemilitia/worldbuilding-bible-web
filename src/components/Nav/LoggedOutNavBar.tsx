@@ -1,6 +1,6 @@
 import React, { JSX } from 'react'
 import { Link } from 'react-router-dom'
-import { AlignLeft, Key as KeyIcon } from 'lucide-react'
+import { AlignLeftIcon, KeyIcon } from 'lucide-react'
 
 interface NavBarParams {
   setSideBarOpen: (open: boolean) => any;
@@ -13,7 +13,7 @@ const LoggedOutNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
       <div
         className="cursor-pointer"
         onClick={() => setSideBarOpen(true)}>
-        <AlignLeft size={25}/>
+        <AlignLeftIcon size={25}/>
       </div>
       <Link
         className="cursor-pointer"

@@ -4,7 +4,6 @@ import HeaderWrapper from '../../components/HeaderWrapper'
 import DiscreetH1Field from '../../components/Forms/SpyFields/DiscreetH1Field'
 import { TLocation } from '../../types'
 import ContentWrapper from '../../components/ContentWrapper'
-import { Save } from 'lucide-react'
 import DiscreetTextareaField from '../../components/Forms/SpyFields/DiscreetTextareaField'
 import { storeLocation, TLocationRequest, updateLocation, viewLocation } from '../../services/LocationService'
 import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
@@ -31,6 +30,7 @@ const Location: FunctionComponent = (): JSX.Element => {
   };
 
   const [loading, setLoading] = useState(false);
+  const [infoBarReady, setInfoBarReady] = useState(false);
   const [error, setError] = useState<string>()
   const [data, setData] = useState(initialState)
 
@@ -109,7 +109,7 @@ const Location: FunctionComponent = (): JSX.Element => {
   }
 
   return (
-    <LoadingWrapper loading={loading}>
+    <LoadingWrapper loading={loading || !infoBarReady}>
       <form onSubmit={submit}>
         <HeaderWrapper page="Location">
           <DiscreetH1Field value={data.name}
@@ -118,8 +118,10 @@ const Location: FunctionComponent = (): JSX.Element => {
         </HeaderWrapper>
         <ContentWrapper errorText={error}>
           <LocationInfoBar
-            loading={loading}
+            loading={loading || !infoBarReady}
             onChange={(key, value) => setData((prevState: TLocation) => ({ ...prevState, [key]: value }))}
+            setReady={setInfoBarReady}
+            data={data}
           />
           <FormToolbar onSave={submit} onRefresh={fetch}/>
           <DiscreetTextareaField

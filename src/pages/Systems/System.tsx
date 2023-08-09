@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
-import { Save } from 'lucide-react'
+import { SaveIcon } from 'lucide-react'
 import DiscreetH1Field from '../../components/Forms/SpyFields/DiscreetH1Field'
 import DiscreetTextareaField from '../../components/Forms/SpyFields/DiscreetTextareaField'
 import HeaderWrapper from '../../components/HeaderWrapper'
@@ -98,7 +98,7 @@ const System = (): JSX.Element => {
         <ContentWrapper errorText={error}>
           <div className="flex justify-end px-3 py-2">
             <button type="submit">
-              <Save className="stroke-stone-700 h-5 w-5"/>
+              <SaveIcon className="stroke-stone-700 h-5 w-5"/>
             </button>
           </div>
           <DiscreetTextareaField

@@ -2,7 +2,7 @@ import React, { JSX, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Dropdown from './Dropdown'
 import { MenuItemInterface } from './Menu'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDownIcon } from 'lucide-react'
 
 const MenuItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Element => {
   const { title, to, children } = menuItem
@@ -15,7 +15,7 @@ const MenuItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Element =>
             className="relative px-4 py-2 "
             aria-expanded={showDropdown ? 'true' : 'false'}
             onClick={() => setShowDropdown((prev) => !prev)}>
-            {title} <ChevronDown size={20} className="inline-block"/>
+            {title} <ChevronDownIcon size={20} className="inline-block"/>
             <Dropdown menuItems={children} show={showDropdown}/>
           </button>
         </>

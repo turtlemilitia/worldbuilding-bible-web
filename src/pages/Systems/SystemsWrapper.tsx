@@ -1,7 +1,7 @@
 import { JSX } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar/Sidebar'
-import { Swords } from 'lucide-react'
+import { SwordsIcon } from 'lucide-react'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 
@@ -17,7 +17,7 @@ const SystemsWrapper = (): JSX.Element => {
           items={systems.map(({ slug, name }) => ({
             title: name,
             to: `/systems/${slug}`,
-            icon: (props) => <Swords {...props}/>
+            icon: (props) => <SwordsIcon {...props}/>
           }))}/>
       )}
       <div className="relative w-full">
