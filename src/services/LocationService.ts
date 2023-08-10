@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TLocation, TLocationGovernmentType, TLocationSize, TLocationType, TSetting } from '../types'
+import { TLocation, TLocationGovernmentType, TLocationType, TSetting } from '../types'
 import api from '../api'
 
 export interface TLocationRequest {
@@ -7,7 +7,6 @@ export interface TLocationRequest {
   parent: TLocation['id'];
   name: string;
   type: TLocationType['id'];
-  size: TLocationSize['id'];
   content: string;
   demonym?: string;
   population?: number;

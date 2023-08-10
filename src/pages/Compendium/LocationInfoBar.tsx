@@ -1,8 +1,7 @@
 import React, { Fragment, FunctionComponent, JSX, useEffect, useState } from 'react'
 import { ChevronDownIcon } from 'lucide-react'
 import { indexLocationTypes } from '../../services/LocationTypeService'
-import { TLocation, TLocationGovernmentType, TLocationSize, TLocationType } from '../../types'
-import { indexLocationSizes } from '../../services/LocationSizeService'
+import { TLocation, TLocationGovernmentType, TLocationType } from '../../types'
 import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
 import { Listbox, Transition } from '@headlessui/react'
 
@@ -16,24 +15,22 @@ type TProps = {
 const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setReady, data }: TProps): JSX.Element => {
 
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>([])
-  const [locationSizes, setLocationSizes] = useState<TLocationSize[]>([])
   const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>([])
 
   useEffect(() => {
 
     indexLocationTypes().then(response => setLocationTypes(response.data.data))
-    indexLocationSizes().then(response => setLocationSizes(response.data.data))
     indexGovernmentTypes().then(response => setGovernmentTypes(response.data.data))
 
   }, [])
 
   useEffect(() => {
 
-    if (setReady && locationTypes.length && locationSizes.length && governmentTypes.length) {
+    if (setReady && locationTypes.length && governmentTypes.length) {
       setReady(true)
     }
 
-  }, [locationTypes, locationSizes, governmentTypes])
+  }, [locationTypes, governmentTypes])
 
   type TSelectOption = {
     id: string | number,
@@ -56,12 +53,6 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
       label: 'Type',
       type: 'select',
       options: locationTypes
-    },
-    {
-      name: 'size',
-      label: 'Size',
-      type: 'select',
-      options: locationSizes
     },
     {
       name: 'demonym',

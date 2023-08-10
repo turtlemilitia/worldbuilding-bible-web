@@ -63,7 +63,7 @@ const Location: FunctionComponent = (): JSX.Element => {
   }, [locationId])
 
   const validateData = (): TLocationRequest|void => {
-    if (!data.name || !data.content || !data.type || !data.setting || !data.parent || !data.size) {
+    if (!data.name || !data.content || !data.type || !data.setting || !data.parent) {
       return;
     }
     return {
@@ -72,7 +72,6 @@ const Location: FunctionComponent = (): JSX.Element => {
       type: data.type.id,
       setting: data.setting.id,
       parent: data.parent.id,
-      size: data.size.id,
     };
   }
 

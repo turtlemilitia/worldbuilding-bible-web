@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TLocation, TLocationGovernmentType, TLocationSize, TLocationType, TSetting } from '../types'
+import { TLocationType } from '../types'
 import api from '../api'
 
 type TLocationTypeIndexResponse = {

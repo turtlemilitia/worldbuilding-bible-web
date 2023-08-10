@@ -18,11 +18,6 @@ export type TLocationType = {
   name: string;
 }
 
-export type TLocationSize = {
-  id: number;
-  name: string;
-}
-
 export type TLocationGovernmentType = {
   id: number;
   name: string;
@@ -35,7 +30,6 @@ export type TLocation = {
   parent?: TLocation;
   name: string;
   type?: TLocationType;
-  size?: TLocationSize;
   content: string;
   demonym?: string;
   population?: number;
