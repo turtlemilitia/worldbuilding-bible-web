@@ -2,8 +2,8 @@ import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './reducers/auth/authSlice'
 import systemsIndexReducer from './reducers/system/systemsIndexSlice'
 import systemReducer from './reducers/system/systemSlice'
-import settingsIndexReducer from './reducers/setting/settingsIndexSlice'
-import settingReducer from './reducers/setting/settingSlice'
+import compendiaIndexReducer from './reducers/compendium/compendiaIndexSlice'
+import compendiumReducer from './reducers/compendium/compendiumSlice'
 import locationReducer from './reducers/compendium/location/locationSlice'
 
 export const store = configureStore({
@@ -11,10 +11,10 @@ export const store = configureStore({
     auth: authReducer,
     // indexes
     systems: systemsIndexReducer,
-    settings: settingsIndexReducer,
+    compendia: compendiaIndexReducer,
     // individual
     system: systemReducer,
-    setting: settingReducer,
+    compendium: compendiumReducer,
     location: locationReducer
   }
 })

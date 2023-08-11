@@ -5,7 +5,7 @@ export type TSystem = {
   content: string;
 }
 
-export type TSetting = {
+export type TCompendium = {
   id?: number;
   slug?: string;
   name: string;
@@ -26,7 +26,7 @@ export type TLocationGovernmentType = {
 export type TLocation = {
   id?: number;
   slug?: string;
-  setting?: TSetting;
+  compendium?: TCompendium;
   parent?: TLocation;
   name: string;
   type?: TLocationType;

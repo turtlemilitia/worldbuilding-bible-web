@@ -97,7 +97,7 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
       <div
         className={`absolute transition-all duration-1000 ${!loading ? 'top-0 opacity-100' : '-top-10 opacity-0'} left-full ml-10`}>
         <ul
-          className="rounded-3xl bg-stone-900 border border-stone-700 w-80 py-6 px-8 text-stone-300 text-sm">
+          className="rounded-3xl bg-stone-900 border border-yellow-500 shadow-sm shadow-stone-800 w-80 py-6 px-8 text-stone-300 text-sm">
           {fields.map(({ name, label, type, options }) => {
             const currentValue = data[name as keyof TLocation]
             return (

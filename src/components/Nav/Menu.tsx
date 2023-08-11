@@ -13,7 +13,7 @@ export interface MenuItemInterface {
 const Menu = (): JSX.Element => {
 
   const { systems } = useAppSelector((state: RootState) => state.systems) // redux
-  const { settings } = useAppSelector((state: RootState) => state.settings) // redux
+  const { compendia } = useAppSelector((state: RootState) => state.compendia) // redux
 
   const menuItems: MenuItemInterface[] = [
     {
@@ -31,16 +31,16 @@ const Menu = (): JSX.Element => {
       ]
     },
     {
-      title: 'Settings',
-      to: '/settings',
+      title: 'Compendia',
+      to: '/compendia',
       children: [
-        ...settings?.map(({ slug, name }) => ({
+        ...compendia?.map(({ slug, name }) => ({
           title: name,
-          to: `/settings/${slug}`
+          to: `/compendia/${slug}`
         })) || [],
         {
           title: 'Create new',
-          to: '/settings/new',
+          to: '/compendia/new',
         }
       ]
     },

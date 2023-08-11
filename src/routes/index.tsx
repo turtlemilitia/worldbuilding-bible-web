@@ -3,13 +3,13 @@ import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-d
 import React, { JSX } from 'react'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import Login from '../pages/Login'
-import System from '../pages/Systems/System'
-import SystemsWrapper from '../pages/Systems/SystemsWrapper'
+import System from '../pages/System/System'
+import SystemsWrapper from '../pages/System/SystemsWrapper'
 import PageWrapper from "../pages/PageWrapper";
 import { useAppSelector } from '../hooks'
 import { RootState } from '../store'
-import SettingsWrapper from '../pages/Settings/SettingsWrapper'
-import Setting from '../pages/Settings/Setting'
+import CompendiaWrapper from '../pages/Compendium/CompendiaWrapper'
+import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
 
 
@@ -46,15 +46,15 @@ const Routes = (): JSX.Element => {
           ]
         },
         {
-          path: '/settings',
-          element: <SettingsWrapper/>, // sidebar with bestiary, characters, locations, ...
+          path: '/compendia',
+          element: <CompendiaWrapper/>, // sidebar with bestiary, characters, locations, ...
           children: [
             {
-              path: '/settings/:settingId',
-              element: <Setting/>,
+              path: '/compendia/:compendiumId',
+              element: <Compendium/>,
             },
             {
-              path: '/settings/:settingId/locations/:locationId',
+              path: '/compendia/:compendiumId/locations/:locationId',
               element: <Location/>,
             },
           ]

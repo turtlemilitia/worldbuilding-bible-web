@@ -18,7 +18,7 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
-  const { settingId, locationId } = useParams() as { settingId: string; locationId: string } // router
+  const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
 
   const remote = useAppSelector((state: RootState) => state.location) // redux
 
@@ -63,14 +63,14 @@ const Location: FunctionComponent = (): JSX.Element => {
   }, [locationId])
 
   const validateData = (): TLocationRequest|void => {
-    if (!data.name || !data.content || !data.type || !data.setting || !data.parent) {
+    if (!data.name || !data.content || !data.type || !data.compendium || !data.parent) {
       return;
     }
     return {
       name: data.name,
       content: data.content,
       type: data.type.id,
-      setting: data.setting.id,
+      compendium: data.compendium.id,
       parent: data.parent.id,
     };
   }

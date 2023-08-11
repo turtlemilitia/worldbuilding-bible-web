@@ -5,23 +5,23 @@ import { MapIcon } from 'lucide-react'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 
-const SettingsWrapper = (): JSX.Element => {
+const CompendiaWrapper = (): JSX.Element => {
 
-  const { setting } = useAppSelector((state: RootState) => state.setting) // redux
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
-  const { settingId } = useParams() as { settingId: string } // router
+  const { compendiumId } = useParams() as { compendiumId: string } // router
 
   return (
     <>
-      {settingId !== 'new' && (
+      {compendiumId !== 'new' && (
         <Sidebar
           title={'Compendium'}
           items={
             [
               {
                 title: 'Geography',
-                hasChildren: setting.hasLocations,
-                addNewLink: `/settings/${setting.slug}/locations/new`,
+                hasChildren: compendium.hasLocations,
+                addNewLink: `/compendia/${compendium.slug}/locations/new`,
                 icon: (props) => <MapIcon {...props}/>
               }
             ]
@@ -34,4 +34,4 @@ const SettingsWrapper = (): JSX.Element => {
   )
 }
 
-export default SettingsWrapper
+export default CompendiaWrapper
