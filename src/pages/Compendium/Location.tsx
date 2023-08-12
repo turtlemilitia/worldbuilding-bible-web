@@ -6,13 +6,18 @@ import { TLocation } from '../../types'
 import ContentWrapper from '../../components/ContentWrapper'
 import DiscreetTextareaField from '../../components/Forms/SpyFields/DiscreetTextareaField'
 import { storeLocation, TLocationRequest, updateLocation, viewLocation } from '../../services/LocationService'
-import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
+import {
+  clearLocationData,
+  setLocationData,
+  updateLocationData
+} from '../../reducers/compendium/location/locationSlice'
 import { AxiosError } from 'axios'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import LocationInfoBar from './LocationInfoBar'
+import ErrorBanner from '../../components/Banners/ErrorBanner'
 
 const Location: FunctionComponent = (): JSX.Element => {
 
@@ -22,25 +27,25 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const remote = useAppSelector((state: RootState) => state.location) // redux
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const initialState: TLocation = {
     name: '',
     content: '',
-  };
+  }
 
-  const [loading, setLoading] = useState(false);
-  const [infoBarReady, setInfoBarReady] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [infoBarReady, setInfoBarReady] = useState(false)
   const [error, setError] = useState<string>()
   const [data, setData] = useState(initialState)
 
   const isNew: boolean = locationId === 'new'
 
   const fetch = (): void => {
-    setLoading(true);
+    setLoading(true)
     viewLocation(locationId)
       .then(response => {
-        setLoading(false);
+        setLoading(false)
         setData(response.data.data)
         dispatch(setLocationData(response.data.data))
       })
@@ -51,20 +56,20 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   useEffect(() => {
     if (locationId && !isNew) {
-      fetch();
+      fetch()
     }
     if (isNew) {
-      setData(initialState);
-      dispatch(clearLocationData(undefined));
+      setData(initialState)
+      dispatch(clearLocationData(undefined))
     }
     return () => {
-      dispatch(clearLocationData(undefined));
+      dispatch(clearLocationData(undefined))
     }
   }, [locationId])
 
-  const validateData = (): TLocationRequest|void => {
+  const validateData = (): TLocationRequest | void => {
     if (!data.name || !data.content || !data.type || !data.compendium || !data.parent) {
-      return;
+      return
     }
     return {
       name: data.name,
@@ -72,17 +77,17 @@ const Location: FunctionComponent = (): JSX.Element => {
       type: data.type.id,
       compendium: data.compendium.id,
       parent: data.parent.id,
-    };
+    }
   }
 
   const submit = (event: React.SyntheticEvent) => {
-    setLoading(true);
-    const validated = validateData();
+    setLoading(true)
+    const validated = validateData()
     if (validated) {
       if (isNew) {
         storeLocation(validated)
           .then(({ data }) => {
-            setLoading(false);
+            setLoading(false)
             setData(data.data)
             dispatch(setLocationData(data.data))
             // dispatch(addLocation(data.data)) todo
@@ -94,7 +99,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       } else {
         updateLocation(locationId, validated)
           .then(response => {
-            setLoading(false);
+            setLoading(false)
             setData(response.data.data)
             dispatch(updateLocationData(response.data.data))
           })
@@ -115,23 +120,30 @@ const Location: FunctionComponent = (): JSX.Element => {
                            onChange={(value) => setData((prevState: TLocation) => ({ ...prevState, name: value }))}
                            placeholder={'Location Name Here'}/>
         </HeaderWrapper>
-        <ContentWrapper errorText={error}>
-          <LocationInfoBar
-            loading={loading || !infoBarReady}
-            onChange={(key, value) => setData((prevState: TLocation) => ({ ...prevState, [key]: value }))}
-            setReady={setInfoBarReady}
-            data={data}
-          />
-          <FormToolbar onSave={submit} onRefresh={fetch}/>
-          <DiscreetTextareaField
-            value={data.content}
-            onChange={(value) => setData((prevState: TLocation) => ({ ...prevState, content: value }))}
-            placeholder={'Write a simple description for the location.'}
-          />
+        <ContentWrapper>
+          <div className="flex md:flex-row-reverse md:justify-end -mx-2">
+            <div className="w-full md:w-1/4 px-2">
+              <LocationInfoBar
+                loading={loading || !infoBarReady}
+                onChange={(key, value) => setData((prevState: TLocation) => ({ ...prevState, [key]: value }))}
+                setReady={setInfoBarReady}
+                data={data}
+              />
+            </div>
+            <div className="w-full md:w-2/4 md:ml-auto px-2">
+              {error && <ErrorBanner errorText={error}/>}
+              <FormToolbar onSave={submit} onRefresh={fetch}/>
+              <DiscreetTextareaField
+                value={data.content}
+                onChange={(value) => setData((prevState: TLocation) => ({ ...prevState, content: value }))}
+                placeholder={'Write a simple description for the location.'}
+              />
+            </div>
+          </div>
         </ContentWrapper>
       </form>
     </LoadingWrapper>
-  )
+)
 }
 
 export default Location;

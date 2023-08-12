@@ -13,6 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
+import ErrorBanner from '../../components/Banners/ErrorBanner'
 
 const Compendium: FunctionComponent = (): JSX.Element => {
 
@@ -22,24 +23,24 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const remote = useAppSelector((state: RootState) => state.compendium) // redux
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const initialState: TCompendium = {
     name: '',
     content: ''
-  };
+  }
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const [data, setData] = useState<TCompendium>(initialState)
 
   const isNew: boolean = compendiumId === 'new'
 
   const fetch = (): void => {
-    setLoading(true);
+    setLoading(true)
     viewCompendium(compendiumId)
       .then(response => {
-        setLoading(false);
+        setLoading(false)
         setData(response.data.data)
         dispatch(setCompendiumData(response.data.data))
       })
@@ -50,23 +51,23 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   useEffect(() => {
     if (compendiumId && !isNew) {
-      fetch();
+      fetch()
     }
     if (isNew) {
-      setData(initialState);
-      dispatch(clearCompendiumData(undefined));
+      setData(initialState)
+      dispatch(clearCompendiumData(undefined))
     }
     return () => {
-      dispatch(clearCompendiumData(undefined));
+      dispatch(clearCompendiumData(undefined))
     }
   }, [compendiumId])
 
   const submit = (event: React.SyntheticEvent) => {
-    setLoading(true);
+    setLoading(true)
     if (isNew) {
       storeCompendium(data)
         .then(({ data }) => {
-          setLoading(false);
+          setLoading(false)
           setData(data.data)
           dispatch(setCompendiumData(data.data))
           dispatch(addCompendium(data.data))
@@ -78,7 +79,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     } else {
       updateCompendium(compendiumId, data)
         .then(response => {
-          setLoading(false);
+          setLoading(false)
           setData(response.data.data)
           dispatch(updateCompendiumData(response.data.data))
         })
@@ -98,17 +99,22 @@ const Compendium: FunctionComponent = (): JSX.Element => {
                            onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, name: value }))}
                            placeholder={'Compendium Name Here'}/>
         </HeaderWrapper>
-        <ContentWrapper errorText={error}>
-          <FormToolbar onSave={submit} onRefresh={fetch}/>
-          <DiscreetTextareaField
-            value={data.content}
-            onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, content: value }))}
-            placeholder={'Write a simple description for the compendium.'}
-          />
+        <ContentWrapper>
+          <div className="flex justify-center -mx-2">
+            <div className="w-full md:w-2/4 px-2">
+              {error && <ErrorBanner errorText={error}/>}
+              <FormToolbar onSave={submit} onRefresh={fetch}/>
+              <DiscreetTextareaField
+                value={data.content}
+                onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, content: value }))}
+                placeholder={'Write a simple description for the compendium.'}
+              />
+            </div>
+          </div>
         </ContentWrapper>
       </form>
     </LoadingWrapper>
   )
 }
 
-export default Compendium;
+export default Compendium

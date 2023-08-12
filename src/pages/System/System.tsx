@@ -14,6 +14,8 @@ import { AxiosError } from 'axios'
 import LoadingSpinner from '../../components/LoadingSpinner'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import { addSystem } from '../../reducers/system/systemsIndexSlice'
+import FormToolbar from '../../components/Forms/FormToolbar'
+import ErrorBanner from '../../components/Banners/ErrorBanner'
 
 const System = (): JSX.Element => {
 
@@ -21,49 +23,53 @@ const System = (): JSX.Element => {
 
   const { systemId } = useParams() as { systemId: string } // router
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const initialState: TSystem = {
     name: '',
     content: ''
-  };
+  }
 
   const remote = useAppSelector((state: RootState) => state.system) // redux
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState<TSystem>(initialState)
   const [error, setError] = useState<string>()
 
   const isNew: boolean = systemId === 'new'
 
+  const fetch = () => {
+    setLoading(true)
+    viewSystem(systemId)
+      .then(response => {
+        setLoading(false)
+        setData(response.data.data)
+        dispatch(setSystemData(response.data.data))
+      })
+      .catch(err => {
+        setError(err)
+      })
+  }
+
   useEffect(() => {
     if (systemId && !isNew) {
-      setLoading(true);
-      viewSystem(systemId)
-        .then(response => {
-          setLoading(false);
-          setData(response.data.data)
-          dispatch(setSystemData(response.data.data))
-        })
-        .catch(err => {
-          setError(err)
-        })
+      fetch()
     }
     if (isNew) {
-      setData(initialState);
-      dispatch(clearSystemData(undefined));
+      setData(initialState)
+      dispatch(clearSystemData(undefined))
     }
     return () => {
-      dispatch(clearSystemData(undefined));
+      dispatch(clearSystemData(undefined))
     }
   }, [systemId])
 
   const submit = (event: React.SyntheticEvent) => {
-    setLoading(true);
+    setLoading(true)
     if (isNew) {
       storeSystem(data)
         .then(response => {
-          setLoading(false);
+          setLoading(false)
           setData(response.data.data)
           dispatch(setSystemData(response.data.data))
           dispatch(addSystem(response.data.data))
@@ -75,7 +81,7 @@ const System = (): JSX.Element => {
     } else {
       updateSystem(systemId, data)
         .then(response => {
-          setLoading(false);
+          setLoading(false)
           setData(response.data.data)
           dispatch(updateSystemData(response.data.data))
         })
@@ -95,17 +101,18 @@ const System = (): JSX.Element => {
                            onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, name: value }))}
                            placeholder={'System Name Here'}/>
         </HeaderWrapper>
-        <ContentWrapper errorText={error}>
-          <div className="flex justify-end px-3 py-2">
-            <button type="submit">
-              <SaveIcon className="stroke-stone-700 h-5 w-5"/>
-            </button>
+        <ContentWrapper>
+          <div className="flex justify-center -mx-2">
+            <div className="w-full md:w-2/4 px-2">
+              {error && <ErrorBanner errorText={error}/>}
+              <FormToolbar onSave={submit} onRefresh={fetch}/>
+              <DiscreetTextareaField
+                value={data.content}
+                onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
+                placeholder={'Write a simple description for the system.'}
+              />
+            </div>
           </div>
-          <DiscreetTextareaField
-            value={data.content}
-            onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
-            placeholder={'Write a simple description for the system.'}
-          />
         </ContentWrapper>
       </form>
     </LoadingWrapper>
