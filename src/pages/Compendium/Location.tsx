@@ -121,8 +121,8 @@ const Location: FunctionComponent = (): JSX.Element => {
                            placeholder={'Location Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
-          <div className="flex md:flex-row-reverse md:justify-end -mx-2">
-            <div className="w-full md:w-1/4 px-2">
+          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-2">
+            <div className="w-full lg:w-1/4 px-2">
               <LocationInfoBar
                 loading={loading || !infoBarReady}
                 onChange={(key, value) => setData((prevState: TLocation) => ({ ...prevState, [key]: value }))}
@@ -130,7 +130,7 @@ const Location: FunctionComponent = (): JSX.Element => {
                 data={data}
               />
             </div>
-            <div className="w-full md:w-2/4 md:ml-auto px-2">
+            <div className="w-full lg:w-2/4 lg:ml-auto px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               <DiscreetTextareaField
