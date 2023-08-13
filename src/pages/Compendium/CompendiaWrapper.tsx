@@ -6,7 +6,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 import { TCompendium, TLocation } from '../../types'
 import { indexLocations } from '../../services/LocationService'
-import { setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import { updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import { createNestedArray } from '../../utils/treeUtils'
 
 const mapLocation = (compendium: TCompendium, location: TLocation): SidebarItemInterface => ({
   title: location.name,
@@ -14,7 +15,7 @@ const mapLocation = (compendium: TCompendium, location: TLocation): SidebarItemI
   hasChildren: location.hasSubLocations,
   // addNewLink: `/compendia/${compendium?.slug}/location/${location.slug}`, // todo add sub location
   icon: (props) => <MapPinIcon {...props}/>,
-  children: location.subLocations?.map(subLocation => mapLocation(compendium, subLocation))
+  children: location.children?.map(subLocation => mapLocation(compendium, subLocation))
 })
 
 const CompendiaWrapper = (): JSX.Element => {
@@ -24,6 +25,9 @@ const CompendiaWrapper = (): JSX.Element => {
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
   const dispatch = useAppDispatch();
+
+  const nestedLocations: TLocation[] = createNestedArray(compendium.locations || []);
+  console.log(nestedLocations)
 
   return (
     <>
@@ -37,9 +41,9 @@ const CompendiaWrapper = (): JSX.Element => {
                 hasChildren: compendium.hasLocations,
                 addNewLink: `/compendia/${compendium.slug}/locations/new`,
                 icon: (props) => <MapIcon {...props}/>,
-                children: compendium.locations?.map(location => mapLocation(compendium, location)),
+                children: nestedLocations?.map(location => mapLocation(compendium, location)),
                 loadChildren: () => {
-                  indexLocations(compendium.slug)
+                  indexLocations(compendium.slug, ['parent'])
                     .then(({ data }) => {
                       dispatch(updateCompendiumData({locations: data.data}))
                     })

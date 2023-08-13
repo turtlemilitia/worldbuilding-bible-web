@@ -25,17 +25,17 @@ export type TLocationGovernmentType = {
 }
 
 export type TLocation = {
-  id?: number;
-  slug?: string;
-  compendium?: TCompendium;
+  id: number;
+  slug: string;
+  compendium: TCompendium;
   parent?: TLocation;
   name: string;
-  type?: TLocationType;
+  type: TLocationType;
   content: string;
   demonym?: string;
   population?: number;
   governmentType?: TLocationGovernmentType;
   hasSubLocations?: boolean;
   aliases?: string[];
-  subLocations?: TLocation[]
+  children?: TLocation[]
 }

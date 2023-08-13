@@ -30,7 +30,7 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const initialState: TLocation = {
+  const initialState: any = {
     name: '',
     content: '',
   }
@@ -121,7 +121,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       <form onSubmit={submit}>
         <HeaderWrapper page="Location">
           <DiscreetH1Field value={data.name}
-                           onChange={(value) => setData((prevState: TLocation) => ({ ...prevState, name: value }))}
+                           onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
                            placeholder={'Location Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
@@ -129,7 +129,7 @@ const Location: FunctionComponent = (): JSX.Element => {
             <div className="w-full lg:w-1/4 px-3">
               <LocationInfoBar
                 loading={loading || !infoBarReady}
-                onChange={(key, value) => setData((prevState: TLocation) => ({ ...prevState, [key]: value }))}
+                onChange={(key, value) => setData((prevState: any) => ({ ...prevState, [key]: value }))}
                 setReady={setInfoBarReady}
                 data={data}
               />
@@ -139,7 +139,7 @@ const Location: FunctionComponent = (): JSX.Element => {
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               <DiscreetTextareaField
                 value={data.content}
-                onChange={(value) => setData((prevState: TLocation) => ({ ...prevState, content: value }))}
+                onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the location.'}
               />
             </div>
