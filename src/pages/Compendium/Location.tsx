@@ -18,6 +18,7 @@ import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import LocationInfoBar from './LocationInfoBar'
 import ErrorBanner from '../../components/Banners/ErrorBanner'
+import { setCompendiumData } from '../../reducers/compendium/compendiumSlice'
 
 const Location: FunctionComponent = (): JSX.Element => {
 
@@ -25,7 +26,7 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
 
-  const remote = useAppSelector((state: RootState) => state.location) // redux
+  const { location } = useAppSelector((state: RootState) => state.location) // redux
 
   const navigate = useNavigate()
 
@@ -79,7 +80,6 @@ const Location: FunctionComponent = (): JSX.Element => {
     name: data.name,
     content: data.content,
     typeId: data.type.id,
-    compendiumId: Number(compendiumId),
     parentId: data.parent?.id,
   })
 
@@ -91,13 +91,14 @@ const Location: FunctionComponent = (): JSX.Element => {
     setLoading(true)
     const validated = readyDataForRequest(data);
     if (isNew) {
-      storeLocation(validated)
+      storeLocation(compendiumId, validated)
         .then(({ data }) => {
           setLoading(false)
           setData(data.data)
           dispatch(setLocationData(data.data))
+          dispatch(setCompendiumData({ 'hasLocations': true }))
           // dispatch(addLocation(data.data)) todo
-          navigate(`/locations/${data.data.slug}`)
+          navigate(`/compendia/${compendiumId}/locations/${data.data.slug}`)
         })
         .catch((err: AxiosError) => {
           setError(err.message)
@@ -124,8 +125,8 @@ const Location: FunctionComponent = (): JSX.Element => {
                            placeholder={'Location Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-2">
-            <div className="w-full lg:w-1/4 px-2">
+          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-3">
+            <div className="w-full lg:w-1/4 px-3">
               <LocationInfoBar
                 loading={loading || !infoBarReady}
                 onChange={(key, value) => setData((prevState: TLocation) => ({ ...prevState, [key]: value }))}
@@ -133,7 +134,7 @@ const Location: FunctionComponent = (): JSX.Element => {
                 data={data}
               />
             </div>
-            <div className="w-full lg:w-2/4 lg:ml-auto px-2">
+            <div className="w-full lg:w-2/4 lg:ml-auto px-3">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               <DiscreetTextareaField

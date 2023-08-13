@@ -11,6 +11,7 @@ export type TCompendium = {
   name: string;
   content: string;
   hasLocations?: boolean;
+  locations?: TLocation[]
 }
 
 export type TLocationType = {
@@ -36,4 +37,5 @@ export type TLocation = {
   governmentType?: TLocationGovernmentType;
   hasSubLocations?: boolean;
   aliases?: string[];
+  subLocations?: TLocation[]
 }

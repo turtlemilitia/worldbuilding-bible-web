@@ -3,7 +3,6 @@ import { TLocation, TLocationGovernmentType, TLocationType, TCompendium } from '
 import api from '../api'
 
 export interface TLocationRequest {
-  compendiumId: TCompendium['id'];
   parentId: TLocation['id'];
   name: string;
   typeId: TLocationType['id'];
@@ -19,9 +18,9 @@ type TLocationIndexResponse = {
   data: TLocation[];
 }
 
-export const indexLocations = (): Promise<AxiosResponse<TLocationIndexResponse>> => {
+export const indexLocations = (compendiumId: TCompendium['slug']): Promise<AxiosResponse<TLocationIndexResponse>> => {
 
-  return api.get(`/api/locations`)
+  return api.get(`/api/compendia/${compendiumId}/locations`)
 
 }
 
@@ -31,9 +30,9 @@ export const viewLocation = (slug: string): Promise<AxiosResponse<TLocationRespo
 
 }
 
-export const storeLocation = (data: TLocationRequest): Promise<AxiosResponse<TLocationResponse>> => {
+export const storeLocation = (compendiumId: TCompendium['slug'], data: TLocationRequest): Promise<AxiosResponse<TLocationResponse>> => {
 
-  return api.post(`/api/locations`, data)
+  return api.post(`/api/compendia/${compendiumId}/locations`, data)
 
 }
 

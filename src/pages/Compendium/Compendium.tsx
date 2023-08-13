@@ -57,9 +57,6 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       setData(initialState)
       dispatch(clearCompendiumData(undefined))
     }
-    return () => {
-      dispatch(clearCompendiumData(undefined))
-    }
   }, [compendiumId])
 
   const submit = (event: React.SyntheticEvent) => {

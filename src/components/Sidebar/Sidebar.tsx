@@ -10,6 +10,7 @@ export interface SidebarItemInterface {
   addNewLink?: string;
   hasChildren?: boolean;
   children?: SidebarItemInterface[];
+  loadChildren?: () => any
 }
 
 interface TOwnProps {
@@ -29,10 +30,10 @@ const Sidebar = ({ title, items }: TOwnProps): JSX.Element => {
     <div className="relative flex w-full">
       <div className={`fixed z-10 top-14 left-0 pt-5 h-screen w-1/4`}>
         <div
-          className={`absolute transition-all duration-1000 ${show ? 'top-5 opacity-100' : '-top-14 opacity-0'} scroll-auto w-full pl-5`}>
+          className={`absolute transition-all duration-1000 ${show ? 'top-5 opacity-100' : '-top-14 opacity-0'} scroll-auto w-full px-3`}>
           <div className="rounded-3xl bg-stone-700 bg-opacity-50 border border-yellow-500 shadow-sm shadow-stone-800 backdrop-blur-lg py-6 px-8 text-stone-300">
             <h2 className="text-xl">{title}</h2>
-            <ul className="mt-5">
+            <ul className="mt-5 text-sm">
               {items.map((item, index) => {
                 return <SidebarItem item={item} key={index}/>
               })}

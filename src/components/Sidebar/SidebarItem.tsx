@@ -15,42 +15,59 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     icon,
     addNewLink,
     hasChildren,
-    children
+    children,
+    loadChildren
   } = item
   const canAddNew: boolean = Boolean(addNewLink)
-  const collapsable: boolean = Boolean(hasChildren)
+  const collapsable: boolean = Boolean(hasChildren && loadChildren)
 
   const [open, setOpen] = useState<boolean>(false)
 
+  const handleOpenChildren = () => {
+    if (!children?.length && loadChildren) {
+      loadChildren()
+    }
+    setOpen(prev => !prev)
+  }
+
   return (
-    <li className="my-3 text-sm flex justify-between">
-      {to ? (
-        <NavLink to={to} className={({ isActive }) => isActive ? 'font-bold' : ''}>
-          {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}{title}
-        </NavLink>
-      ) : (
-        <div>
-          {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}{title}
-        </div>
-      )}
-      {(canAddNew || collapsable) && (
-        <div className="flex">
-          {collapsable && (
-            <button
-              className={`${!open && '-scale-y-100'} transition-transform duration-1000`}
-              onClick={() => setOpen(prev => !prev)}
-            >
-              <ChevronDownIcon className="h-5"/>
-            </button>
-          )}
-          {canAddNew && addNewLink && (
-            <Link
-              to={addNewLink}
-            >
-              <PlusIcon className="h-5"/>
-            </Link>
-          )}
-        </div>
+    <li className="my-3">
+      <div className="flex justify-between">
+        {to ? (
+          <NavLink to={to} className={({ isActive }) => isActive ? 'font-bold' : ''}>
+            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}{title}
+          </NavLink>
+        ) : (
+          <div>
+            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}{title}
+          </div>
+        )}
+        {(canAddNew || collapsable) && (
+          <div className="flex">
+            {collapsable && (
+              <button
+                className={`${!open && '-scale-y-100'} transition-transform duration-1000`}
+                onClick={handleOpenChildren}
+              >
+                <ChevronDownIcon className="h-5"/>
+              </button>
+            )}
+            {canAddNew && addNewLink && (
+              <Link
+                to={addNewLink}
+              >
+                <PlusIcon className="h-5"/>
+              </Link>
+            )}
+          </div>
+        )}
+      </div>
+      {children && (
+        <ul className="pl-3 border-l border-l-yellow-500">
+          {children.map((item, index) => {
+            return <SidebarItem item={item} key={index}/>
+          })}
+        </ul>
       )}
     </li>
   )

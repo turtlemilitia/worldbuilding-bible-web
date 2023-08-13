@@ -12,6 +12,7 @@ const initialState: TState = {
     name: '',
     content: '',
     hasLocations: false,
+    locations: []
   }
 }
 
