@@ -67,49 +67,52 @@ const Location: FunctionComponent = (): JSX.Element => {
     }
   }, [locationId])
 
-  const validateData = (): TLocationRequest | void => {
-    if (!data.name || !data.content || !data.type || !data.compendium || !data.parent) {
-      return
+  const validate = (): boolean => {
+    if (!data.name || !data.content || !data.type) {
+      setError('Validation failed')
+      return false
     }
-    return {
-      name: data.name,
-      content: data.content,
-      type: data.type.id,
-      compendium: data.compendium.id,
-      parent: data.parent.id,
-    }
+    return true;
   }
 
-  const submit = (event: React.SyntheticEvent) => {
-    setLoading(true)
-    const validated = validateData()
-    if (validated) {
-      if (isNew) {
-        storeLocation(validated)
-          .then(({ data }) => {
-            setLoading(false)
-            setData(data.data)
-            dispatch(setLocationData(data.data))
-            // dispatch(addLocation(data.data)) todo
-            navigate(`/locations/${data.data.slug}`)
-          })
-          .catch((err: AxiosError) => {
-            setError(err.message)
-          })
-      } else {
-        updateLocation(locationId, validated)
-          .then(response => {
-            setLoading(false)
-            setData(response.data.data)
-            dispatch(updateLocationData(response.data.data))
-          })
-          .catch((err: AxiosError) => {
-            setError(err.message)
-          })
-      }
-    }
+  const readyDataForRequest = (data: any): TLocationRequest => ({
+    name: data.name,
+    content: data.content,
+    typeId: data.type.id,
+    compendiumId: Number(compendiumId),
+    parentId: data.parent?.id,
+  })
 
+  const submit = (event: React.SyntheticEvent) => {
     event.preventDefault()
+    if (!validate()) {
+      return;
+    }
+    setLoading(true)
+    const validated = readyDataForRequest(data);
+    if (isNew) {
+      storeLocation(validated)
+        .then(({ data }) => {
+          setLoading(false)
+          setData(data.data)
+          dispatch(setLocationData(data.data))
+          // dispatch(addLocation(data.data)) todo
+          navigate(`/locations/${data.data.slug}`)
+        })
+        .catch((err: AxiosError) => {
+          setError(err.message)
+        })
+    } else {
+      updateLocation(locationId, validated)
+        .then(response => {
+          setLoading(false)
+          setData(response.data.data)
+          dispatch(updateLocationData(response.data.data))
+        })
+        .catch((err: AxiosError) => {
+          setError(err.message)
+        })
+    }
   }
 
   return (

@@ -3,15 +3,14 @@ import { TLocation, TLocationGovernmentType, TLocationType, TCompendium } from '
 import api from '../api'
 
 export interface TLocationRequest {
-  compendium: TCompendium['id'];
-  parent: TLocation['id'];
+  compendiumId: TCompendium['id'];
+  parentId: TLocation['id'];
   name: string;
-  type: TLocationType['id'];
+  typeId: TLocationType['id'];
   content: string;
   demonym?: string;
   population?: number;
-  governmentType?: TLocationGovernmentType['id'];
-  hasSubLocations?: boolean;
+  governmentTypeId?: TLocationGovernmentType['id'];
 }
 type TLocationResponse = {
   data: TLocation;

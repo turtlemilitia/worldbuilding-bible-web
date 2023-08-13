@@ -5,11 +5,11 @@ interface TProps {
 }
 
 const ErrorBanner: React.FunctionComponent<TProps> = ({ errorText }: TProps): JSX.Element => {
-  return <div className="px-3">
-    <div className="px-3 py-1 border border-burnOrange bg-burnOrange bg-opacity-60 rounded-lg">
+  return (
+    <div className="px-5 py-3 bg-burnOrange bg-opacity-60 rounded-2xl">
       {errorText}
     </div>
-  </div>
+  )
 }
 
 export default ErrorBanner
