@@ -12,7 +12,7 @@ module.exports = {
       },
       spacing: {
         '128': '32rem',
-        underScreen: '80vh'
+        underScreen: 'calc(100vh - 200px)',
       },
       minHeight: {
         '96': '24rem'
