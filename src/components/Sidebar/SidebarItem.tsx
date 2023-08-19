@@ -19,13 +19,15 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     loadChildren
   } = item
   const canAddNew: boolean = Boolean(addNewLink)
-  const collapsable: boolean = Boolean(hasChildren && loadChildren)
+  const collapsable: boolean = Boolean(hasChildren || (children?.length && children.length > 0))
 
   const [open, setOpen] = useState<boolean>(false)
 
   const handleOpenChildren = () => {
-    if (!children?.length && loadChildren) {
-      loadChildren()
+    if (!open) {
+      if (!children?.length && loadChildren) {
+        loadChildren()
+      }
     }
     setOpen(prev => !prev)
   }
@@ -62,7 +64,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
           </div>
         )}
       </div>
-      {children && (
+      {children && open && (
         <ul className="pl-3 border-l border-l-yellow-500">
           {children.map((item, index) => {
             return <SidebarItem item={item} key={index}/>
