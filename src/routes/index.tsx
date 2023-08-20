@@ -11,6 +11,7 @@ import { RootState } from '../store'
 import CompendiaWrapper from '../pages/Compendium/CompendiaWrapper'
 import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
+import Home from '../pages/Home'
 
 
 const Routes = (): JSX.Element => {
@@ -87,7 +88,7 @@ const Routes = (): JSX.Element => {
   const routesForNotAuthenticatedOnly: RouteObject[] = [
     {
       path: '/',
-      element: <div>Home Page</div>,
+      element: <Home/>,
     },
     {
       path: '/login',
