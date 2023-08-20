@@ -1,13 +1,20 @@
 import { JSX } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
-import { MapIcon, MapPinIcon } from 'lucide-react'
+import { MapIcon, MapPinIcon, PersonStandingIcon, SwordIcon, UserIcon } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { TCompendium, TLocation } from '../../types'
+import { TCompendium, TLocation, TCharacter } from '../../types'
 import { indexLocations } from '../../services/LocationService'
 import { updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
 import { createNestedArray } from '../../utils/treeUtils'
+import { indexCharacters } from '../../services/CharacterService'
+
+const mapCharacter = (compendium: TCompendium, character: TCharacter): SidebarItemInterface => ({
+  title: character.name,
+  to: `/compendia/${compendium?.slug}/characters/${character.slug}`,
+  icon: (props) => <UserIcon {...props}/>,
+})
 
 const mapLocation = (compendium: TCompendium, location: TLocation): SidebarItemInterface => ({
   title: location.name,
@@ -36,6 +43,19 @@ const CompendiaWrapper = (): JSX.Element => {
           title={'Compendium'}
           items={
             [
+              {
+                title: 'Characters',
+                hasChildren: compendium.hasCharacters,
+                addNewLink: `/compendia/${compendium.slug}/characters/new`,
+                icon: (props) => <PersonStandingIcon {...props}/>,
+                children: compendium.characters?.map(character => mapCharacter(compendium, character)),
+                loadChildren: () => {
+                  indexCharacters(compendium.slug)
+                    .then(({ data }) => {
+                      dispatch(updateCompendiumData({characters: data.data}))
+                    })
+                }
+              },
               {
                 title: 'Geography',
                 hasChildren: compendium.hasLocations,

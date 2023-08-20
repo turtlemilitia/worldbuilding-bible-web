@@ -12,6 +12,7 @@ import CompendiaWrapper from '../pages/Compendium/CompendiaWrapper'
 import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
 import Home from '../pages/Home'
+import Character from '../pages/Compendium/Character'
 
 
 const Routes = (): JSX.Element => {
@@ -57,6 +58,10 @@ const Routes = (): JSX.Element => {
             {
               path: '/compendia/:compendiumId/locations/:locationId',
               element: <Location/>,
+            },
+            {
+              path: '/compendia/:compendiumId/characters/:characterId',
+              element: <Character/>,
             },
           ]
         },

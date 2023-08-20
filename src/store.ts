@@ -5,6 +5,7 @@ import systemReducer from './reducers/system/systemSlice'
 import compendiaIndexReducer from './reducers/compendium/compendiaIndexSlice'
 import compendiumReducer from './reducers/compendium/compendiumSlice'
 import locationReducer from './reducers/compendium/location/locationSlice'
+import characterReducer from './reducers/compendium/character/characterSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     // individual
     system: systemReducer,
     compendium: compendiumReducer,
-    location: locationReducer
+    location: locationReducer,
+    character: characterReducer
   }
 })
 
