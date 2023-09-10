@@ -17,11 +17,13 @@ export type TCompendium = {
   hasLocations?: boolean;
   hasCharacters?: boolean;
   hasItems?: boolean;
+  hasFactions?: boolean;
   concepts?: TConcept[],
   species?: TSpecies[],
   locations?: TLocation[]
   characters?: TCharacter[],
   items?: TItem[],
+  factions?: TFaction[],
 }
 
 export type TConcept = {
@@ -75,6 +77,13 @@ export type TCharacter = {
 }
 
 export type TItem = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TFaction = {
   id: number;
   slug: string;
   name: string;

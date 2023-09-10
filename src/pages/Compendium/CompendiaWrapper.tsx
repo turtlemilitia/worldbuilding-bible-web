@@ -3,23 +3,24 @@ import { Outlet, useParams } from 'react-router-dom'
 import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import {
   AsteriskIcon,
-  CatIcon,
+  CatIcon, FlagIcon, FlagOffIcon, FlagTriangleRightIcon,
   MapIcon,
   MapPinIcon,
-  PersonStandingIcon,
+  PersonStandingIcon, ShieldIcon,
   StarIcon,
   SwordIcon,
   UserIcon
 } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { TCompendium, TLocation, TCharacter, TSpecies, TItem, TConcept } from '../../types'
+import { TCompendium, TLocation, TCharacter, TSpecies, TItem, TConcept, TFaction } from '../../types'
 import { indexLocations } from '../../services/LocationService'
 import { updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
 import { createNestedArray } from '../../utils/treeUtils'
 import { indexCharacters } from '../../services/CharacterService'
 import { indexSpecies } from '../../services/SpeciesService'
 import { indexItems } from '../../services/ItemService'
+import { indexFactions } from '../../services/FactionService'
 
 
 const mapConcept = (compendium: TCompendium, concept: TConcept): SidebarItemInterface => ({
@@ -53,6 +54,12 @@ const mapItem = (compendium: TCompendium, item: TItem): SidebarItemInterface => 
   title: item.name,
   to: `/compendia/${compendium?.slug}/items/${item.slug}`,
   icon: (props) => <SwordIcon {...props}/>,
+})
+
+const mapFaction = (compendium: TCompendium, faction: TFaction): SidebarItemInterface => ({
+  title: faction.name,
+  to: `/compendia/${compendium?.slug}/factions/${faction.slug}`,
+  icon: (props) => <FlagIcon {...props}/>,
 })
 
 const CompendiaWrapper = (): JSX.Element => {
@@ -135,6 +142,19 @@ const CompendiaWrapper = (): JSX.Element => {
                   indexItems(compendium.slug)
                     .then(({ data }) => {
                       dispatch(updateCompendiumData({items: data.data}))
+                    })
+                }
+              },
+              {
+                title: 'Factions',
+                hasChildren: compendium.hasFactions,
+                addNewLink: `/compendia/${compendium.slug}/factions/new`,
+                icon: (props) => <ShieldIcon {...props}/>,
+                children: compendium.factions?.map(faction => mapFaction(compendium, faction)),
+                loadChildren: () => {
+                  indexFactions(compendium.slug)
+                    .then(({ data }) => {
+                      dispatch(updateCompendiumData({factions: data.data}))
                     })
                 }
               },

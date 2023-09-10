@@ -9,6 +9,7 @@ import speciesReducer from './reducers/compendium/species/speciesSlice'
 import locationReducer from './reducers/compendium/location/locationSlice'
 import characterReducer from './reducers/compendium/character/characterSlice'
 import itemReducer from './reducers/compendium/item/itemSlice'
+import factionReducer from './reducers/compendium/faction/factionSlice'
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     location: locationReducer,
     character: characterReducer,
     item: itemReducer,
+    faction: factionReducer,
   }
 })
 
