@@ -13,6 +13,9 @@ import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
 import Home from '../pages/Home'
 import Character from '../pages/Compendium/Character'
+import Species from '../pages/Compendium/Species'
+import Item from '../pages/Compendium/Item'
+import Concept from '../pages/Compendium/Concept'
 
 
 const Routes = (): JSX.Element => {
@@ -56,12 +59,24 @@ const Routes = (): JSX.Element => {
               element: <Compendium/>,
             },
             {
+              path: '/compendia/:compendiumId/concepts/:conceptId',
+              element: <Concept/>,
+            },
+            {
+              path: '/compendia/:compendiumId/species/:speciesId',
+              element: <Species/>,
+            },
+            {
               path: '/compendia/:compendiumId/locations/:locationId',
               element: <Location/>,
             },
             {
               path: '/compendia/:compendiumId/characters/:characterId',
               element: <Character/>,
+            },
+            {
+              path: '/compendia/:compendiumId/items/:itemId',
+              element: <Item/>,
             },
           ]
         },

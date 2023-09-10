@@ -4,8 +4,11 @@ import systemsIndexReducer from './reducers/system/systemsIndexSlice'
 import systemReducer from './reducers/system/systemSlice'
 import compendiaIndexReducer from './reducers/compendium/compendiaIndexSlice'
 import compendiumReducer from './reducers/compendium/compendiumSlice'
+import conceptReducer from './reducers/compendium/concept/conceptSlice'
+import speciesReducer from './reducers/compendium/species/speciesSlice'
 import locationReducer from './reducers/compendium/location/locationSlice'
 import characterReducer from './reducers/compendium/character/characterSlice'
+import itemReducer from './reducers/compendium/item/itemSlice'
 
 export const store = configureStore({
   reducer: {
@@ -16,8 +19,11 @@ export const store = configureStore({
     // individual
     system: systemReducer,
     compendium: compendiumReducer,
+    concept: conceptReducer,
+    species: speciesReducer,
     location: locationReducer,
-    character: characterReducer
+    character: characterReducer,
+    item: itemReducer,
   }
 })
 

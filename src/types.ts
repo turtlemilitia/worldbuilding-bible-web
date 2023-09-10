@@ -12,10 +12,30 @@ export type TCompendium = {
   age?: number;
   gender?: string;
   content: string;
+  hasConcepts?: boolean;
+  hasSpecies?: boolean;
   hasLocations?: boolean;
   hasCharacters?: boolean;
+  hasItems?: boolean;
+  concepts?: TConcept[],
+  species?: TSpecies[],
   locations?: TLocation[]
-  characters?: TCharacter[]
+  characters?: TCharacter[],
+  items?: TItem[],
+}
+
+export type TConcept = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TSpecies = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
 }
 
 export type TLocationType = {
@@ -51,5 +71,12 @@ export type TCharacter = {
   age: string;
   gender: string;
   content: string;
-  // species: todo
+  species: TSpecies
+}
+
+export type TItem = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
 }
