@@ -18,12 +18,26 @@ export type TCompendium = {
   hasCharacters?: boolean;
   hasItems?: boolean;
   hasFactions?: boolean;
-  concepts?: TConcept[],
-  species?: TSpecies[],
-  locations?: TLocation[]
-  characters?: TCharacter[],
-  items?: TItem[],
-  factions?: TFaction[],
+  hasLanguages?: boolean;
+  hasReligions?: boolean;
+  hasPantheons?: boolean;
+  hasCurrencies?: boolean;
+  hasStories?: boolean;
+  hasNaturalResources?: boolean;
+  hasPlanes?: boolean;
+  concepts?: TConcept[];
+  species?: TSpecies[];
+  locations?: TLocation[];
+  characters?: TCharacter[];
+  items?: TItem[];
+  factions?: TFaction[];
+  languages?: TLanguage[];
+  religions?: TReligion[];
+  pantheons?: TPantheon[];
+  currencies?: TCurrency[];
+  stories?: TStory[];
+  naturalResources?: TNaturalResource[];
+  planes?: TPlane[];
 }
 
 export type TConcept = {
@@ -89,3 +103,53 @@ export type TFaction = {
   name: string;
   content: string;
 }
+
+export type TLanguage = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TReligion = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TPantheon = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TCurrency = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TStory = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TNaturalResource = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TPlane = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+

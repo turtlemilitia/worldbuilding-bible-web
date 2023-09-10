@@ -17,6 +17,7 @@ import Species from '../pages/Compendium/Species'
 import Item from '../pages/Compendium/Item'
 import Concept from '../pages/Compendium/Concept'
 import Faction from '../pages/Compendium/Faction'
+import Language from '../pages/Compendium/Language'
 
 
 const Routes = (): JSX.Element => {
@@ -82,6 +83,10 @@ const Routes = (): JSX.Element => {
             {
               path: '/compendia/:compendiumId/factions/:factionId',
               element: <Faction/>,
+            },
+            {
+              path: '/compendia/:compendiumId/languages/:languageId',
+              element: <Language/>,
             },
           ]
         },

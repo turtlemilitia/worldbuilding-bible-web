@@ -16,12 +16,13 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     addNewLink,
     hasChildren,
     children,
-    loadChildren
+    loadChildren,
+    startOpen
   } = item
   const canAddNew: boolean = Boolean(addNewLink)
   const collapsable: boolean = Boolean(hasChildren || (children?.length && children.length > 0))
 
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(startOpen || false)
 
   const handleOpenChildren = () => {
     if (!open) {

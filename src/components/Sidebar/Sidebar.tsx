@@ -10,7 +10,8 @@ export interface SidebarItemInterface {
   addNewLink?: string;
   hasChildren?: boolean;
   children?: SidebarItemInterface[];
-  loadChildren?: () => any
+  loadChildren?: () => any,
+  startOpen?: boolean
 }
 
 interface TOwnProps {

@@ -1,31 +1,33 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './reducers/auth/authSlice'
-import systemsIndexReducer from './reducers/system/systemsIndexSlice'
-import systemReducer from './reducers/system/systemSlice'
-import compendiaIndexReducer from './reducers/compendium/compendiaIndexSlice'
-import compendiumReducer from './reducers/compendium/compendiumSlice'
-import conceptReducer from './reducers/compendium/concept/conceptSlice'
-import speciesReducer from './reducers/compendium/species/speciesSlice'
-import locationReducer from './reducers/compendium/location/locationSlice'
-import characterReducer from './reducers/compendium/character/characterSlice'
-import itemReducer from './reducers/compendium/item/itemSlice'
-import factionReducer from './reducers/compendium/faction/factionSlice'
+import authSlice from './reducers/auth/authSlice'
+import systemsIndexSlice from './reducers/system/systemsIndexSlice'
+import systemSlice from './reducers/system/systemSlice'
+import compendiaIndexSlice from './reducers/compendium/compendiaIndexSlice'
+import compendiumSlice from './reducers/compendium/compendiumSlice'
+import conceptSlice from './reducers/compendium/concept/conceptSlice'
+import speciesSlice from './reducers/compendium/species/speciesSlice'
+import locationSlice from './reducers/compendium/location/locationSlice'
+import characterSlice from './reducers/compendium/character/characterSlice'
+import itemSlice from './reducers/compendium/item/itemSlice'
+import factionSlice from './reducers/compendium/faction/factionSlice'
+import languageSlice from './reducers/compendium/language/languageSlice'
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: authSlice,
     // indexes
-    systems: systemsIndexReducer,
-    compendia: compendiaIndexReducer,
+    systems: systemsIndexSlice,
+    compendia: compendiaIndexSlice,
     // individual
-    system: systemReducer,
-    compendium: compendiumReducer,
-    concept: conceptReducer,
-    species: speciesReducer,
-    location: locationReducer,
-    character: characterReducer,
-    item: itemReducer,
-    faction: factionReducer,
+    system: systemSlice,
+    compendium: compendiumSlice,
+    concept: conceptSlice,
+    species: speciesSlice,
+    location: locationSlice,
+    character: characterSlice,
+    item: itemSlice,
+    faction: factionSlice,
+    language: languageSlice,
   }
 })
 
