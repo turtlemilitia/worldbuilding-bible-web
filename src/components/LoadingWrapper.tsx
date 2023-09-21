@@ -10,7 +10,7 @@ const LoadingWrapper: FunctionComponent<TProps> = ({ children, loading }): JSX.E
     <div className="relative">
       {loading ? (
         <div
-          className="absolute z-50 w-full h-full bg-stone-900 bg-opacity-50 flex place-items-center justify-center">
+          className="fixed z-50 top-0 w-screen h-screen bg-stone-900 bg-opacity-50 backdrop-blur-md flex flex-wrap place-content-center">
           <LoadingSpinner/>
         </div>
       ) : ''}
