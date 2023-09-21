@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import {
@@ -35,7 +35,7 @@ import {
   TReligion, TPantheon, TCurrency, TStory, TNaturalResource, TPlane
 } from '../../types'
 import { indexLocations } from '../../services/LocationService'
-import { updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import { clearCompendiumData, setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
 import { createNestedArray } from '../../utils/treeUtils'
 import { indexCharacters } from '../../services/CharacterService'
 import { indexSpecies } from '../../services/SpeciesService'
@@ -49,6 +49,8 @@ import { indexPantheons } from '../../services/PantheonService'
 import { indexStories } from '../../services/StoryService'
 import { indexNaturalResources } from '../../services/NaturalResourceService'
 import { indexPlanes } from '../../services/PlaneService'
+import { viewCompendium } from '../../services/CompendiumService'
+import LoadingWrapper from '../../components/LoadingWrapper'
 
 
 const mapConcept = (compendium: TCompendium, concept: TConcept): SidebarItemInterface => ({
@@ -140,8 +142,29 @@ const CompendiaWrapper = (): JSX.Element => {
 
   const dispatch = useAppDispatch();
 
+  const [loading, setLoading] = useState(false)
+
   const nestedLocations: TLocation[] = createNestedArray(compendium.locations || []);
-  console.log(nestedLocations)
+
+  const isNew = (): boolean => compendiumId === 'new'
+
+  const fetch = (): void => {
+    setLoading(true)
+    viewCompendium(compendiumId)
+      .then(response => {
+        setLoading(false)
+        dispatch(setCompendiumData(response.data.data))
+      })
+  }
+
+  useEffect(() => {
+    if (compendiumId && !isNew()) {
+      fetch()
+    }
+    if (isNew()) {
+      dispatch(clearCompendiumData(undefined))
+    }
+  }, [compendiumId])
 
   return (
     <>
@@ -331,7 +354,9 @@ const CompendiaWrapper = (): JSX.Element => {
           }/>
       )}
       <div className="relative w-full">
-        <Outlet/>
+        <LoadingWrapper loading={loading}>
+          <Outlet/>
+        </LoadingWrapper>
       </div>
     </>
   )

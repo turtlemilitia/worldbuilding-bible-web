@@ -21,7 +21,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
-  const remote = useAppSelector((state: RootState) => state.compendium) // redux
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
   const navigate = useNavigate()
 
@@ -34,34 +34,24 @@ const Compendium: FunctionComponent = (): JSX.Element => {
   const [error, setError] = useState<string>()
   const [data, setData] = useState<TCompendium>(initialState)
 
-  const isNew: boolean = compendiumId === 'new'
-
   const fetch = (): void => {
     setLoading(true)
     viewCompendium(compendiumId)
       .then(response => {
         setLoading(false)
-        setData(response.data.data)
         dispatch(setCompendiumData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
       })
   }
 
   useEffect(() => {
-    if (compendiumId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      setData(initialState)
-      dispatch(clearCompendiumData(undefined))
-    }
-  }, [compendiumId])
+
+    setData(compendium);
+
+  }, [compendium.id])
 
   const submit = (event: React.SyntheticEvent) => {
     setLoading(true)
-    if (isNew) {
+    if (!compendium.slug) {
       storeCompendium(data)
         .then(({ data }) => {
           setLoading(false)
@@ -74,7 +64,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
           setError(err.message)
         })
     } else {
-      updateCompendium(compendiumId, data)
+      updateCompendium(compendium.slug, data)
         .then(response => {
           setLoading(false)
           setData(response.data.data)
@@ -100,7 +90,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
           <div className="flex justify-center -mx-2">
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
+              <FormToolbar onSave={submit} onRefresh={() => fetch && fetch()}/>
               <DiscreetTextareaField
                 value={data.content}
                 onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, content: value }))}
