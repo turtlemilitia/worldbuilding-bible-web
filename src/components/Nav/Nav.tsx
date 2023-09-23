@@ -1,13 +1,12 @@
 import React, { JSX, useState } from 'react'
 import LoggedOutNavBar from './LoggedOutNavBar'
-import SideBar from './SideBar'
 import LoggedInNavBar from './LoggedInNavBar'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 
 const Nav = (): JSX.Element => {
 
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false) // todo is there a sidebar?
   const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
   return (
@@ -17,9 +16,6 @@ const Nav = (): JSX.Element => {
       ) : (
         <LoggedOutNavBar setSideBarOpen={setOpen}/>
       )}
-      {open ? ( // todo
-        <SideBar open={open} setOpen={setOpen}/>
-      ) : ''}
     </header>
   )
 }

@@ -1,7 +1,8 @@
-import { FunctionComponent, JSX, useState } from 'react'
+import { FunctionComponent, JSX, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { SidebarItemInterface } from './Sidebar'
 import { ChevronDownIcon, PlusIcon } from 'lucide-react'
+import LoadingSpinner from '../LoadingSpinner'
 
 interface TProps {
   item: SidebarItemInterface;
@@ -22,16 +23,24 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
   const canAddNew: boolean = Boolean(addNewLink)
   const collapsable: boolean = Boolean(hasChildren || (children?.length && children.length > 0))
 
+  const [loading, setLoading] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(startOpen || false)
 
   const handleOpenChildren = () => {
     if (!open) {
       if (!children?.length && loadChildren) {
+        setLoading(true);
         loadChildren()
       }
     }
     setOpen(prev => !prev)
   }
+
+  useEffect(() => {
+    if (children?.length) {
+      setLoading(false);
+    }
+  }, [children?.length])
 
   return (
     <li className="my-3">
@@ -71,6 +80,11 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
             return <SidebarItem item={item} key={index}/>
           })}
         </ul>
+      )}
+      {loading && (
+        <div className="flex justify-center">
+          <LoadingSpinner size={5}/>
+        </div>
       )}
     </li>
   )

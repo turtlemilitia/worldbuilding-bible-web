@@ -15,7 +15,7 @@ const DiscreetH1Field = (props: TProps): JSX.Element => {
     <input
       {...props}
       value={value}
-      className="w-full font-display text-8xl uppercase border-none bg-transparent -mt-7 py-0 px-6 text-white placeholder:text-stone-400 outline-none break-words text-center"
+      className="w-full font-display text-8xl border-none bg-transparent -mt-7 py-0 px-6 placeholder:text-stone-400 outline-none break-words text-center"
       onChange={(e) => onChange(e.target.value)}
     />
   )
