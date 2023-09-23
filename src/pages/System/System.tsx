@@ -106,11 +106,11 @@ const System = (): JSX.Element => {
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
-              <DiscreetTextareaField
+              {!loading && <DiscreetTextareaField
                 value={data.content}
                 onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the system.'}
-              />
+              />}
             </div>
           </div>
         </ContentWrapper>

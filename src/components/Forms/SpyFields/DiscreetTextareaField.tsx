@@ -1,78 +1,63 @@
 import React, { JSX, useCallback, useEffect, useMemo, useState } from 'react'
-import SimpleMdeReact from 'react-simplemde-editor'
-import SimpleMDE from "easymde";
-import type { Editor, EditorEventMap, KeyMap, Position } from "codemirror";
-import "easymde/dist/easymde.min.css"; // todo replace for tailwind somehow?
-import ReactMarkdown from 'react-markdown'
-import { renderToString } from 'react-dom/server'
-import remarkGfm from 'remark-gfm'
+import { Editor, defaultValueCtx, rootCtx, editorViewOptionsCtx } from '@milkdown/core'
+import { nord } from '@milkdown/theme-nord'
+import { Milkdown, MilkdownProvider, useEditor, useInstance } from '@milkdown/react'
+import { commonmark, headingAttr, listItemAttr, paragraphAttr } from '@milkdown/preset-commonmark'
+import { listener, listenerCtx } from '@milkdown/plugin-listener'
 
-interface EmailFieldProps {
+type TMilkDownEditorProps = { value: string, onChange: (value: string) => any };
+
+const MilkdownEditor: React.FC<TMilkDownEditorProps> = ({ value, onChange }) => {
+
+  const { get } = useEditor((root) => {
+    return Editor.make()
+      .config(nord)
+      .use(commonmark)
+      .use(listener)
+      .config((ctx) => {
+        ctx.set(rootCtx, root) // set the DOM element
+        ctx.set(defaultValueCtx, value) // set the default value (only gets loaded on mounted)
+
+        // Add attributes to the editor container
+        ctx.update(editorViewOptionsCtx, (prev) => ({
+          ...prev,
+          attributes: { class: 'milkdown-editor mx-auto outline-none', spellcheck: 'false' },
+        }))
+
+        // Add attributes to nodes and marks
+        ctx.set(headingAttr.key, (node) => {
+          const level = node.attrs.level;
+          if (level === 1) return { class: 'text-4xl' };
+          if (level === 2) return { class: 'text-3xl' };
+          return {};
+        })
+        ctx.set(paragraphAttr.key, () => ({ class: 'text-lg' }))
+        ctx.set(listItemAttr.key, () => ({ class: 'list-disc ml-5' }))
+
+        ctx.get(listenerCtx)
+          .markdownUpdated((ctx, markdown) => { // listen to the change in value
+            onChange(markdown)
+          })
+      })
+  }, [])
+
+  return <Milkdown/>
+}
+
+interface TextareaFieldProps {
   value: string;
   onChange: (value: string) => any;
   placeholder?: string;
 }
 
-const DiscreetTextareaField = (props: EmailFieldProps): JSX.Element => {
-
-  // simple mde
-  const [simpleMdeInstance, setMdeInstance] = useState<SimpleMDE | null>(null);
-
-  const getMdeInstanceCallback = useCallback((simpleMde: SimpleMDE) => {
-    setMdeInstance(simpleMde);
-  }, []);
-
-  useEffect(() => {
-    simpleMdeInstance &&
-    console.info("Hey I'm editor instance!", simpleMdeInstance);
-  }, [simpleMdeInstance]);
-
-  // codemirror
-  const [codemirrorInstance, setCodemirrorInstance] = useState<Editor | null>(
-    null
-  );
-  const getCmInstanceCallback = useCallback((editor: Editor) => {
-    setCodemirrorInstance(editor);
-  }, []);
-
-  useEffect(() => {
-    codemirrorInstance &&
-    console.info("Hey I'm codemirror instance!", codemirrorInstance);
-  }, [codemirrorInstance]);
-
-  // line and cursor
-  const [lineAndCursor, setLineAndCursor] = useState<Position | null>(null);
-
-  const getLineAndCursorCallback = useCallback((position: Position) => {
-    setLineAndCursor(position);
-  }, []);
-
-  useEffect(() => {
-    lineAndCursor &&
-    console.info("Hey I'm line and cursor info!", lineAndCursor);
-  }, [lineAndCursor]);
-
-  const customRendererOptions = useMemo(() => {
-    return {
-      previewRender() {
-        return renderToString(
-          <ReactMarkdown remarkPlugins={[[remarkGfm, {singleTilde: true}]]}>
-            {props.value}
-          </ReactMarkdown>
-        );
-      },
-    } as SimpleMDE.Options;
-  }, []);
+const DiscreetTextareaField = ({ value, onChange, placeholder }: TextareaFieldProps): JSX.Element => {
 
   return (
-    <SimpleMdeReact
-      {...props}
-      options={customRendererOptions}
-      getMdeInstance={getMdeInstanceCallback}
-      getCodemirrorInstance={getCmInstanceCallback}
-      getLineAndCursor={getLineAndCursorCallback}
-    />
+    <MilkdownProvider>
+      <MilkdownEditor value={value} onChange={onChange}/>
+    </MilkdownProvider>
   )
+
 }
 
 export default DiscreetTextareaField

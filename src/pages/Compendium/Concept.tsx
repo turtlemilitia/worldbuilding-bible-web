@@ -134,11 +134,11 @@ const Concept: FunctionComponent = (): JSX.Element => {
             <div className="w-full lg:w-2/4 lg:ml-auto px-3">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
-              <DiscreetTextareaField
+              {!loading && <DiscreetTextareaField
                 value={data.content}
                 onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the concept.'}
-              />
+              />}
             </div>
           </div>
         </ContentWrapper>

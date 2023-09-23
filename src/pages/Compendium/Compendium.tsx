@@ -91,11 +91,11 @@ const Compendium: FunctionComponent = (): JSX.Element => {
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={() => fetch && fetch()}/>
-              <DiscreetTextareaField
+              {!loading && <DiscreetTextareaField
                 value={data.content}
                 onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the compendium.'}
-              />
+              />}
             </div>
           </div>
         </ContentWrapper>
