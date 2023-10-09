@@ -1,10 +1,10 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import HeaderWrapper from '../../components/HeaderWrapper'
-import DiscreetH1Field from '../../components/Forms/SpyFields/DiscreetH1Field'
+import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import { TCompendium } from '../../types'
 import ContentWrapper from '../../components/ContentWrapper'
-import DiscreetTextareaField from '../../components/Forms/SpyFields/DiscreetTextareaField'
+import MarkdownEditor from '../../components/Forms/Fields/MarkdownEditor'
 import { storeCompendium, updateCompendium, viewCompendium } from '../../services/CompendiumService'
 import { clearCompendiumData, setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
 import { AxiosError } from 'axios'
@@ -82,16 +82,16 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     <LoadingWrapper loading={loading}>
       <form onSubmit={submit}>
         <HeaderWrapper page="Compendium">
-          <DiscreetH1Field value={data.name}
-                           onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, name: value }))}
-                           placeholder={'Compendium Name Here'}/>
+          <PageTitleField value={data.name}
+                          onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, name: value }))}
+                          placeholder={'Compendium Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
           <div className="flex justify-center -mx-2">
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={() => fetch && fetch()}/>
-              {!loading && <DiscreetTextareaField
+              {!loading && <MarkdownEditor
                 value={data.content}
                 onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the compendium.'}

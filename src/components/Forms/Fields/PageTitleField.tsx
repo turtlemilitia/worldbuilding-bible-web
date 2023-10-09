@@ -9,7 +9,7 @@ interface TProps {
   placeholder?: string;
 }
 
-const DiscreetH1Field = (props: TProps): JSX.Element => {
+const PageTitleField = (props: TProps): JSX.Element => {
   const {value, onChange} = props;
   return (
     <input
@@ -21,4 +21,4 @@ const DiscreetH1Field = (props: TProps): JSX.Element => {
   )
 }
 
-export default DiscreetH1Field
+export default PageTitleField

@@ -3,9 +3,40 @@
 @tailwind components;
 @tailwind utilities;
 
-.EasyMDEContainer .editor-toolbar {
-    @apply !border-0 bg-stone-300 rounded-2xl
+
+/* Markdown editor */
+
+/* Table */
+.markdown-editor.prose .tableWrapper {
+    @apply mb-2 overflow-x-auto relative;
 }
-.CodeMirror {
-    @apply !bg-transparent !border-0 !text-stone-700
+
+.markdown-editor.prose table {
+    @apply text-sm shadow-md sm:rounded-lg !overflow-visible !m-4;
+}
+
+.markdown-editor.prose td, th {
+    @apply !py-3 !px-6;
+}
+
+.markdown-editor.prose tr {
+    @apply border-b border-stone-200 dark:border-stone-600;
+}
+
+.markdown-editor.prose :where(td, th) p {
+    @apply !m-0;
+}
+
+.markdown-editor.prose :where(td, th):nth-child(odd) {
+    @apply bg-stone-50 dark:bg-stone-900;
+}
+
+.markdown-editor.prose.ProseMirror .selectedCell:after {
+    @apply bg-stone-800;
+}
+
+/* A little workaround to turn the element into a space */
+.markdown-editor.prose br[data-is-inline="true"],
+.markdown-editor.prose br[data-is-inline="true"]::after {
+    content: ' '
 }

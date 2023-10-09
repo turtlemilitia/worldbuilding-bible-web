@@ -1,10 +1,10 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import HeaderWrapper from '../../components/HeaderWrapper'
-import DiscreetH1Field from '../../components/Forms/SpyFields/DiscreetH1Field'
+import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import { TLocation } from '../../types'
 import ContentWrapper from '../../components/ContentWrapper'
-import DiscreetTextareaField from '../../components/Forms/SpyFields/DiscreetTextareaField'
+import MarkdownEditor from '../../components/Forms/Fields/MarkdownEditor'
 import { storeLocation, TLocationRequest, updateLocation, viewLocation } from '../../services/LocationService'
 import {
   clearLocationData,
@@ -120,9 +120,9 @@ const Location: FunctionComponent = (): JSX.Element => {
     <LoadingWrapper loading={loading || !infoBarReady}>
       <form onSubmit={submit}>
         <HeaderWrapper page="Location">
-          <DiscreetH1Field value={data.name}
-                           onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
-                           placeholder={'Location Name Here'}/>
+          <PageTitleField value={data.name}
+                          onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
+                          placeholder={'Location Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
           <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-3">
@@ -137,7 +137,7 @@ const Location: FunctionComponent = (): JSX.Element => {
             <div className="w-full lg:w-2/4 lg:ml-auto px-3">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <DiscreetTextareaField
+              {!loading && <MarkdownEditor
                 value={data.content}
                 onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the location.'}

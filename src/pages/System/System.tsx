@@ -4,8 +4,8 @@ import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
 import { SaveIcon } from 'lucide-react'
-import DiscreetH1Field from '../../components/Forms/SpyFields/DiscreetH1Field'
-import DiscreetTextareaField from '../../components/Forms/SpyFields/DiscreetTextareaField'
+import PageTitleField from '../../components/Forms/Fields/PageTitleField'
+import MarkdownEditor from '../../components/Forms/Fields/MarkdownEditor'
 import HeaderWrapper from '../../components/HeaderWrapper'
 import ContentWrapper from '../../components/ContentWrapper'
 import { storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
@@ -97,16 +97,16 @@ const System = (): JSX.Element => {
     <LoadingWrapper loading={loading}>
       <form onSubmit={submit}>
         <HeaderWrapper page="System">
-          <DiscreetH1Field value={data.name}
-                           onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, name: value }))}
-                           placeholder={'System Name Here'}/>
+          <PageTitleField value={data.name}
+                          onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, name: value }))}
+                          placeholder={'System Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
           <div className="flex justify-center -mx-2">
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <DiscreetTextareaField
+              {!loading && <MarkdownEditor
                 value={data.content}
                 onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the system.'}
