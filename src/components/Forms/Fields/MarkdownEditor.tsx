@@ -1,6 +1,6 @@
-import React, { JSX, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { JSX } from 'react'
 import { Editor, defaultValueCtx, rootCtx, editorViewOptionsCtx } from '@milkdown/core'
-import { Milkdown, MilkdownProvider, useEditor, useInstance } from '@milkdown/react'
+import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react'
 import {
   blockquoteAttr,
   bulletListAttr,
@@ -14,6 +14,7 @@ import {
 import { gfm } from '@milkdown/preset-gfm'
 import { listener, listenerCtx } from '@milkdown/plugin-listener'
 import { extendListItemSchemaForTask } from '../../../utils/markdownSchemas/taskListItem'
+import {extendListItemSchemaForIdea, wrapInIdeaListInputRule} from "../../../utils/markdownSchemas/ideaListItem";
 
 type TMilkDownEditorProps = { value: string, onChange: (value: string) => any };
 
@@ -58,6 +59,8 @@ const MilkdownEditor: React.FC<TMilkDownEditorProps> = ({ value, onChange }) => 
           })
       })
       .use(extendListItemSchemaForTask)
+      // .use(wrapInIdeaListInputRule) /todo not working yet
+      // .use(extendListItemSchemaForIdea) /todo not working yet
   }, [])
 
   return <Milkdown/>
