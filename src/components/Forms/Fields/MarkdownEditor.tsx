@@ -13,8 +13,8 @@ import {
 } from '@milkdown/preset-commonmark'
 import { gfm } from '@milkdown/preset-gfm'
 import { listener, listenerCtx } from '@milkdown/plugin-listener'
-import { extendListItemSchemaForTask } from '../../../utils/markdownSchemas/taskListItem'
-import {extendListItemSchemaForIdea, wrapInIdeaListInputRule} from "../../../utils/markdownSchemas/ideaListItem";
+import { extendListItemSchemaForTask, wrapInTaskListInputRule } from '../../../utils/markdownSchemas/taskListItem'
+import { ideaListItemNode, wrapInIdeaListInputRule } from '../../../utils/markdownSchemas/ideaPlugin'
 
 type TMilkDownEditorProps = { value: string, onChange: (value: string) => any };
 
@@ -58,9 +58,9 @@ const MilkdownEditor: React.FC<TMilkDownEditorProps> = ({ value, onChange }) => 
             onChange(markdown)
           })
       })
+      .use(wrapInTaskListInputRule)
       .use(extendListItemSchemaForTask)
-      // .use(wrapInIdeaListInputRule) /todo not working yet
-      // .use(extendListItemSchemaForIdea) /todo not working yet
+      .use([ideaListItemNode, wrapInIdeaListInputRule])
   }, [])
 
   return <Milkdown/>

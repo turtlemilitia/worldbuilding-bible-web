@@ -1,5 +1,5 @@
 import {FunctionComponent} from "react";
-import {LampIcon} from "lucide-react";
+import { LightbulbIcon } from 'lucide-react'
 
 const IdeaCheckbox: FunctionComponent = () => {
   return (
@@ -7,7 +7,7 @@ const IdeaCheckbox: FunctionComponent = () => {
       <input type='checkbox' className='hidden'/>
       <label
         className={`flex items-center justify-center w-5 h-5`}>
-        <LampIcon/>
+        <LightbulbIcon/>
       </label>
     </span>
   )

@@ -1,7 +1,9 @@
 import { expectDomTypeError } from '@milkdown/exception'
 import { listItemSchema } from '@milkdown/preset-commonmark'
-import ReactDOM from "react-dom"
-import Checkbox from "../../components/Elements/Checkbox";
+import ReactDOM from 'react-dom'
+import Checkbox from '../../components/Elements/Checkbox'
+import { $inputRule } from '@milkdown/utils'
+import { InputRule } from 'prosemirror-inputrules'
 
 export const extendListItemSchemaForTask = listItemSchema.extendSchema((prev) => {
   return (ctx) => {
@@ -25,7 +27,9 @@ export const extendListItemSchemaForTask = listItemSchema.extendSchema((prev) =>
               label: dom.dataset.label,
               listType: dom.dataset['list-type'],
               spread: dom.dataset.spread,
-              checked: dom.dataset.checked ? dom.dataset.checked === 'true' : null,
+              checked: dom.dataset.checked
+                ? dom.dataset.checked === 'true'
+                : null,
             }
           },
         },
@@ -35,7 +39,7 @@ export const extendListItemSchemaForTask = listItemSchema.extendSchema((prev) =>
         if (baseSchema.toDOM && node.attrs.checked == null)
           return baseSchema.toDOM(node)
 
-        let dom = document.createElement("div")
+        let dom = document.createElement('div')
 
         ReactDOM.render(<Checkbox checked={node.attrs.checked}/>, dom)
 
@@ -94,4 +98,31 @@ export const extendListItemSchemaForTask = listItemSchema.extendSchema((prev) =>
       },
     }
   }
+})
+
+/// Input rule for wrapping a block in task list node.
+/// Users can type `[ ] ` or `[x] ` to wrap the block in task list node with checked status.
+export const wrapInTaskListInputRule = $inputRule(() => {
+  return new InputRule(/^\[(?<checked>\s|x)\]\s$/, (state, match, start, end) => {
+    const pos = state.doc.resolve(start)
+    let depth = 0
+    let node = pos.node(depth)
+    while (node && node.type.name !== 'list_item') {
+      depth--
+      node = pos.node(depth)
+    }
+
+    if (!node || node.attrs.checked != null)
+      return null
+
+    const checked = Boolean(match.groups?.checked === 'x');
+
+    const finPos = pos.before(depth)
+    const tr = state.tr
+
+    tr.deleteRange(start, end)
+      .setNodeMarkup(finPos, undefined, { ...node.attrs, checked })
+
+    return tr
+  })
 })

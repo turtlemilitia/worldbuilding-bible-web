@@ -52,10 +52,10 @@ const CharacterInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRea
       className={`transition-all duration-1000 ${!loading ? 'top-0 opacity-100' : '-top-10 opacity-0'}`}>
       <ul
         className="rounded-3xl bg-stone-900 border border-yellow-500 shadow-sm shadow-stone-800 py-6 px-8 text-stone-300 text-sm">
-        {fields.map(({ name, label, type, options }) => {
+        {fields.map(({ name, label, type, options }, index) => {
           const currentValue = data[name as keyof TCharacter]
           return (
-            <li className="flex py-1">
+            <li className="flex py-1" key={index}>
               <span className="text-stone-400 w-2/5 overflow-ellipsis">{label}:</span>
               <div className="pl-3 w-3/5">
                 {type === 'select' && options?.length ? (

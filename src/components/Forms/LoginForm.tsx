@@ -28,7 +28,8 @@ const LoginForm = (): JSX.Element => {
       login(loginData).then(({ data }) => {
         console.log('logged in at server side... setting token...')
         dispatch(setToken(true))
-        if (location.state?.redirectTo) {
+        const redirect = location.state?.redirectTo;
+        if (redirect && redirect !== '/login') {
           navigate(location.state.redirectTo, { replace: true })
         } else {
           navigate('/', { replace: true })
