@@ -3,7 +3,7 @@ import LoadingWrapper from '../../components/LoadingWrapper'
 import HeaderWrapper from '../../components/HeaderWrapper'
 import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import ContentWrapper from '../../components/ContentWrapper'
-import MarkdownEditor from '../../components/Forms/Fields/MarkdownEditor'
+import Editor from '../../components/Forms/Fields/Editor'
 import { storeFaction, TFactionRequest, updateFaction, viewFaction } from '../../services/FactionService'
 import {
   clearFactionData,
@@ -136,7 +136,7 @@ const Faction: FunctionComponent = (): JSX.Element => {
             <div className="w-full lg:w-2/4 lg:ml-auto px-3">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <MarkdownEditor
+              {!loading && <Editor
                 value={data.content}
                 onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the faction.'}

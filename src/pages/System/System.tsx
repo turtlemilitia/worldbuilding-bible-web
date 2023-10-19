@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
 import { SaveIcon } from 'lucide-react'
 import PageTitleField from '../../components/Forms/Fields/PageTitleField'
-import MarkdownEditor from '../../components/Forms/Fields/MarkdownEditor'
+import Editor from '../../components/Forms/Fields/Editor'
 import HeaderWrapper from '../../components/HeaderWrapper'
 import ContentWrapper from '../../components/ContentWrapper'
 import { storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
@@ -106,7 +106,7 @@ const System = (): JSX.Element => {
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <MarkdownEditor
+              {!loading && <Editor
                 value={data.content}
                 onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the system.'}

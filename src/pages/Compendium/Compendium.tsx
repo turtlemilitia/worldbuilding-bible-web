@@ -4,7 +4,7 @@ import HeaderWrapper from '../../components/HeaderWrapper'
 import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import { TCompendium } from '../../types'
 import ContentWrapper from '../../components/ContentWrapper'
-import MarkdownEditor from '../../components/Forms/Fields/MarkdownEditor'
+import Editor from '../../components/Forms/Fields/Editor'
 import { storeCompendium, updateCompendium, viewCompendium } from '../../services/CompendiumService'
 import { clearCompendiumData, setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
 import { AxiosError } from 'axios'
@@ -30,7 +30,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     content: ''
   }
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string>()
   const [data, setData] = useState<TCompendium>(initialState)
 
@@ -38,14 +38,15 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     setLoading(true)
     viewCompendium(compendiumId)
       .then(response => {
-        setLoading(false)
         dispatch(setCompendiumData(response.data.data))
+        setLoading(false)
       })
   }
 
   useEffect(() => {
 
     setData(compendium);
+    setLoading(false);
 
   }, [compendium.id])
 
@@ -91,7 +92,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={() => fetch && fetch()}/>
-              {!loading && <MarkdownEditor
+              {!loading && <Editor
                 value={data.content}
                 onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the compendium.'}
