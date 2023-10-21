@@ -49,10 +49,6 @@ const Menu = (): JSX.Element => {
       to: '/campaigns'
     },
     {
-      title: 'Locations',
-      to: '/locations'
-    },
-    {
       title: 'Scrapbook',
       to: '/scrapbook',
       children: [
