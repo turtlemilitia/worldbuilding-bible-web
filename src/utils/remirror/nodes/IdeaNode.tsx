@@ -1,20 +1,15 @@
 import { FunctionComponent, JSX } from 'react'
-import { NodeViewComponentProps } from '@remirror/react'
 import { LightbulbIcon } from 'lucide-react'
 
-const IdeaNode: FunctionComponent<NodeViewComponentProps> = ({ forwardRef }: NodeViewComponentProps): JSX.Element => {
+const IdeaNode: FunctionComponent = (): JSX.Element => {
   return (
-    <li data-idea-list-item="true">
-      <div className="inline-block">
-        <span className="flex items-center h-5 rounded">
+    <span className='flex items-center h-5 rounded'>
+      <input type='checkbox' className='hidden'/>
       <label
         className={`flex items-center justify-center w-5 h-5`}>
-          <LightbulbIcon/>
+        <LightbulbIcon/>
       </label>
-        </span>
-      </div>
-      <div className="inline-block" ref={forwardRef}/>
-    </li>
+    </span>
   )
 }
 

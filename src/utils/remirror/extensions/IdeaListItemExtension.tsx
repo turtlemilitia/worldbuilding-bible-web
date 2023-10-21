@@ -1,3 +1,5 @@
+import { ComponentType } from 'react'
+import ReactDOM from 'react-dom'
 import {
   ApplySchemaAttributes,
   extension,
@@ -8,8 +10,7 @@ import {
   NodeSpecOverride,
   ExtensionPriority,
 } from '@remirror/core'
-import { AnyExtension, DOMCompatibleAttributes } from 'remirror'
-import { ComponentType } from 'react'
+import { AnyExtension } from 'remirror'
 import { NodeViewComponentProps } from '@remirror/react'
 import IdeaNode from '../nodes/IdeaNode'
 import { ListItemSharedExtension, wrapSelectedItems } from 'remirror/extensions'
@@ -60,8 +61,6 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
     return [ExtensionTag.ListItemNode]
   }
 
-  ReactComponent: ComponentType<NodeViewComponentProps> = IdeaNode;
-
   createNodeSpec (extra: ApplySchemaAttributes, override: NodeSpecOverride): NodeExtensionSpec {
     return {
       content: "paragraph block*",
@@ -81,8 +80,25 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
         },
         ...override.parseDOM ?? []
       ],
+      // @ts-ignore
       toDOM: node => {
-        return ['span', {...extra.dom(node)}, 0];
+        let dom = document.createElement('div')
+
+        ReactDOM.render(<IdeaNode/>, dom)
+
+        return [
+          'li',
+          {
+            ...extra.dom(node),
+            'data-item-type': 'idea',
+            class: 'flex-column flex items-start'
+          },
+          dom,
+          [
+            'span',
+            0
+          ]
+        ];
       }
     }
   }

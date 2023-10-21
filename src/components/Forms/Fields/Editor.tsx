@@ -1,7 +1,13 @@
-// import 'remirror/styles/all.css';
-
-import React, { JSX, useCallback, useEffect } from 'react'
-import { EditorComponent, OnChangeJSON, Remirror, useRemirror, useRemirrorContext } from '@remirror/react'
+import 'remirror/styles/extension-placeholder.css'; // placeholder styling
+import React, { JSX, useCallback } from 'react'
+import {
+  EditorComponent,
+  OnChangeJSON,
+  PlaceholderExtension,
+  Remirror,
+  useRemirror,
+  useRemirrorContext
+} from '@remirror/react'
 import {
   BoldExtension,
   CalloutExtension,
@@ -11,8 +17,7 @@ import {
   TaskListExtension,
   TaskListItemExtension,
   HeadingExtension,
-} from 'remirror/extensions';
-import {MarkdownExtension} from "@remirror/extension-markdown";
+} from 'remirror/extensions'
 import { IdeaListExtension, IdeaListItemExtension } from '../../../utils/remirror/extensions/IdeaListItemExtension'
 import { RemirrorJSON } from 'remirror'
 
@@ -22,37 +27,32 @@ interface TProps {
   placeholder?: string;
 }
 
-const Editor = ({value, onChange, placeholder}: TProps): JSX.Element => {
+const Editor = ({ value, onChange, placeholder }: TProps): JSX.Element => {
 
-  const {manager, state} = useRemirror({
+  const { manager, state } = useRemirror({
     extensions: () => [
       new HeadingExtension(),
       new BoldExtension(),
       new ItalicExtension(),
-      new CalloutExtension({defaultType: 'warn'}), // Override defaultType: 'info'
-      new BulletListExtension({extraAttributes: {class: 'list-disc ml-5'}}),
-      new OrderedListExtension({extraAttributes: {class: 'list-decimal ml-5'}}),
-      new TaskListExtension({extraAttributes: {class: 'ml-5'}}),
+      new CalloutExtension({ defaultType: 'warn' }), // Override defaultType: 'info'
+      new BulletListExtension(),
+      new OrderedListExtension(),
+      new TaskListExtension(),
       new TaskListItemExtension(),
-      // new MarkdownExtension({ // markdown not working right now
-      //   htmlToMarkdown: (html) => {
-      //     return MarkdownExtension.defaultOptions.htmlToMarkdown(html)
-      //   }
-      // }),
       new IdeaListExtension(),
-      new IdeaListItemExtension()
+      new IdeaListItemExtension(),
+      new PlaceholderExtension({ placeholder })
     ],
     content: value ? JSON.parse(value) : undefined,
     selection: 'end'
-  });
+  })
 
   const handleEditorChange = useCallback((json: RemirrorJSON) => {
-    onChange(JSON.stringify(json));
-  }, []);
+    onChange(JSON.stringify(json))
+  }, [])
 
   return (
-    <div className='remirror-theme'>
-      {/* the className is used to define css variables necessary for the editor */}
+    <div className="remirror-theme">
       <Remirror manager={manager} initialContent={state}>
         <EditorComponent/>
         <OnChangeJSON onChange={handleEditorChange}/>
