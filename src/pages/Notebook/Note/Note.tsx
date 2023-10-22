@@ -107,7 +107,7 @@ const Note = (): JSX.Element => {
           <div className="flex justify-center -mx-2">
             <div className="w-full md:w-2/4 px-2">
               {error && <ErrorBanner errorText={error}/>}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
+              <FormToolbar onSave={submit} onRefresh={!isNew ? fetch : undefined}/>
               {!loading && <Editor
                 value={data.content}
                 onChange={(value) => setData((prevState: TNote) => ({ ...prevState, content: value }))}

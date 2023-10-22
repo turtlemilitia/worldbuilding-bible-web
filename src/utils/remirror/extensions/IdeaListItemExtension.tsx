@@ -1,4 +1,3 @@
-import { ComponentType } from 'react'
 import ReactDOM from 'react-dom'
 import {
   ApplySchemaAttributes,
@@ -10,13 +9,13 @@ import {
   NodeSpecOverride,
   ExtensionPriority,
 } from '@remirror/core'
-import { AnyExtension } from 'remirror'
-import { NodeViewComponentProps } from '@remirror/react'
+import { AnyExtension, getMatchString } from 'remirror'
 import IdeaNode from '../nodes/IdeaNode'
 import { ListItemSharedExtension, wrapSelectedItems } from 'remirror/extensions'
 import { wrappingInputRule } from 'prosemirror-inputrules'
 import { assertGet } from '@remirror/core-helpers'
 import { InputRule } from '@remirror/pm/inputrules'
+import { findParentNodeOfType, isElementDomNode } from '@remirror/core-utils'
 
 export class IdeaListExtension extends NodeExtension {
   get name() {
@@ -69,13 +68,17 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
       ...override,
       attrs: {
         ...extra.defaults(),
-        closed: { default: false },
-        nested: { default: false }
+        ideaType: { default: 'i' }
       },
       parseDOM: [
         {
           tag: 'li[data-idea-list-item]',
-          getAttrs: extra.parse,
+          getAttrs: (node) => {
+            return {
+              ideaType: isElementDomNode(node) ? node.getAttribute("data-idea-type") : 'i',
+              ...extra.parse(node)
+            };
+          },
           priority: ExtensionPriority.Highest
         },
         ...override.parseDOM ?? []
@@ -84,13 +87,14 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
       toDOM: node => {
         let dom = document.createElement('div')
 
-        ReactDOM.render(<IdeaNode/>, dom)
+        ReactDOM.render(<IdeaNode type={node.attrs.ideaType}/>, dom)
 
         return [
           'li',
           {
             ...extra.dom(node),
-            'data-item-type': 'idea',
+            'data-idea-list-item': '',
+            'data-idea-type': node.attrs.ideaType ?? 'i',
             class: 'flex-column flex items-start'
           },
           dom,
@@ -108,9 +112,11 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
   }
 
   createInputRules (): InputRule[] {
-    const regexp = /^\s*(\[i]\s)$/;
+    const regexp = /^\s*(\[(i?|I|k|\?|!|")]\s)$/;
     return [
-      wrappingInputRule(regexp, this.type),
+      wrappingInputRule(regexp, this.type, (match) => {
+        return { ideaType: getMatchString(match, 2) }
+      }),
       new InputRule(regexp, (state, match, start, end) => {
         const tr = state.tr;
         tr.deleteRange(start, end);
@@ -121,6 +127,11 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
         });
         if (!canUpdate) {
           return null;
+        }
+        const ideaType = getMatchString(match, 2);
+        const found = findParentNodeOfType({ selection: tr.selection, types: this.type });
+        if (found) { // todo: answer what is this doing?
+          tr.setNodeMarkup(found.pos, void 0, { ideaType });
         }
         return tr;
       })
