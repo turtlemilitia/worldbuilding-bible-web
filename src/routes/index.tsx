@@ -18,6 +18,9 @@ import Item from '../pages/Compendium/Item'
 import Concept from '../pages/Compendium/Concept'
 import Faction from '../pages/Compendium/Faction'
 import Language from '../pages/Compendium/Language'
+import Notebook from '../pages/Notebook/Notebook'
+import NotebooksWrapper from '../pages/Notebook/NotebooksWrapper'
+import Note from '../pages/Notebook/Note/Note'
 
 
 const Routes = (): JSX.Element => {
@@ -103,8 +106,18 @@ const Routes = (): JSX.Element => {
           element: <>TODO: Stories</> // sidebar with list of stories/chapters
         },
         {
-          path: '/scrapbook',
-          element: <>TODO: Stories</> // sidebar with list of stories/chapters
+          path: '/notebooks',
+          element: <NotebooksWrapper/>, // sidebar with list of stories/chapters
+          children: [
+            {
+              path: '/notebooks/:notebookId',
+              element: <Notebook/>
+            },
+            {
+              path: '/notebooks/:notebookId/notes/:noteId',
+              element: <Note/>
+            }
+          ]
         },
         {
           path: '/profile',

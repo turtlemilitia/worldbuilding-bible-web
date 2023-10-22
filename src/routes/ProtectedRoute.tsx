@@ -6,6 +6,8 @@ import { indexSystems } from '../services/SystemService'
 import { setSystems } from '../reducers/system/systemsIndexSlice'
 import { indexCompendia } from '../services/CompendiumService'
 import { setCompendia } from '../reducers/compendium/compendiaIndexSlice'
+import { indexNotebooks } from '../services/NotebookService'
+import { setNotebooks } from '../reducers/notebook/notebooksIndexSlice'
 
 export const ProtectedRoute = (): JSX.Element => {
     const {token} = useAppSelector((state: RootState) => state.auth) // redux
@@ -19,9 +21,13 @@ export const ProtectedRoute = (): JSX.Element => {
             indexSystems()
               .then(response => dispatch(setSystems(response.data.data)))
               .catch(error => console.error('Error fetching systems:', error)); // todo show error
-            // Fetch the systems data from the API
+            // Fetch the compendia data from the API
             indexCompendia()
               .then(response => dispatch(setCompendia(response.data.data)))
+              .catch(error => console.error('Error fetching systems:', error)); // todo show error
+            // Fetch the notebooks data from the API
+            indexNotebooks()
+              .then(response => dispatch(setNotebooks(response.data.data)))
               .catch(error => console.error('Error fetching systems:', error)); // todo show error
         }
     }, [token]);

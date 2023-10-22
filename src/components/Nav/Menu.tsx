@@ -14,6 +14,7 @@ const Menu = (): JSX.Element => {
 
   const { systems } = useAppSelector((state: RootState) => state.systems) // redux
   const { compendia } = useAppSelector((state: RootState) => state.compendia) // redux
+  const { notebooks } = useAppSelector((state: RootState) => state.notebooks) // redux
 
   const menuItems: MenuItemInterface[] = [
     {
@@ -49,12 +50,16 @@ const Menu = (): JSX.Element => {
       to: '/campaigns'
     },
     {
-      title: 'Scrapbook',
-      to: '/scrapbook',
+      title: 'Notes',
+      to: '/notebooks',
       children: [
+        ...notebooks?.map(({ slug, name }) => ({
+          title: name,
+          to: `/notebooks/${slug}`
+        })) || [],
         {
-          title: 'New',
-          to: '/scrapbook/new'
+          title: 'Create new',
+          to: '/notebooks/new',
         }
       ]
     }

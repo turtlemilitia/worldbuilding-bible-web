@@ -6,7 +6,7 @@ import { MenuItemInterface } from './Menu'
 const DropdownItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Element => {
   const { to, title, children } = menuItem
 
-  const plus = to.indexOf('new') !== -1
+  const plus = to.endsWith('new')
 
   return (
     <li>

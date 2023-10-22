@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import authSlice from './reducers/auth/authSlice'
 import systemsIndexSlice from './reducers/system/systemsIndexSlice'
 import systemSlice from './reducers/system/systemSlice'
+import notebooksIndexSlice from './reducers/notebook/notebooksIndexSlice'
 import compendiaIndexSlice from './reducers/compendium/compendiaIndexSlice'
 import compendiumSlice from './reducers/compendium/compendiumSlice'
 import conceptSlice from './reducers/compendium/concept/conceptSlice'
@@ -11,6 +12,8 @@ import characterSlice from './reducers/compendium/character/characterSlice'
 import itemSlice from './reducers/compendium/item/itemSlice'
 import factionSlice from './reducers/compendium/faction/factionSlice'
 import languageSlice from './reducers/compendium/language/languageSlice'
+import notebookSlice from './reducers/notebook/notebookSlice'
+import noteSlice from './reducers/notebook/note/noteSlice'
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +21,7 @@ export const store = configureStore({
     // indexes
     systems: systemsIndexSlice,
     compendia: compendiaIndexSlice,
+    notebooks: notebooksIndexSlice,
     // individual
     system: systemSlice,
     compendium: compendiumSlice,
@@ -28,6 +32,8 @@ export const store = configureStore({
     item: itemSlice,
     faction: factionSlice,
     language: languageSlice,
+    notebook: notebookSlice,
+    note: noteSlice,
   }
 })
 

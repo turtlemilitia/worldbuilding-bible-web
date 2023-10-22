@@ -153,3 +153,18 @@ export type TPlane = {
   content: string;
 }
 
+export type TNotebook = {
+  id?: number;
+  slug?: string;
+  name: string;
+  content: string;
+  hasNotes: boolean;
+  notes?: TNote[]
+}
+
+export type TNote = {
+  id?: number;
+  slug?: string;
+  name: string;
+  content: string;
+}
