@@ -95,7 +95,7 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
             ...extra.dom(node),
             'data-idea-list-item': '',
             'data-idea-type': node.attrs.ideaType ?? 'i',
-            class: 'flex-column flex items-start'
+            class: 'flex-column flex items-start gap-2'
           },
           dom,
           [
@@ -112,7 +112,7 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
   }
 
   createInputRules (): InputRule[] {
-    const regexp = /^\s*(\[(i?|I|k|\?|!|")]\s)$/;
+    const regexp = /^\s*(\[(i?|I|k|l|\?|!|"|\*|\$)]\s)$/;
     return [
       wrappingInputRule(regexp, this.type, (match) => {
         return { ideaType: getMatchString(match, 2) }
