@@ -42,14 +42,35 @@ ${body}</ul>
   },
   extensions: [
     {
+      name: 'ideaList',
+      level: 'block',
+      start: (src: string) => src.match(/^ *([*\-.+]\s*)?\[(?<type>[iIkl?!"*$])]\s*([^:\n]*(?:\n|$))/)?.index,
+      tokenizer (src, tokens) {
+        const rule = /^( *([*\-.+]\s*)?\[[iIkl?!"*$]]\s*([^:\n]*(?:\n|$)))+/  // Regex for the complete token, anchor to string start
+        const match = rule.exec(src)
+        if (match) {
+          const token = {        // Token to generate
+            type: 'ideaList',                         // Should match "name" above
+            raw: match[0],                                // Text to consume from the source
+            text: match[0].trim(),                        // Additional custom properties
+            tokens: []
+          }
+          this.lexer.inline(token.text, token.tokens);    // Queue this data to be processed for inline tokens
+          return token;
+        }
+      },
+      renderer (token) {
+        return `<ul data-idea-list>${this.parser.parseInline(token.tokens || [])}\\n</ul>`
+      }
+    },
+    { // todo this has to go inline
       name: 'ideaListItem',
       level: 'block',                                 // Is this a block-level or inline-level tokenizer?
-      start (src) { return src.match(/^([*\-.+]\s*)?\[(?<type>[iIkl?!"*$])]\s*([^:\n]*(?:\n|$))$/)?.index },    // Hint to Marked.js to stop and check for a match
+      start: (src) => src.match(/^([*\-.+]\s*)?\[(?<type>[iIkl?!"*$])]\s*([^:\n]*(?:\n|$))$/)?.index,    // Hint to Marked.js to stop and check for a match
       tokenizer (src) {
         const rule = /^ *([*\-.+]\s*)?\[(?<type>[iIkl?!"*$])]\s*([^:\n]*(?:\n|$))/  // Regex for the complete token, anchor to string start
         const match = rule.exec(src)
         if (match) {
-          debugger;
           const text = match[3].trim();
           const top = this.lexer.state.top;
           this.lexer.state.top = true;
