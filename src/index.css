@@ -5,25 +5,33 @@
 @tailwind utilities;
 
 .remirror-theme .remirror-editor {
-    @apply min-h-screen focus:outline-0
+    @apply min-h-screen focus:outline-none text-stone-700
+}
+.remirror-theme h1,
+.remirror-theme h2,
+.remirror-theme h3,
+.remirror-theme h4,
+.remirror-theme h5,
+.remirror-theme h6 {
+    @apply mt-4 mb-2 border-b
 }
 .remirror-theme h1 {
-    @apply text-4xl
+    @apply text-xl font-bold text-burnOrange border-burnOrange
 }
 .remirror-theme h2 {
-    @apply text-3xl
+    @apply text-lg font-bold text-yellow-500 border-yellow-500
 }
 .remirror-theme h3 {
-    @apply text-2xl
+    @apply font-bold text-burnOrange border-burnOrange
 }
 .remirror-theme h4 {
-    @apply text-xl
+    @apply font-bold text-yellow-500 border-yellow-500
 }
 .remirror-theme h5 {
-    @apply text-lg
+    @apply font-bold text-burnOrange
 }
 .remirror-theme h6 {
-    @apply font-bold
+    @apply font-bold text-yellow-500
 }
 .remirror-theme p {
     @apply my-1
@@ -49,4 +57,15 @@
 }
 .remirror-theme ol {
     @apply list-decimal ml-6
+}
+.remirror-theme b,
+.remirror-theme strong {
+    @apply text-red-700
+}
+.remirror-theme em,
+.remirror-theme i {
+    @apply text-purple-700
+}
+.remirror-theme blockquote {
+    @apply border-x my-2 border-stone-800 p-4 bg-stone-300
 }

@@ -81,8 +81,12 @@ export const turndownService = new TurndownService({
       return node.nodeName === 'LI' && node.hasAttribute('data-task-list-item')
     },
     replacement: (content, node) => {
+      content = content
+        .replace(/^\n+/, '') // remove leading newlines
+        .replace(/\n+$/, '\n') // replace trailing newlines with just a single one
+        .replace(/\n/gm, '\n    '); // indent
       const isChecked: boolean = 'hasAttribute' in node ? node.hasAttribute('data-checked') : false
-      return `- ${isChecked ? '[x]' : '[ ]'} ${content.trimStart()}`
+      return `- ${isChecked ? '[x]' : '[ ]'} ${content.trimStart()}` + (node.nextSibling && !/\n$/.test(content) ? '\n' : '')
     }
   })
   .addRule('ideaListItems', {
@@ -95,7 +99,7 @@ export const turndownService = new TurndownService({
         .replace(/\n+$/, '\n') // replace trailing newlines with just a single one
         .replace(/\n/gm, '\n    '); // indent
       const idea: string = 'getAttribute' in node ? node.getAttribute('data-idea-type') || 'i' : 'i'
-      return `+ [${idea}] ${content.trimStart()}`
+      return `+ [${idea}] ${content.trimStart()}` + (node.nextSibling && !/\n$/.test(content) ? '\n' : '')
     }
   })
   .addRule('tableCell', {

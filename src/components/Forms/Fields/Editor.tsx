@@ -1,12 +1,9 @@
 import 'remirror/styles/extension-placeholder.css'; // placeholder styling
-import React, { JSX, useCallback, useState } from 'react'
+import React, { JSX, useCallback } from 'react'
 import {
-  EditorComponent,
-  OnChangeJSON,
   PlaceholderExtension,
   Remirror,
-  useRemirror,
-  useRemirrorContext
+  useRemirror
 } from '@remirror/react'
 import {
   BoldExtension,
@@ -17,9 +14,10 @@ import {
   TaskListExtension,
   TaskListItemExtension,
   HeadingExtension,
+  BlockquoteExtension,
 } from 'remirror/extensions'
 import { IdeaListExtension, IdeaListItemExtension } from '../../../utils/remirror/extensions/IdeaListItemExtension'
-import { AnyExtension, RemirrorJSON } from 'remirror'
+import { AnyExtension } from 'remirror'
 import { MarkdownExtension } from '@remirror/extension-markdown'
 import { turndownService } from '../../../utils/remirror/turndownService'
 import { marked } from 'marked'
@@ -46,6 +44,7 @@ const Editor = ({ value, onChange, placeholder }: TProps): JSX.Element => {
       new TaskListItemExtension(),
       new IdeaListExtension(),
       new IdeaListItemExtension(),
+      new BlockquoteExtension(),
       new MarkdownExtension({ // markdown not working right now
         htmlToMarkdown: (html) => {
           return turndownService.turndown(html)

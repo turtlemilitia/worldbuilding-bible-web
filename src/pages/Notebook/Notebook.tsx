@@ -102,7 +102,7 @@ const Notebook = (): JSX.Element => {
         </HeaderWrapper>
         <ContentWrapper>
           <div className="flex justify-center -mx-2">
-            <div className="w-full md:w-2/4 px-2">
+            <div className="w-full md:w-2/4 max-w-2xl px-2">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor

@@ -13,7 +13,7 @@ const HeaderWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({ pa
         className={bgImage ? "bg-cover bg-no-repeat bg-center" : 'bg-stone-200'}
         style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}>
         <div className={`${bgImage ? "bg-stone-950 bg-opacity-50 md:h-underScreen" : ''} flex items-center justify-center`}>
-          <div className="w-full md:w-2/4 text-center py-6">
+          <div className="w-full md:w-2/4 max-w-2xl text-center py-6">
             {page && <h2 className="uppercase text-stone-400 tracking-widest">{page}</h2>}
             <div className={bgImage ? 'text-stone-100' : 'text-burnOrange'}>
               {children}
