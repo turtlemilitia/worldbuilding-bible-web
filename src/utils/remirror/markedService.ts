@@ -63,7 +63,7 @@ ${body}</ul>
         return `<ul data-idea-list>${this.parser.parseInline(token.tokens || [])}\\n</ul>`
       }
     },
-    { // todo this has to go inline
+    {
       name: 'ideaListItem',
       level: 'block',                                 // Is this a block-level or inline-level tokenizer?
       start: (src) => src.match(/^([*\-.+]\s*)?\[(?<type>[iIkl?!"*$])]\s*([^:\n]*(?:\n|$))$/)?.index,    // Hint to Marked.js to stop and check for a match
