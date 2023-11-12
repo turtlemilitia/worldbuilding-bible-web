@@ -25,7 +25,7 @@ module.exports = {
       }
     },
     fontFamily: {
-      'display': ['Oswald', ...defaultTheme.fontFamily.sans],
+      'display': ['Playfair Display', ...defaultTheme.fontFamily.sans],
       'sans-serif': ['Poppins', ...defaultTheme.fontFamily.sans],
       'serif': ['Merriweather', ...defaultTheme.fontFamily.serif]
     }

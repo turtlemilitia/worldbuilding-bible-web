@@ -1,7 +1,13 @@
-import React, { Fragment, FunctionComponent, JSX, useEffect } from 'react'
+import React, { Fragment, FunctionComponent, JSX, useEffect, useState } from 'react'
 import { ChevronDownIcon } from 'lucide-react'
-import { TCharacter } from '../../types'
+import { TCharacter, TLocationGovernmentType, TLocationType } from '../../types'
 import { Listbox, Transition } from '@headlessui/react'
+import { indexLocationTypes } from '../../services/LocationTypeService'
+import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
+import { indexSpecies } from '../../services/SpeciesService'
+import { useAppSelector } from '../../hooks'
+import { RootState } from '../../store'
+import FieldMapper, { TSelectOption } from '../../components/Forms/Fields/FieldMapper'
 
 type TProps = {
   loading: boolean;
@@ -12,10 +18,18 @@ type TProps = {
 
 const CharacterInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setReady, data }: TProps): JSX.Element => {
 
-  type TSelectOption = {
-    id: string | number,
-    name: string
-  }
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+
+  const [species, setSpecies] = useState<TLocationType[]>([])
+
+  useEffect(() => {
+
+    if (compendium.slug) {
+      indexSpecies(compendium.slug).then(response => setSpecies(response.data.data))
+    }
+
+  }, [compendium.slug])
+
   type TFields = {
     name: keyof TCharacter,
     label: string,
@@ -32,20 +46,14 @@ const CharacterInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRea
       name: 'gender',
       label: 'Gender',
       type: 'text'
+    },
+    {
+      name: 'species',
+      label: 'Species',
+      type: 'select',
+      options: species
     }
   ]
-
-  const valueAsString = (value: TCharacter[keyof TCharacter]): string => {
-    if (typeof value === 'string') {
-      // Handle string type
-      return value // Example of using a string method
-    }
-    if (typeof value === 'number') {
-      // Handle number type
-      return value.toFixed(2) // Example of using a number method
-    }
-    return ''
-  }
 
   return (
     <div
@@ -54,56 +62,15 @@ const CharacterInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRea
         className="rounded-3xl bg-stone-900 border border-yellow-500 shadow-sm shadow-stone-800 py-6 px-8 text-stone-300 text-sm">
         {fields.map(({ name, label, type, options }, index) => {
           const currentValue = data[name as keyof TCharacter]
-          return (
-            <li className="flex py-1" key={index}>
-              <span className="text-stone-400 w-2/5 overflow-ellipsis">{label}:</span>
-              <div className="pl-3 w-3/5">
-                {type === 'select' && options?.length ? (
-                  <div className="relative border-b border-b-gray-400 hover:border-b-gray-500">
-                    <Listbox value={currentValue} onChange={(value) => onChange(name, value)}>
-                      {({ open }) => (
-                        <>
-                          <Listbox.Button
-                            className="w-full flex justify-between pb-1">
-                            <div>
-                              {valueAsString(currentValue)}
-                            </div>
-                            <ChevronDownIcon className="text-stone-700 h-5 w-5"/>
-                          </Listbox.Button>
-                          <Transition
-                            show={open}
-                            as={Fragment}
-                            leave="transition ease-in duration-100"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                          >
-                            <Listbox.Options
-                              className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              {options.map((option: TSelectOption) => (
-                                <Listbox.Option
-                                  value={option}
-                                  className="py-1"
-                                >
-                                  {option.name}
-                                </Listbox.Option>
-                              ))}
-                            </Listbox.Options>
-                          </Transition>
-                        </>
-                      )}
-                    </Listbox>
-                  </div>
-                ) : (
-                  <input
-                    className="w-full border-none bg-transparent text-inherit placeholder:text-slate-200 outline-none"
-                    type={type}
-                    value={valueAsString(currentValue)}
-                    onChange={(e) => onChange(name, e.target.value)}
-                  />
-                )}
-              </div>
-            </li>
-          )
+          return <FieldMapper
+            key={`character${name}`}
+            name={name}
+            label={label}
+            type={type}
+            options={options}
+            currentValue={currentValue}
+            onChange={onChange}
+          />
         })}
       </ul>
     </div>
