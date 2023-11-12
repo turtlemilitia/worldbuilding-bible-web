@@ -15,14 +15,19 @@ import {
   TaskListItemExtension,
   HeadingExtension,
   BlockquoteExtension,
+  MarkdownExtension,
 } from 'remirror/extensions'
 import { IdeaListExtension, IdeaListItemExtension } from '../../../utils/remirror/extensions/IdeaListItemExtension'
 import { AnyExtension } from 'remirror'
-import { MarkdownExtension } from '@remirror/extension-markdown'
 import { turndownService } from '../../../utils/remirror/turndownService'
-import { marked } from 'marked'
 import { RemirrorEventListenerProps } from '@remirror/core'
-import '../../../utils/remirror/markedService'
+import { unified, Plugin } from 'unified'
+import remarkParse from 'remark-parse'
+import remark2rehype from 'remark-rehype'
+import remarkGfm from 'remark-gfm'
+import rehypeStringify from 'rehype-stringify'
+import { visit } from 'unist-util-visit'
+import ideaListPlugin from '../../../utils/remirror/remark/ideaListPlugin'
 
 interface TProps {
   value: string;
@@ -50,7 +55,15 @@ const Editor = ({ value, onChange, placeholder }: TProps): JSX.Element => {
           return turndownService.turndown(html)
         },
         markdownToHtml: (markdown, sanitizer) => {
-          return marked(markdown, { gfm: true, smartLists: true, xhtml: true, sanitizer });
+          const html = unified()
+            .use(remarkParse)
+            .use(remarkGfm)
+            .use(ideaListPlugin)
+            .use(remark2rehype)
+            .use(rehypeStringify)
+            .processSync(markdown)
+            .toString();
+          return html;
         }
       }),
       new PlaceholderExtension({ placeholder })
