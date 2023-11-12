@@ -16,6 +16,7 @@ import {
   HeadingExtension,
   BlockquoteExtension,
   MarkdownExtension,
+  LinkExtension,
 } from 'remirror/extensions'
 import { IdeaListExtension, IdeaListItemExtension } from '../../../utils/remirror/extensions/IdeaListItemExtension'
 import { AnyExtension } from 'remirror'
@@ -50,6 +51,7 @@ const Editor = ({ value, onChange, placeholder }: TProps): JSX.Element => {
       new IdeaListExtension(),
       new IdeaListItemExtension(),
       new BlockquoteExtension(),
+      new LinkExtension(),
       new MarkdownExtension({ // markdown not working right now
         htmlToMarkdown: (html) => {
           return turndownService.turndown(html)

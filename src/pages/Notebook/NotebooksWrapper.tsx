@@ -5,21 +5,23 @@ import { BookIcon, StickyNoteIcon } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 import { updateNotebookData } from '../../reducers/notebook/notebookSlice'
-import { indexNotes } from '../../services/NoteService'
+import { destroyNote, indexNotes } from '../../services/NoteService'
 import { TNote, TNotebook } from '../../types'
-import { updateNotebooksNotebookData } from '../../reducers/notebook/notebooksIndexSlice'
-
-const mapNote = (notebook: TNotebook, note: TNote): SidebarItemInterface => ({
-  title: note.name,
-  to: `/notebooks/${notebook?.slug}/notes/${note.slug}`,
-  icon: (props) => <StickyNoteIcon {...props}/>,
-})
+import { removeNotebooksNotebookNote, updateNotebooksNotebookData } from '../../reducers/notebook/notebooksIndexSlice'
 
 const NotebooksWrapper = (): JSX.Element => {
 
   const dispatch = useAppDispatch();
 
   const { notebooks } = useAppSelector((state: RootState) => state.notebooks) // redux
+
+  const mapNote = (notebook: TNotebook, note: TNote): SidebarItemInterface => ({
+    title: note.name,
+    to: `/notebooks/${notebook?.slug}/notes/${note.slug}`,
+    onDelete: () => note.slug && destroyNote(note.slug)
+      .then(() => dispatch(removeNotebooksNotebookNote({ slug: notebook?.slug, noteId: note.id }))),
+    icon: (props) => <StickyNoteIcon {...props}/>,
+})
 
   return (
     <>

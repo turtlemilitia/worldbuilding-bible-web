@@ -124,7 +124,7 @@ const Character: FunctionComponent = (): JSX.Element => {
                           placeholder={'Character Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-3">
+          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
             <div className="w-full lg:w-1/4 px-3">
               <CharacterInfoBar
                 loading={loading || !infoBarReady}
@@ -133,7 +133,7 @@ const Character: FunctionComponent = (): JSX.Element => {
                 data={data}
               />
             </div>
-            <div className="w-full lg:w-2/4 lg:ml-auto px-3">
+            <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor
@@ -142,6 +142,7 @@ const Character: FunctionComponent = (): JSX.Element => {
                 placeholder={'Write a simple description for the character.'}
               />}
             </div>
+            <div className="flex lg:w-1/4 lg:px-3"></div>{/*spacer*/}
           </div>
         </ContentWrapper>
       </form>

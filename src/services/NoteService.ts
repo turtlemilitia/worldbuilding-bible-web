@@ -36,5 +36,5 @@ export const updateNote = (slug: string, data: Partial<TNoteRequest>): Promise<A
 }
 
 export const destroyNote = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/notes/${slug}`)
+  return api.delete(`/api/notes/${slug}`)
 }

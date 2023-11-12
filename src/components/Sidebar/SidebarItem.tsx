@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { SidebarItemInterface } from './Sidebar'
-import { ChevronDownIcon, PlusIcon } from 'lucide-react'
+import { ChevronDownIcon, PlusIcon, Trash2Icon, TrashIcon } from 'lucide-react'
 import LoadingSpinner from '../LoadingSpinner'
 
 interface TProps {
@@ -18,9 +18,11 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     hasChildren,
     children,
     loadChildren,
-    startOpen
+    startOpen,
+    onDelete
   } = item
   const canAddNew: boolean = Boolean(addNewLink)
+  const canDelete: boolean = Boolean(onDelete)
   const collapsable: boolean = Boolean(hasChildren || (children?.length && children.length > 0))
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -54,7 +56,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
             {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}{title}
           </div>
         )}
-        {(canAddNew || collapsable) && (
+        {(canAddNew || collapsable || onDelete) && (
           <div className="flex">
             {collapsable && (
               <button
@@ -70,6 +72,11 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
               >
                 <PlusIcon className="h-5"/>
               </Link>
+            )}
+            {onDelete && (
+              <button onClick={onDelete}>
+                <Trash2Icon className="h-4 text-stone-400"/>
+              </button>
             )}
           </div>
         )}
