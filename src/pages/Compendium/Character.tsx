@@ -1,7 +1,7 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import HeaderWrapper from '../../components/HeaderWrapper'
-import PageTitleField from '../../components/Forms/Fields/PageTitleField'
+import PageTitle from '../../components/Forms/Fields/PageTitleField'
 import ContentWrapper from '../../components/ContentWrapper'
 import Editor from '../../components/Forms/Fields/Editor'
 import { storeCharacter, TCharacterRequest, updateCharacter, viewCharacter } from '../../services/CharacterService'
@@ -72,7 +72,7 @@ const Character: FunctionComponent = (): JSX.Element => {
       setError('Validation failed')
       return false
     }
-    return true;
+    return true
   }
 
   const readyDataForRequest = (data: any): TCharacterRequest => ({
@@ -85,10 +85,10 @@ const Character: FunctionComponent = (): JSX.Element => {
   const submit = (event: React.SyntheticEvent) => {
     event.preventDefault()
     if (!validate()) {
-      return;
+      return
     }
     setLoading(true)
-    const validated = readyDataForRequest(data);
+    const validated = readyDataForRequest(data)
     if (isNew) {
       storeCharacter(compendiumId, validated)
         .then(({ data }) => {
@@ -119,9 +119,9 @@ const Character: FunctionComponent = (): JSX.Element => {
     <LoadingWrapper loading={loading || !infoBarReady}>
       <form onSubmit={submit}>
         <HeaderWrapper page="Character">
-          <PageTitleField value={data.name}
-                          onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
-                          placeholder={'Character Name Here'}/>
+          <PageTitle value={data.name}
+                     onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
+                     placeholder={'Character Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
           <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
@@ -142,12 +142,13 @@ const Character: FunctionComponent = (): JSX.Element => {
                 placeholder={'Write a simple description for the character.'}
               />}
             </div>
-            <div className="flex lg:w-1/4 lg:px-3"></div>{/*spacer*/}
+            <div className="flex lg:w-1/4 lg:px-3"></div>
+            {/*spacer*/}
           </div>
         </ContentWrapper>
       </form>
     </LoadingWrapper>
-)
+  )
 }
 
-export default Character;
+export default Character

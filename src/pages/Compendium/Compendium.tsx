@@ -38,15 +38,20 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     setLoading(true)
     viewCompendium(compendiumId)
       .then(response => {
-        dispatch(setCompendiumData(response.data.data))
         setLoading(false)
+        dispatch(setCompendiumData(response.data.data))
+      })
+      .catch(err => {
+        setError(err)
       })
   }
 
   useEffect(() => {
 
-    setData(compendium);
-    setLoading(false);
+    if (compendium.id) {
+      setData(compendium);
+      setLoading(false);
+    }
 
   }, [compendium.id])
 

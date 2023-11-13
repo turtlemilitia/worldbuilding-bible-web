@@ -84,7 +84,7 @@ const Editor = ({ value, onChange, placeholder }: TProps): JSX.Element => {
   return (
     <div className="remirror-theme">
       <Remirror manager={manager} initialContent={state} onChange={handleEditorChange}/>
-      <pre>{value}</pre>
+      {/*<pre>{value}</pre>*/}
     </div>
   )
 
