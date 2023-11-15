@@ -39,6 +39,7 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
     type: string,
     options?: TSelectOption[]
   }
+  console.log(data)
   const fields: TFields[] = [
     {
       name: 'aliases',

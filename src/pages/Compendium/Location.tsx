@@ -18,7 +18,11 @@ import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import LocationInfoBar from './LocationInfoBar'
 import ErrorBanner from '../../components/Banners/ErrorBanner'
-import { setCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import {
+  addCompendiumLocationData,
+  setCompendiumData,
+  updateCompendiumData, updateCompendiumLocationData
+} from '../../reducers/compendium/compendiumSlice'
 
 const Location: FunctionComponent = (): JSX.Element => {
 
@@ -26,7 +30,7 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
 
-  const { location } = useAppSelector((state: RootState) => state.location) // redux
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
   const navigate = useNavigate()
 
@@ -96,8 +100,7 @@ const Location: FunctionComponent = (): JSX.Element => {
           setLoading(false)
           setData(data.data)
           dispatch(setLocationData(data.data))
-          dispatch(setCompendiumData({ 'hasLocations': true }))
-          // dispatch(addLocation(data.data)) todo
+          dispatch(addCompendiumLocationData(data.data))
           navigate(`/compendia/${compendiumId}/locations/${data.data.slug}`)
         })
         .catch((err: AxiosError) => {
@@ -109,6 +112,7 @@ const Location: FunctionComponent = (): JSX.Element => {
           setLoading(false)
           setData(response.data.data)
           dispatch(updateLocationData(response.data.data))
+          dispatch(updateCompendiumLocationData(response.data.data))
         })
         .catch((err: AxiosError) => {
           setError(err.message)
