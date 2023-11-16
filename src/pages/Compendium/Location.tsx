@@ -84,6 +84,10 @@ const Location: FunctionComponent = (): JSX.Element => {
     name: data.name,
     content: data.content,
     typeId: data.type.id,
+    aliases: data.aliases,
+    demonym: data.demonym,
+    population: data.population,
+    governmentTypeId: data.governmentType?.id,
     parentId: data.parent?.id,
   })
 

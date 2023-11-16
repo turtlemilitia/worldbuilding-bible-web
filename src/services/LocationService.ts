@@ -8,6 +8,7 @@ export interface TLocationRequest {
   typeId: TLocationType['id'];
   content: string;
   demonym?: string;
+  aliases?: string;
   population?: number;
   governmentTypeId?: TLocationGovernmentType['id'];
 }
