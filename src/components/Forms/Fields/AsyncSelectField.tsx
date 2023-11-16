@@ -2,21 +2,24 @@ import { Combobox, Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { TSelectOption } from './FieldMapper'
+import { debounce } from 'lodash';
 
 type TProp = {
   value: TSelectOption|null;
   onChange: (value: TSelectOption|null) => any;
-  options: (TSelectOption|null)[]
+  search: (term: string) => Promise<TSelectOption[]>;
 }
-const SelectField: FunctionComponent<TProp> = ({ value, onChange, options }) => {
-  const [query, setQuery] = useState('')
+const SelectField: FunctionComponent<TProp> = ({ value, onChange, search }) => {
 
-  const filteredOptions =
-    query === ''
-      ? options
-      : options.filter((option) => {
-        return option?.name.toLowerCase().includes(query.toLowerCase())
-      })
+  const [options, setOptions] = useState<TSelectOption[]>([]);
+
+  const handleSearch = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length > 3) {
+      search(event.target.value).then(options => setOptions(options))
+    } else {
+      setOptions([]);
+    }
+  }, 500)
 
   return (
     <div className="relative">
@@ -27,7 +30,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options }) => 
               className="w-full flex justify-between py-2 px-4 border-b border-stone-700 hover:border-stone-500 focus:bg-stone-800">
               <Combobox.Input
                 className="w-full bg-transparent outline-none"
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={handleSearch}
                 displayValue={(option: TSelectOption) => option?.name}/>
               <ChevronDownIcon className="text-stone-700 h-5 w-5"/>
             </Combobox.Button>
@@ -40,7 +43,10 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options }) => 
             >
               <Combobox.Options
                 className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {filteredOptions.map((option) => (
+                {!options.length && (
+                  <li className="py-1 text-stone-600">No results found.</li>
+                )}
+                {options.map((option) => (
                   <Combobox.Option
                     key={option?.id}
                     value={option}

@@ -18,9 +18,9 @@ type TLocationIndexResponse = {
   data: TLocation[];
 }
 
-export const indexLocations = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TLocationIndexResponse>> => {
+export const indexLocations = (compendiumId: TCompendium['slug'], withArr: string[] = [], searchTerm: string = ''): Promise<AxiosResponse<TLocationIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/locations${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/locations?${withArr.length ? `with=${withArr.join(',')}` : ''}&search=${searchTerm}`)
 
 }
 

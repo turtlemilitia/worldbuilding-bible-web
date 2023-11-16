@@ -5,6 +5,11 @@ import { TLocation, TLocationGovernmentType, TLocationType } from '../../types'
 import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
 import { Listbox, Transition } from '@headlessui/react'
 import FieldMapper, { TSelectOption } from '../../components/Forms/Fields/FieldMapper'
+import { indexLocations } from '../../services/LocationService'
+import compendium from './Compendium'
+import { useAppSelector } from '../../hooks'
+import { RootState } from '../../store'
+import { setSystems } from '../../reducers/system/systemsIndexSlice'
 
 type TProps = {
   loading: boolean;
@@ -14,6 +19,8 @@ type TProps = {
 }
 
 const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setReady, data }: TProps): JSX.Element => {
+
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>([])
   const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>([])
@@ -37,9 +44,10 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
     name: keyof TLocation,
     label: string,
     type: string,
-    options?: TSelectOption[]
+    options?: TSelectOption[],
+    search?: (term: string) => Promise<TSelectOption[]>
   }
-  console.log(data)
+
   const fields: TFields[] = [
     {
       name: 'aliases',
@@ -68,6 +76,16 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
       type: 'select',
       options: governmentTypes
     },
+    {
+      name: 'parent',
+      label: 'Parent Location',
+      type: 'asyncSelect',
+      search: (term) => indexLocations(compendium.slug, [], term)
+        .then(response => response.data.data.map(location => ({
+          id: location.id,
+          name: location.name
+        })))
+    },
   ]
 
   return (
@@ -75,7 +93,7 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
       className={`transition-all duration-1000 ${!loading ? 'top-0 opacity-100' : '-top-10 opacity-0'}`}>
       <ul
         className="rounded-3xl bg-stone-900 border border-yellow-500 shadow-sm shadow-stone-800 py-6 px-8 text-stone-300 text-sm">
-        {fields.map(({ name, label, type, options }, index) => {
+        {fields.map(({ name, label, type, options, search }, index) => {
           const currentValue = data[name as keyof TLocation]
           return <FieldMapper
             key={`location${name}`}
@@ -85,6 +103,7 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
             options={options}
             currentValue={currentValue}
             onChange={onChange}
+            search={search}
           />
         })}
       </ul>

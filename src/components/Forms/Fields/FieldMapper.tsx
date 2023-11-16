@@ -4,6 +4,7 @@ import { ChevronDownIcon } from 'lucide-react'
 import { TLocation } from '../../../types'
 import SelectField from './SelectField'
 import TextField from './TextField'
+import AsyncSelectField from './AsyncSelectField'
 
 
 export type TSelectOption = {
@@ -17,6 +18,7 @@ type TProps = {
   onChange: (name: string, value: any) => any;
   type?: string;
   options?: TSelectOption[];
+  search?: (term: string) => any;
 }
 
 
@@ -40,14 +42,18 @@ const valueAsString = (value: any): string => {
   return ''
 }
 
-const FieldMapper: FunctionComponent<TProps> = ({ name, label, currentValue, type, options, onChange }) => {
+const FieldMapper: FunctionComponent<TProps> = ({ name, label, currentValue, type, options, onChange, search }) => {
   return (
     <li className="flex">
       <span className="text-stone-400 w-2/5 overflow-ellipsis py-2">{label}:</span>
       <div className="pl-3 w-3/5">
-        {type === 'select' && options?.length ? (
+        {type === 'select' && options?.length && (
           <SelectField value={currentValue} onChange={(value) => onChange(name, value)} options={options}/>
-        ) : (
+        )}
+        {type === 'asyncSelect' && search && (
+          <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search} />
+        )}
+        {type === 'text' && (
           <TextField value={currentValue} onChange={(value) => onChange(name, value)}/>
         )}
       </div>

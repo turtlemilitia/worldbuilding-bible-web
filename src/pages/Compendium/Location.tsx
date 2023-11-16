@@ -142,6 +142,7 @@ const Location: FunctionComponent = (): JSX.Element => {
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor
+                key={locationId}
                 value={data.content}
                 onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the location.'}
