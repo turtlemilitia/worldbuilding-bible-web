@@ -43,7 +43,7 @@ const Language: FunctionComponent = (): JSX.Element => {
 
   const fetch = (): void => {
     setLoading(true)
-    viewLanguage(languageId, ['compendium'])
+    viewLanguage(languageId, { include: 'compendium' })
       .then(response => {
         setLoading(false)
         setData(response.data.data)

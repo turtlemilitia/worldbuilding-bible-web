@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios'
-import { TLocation, TLocationGovernmentType, TLocationType, TCompendium } from '../types'
+import { TLocation, TLocationGovernmentType, TLocationType, TCompendium, TQueryParams } from '../types'
 import api from '../api'
+import { URLSearchParams as _URLSearchParams } from 'url'
 
 export interface TLocationRequest {
   parentId: TLocation['id'];
@@ -19,26 +20,26 @@ type TLocationIndexResponse = {
   data: TLocation[];
 }
 
-export const indexLocations = (compendiumId: TCompendium['slug'], withArr: string[] = [], searchTerm: string = ''): Promise<AxiosResponse<TLocationIndexResponse>> => {
+export const indexLocations = (compendiumId: TCompendium['slug'], query: TQueryParams): Promise<AxiosResponse<TLocationIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/locations?${withArr.length ? `with=${withArr.join(',')}` : ''}&search=${searchTerm}`)
-
-}
-
-export const viewLocation = (slug: string): Promise<AxiosResponse<TLocationResponse>> => {
-
-  return api.get(`/api/locations/${slug}`)
+  return api.get(`/api/compendia/${compendiumId}/locations?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const storeLocation = (compendiumId: TCompendium['slug'], data: TLocationRequest): Promise<AxiosResponse<TLocationResponse>> => {
+export const viewLocation = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TLocationResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/locations`, data)
+  return api.get(`/api/locations/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const updateLocation = (slug: string, data: Partial<TLocationRequest>): Promise<AxiosResponse<TLocationResponse>> => {
-  return api.put(`/api/locations/${slug}`, data)
+export const storeLocation = (compendiumId: TCompendium['slug'], data: TLocationRequest, query: TQueryParams = {}): Promise<AxiosResponse<TLocationResponse>> => {
+
+  return api.post(`/api/compendia/${compendiumId}/locations?${new URLSearchParams(query).toString()}`, data)
+
+}
+
+export const updateLocation = (slug: string, data: Partial<TLocationRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TLocationResponse>> => {
+  return api.put(`/api/locations/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyLocation = (slug: string): Promise<AxiosResponse<void>> => {

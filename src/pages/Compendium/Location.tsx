@@ -30,8 +30,6 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
-
   const navigate = useNavigate()
 
   const initialState: any = {
@@ -46,9 +44,11 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = locationId === 'new'
 
+  const include = 'type,governmentType,parent'
+
   const fetch = (): void => {
     setLoading(true)
-    viewLocation(locationId)
+    viewLocation(locationId, { include })
       .then(response => {
         setLoading(false)
         setData(response.data.data)
@@ -77,7 +77,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       setError('Validation failed')
       return false
     }
-    return true;
+    return true
   }
 
   const readyDataForRequest = (data: any): TLocationRequest => ({
@@ -94,12 +94,12 @@ const Location: FunctionComponent = (): JSX.Element => {
   const submit = (event: React.SyntheticEvent) => {
     event.preventDefault()
     if (!validate()) {
-      return;
+      return
     }
     setLoading(true)
-    const validated = readyDataForRequest(data);
+    const validated = readyDataForRequest(data)
     if (isNew) {
-      storeLocation(compendiumId, validated)
+      storeLocation(compendiumId, validated, { include })
         .then(({ data }) => {
           setLoading(false)
           setData(data.data)
@@ -111,7 +111,7 @@ const Location: FunctionComponent = (): JSX.Element => {
           setError(err.message)
         })
     } else {
-      updateLocation(locationId, validated)
+      updateLocation(locationId, validated, { include })
         .then(response => {
           setLoading(false)
           setData(response.data.data)
@@ -156,7 +156,7 @@ const Location: FunctionComponent = (): JSX.Element => {
         </ContentWrapper>
       </form>
     </LoadingWrapper>
-)
+  )
 }
 
-export default Location;
+export default Location

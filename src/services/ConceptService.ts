@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TConcept, TCompendium } from '../types'
+import { TConcept, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TConceptRequest {
@@ -13,15 +13,15 @@ type TConceptIndexResponse = {
   data: TConcept[];
 }
 
-export const indexConcepts = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TConceptIndexResponse>> => {
+export const indexConcepts = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TConceptIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/concepts${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/concepts?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewConcept = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TConceptResponse>> => {
+export const viewConcept = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TConceptResponse>> => {
 
-  return api.get(`/api/concepts/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/concepts/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TNaturalResource, TCompendium } from '../types'
+import { TNaturalResource, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TNaturalResourceRequest {
@@ -13,15 +13,15 @@ type TNaturalResourceIndexResponse = {
   data: TNaturalResource[];
 }
 
-export const indexNaturalResources = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TNaturalResourceIndexResponse>> => {
+export const indexNaturalResources = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TNaturalResourceIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/natural-resources${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/natural-resources?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewNaturalResource = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TNaturalResourceResponse>> => {
+export const viewNaturalResource = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TNaturalResourceResponse>> => {
 
-  return api.get(`/api/natural-resources/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/natural-resources/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

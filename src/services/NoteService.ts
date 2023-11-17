@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TNote, TNotebook } from '../types'
+import { TNote, TNotebook, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TNoteRequest {
@@ -13,15 +13,15 @@ type TNoteIndexResponse = {
   data: TNote[];
 }
 
-export const indexNotes = (notebookId: TNotebook['slug'], withArr: string[] = []): Promise<AxiosResponse<TNoteIndexResponse>> => {
+export const indexNotes = (notebookId: TNotebook['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TNoteIndexResponse>> => {
 
-  return api.get(`/api/notebooks/${notebookId}/notes${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/notebooks/${notebookId}/notes?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewNote = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TNoteResponse>> => {
+export const viewNote = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TNoteResponse>> => {
 
-  return api.get(`/api/notes/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/notes/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

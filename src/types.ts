@@ -1,3 +1,5 @@
+export type TQueryParams = string | string[][] | Record<string, string> | URLSearchParams
+
 export type TSystem = {
   id?: number;
   slug?: string;

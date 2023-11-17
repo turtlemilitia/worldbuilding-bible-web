@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TReligion, TCompendium } from '../types'
+import { TReligion, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TReligionRequest {
@@ -13,15 +13,15 @@ type TReligionIndexResponse = {
   data: TReligion[];
 }
 
-export const indexReligions = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TReligionIndexResponse>> => {
+export const indexReligions = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TReligionIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/religions${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/religions?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewReligion = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TReligionResponse>> => {
+export const viewReligion = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TReligionResponse>> => {
 
-  return api.get(`/api/religions/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/religions/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

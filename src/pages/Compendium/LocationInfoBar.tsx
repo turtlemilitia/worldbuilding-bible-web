@@ -80,7 +80,7 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
       name: 'parent',
       label: 'Parent Location',
       type: 'asyncSelect',
-      search: (term) => indexLocations(compendium.slug, [], term)
+      search: (term) => indexLocations(compendium.slug, { search: term })
         .then(response => response.data.data.map(location => ({
           id: location.id,
           name: location.name

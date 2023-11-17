@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TFaction, TCompendium } from '../types'
+import { TFaction, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TFactionRequest {
@@ -15,15 +15,15 @@ type TFactionIndexResponse = {
   data: TFaction[];
 }
 
-export const indexFactions = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TFactionIndexResponse>> => {
+export const indexFactions = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TFactionIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/factions${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/factions?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewFaction = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TFactionResponse>> => {
+export const viewFaction = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TFactionResponse>> => {
 
-  return api.get(`/api/factions/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/factions/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TPantheon, TCompendium } from '../types'
+import { TPantheon, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TPantheonRequest {
@@ -13,15 +13,15 @@ type TPantheonIndexResponse = {
   data: TPantheon[];
 }
 
-export const indexPantheons = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TPantheonIndexResponse>> => {
+export const indexPantheons = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TPantheonIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/pantheons${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/pantheons?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewPantheon = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TPantheonResponse>> => {
+export const viewPantheon = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TPantheonResponse>> => {
 
-  return api.get(`/api/pantheons/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/pantheons/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

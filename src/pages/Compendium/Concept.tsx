@@ -43,7 +43,7 @@ const Concept: FunctionComponent = (): JSX.Element => {
 
   const fetch = (): void => {
     setLoading(true)
-    viewConcept(conceptId, ['compendium'])
+    viewConcept(conceptId, { include: 'compendium' })
       .then(response => {
         setLoading(false)
         setData(response.data.data)

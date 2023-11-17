@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TCurrency, TCompendium } from '../types'
+import { TCurrency, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TCurrencyRequest {
@@ -13,15 +13,15 @@ type TCurrencyIndexResponse = {
   data: TCurrency[];
 }
 
-export const indexCurrencies = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TCurrencyIndexResponse>> => {
+export const indexCurrencies = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TCurrencyIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/currencies${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/currencies?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewCurrency = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TCurrencyResponse>> => {
+export const viewCurrency = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TCurrencyResponse>> => {
 
-  return api.get(`/api/currencies/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/currencies/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

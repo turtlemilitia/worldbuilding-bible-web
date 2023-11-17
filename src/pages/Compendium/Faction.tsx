@@ -43,7 +43,7 @@ const Faction: FunctionComponent = (): JSX.Element => {
 
   const fetch = (): void => {
     setLoading(true)
-    viewFaction(factionId, ['compendium'])
+    viewFaction(factionId, { include: 'compendium' })
       .then(response => {
         setLoading(false)
         setData(response.data.data)
@@ -72,7 +72,7 @@ const Faction: FunctionComponent = (): JSX.Element => {
       setError('Validation failed')
       return false
     }
-    return true;
+    return true
   }
 
   const readyDataForRequest = (data: any): TFactionRequest => ({
@@ -85,10 +85,10 @@ const Faction: FunctionComponent = (): JSX.Element => {
   const submit = (event: React.SyntheticEvent) => {
     event.preventDefault()
     if (!validate()) {
-      return;
+      return
     }
     setLoading(true)
-    const validated = readyDataForRequest(data);
+    const validated = readyDataForRequest(data)
     if (isNew) {
       storeFaction(compendiumId, validated)
         .then(({ data }) => {
@@ -146,7 +146,7 @@ const Faction: FunctionComponent = (): JSX.Element => {
         </ContentWrapper>
       </form>
     </LoadingWrapper>
-)
+  )
 }
 
-export default Faction;
+export default Faction

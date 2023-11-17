@@ -292,7 +292,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 icon: (props) => <MapIcon {...props}/>,
                 children: nestedLocations?.map(location => mapLocation(compendium, location)),
                 loadChildren: () => {
-                  indexLocations(compendium.slug, ['parent'])
+                  indexLocations(compendium.slug, { include: 'parent' })
                     .then(({ data }) => {
                       dispatch(updateCompendiumData({locations: data.data}))
                     })

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TPlane, TCompendium } from '../types'
+import { TPlane, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TPlaneRequest {
@@ -13,15 +13,15 @@ type TPlaneIndexResponse = {
   data: TPlane[];
 }
 
-export const indexPlanes = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TPlaneIndexResponse>> => {
+export const indexPlanes = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TPlaneIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/planes${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/planes?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewPlane = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TPlaneResponse>> => {
+export const viewPlane = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TPlaneResponse>> => {
 
-  return api.get(`/api/planes/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/planes/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

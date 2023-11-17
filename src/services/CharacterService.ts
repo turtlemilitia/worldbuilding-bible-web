@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TCharacter, TCompendium } from '../types'
+import { TCharacter, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TCharacterRequest {
@@ -15,15 +15,15 @@ type TCharacterIndexResponse = {
   data: TCharacter[];
 }
 
-export const indexCharacters = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TCharacterIndexResponse>> => {
+export const indexCharacters = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TCharacterIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/characters${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/characters?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewCharacter = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TCharacterResponse>> => {
+export const viewCharacter = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TCharacterResponse>> => {
 
-  return api.get(`/api/characters/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/characters/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

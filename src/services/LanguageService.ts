@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TLanguage, TCompendium } from '../types'
+import { TLanguage, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TLanguageRequest {
@@ -13,15 +13,15 @@ type TLanguageIndexResponse = {
   data: TLanguage[];
 }
 
-export const indexLanguages = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TLanguageIndexResponse>> => {
+export const indexLanguages = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TLanguageIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/languages${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/languages?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewLanguage = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TLanguageResponse>> => {
+export const viewLanguage = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TLanguageResponse>> => {
 
-  return api.get(`/api/languages/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/languages/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

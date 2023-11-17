@@ -43,7 +43,7 @@ const Species: FunctionComponent = (): JSX.Element => {
 
   const fetch = (): void => {
     setLoading(true)
-    viewSpecies(speciesId, ['compendium'])
+    viewSpecies(speciesId, { include: 'compendium' })
       .then(response => {
         setLoading(false)
         setData(response.data.data)

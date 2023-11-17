@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TItem, TCompendium } from '../types'
+import { TItem, TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TItemRequest {
@@ -15,15 +15,15 @@ type TItemIndexResponse = {
   data: TItem[];
 }
 
-export const indexItems = (compendiumId: TCompendium['slug'], withArr: string[] = []): Promise<AxiosResponse<TItemIndexResponse>> => {
+export const indexItems = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TItemIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/items${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/compendia/${compendiumId}/items?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const viewItem = (slug: string, withArr: string[] = []): Promise<AxiosResponse<TItemResponse>> => {
+export const viewItem = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TItemResponse>> => {
 
-  return api.get(`/api/items/${slug}${withArr.length ? `?with=${withArr.join(',')}` : ''}`)
+  return api.get(`/api/items/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 
