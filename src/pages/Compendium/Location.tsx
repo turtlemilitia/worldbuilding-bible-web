@@ -44,7 +44,7 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = locationId === 'new'
 
-  const include = 'type,governmentType,parent'
+  const include = 'type,governmentType,parent,children'
 
   const fetch = (): void => {
     setLoading(true)

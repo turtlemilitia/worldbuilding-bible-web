@@ -1,7 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { TLocation, TLocationGovernmentType, TLocationType, TCompendium, TQueryParams } from '../types'
 import api from '../api'
-import { URLSearchParams as _URLSearchParams } from 'url'
 
 export interface TLocationRequest {
   parentId: TLocation['id'];
