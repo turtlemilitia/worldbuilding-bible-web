@@ -31,7 +31,7 @@ const Home: FunctionComponent = (): JSX.Element => {
               characters, and forge legends that will resonate for ages. Begin your adventure with [Your App Name]
               today.</p>
             <div className="my-3">
-              <PrimaryButton text="Get Started"/>
+              <PrimaryButton>Get Started</PrimaryButton>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@ const Home: FunctionComponent = (): JSX.Element => {
               </li>
             </ul>
             <div className="my-5">
-              <PrimaryButton text="Start your adventure today"/>
+              <PrimaryButton>Start your adventure today</PrimaryButton>
             </div>
           </div>
         </div>

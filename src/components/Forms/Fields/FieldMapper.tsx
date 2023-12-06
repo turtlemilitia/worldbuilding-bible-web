@@ -54,7 +54,7 @@ const FieldMapper: FunctionComponent<TProps> = ({ name, label, currentValue, typ
         </div>
       ) : (
         <div className="flex">
-          <span className="text-stone-400 w-2/5 overflow-ellipsis py-2">{label}:</span>
+          <span className="w-2/5 overflow-ellipsis py-2">{label}:</span>
           <div className="pl-3 w-3/5">
             {type === 'select' && options?.length && (
               <SelectField value={currentValue} onChange={(value) => onChange(name, value)} options={options}/>
@@ -64,6 +64,12 @@ const FieldMapper: FunctionComponent<TProps> = ({ name, label, currentValue, typ
             )}
             {type === 'text' && (
               <TextField value={currentValue} onChange={(value) => onChange(name, value)}/>
+            )}
+            {type === 'email' && (
+              <TextField type="email" value={currentValue} onChange={(value) => onChange(name, value)}/>
+            )}
+            {type === 'password' && (
+              <TextField type="password" value={currentValue} onChange={(value) => onChange(name, value)}/>
             )}
           </div>
         </div>

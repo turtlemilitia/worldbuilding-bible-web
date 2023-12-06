@@ -6,6 +6,9 @@ import EmailField from './Fields/EmailField'
 import { login, LoginParams } from '../../services/AuthService'
 import { setToken } from '../../reducers/auth/authSlice'
 import { useAppDispatch } from '../../hooks'
+import { CheckIcon } from 'lucide-react'
+import { indexLocations } from '../../services/LocationService'
+import FieldMapper from './Fields/FieldMapper'
 
 const LoginForm = (): JSX.Element => {
 
@@ -44,19 +47,34 @@ const LoginForm = (): JSX.Element => {
     setLoginData((prevState) => ({ ...prevState, [field]: value }))
   }
 
+  const fields: {name: 'email'|'password', label: string, type: string}[] = [
+    {
+      name: 'email',
+      label: 'Email',
+      type: 'email'
+    },
+    {
+      name: 'password',
+      label: 'Password',
+      type: 'password'
+    },
+  ]
+
   return (
     <form onSubmit={handleLogin}>
       {/* Display the error message if it exists */}
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <div className="mb-4">
-        <EmailField value={loginData.email} onChange={(value) => handleLoginDataChange('email', value)}/>
-      </div>
-      <div className="mb-4">
-        <PasswordField value={loginData.password}
-                       onChange={(value) => handleLoginDataChange('password', value)}/>
-      </div>
-      <div className="mt-8 flex justify-center">
-        <PrimaryButton text={'Login'}/>
+      <ul
+        className="text-stone-200">
+        {fields.map(({name, label, type}) => {
+          return <FieldMapper name={name} label={label} type={type} currentValue={loginData[name]} onChange={handleLoginDataChange}/>
+        })}
+      </ul>
+      <div className="mt-8 -mb-16 flex justify-center">
+        <button type="submit"
+                className="rounded-full border border-yellow-500 shadow-lg shadow-stone-950 bg-emerald-800 hover:bg-emerald-700 px-4 py-4 transition-colors duration-300">
+          <CheckIcon size={30}/>
+        </button>
       </div>
     </form>
   )
