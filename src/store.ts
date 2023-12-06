@@ -14,6 +14,7 @@ import factionSlice from './reducers/compendium/faction/factionSlice'
 import languageSlice from './reducers/compendium/language/languageSlice'
 import notebookSlice from './reducers/notebook/notebookSlice'
 import noteSlice from './reducers/notebook/note/noteSlice'
+import sessionSlice from './reducers/campaign/session/sessionSlice'
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +35,8 @@ export const store = configureStore({
     language: languageSlice,
     notebook: notebookSlice,
     note: noteSlice,
+    // campaign
+    session: sessionSlice,
   }
 })
 

@@ -170,3 +170,19 @@ export type TNote = {
   name: string;
   content: string;
 }
+
+export type TCampaign = {
+  id?: number;
+  slug?: string;
+  name: string;
+  content: string;
+  hasSessions: boolean;
+  sessions: TSession[];
+}
+
+export type TSession = {
+  id?: number;
+  slug?: string;
+  name: string;
+  content: string;
+}
