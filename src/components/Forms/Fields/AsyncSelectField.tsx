@@ -27,12 +27,12 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, search }) => {
         {({ open }) => (
           <>
             <Combobox.Button
-              className="w-full flex justify-between py-2 px-4 border-b border-stone-700 hover:border-stone-500 focus:bg-stone-800">
+              className="w-full flex justify-between py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
               <Combobox.Input
                 className="w-full bg-transparent outline-none"
                 onChange={handleSearch}
                 displayValue={(option: TSelectOption) => option?.name}/>
-              <ChevronDownIcon className="text-stone-700 h-5 w-5"/>
+              <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
             </Combobox.Button>
             <Transition
               show={open}
@@ -42,7 +42,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, search }) => {
               leaveTo="opacity-0"
             >
               <Combobox.Options
-                className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 {!options.length && (
                   <li className="py-1 text-stone-600">No results found.</li>
                 )}

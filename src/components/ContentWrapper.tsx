@@ -1,6 +1,6 @@
 import React, { JSX, PropsWithChildren } from 'react'
 import RippedPaperEffect from '../assets/images/RippedPaperEffect'
-import { EqualIcon } from 'lucide-react'
+import ShadeImage from '../assets/images/ShadeImage.png'
 
 type TProps = {
   showPaperEffect?: boolean
@@ -16,7 +16,7 @@ const ContentWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({
           <RippedPaperEffect className="w-full rotate-180 fill-stone-200 left-0"/>
         </div>
       }
-      <div className="relative bg-stone-200 py-5 px-3 flex justify-center">
+      <div className="relative py-5 px-3 flex justify-center bg-blur">
         <div className="block w-full">
           {children}
         </div>

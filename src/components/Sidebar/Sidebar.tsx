@@ -33,7 +33,7 @@ const Sidebar = ({ title, items }: TOwnProps): JSX.Element => {
       <div className={`fixed z-10 top-14 left-0 pt-5 max-h-underScreen w-1/4`}>
         <div
           className={`absolute transition-all duration-1000 ${show ? 'top-5 opacity-100' : '-top-14 opacity-0'} w-full px-3`}>
-          <div className="rounded-3xl bg-stone-800 bg-opacity-90 border border-yellow-500 shadow-sm shadow-stone-800 backdrop-blur-lg py-6 text-stone-300">
+          <div className="antialiased shadow-md shadow-stone-800 rounded-3xl bg-stone-800 bg-opacity-70 backdrop-blur-md py-6 text-stone-300">
             <div className="max-h-underScreen px-8 overflow-y-auto">
               <h2 className="text-xl">{title}</h2>
               <ul className="mt-5 text-sm">

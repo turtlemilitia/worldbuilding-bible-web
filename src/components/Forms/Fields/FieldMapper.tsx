@@ -16,10 +16,10 @@ type TProps = {
   currentValue?: any,
   label: string,
   onChange: (name: string, value: any) => any,
-  type?: string,
+  type: string,
   options?: TSelectOption[],
   search?: (term: string) => any,
-  link?: (id: number|string) => string
+  link?: (id: number | string) => string
 }
 
 const valueAsString = (value: any): string => {
@@ -42,38 +42,43 @@ const valueAsString = (value: any): string => {
   return ''
 }
 
-const FieldMapper: FunctionComponent<TProps> = ({ name, label, currentValue, type, options, onChange, search, link }) => {
+const FieldMapper: FunctionComponent<TProps> = ({
+  name,
+  label,
+  currentValue,
+  type,
+  options,
+  onChange,
+  search,
+  link
+}) => {
   return (
     <li>
-      {type === 'list' ? (
-        <div className="mt-4 py-2 border-t border-yellow-500 border-opacity-50">
-          <div className="py-2 text-yellow-500 overflow-ellipsis">{label}</div>
-          <div>
+      <div className="antialiased relative my-6">
+        <div
+          className="font-sans-serif z-10 absolute -top-5 left-3 w-full overflow-ellipsis py-2 text-stone-300 uppercase tracking-widest text-sm">{label}:</div>
+        {type === 'list' ? (
+          <div
+            className="font-light w-full flex justify-between py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
             <ListField value={currentValue} link={link}/>
           </div>
-        </div>
-      ) : (
-        <div className="flex">
-          <span className="w-2/5 overflow-ellipsis py-2">{label}:</span>
-          <div className="pl-3 w-3/5">
+        ) : (
+          <div className="font-light">
             {type === 'select' && options?.length && (
               <SelectField value={currentValue} onChange={(value) => onChange(name, value)} options={options}/>
             )}
             {type === 'asyncSelect' && search && (
               <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search}/>
             )}
-            {type === 'text' && (
-              <TextField value={currentValue} onChange={(value) => onChange(name, value)}/>
-            )}
-            {type === 'email' && (
-              <TextField type="email" value={currentValue} onChange={(value) => onChange(name, value)}/>
-            )}
-            {type === 'password' && (
-              <TextField type="password" value={currentValue} onChange={(value) => onChange(name, value)}/>
+            {['text', 'email', 'password'].includes(type) && (
+              <TextField
+                value={currentValue}
+                onChange={(value) => onChange(name, value)}
+                type={type}/>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </li>
   )
 }
