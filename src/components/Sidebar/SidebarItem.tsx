@@ -82,7 +82,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
         )}
       </div>
       {children && open && (
-        <ul className="pl-3 border-l border-l-yellow-500">
+        <ul className="ml-1.5 pl-3 border-l border-l-yellow-500">
           {children.map((item, index) => {
             return <SidebarItem item={item} key={index}/>
           })}
