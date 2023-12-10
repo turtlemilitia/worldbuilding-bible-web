@@ -1,13 +1,9 @@
 import React, { Fragment, FunctionComponent, JSX, useEffect, useState } from 'react'
-import { ChevronDownIcon } from 'lucide-react'
-import { TCharacter, TLocationGovernmentType, TLocationType } from '../../types'
-import { Listbox, Transition } from '@headlessui/react'
-import { indexLocationTypes } from '../../services/LocationTypeService'
-import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
+import { TCharacter, TLocationType } from '../../types'
 import { indexSpecies } from '../../services/SpeciesService'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import FieldMapper, { TSelectOption } from '../../components/Forms/Fields/FieldMapper'
+import { InfoBar, TFields } from '../../components/InfoBar'
 
 type TProps = {
   loading: boolean;
@@ -30,12 +26,6 @@ const CharacterInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRea
 
   }, [compendium.slug])
 
-  type TFields = {
-    name: keyof TCharacter,
-    label: string,
-    type: string,
-    options?: TSelectOption[]
-  }
   const fields: TFields[] = [
     {
       name: 'age',
@@ -56,24 +46,12 @@ const CharacterInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRea
   ]
 
   return (
-    <div
-      className={`transition-all duration-1000 ${!loading ? 'top-0 opacity-100' : '-top-10 opacity-0'}`}>
-      <ul
-        className="rounded-3xl bg-stone-900 border border-yellow-500 shadow-sm shadow-stone-800 py-6 px-8 text-stone-300 text-sm">
-        {fields.map(({ name, label, type, options }, index) => {
-          const currentValue = data[name as keyof TCharacter]
-          return <FieldMapper
-            key={`character${name}`}
-            name={name}
-            label={label}
-            type={type}
-            options={options}
-            currentValue={currentValue}
-            onChange={onChange}
-          />
-        })}
-      </ul>
-    </div>
+    <InfoBar
+      loading={loading}
+      onChange={onChange}
+      data={data}
+      fields={fields}
+    />
   )
 }
 

@@ -2,7 +2,6 @@ import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import HeaderWrapper from '../../components/HeaderWrapper'
 import PageTitleField from '../../components/Forms/Fields/PageTitleField'
-import { TLocation } from '../../types'
 import ContentWrapper from '../../components/ContentWrapper'
 import Editor from '../../components/Forms/Fields/Editor'
 import { storeLocation, TLocationRequest, updateLocation, viewLocation } from '../../services/LocationService'
@@ -12,16 +11,14 @@ import {
   updateLocationData
 } from '../../reducers/compendium/location/locationSlice'
 import { AxiosError } from 'axios'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
-import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import LocationInfoBar from './LocationInfoBar'
 import ErrorBanner from '../../components/Banners/ErrorBanner'
 import {
   addCompendiumLocationData,
-  setCompendiumData,
-  updateCompendiumData, updateCompendiumLocationData
+  updateCompendiumLocationData
 } from '../../reducers/compendium/compendiumSlice'
 
 const Location: FunctionComponent = (): JSX.Element => {
@@ -133,7 +130,7 @@ const Location: FunctionComponent = (): JSX.Element => {
                           placeholder={'Location Name Here'}/>
         </HeaderWrapper>
         <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-3">
+          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
             <div className="w-full lg:w-1/4 px-3">
               <LocationInfoBar
                 loading={loading || !infoBarReady}
@@ -142,7 +139,7 @@ const Location: FunctionComponent = (): JSX.Element => {
                 data={data}
               />
             </div>
-            <div className="w-full lg:w-2/4 lg:ml-auto px-3">
+            <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {error && <ErrorBanner errorText={error}/>}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor
@@ -152,6 +149,7 @@ const Location: FunctionComponent = (): JSX.Element => {
                 placeholder={'Write a simple description for the location.'}
               />}
             </div>
+            <div className="flex lg:w-1/4 lg:px-3"></div>
           </div>
         </ContentWrapper>
       </form>

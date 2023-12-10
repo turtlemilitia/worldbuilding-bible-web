@@ -1,15 +1,11 @@
-import React, { Fragment, FunctionComponent, JSX, useEffect, useState } from 'react'
-import { ChevronDownIcon } from 'lucide-react'
+import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
 import { indexLocationTypes } from '../../services/LocationTypeService'
 import { TLocation, TLocationGovernmentType, TLocationType } from '../../types'
 import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
-import { Listbox, Transition } from '@headlessui/react'
-import FieldMapper, { TSelectOption } from '../../components/Forms/Fields/FieldMapper'
 import { indexLocations } from '../../services/LocationService'
-import compendium from './Compendium'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { setSystems } from '../../reducers/system/systemsIndexSlice'
+import { InfoBar, TFields } from '../../components/InfoBar'
 
 type TProps = {
   loading: boolean;
@@ -39,15 +35,6 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
     }
 
   }, [locationTypes, governmentTypes])
-
-  type TFields = {
-    name: keyof TLocation,
-    label: string,
-    type: string,
-    options?: TSelectOption[],
-    search?: (term: string) => Promise<TSelectOption[]>
-    link?: (id: number|string) => string
-  }
 
   const fields: TFields[] = [
     {
@@ -81,7 +68,7 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
       name: 'parent',
       label: 'Parent Location',
       type: 'asyncSelect',
-      search: (term) => indexLocations(compendium.slug, { search: term })
+      search: (term: string) => indexLocations(compendium.slug, { search: term })
         .then(response => response.data.data.map(location => ({
           id: location.id,
           name: location.name
@@ -91,31 +78,17 @@ const LocationInfoBar: FunctionComponent<TProps> = ({ loading, onChange, setRead
       name: 'children',
       label: 'Child Locations',
       type: 'list',
-      link: (id) => `/compendia/${compendium.slug}/locations/${data.children?.find(child => child.id === id)?.slug || ''}`
+      link: (id: string | number) => `/compendia/${compendium.slug}/locations/${data.children?.find(child => child.id === id)?.slug || ''}`
     },
   ]
 
   return (
-    <div
-      className={`transition-all duration-1000 ${!loading ? 'top-0 opacity-100' : '-top-10 opacity-0'}`}>
-      <ul
-        className="rounded-3xl shadow-md shadow-stone-800 bg-stone-800 bg-opacity-70 py-6 px-8 text-stone-300 text-sm backdrop-blur-md">
-        {fields.map(({ name, label, type, options, search, link }, index) => {
-          const currentValue = data[name as keyof TLocation]
-          return <FieldMapper
-            key={`location${name}`}
-            name={name}
-            label={label}
-            type={type}
-            options={options}
-            currentValue={currentValue}
-            onChange={onChange}
-            search={search}
-            link={link}
-          />
-        })}
-      </ul>
-    </div>
+    <InfoBar
+      loading={loading}
+      onChange={onChange}
+      data={data}
+      fields={fields}
+    />
   )
 }
 

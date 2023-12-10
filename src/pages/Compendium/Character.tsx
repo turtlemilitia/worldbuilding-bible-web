@@ -42,6 +42,7 @@ const Character: FunctionComponent = (): JSX.Element => {
   const isNew: boolean = characterId === 'new'
 
   const fetch = (): void => {
+    setError('')
     setLoading(true)
     viewCharacter(characterId, { include: 'compendium' })
       .then(response => {
@@ -84,6 +85,7 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   const submit = (event: React.SyntheticEvent) => {
     event.preventDefault()
+    setError('')
     if (!validate()) {
       return
     }

@@ -19,11 +19,11 @@ const FormToolbar: FunctionComponent<TProps> = ({onSave, onRefresh}: TProps): JS
     <div className="flex justify-end px-3 py-2">
       {onRefresh && (
         <button onClick={handleOnRefresh} className="mr-3">
-          <RefreshCwIcon className="stroke-stone-700 h-5 w-5"/>
+          <RefreshCwIcon className="stroke-stone-400 h-5 w-5"/>
         </button>
       )}
       <button type="submit" onClick={handleOnSave}>
-        <SaveIcon className="stroke-stone-700 h-5 w-5"/>
+        <SaveIcon className="stroke-stone-400 h-5 w-5"/>
       </button>
     </div>
   )

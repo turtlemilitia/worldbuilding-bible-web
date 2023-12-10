@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import bgImage from '../assets/images/ShadeImage.png'
+import bgImage from '../assets/images/darkAlley2.png'
 import Nav from '../components/Nav/Nav'
 import { Outlet } from 'react-router-dom'
 import Footer from '../components/Footer/Footer'
@@ -11,7 +11,7 @@ const PageWrapper = (): JSX.Element => {
       <div
         className="font-serif min-h-screen"
         >
-        <div className="-z-10 fixed w-full h-full blur-sm bg-cover bg-no-repeat bg-center" style={{ backgroundImage: `url(${bgImage})` }}/>
+        <div className="-z-10 fixed w-full h-full bg-cover bg-no-repeat bg-center" style={{ backgroundImage: `url(${bgImage})` }}/>
         <Nav/>
         <Outlet/>
         <Footer/>
