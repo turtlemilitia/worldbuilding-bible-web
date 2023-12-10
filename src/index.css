@@ -67,5 +67,5 @@
     @apply text-purple-700
 }
 .remirror-theme blockquote {
-    @apply border-x my-2 border-stone-400 p-4 bg-stone-700
+    @apply border-x my-2 border-stone-400 p-4 bg-stone-700 text-stone-300
 }
