@@ -3,7 +3,7 @@ import LoadingWrapper from '../../components/LoadingWrapper'
 import HeaderWrapper from '../../components/HeaderWrapper'
 import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import ContentWrapper from '../../components/ContentWrapper'
-import Editor from '../../components/Forms/Fields/Editor'
+import { Editor } from '../../components/Forms/Fields/Editor'
 import { storeLanguage, TLanguageRequest, updateLanguage, viewLanguage } from '../../services/LanguageService'
 import {
   clearLanguageData,

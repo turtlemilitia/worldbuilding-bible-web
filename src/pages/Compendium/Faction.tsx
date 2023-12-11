@@ -3,7 +3,7 @@ import LoadingWrapper from '../../components/LoadingWrapper'
 import HeaderWrapper from '../../components/HeaderWrapper'
 import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import ContentWrapper from '../../components/ContentWrapper'
-import Editor from '../../components/Forms/Fields/Editor'
+import { Editor } from '../../components/Forms/Fields/Editor'
 import { storeFaction, TFactionRequest, updateFaction, viewFaction } from '../../services/FactionService'
 import {
   clearFactionData,
