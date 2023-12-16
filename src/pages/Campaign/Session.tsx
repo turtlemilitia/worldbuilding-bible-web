@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
-import ErrorBanner from '../../components/Banners/ErrorBanner'
+import { ErrorBanner } from '../../components/Banners/ErrorBanner'
 import { setCampaignData } from '../../reducers/campaign/campaignSlice'
 
 const Session: FunctionComponent = (): JSX.Element => {
@@ -126,10 +126,10 @@ const Session: FunctionComponent = (): JSX.Element => {
 
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
-              {error && <ErrorBanner errorText={error}/>}
+              {/*{error && <ErrorBanner errorText={error}/>}*/}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor
-                value={data.content}
+                initialValue={data.content}
                 onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the session.'}
               />}

@@ -1,27 +1,20 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import LoadingWrapper from '../../components/LoadingWrapper'
-import HeaderWrapper from '../../components/HeaderWrapper'
-import PageTitleField from '../../components/Forms/Fields/PageTitleField'
-import ContentWrapper from '../../components/ContentWrapper'
-import { Editor } from '../../components/Forms/Fields/Editor'
-import { storeLocation, TLocationRequest, updateLocation, viewLocation } from '../../services/LocationService'
-import {
-  clearLocationData,
-  setLocationData,
-  updateLocationData
-} from '../../reducers/compendium/location/locationSlice'
-import { AxiosError } from 'axios'
-import { useAppDispatch } from '../../hooks'
+import { indexLocations, storeLocation, TLocationRequest, updateLocation, viewLocation } from '../../services/LocationService'
+import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
-import FormToolbar from '../../components/Forms/FormToolbar'
-import LocationInfoBar from './LocationInfoBar'
-import ErrorBanner from '../../components/Banners/ErrorBanner'
-import {
-  addCompendiumLocationData,
-  updateCompendiumLocationData
-} from '../../reducers/compendium/compendiumSlice'
+import { addCompendiumLocationData, updateCompendiumLocationData } from '../../reducers/compendium/compendiumSlice'
+import Post from '../../components/Post/component'
+import { TFields } from '../../components/InfoBar'
+import { indexLocationTypes } from '../../services/LocationTypeService'
+import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
+import { TLocation, TLocationGovernmentType, TLocationType } from '../../types'
+import { RootState } from '../../store'
 
 const Location: FunctionComponent = (): JSX.Element => {
+
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const { location } = useAppSelector((state: RootState) => state.location) // redux
 
   const dispatch = useAppDispatch() // redux
 
@@ -29,53 +22,42 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const initialState: any = {
-    name: '',
-    content: '',
-  }
-
-  const [loading, setLoading] = useState(false)
-  const [infoBarReady, setInfoBarReady] = useState(false)
-  const [error, setError] = useState<string>()
-  const [data, setData] = useState(initialState)
-
   const isNew: boolean = locationId === 'new'
 
-  const include = 'type,governmentType,parent,children'
+  const include = 'type,aliases,governmentType,parent,children'
 
-  const fetch = (): void => {
-    setLoading(true)
-    viewLocation(locationId, { include })
-      .then(response => {
-        setLoading(false)
-        setData(response.data.data)
-        dispatch(setLocationData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
-      })
+  const [ready, setReady] = useState<boolean>(false)
+  const [locationTypes, setLocationTypes] = useState<TLocationType[]>([])
+  const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>([])
+
+  const reset = () => dispatch(clearLocationData(undefined))
+
+  const fetch = async () => {
+    if (locationId && !isNew) {
+      await viewLocation(locationId, { include })
+        .then(response => {
+          dispatch(setLocationData(response.data.data))
+        })
+    }
+    if (isNew) {
+      reset()
+    }
   }
 
   useEffect(() => {
-    if (locationId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      setData(initialState)
-      dispatch(clearLocationData(undefined))
-    }
-    return () => {
-      dispatch(clearLocationData(undefined))
-    }
-  }, [locationId])
 
-  const validate = (): boolean => {
-    if (!data.name || !data.content || !data.type) {
-      setError('Validation failed')
-      return false
+    indexLocationTypes().then(response => setLocationTypes(response.data.data))
+    indexGovernmentTypes().then(response => setGovernmentTypes(response.data.data))
+
+  }, [])
+
+  useEffect(() => {
+
+    if (locationTypes.length && governmentTypes.length) {
+      setReady(true)
     }
-    return true
-  }
+
+  }, [locationTypes, governmentTypes])
 
   const readyDataForRequest = (data: any): TLocationRequest => ({
     name: data.name,
@@ -88,72 +70,83 @@ const Location: FunctionComponent = (): JSX.Element => {
     parentId: data.parent?.id,
   })
 
-  const submit = (event: React.SyntheticEvent) => {
-    event.preventDefault()
-    if (!validate()) {
-      return
-    }
-    setLoading(true)
+  const submit = (data: any): Promise<TLocation> => {
     const validated = readyDataForRequest(data)
     if (isNew) {
-      storeLocation(compendiumId, validated, { include })
+      return storeLocation(compendiumId, validated, { include })
         .then(({ data }) => {
-          setLoading(false)
-          setData(data.data)
           dispatch(setLocationData(data.data))
           dispatch(addCompendiumLocationData(data.data))
           navigate(`/compendia/${compendiumId}/locations/${data.data.slug}`)
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+          return data.data
         })
     } else {
-      updateLocation(locationId, validated, { include })
-        .then(response => {
-          setLoading(false)
-          setData(response.data.data)
-          dispatch(updateLocationData(response.data.data))
-          dispatch(updateCompendiumLocationData(response.data.data))
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+      return updateLocation(locationId, validated, { include })
+        .then(({ data }) => {
+          dispatch(updateLocationData(data.data))
+          dispatch(updateCompendiumLocationData(data.data))
+          return data.data
         })
     }
   }
 
+  const fields: TFields[] = [
+    {
+      name: 'aliases',
+      label: 'Aliases',
+      type: 'text'
+    },
+    {
+      name: 'type',
+      label: 'Type',
+      type: 'select',
+      options: locationTypes
+    },
+    {
+      name: 'demonym',
+      label: 'Demonym',
+      type: 'text'
+    },
+    {
+      name: 'population',
+      label: 'Population',
+      type: 'text'
+    },
+    {
+      name: 'governmentType',
+      label: 'Government',
+      type: 'select',
+      options: governmentTypes
+    },
+    {
+      name: 'parent',
+      label: 'Parent Location',
+      type: 'asyncSelect',
+      search: (term: string) => indexLocations(compendium.slug, { search: term })
+        .then(response => response.data.data.map(location => ({
+          id: location.id,
+          name: location.name
+        })))
+    },
+    {
+      name: 'children',
+      label: 'Child Locations',
+      type: 'list',
+      link: (id: string | number) => `/compendia/${compendium.slug}/locations/${location.children?.find((child: TLocation) => child.id === id)?.slug || ''}`
+    },
+  ]
+
   return (
-    <LoadingWrapper loading={loading || !infoBarReady}>
-      <form onSubmit={submit}>
-        <HeaderWrapper page="Location">
-          <PageTitleField value={data.name}
-                          onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
-                          placeholder={'Location Name Here'}/>
-        </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
-            <div className="w-full lg:w-1/4 px-3">
-              <LocationInfoBar
-                loading={loading || !infoBarReady}
-                onChange={(key, value) => setData((prevState: any) => ({ ...prevState, [key]: value }))}
-                setReady={setInfoBarReady}
-                data={data}
-              />
-            </div>
-            <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
-              {error && <ErrorBanner errorText={error}/>}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <Editor
-                key={locationId}
-                value={data.content}
-                onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
-                placeholder={'Write a simple description for the location.'}
-              />}
-            </div>
-            <div className="flex lg:w-1/4 lg:px-3"></div>
-          </div>
-        </ContentWrapper>
-      </form>
-    </LoadingWrapper>
+    <Post
+      key={locationId}
+      ready={ready}
+      initialValues={location as TLocation}
+      name={location.name || ''}
+      onSubmit={submit}
+      onFetch={fetch}
+      fields={fields}
+      resetData={reset}
+    />
   )
 }
 

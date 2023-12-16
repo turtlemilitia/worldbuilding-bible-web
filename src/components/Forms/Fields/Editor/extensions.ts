@@ -13,7 +13,7 @@ import { turndownService } from '../../../../utils/remirror/turndownService'
 import { convertMarkdown } from './converters'
 
 // Encapsulate the list of extensions into a separate function
-export function useEditorExtensions (placeholder?: string): AnyExtension[] {
+export function getExtensions (placeholder?: string): AnyExtension[] {
   return [
     new HeadingExtension(),
     new BoldExtension(),

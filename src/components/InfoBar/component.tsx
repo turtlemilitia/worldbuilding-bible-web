@@ -1,9 +1,10 @@
 import React, { FunctionComponent, JSX } from 'react'
 import FieldMapper from '../../components/Forms/Fields/FieldMapper'
 import { FloatingBox } from '../FloatingBox'
-import { TProps, TTypesAllowed } from './types'
+import { TInfoBarProps } from './types'
+import { TTypesAllowed } from '../../types'
 
-const InfoBar: FunctionComponent<TProps<TTypesAllowed>> = ({ loading, onChange, data, fields }): JSX.Element => {
+const InfoBar: FunctionComponent<TInfoBarProps<TTypesAllowed>> = ({ loading, onChange, data, fields }): JSX.Element => {
 
   if (fields.length === 0) {
     return <div/>;

@@ -1,80 +1,75 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import LoadingWrapper from '../../components/LoadingWrapper'
-import HeaderWrapper from '../../components/HeaderWrapper'
-import PageTitle from '../../components/Forms/Fields/PageTitleField'
-import ContentWrapper from '../../components/ContentWrapper'
-import { Editor } from '../../components/Forms/Fields/Editor'
 import { storeCharacter, TCharacterRequest, updateCharacter, viewCharacter } from '../../services/CharacterService'
-import {
-  clearCharacterData,
-  setCharacterData,
-  updateCharacterData
-} from '../../reducers/compendium/character/characterSlice'
-import { AxiosError } from 'axios'
+import { clearCharacterData, setCharacterData, updateCharacterData } from '../../reducers/compendium/character/characterSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import FormToolbar from '../../components/Forms/FormToolbar'
-import CharacterInfoBar from './CharacterInfoBar'
-import ErrorBanner from '../../components/Banners/ErrorBanner'
-import { setCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import {
+  addCompendiumCharacterData,
+  updateCompendiumCharacterData
+} from '../../reducers/compendium/compendiumSlice'
+import { TCharacter, TLocationType } from '../../types'
+import Post from '../../components/Post/component'
+import { TFields } from '../../components/InfoBar'
+import { indexSpecies } from '../../services/SpeciesService'
 
 const Character: FunctionComponent = (): JSX.Element => {
+
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const { character } = useAppSelector((state: RootState) => state.character) // redux
 
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
 
-  const { character } = useAppSelector((state: RootState) => state.character) // redux
-
   const navigate = useNavigate()
-
-  const initialState: any = {
-    name: '',
-    content: '',
-  }
-
-  const [loading, setLoading] = useState(false)
-  const [infoBarReady, setInfoBarReady] = useState(true) // todo turn to false after implementing species
-  const [error, setError] = useState<string>()
-  const [data, setData] = useState(initialState)
 
   const isNew: boolean = characterId === 'new'
 
-  const fetch = (): void => {
-    setError('')
-    setLoading(true)
-    viewCharacter(characterId, { include: 'compendium' })
-      .then(response => {
-        setLoading(false)
-        setData(response.data.data)
-        dispatch(setCharacterData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
-      })
+  const [ready, setReady] = useState<boolean>(false)
+  const [species, setSpecies] = useState<TLocationType[]>([])
+
+  const reset = () => dispatch(clearCharacterData(undefined));
+
+  const fetch = async () => {
+    if (characterId && !isNew) {
+      await viewCharacter(characterId, { include: 'compendium' })
+        .then(response => {
+          dispatch(setCharacterData(response.data.data))
+        })
+    }
+    if (isNew) {
+      reset()
+    }
   }
+
+  useEffect(() => {
+
+    if (compendium.slug) {
+      indexSpecies(compendium.slug).then(response => setSpecies(response.data.data))
+    }
+
+  }, [compendium.slug])
+
+  useEffect(() => {
+
+    if (species.length) {
+      setReady(true)
+    }
+
+  }, [species])
 
   useEffect(() => {
     if (characterId && !isNew) {
       fetch()
     }
     if (isNew) {
-      setData(initialState)
       dispatch(clearCharacterData(undefined))
     }
     return () => {
       dispatch(clearCharacterData(undefined))
     }
   }, [characterId])
-
-  const validate = (): boolean => {
-    if (!data.name || !data.content) {
-      setError('Validation failed')
-      return false
-    }
-    return true
-  }
 
   const readyDataForRequest = (data: any): TCharacterRequest => ({
     name: data.name,
@@ -83,73 +78,56 @@ const Character: FunctionComponent = (): JSX.Element => {
     content: data.content,
   })
 
-  const submit = (event: React.SyntheticEvent) => {
-    event.preventDefault()
-    setError('')
-    if (!validate()) {
-      return
-    }
-    setLoading(true)
+  const submit = (data: any): Promise<TCharacter> => {
     const validated = readyDataForRequest(data)
     if (isNew) {
-      storeCharacter(compendiumId, validated)
+      return storeCharacter(compendiumId, validated)
         .then(({ data }) => {
-          setLoading(false)
-          setData(data.data)
           dispatch(setCharacterData(data.data))
-          dispatch(setCompendiumData({ 'hasCharacters': true }))
-          // dispatch(addCharacter(data.data)) todo
+          dispatch(addCompendiumCharacterData(data.data))
           navigate(`/compendia/${compendiumId}/characters/${data.data.slug}`)
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+          return data.data
         })
     } else {
-      updateCharacter(characterId, validated)
-        .then(response => {
-          setLoading(false)
-          setData(response.data.data)
-          dispatch(updateCharacterData(response.data.data))
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+      return updateCharacter(characterId, validated)
+        .then(({ data }) => {
+          dispatch(updateCharacterData(data.data))
+          dispatch(updateCompendiumCharacterData(data.data))
+          return data.data
         })
     }
   }
 
+  const fields: TFields[] = [
+    {
+      name: 'age',
+      label: 'Age',
+      type: 'number'
+    },
+    {
+      name: 'gender',
+      label: 'Gender',
+      type: 'text'
+    },
+    {
+      name: 'species',
+      label: 'Species',
+      type: 'select',
+      options: species
+    }
+  ]
+
   return (
-    <LoadingWrapper loading={loading || !infoBarReady}>
-      <form onSubmit={submit}>
-        <HeaderWrapper page="Character">
-          <PageTitle value={data.name}
-                     onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
-                     placeholder={'Character Name Here'}/>
-        </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
-            <div className="w-full lg:w-1/4 px-3">
-              <CharacterInfoBar
-                loading={loading || !infoBarReady}
-                onChange={(key, value) => setData((prevState: any) => ({ ...prevState, [key]: value }))}
-                setReady={setInfoBarReady}
-                data={data}
-              />
-            </div>
-            <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
-              {error && <ErrorBanner errorText={error}/>}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <Editor
-                value={data.content}
-                onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
-                placeholder={'Write a simple description for the character.'}
-              />}
-            </div>
-            <div className="flex lg:w-1/4 lg:px-3"></div>
-            {/*spacer*/}
-          </div>
-        </ContentWrapper>
-      </form>
-    </LoadingWrapper>
+    <Post
+      key={characterId}
+      ready={ready}
+      initialValues={character as TCharacter}
+      name={character.name || ''}
+      onSubmit={submit}
+      onFetch={fetch}
+      fields={fields}
+      resetData={reset}
+    />
   )
 }
 

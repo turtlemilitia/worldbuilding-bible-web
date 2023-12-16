@@ -1,29 +1,29 @@
 import 'remirror/styles/extension-placeholder.css'
-import React, { FunctionComponent, useCallback, useEffect } from 'react'
+import React, { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import { Remirror, useRemirror } from '@remirror/react'
 import { AnyExtension } from 'remirror'
 import { RemirrorEventListenerProps } from '@remirror/core'
 import { useLocation } from 'react-router-dom'
 
-import { useEditorExtensions } from './extensions';
+import { getExtensions } from './extensions';
 import { TEditorProps } from './types'
 
-const Editor: FunctionComponent<TEditorProps> = ({ value, onChange, placeholder }) => {
-  const location = useLocation()
+const Editor: FunctionComponent<TEditorProps> = ({ initialValue, onChange, placeholder }) => {
+
   const { manager, state, getContext } = useRemirror({
-    extensions: () => useEditorExtensions(placeholder),
-    content: value,
+    extensions: () => getExtensions(placeholder),
+    content: initialValue,
     stringHandler: 'markdown',
     selection: 'end',
   })
+
   const handleEditorChange = useCallback(({ helpers }: RemirrorEventListenerProps<AnyExtension>) => {
     onChange(helpers.getMarkdown())
   }, [])
+
   useEffect(() => {
-    if (location.pathname.includes('new')) {
-      getContext()?.setContent('')
-    }
-  }, [location.pathname])
+    getContext()?.setContent(initialValue)
+  }, [initialValue])
 
   return (
     <div className="remirror-theme">

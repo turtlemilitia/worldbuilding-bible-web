@@ -1,5 +1,5 @@
 export type TEditorProps = {
-  value: string;
+  initialValue: string;
   onChange: (value: string) => any;
   placeholder?: string;
 }

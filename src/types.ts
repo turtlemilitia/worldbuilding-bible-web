@@ -186,3 +186,5 @@ export type TSession = {
   name: string;
   content: string;
 }
+
+export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept

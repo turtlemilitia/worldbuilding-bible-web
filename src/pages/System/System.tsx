@@ -10,11 +10,10 @@ import ContentWrapper from '../../components/ContentWrapper'
 import { storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
 import { TSystem } from '../../types'
 import { AxiosError } from 'axios'
-import LoadingSpinner from '../../components/LoadingSpinner'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import { addSystem } from '../../reducers/system/systemsIndexSlice'
 import FormToolbar from '../../components/Forms/FormToolbar'
-import ErrorBanner from '../../components/Banners/ErrorBanner'
+import { ErrorBanner } from '../../components/Banners/ErrorBanner'
 
 const System = (): JSX.Element => {
 
@@ -103,10 +102,10 @@ const System = (): JSX.Element => {
         <ContentWrapper>
           <div className="flex justify-center -mx-2">
             <div className="w-full md:w-2/4 max-w-2xl px-2">
-              {error && <ErrorBanner errorText={error}/>}
+              {/*{error && <ErrorBanner errorText={error}/>}*/}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor
-                value={data.content}
+                initialValue={data.content}
                 onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the system.'}
               />}

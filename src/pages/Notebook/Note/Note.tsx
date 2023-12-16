@@ -12,7 +12,7 @@ import { TNote } from '../../../types'
 import { AxiosError } from 'axios'
 import LoadingWrapper from '../../../components/LoadingWrapper'
 import FormToolbar from '../../../components/Forms/FormToolbar'
-import ErrorBanner from '../../../components/Banners/ErrorBanner'
+import { ErrorBanner } from '../../../components/Banners/ErrorBanner'
 import { setNotebookData } from '../../../reducers/notebook/notebookSlice'
 import { addNotebooksNotebookNote } from '../../../reducers/notebook/notebooksIndexSlice'
 
@@ -106,10 +106,10 @@ const Note = (): JSX.Element => {
         <ContentWrapper>
           <div className="flex justify-center -mx-2">
             <div className="w-full md:w-2/4 max-w-2xl px-2">
-              {error && <ErrorBanner errorText={error}/>}
+              {/*{error && <ErrorBanner errorText={error}/>}*/}
               <FormToolbar onSave={submit} onRefresh={!isNew ? fetch : undefined}/>
               {!loading && <Editor
-                value={data.content}
+                initialValue={data.content}
                 onChange={(value) => setData((prevState: TNote) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the note.'}
               />}

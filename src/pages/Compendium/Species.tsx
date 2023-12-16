@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import SpeciesInfoBar from './SpeciesInfoBar'
-import ErrorBanner from '../../components/Banners/ErrorBanner'
+import { ErrorBanner } from '../../components/Banners/ErrorBanner'
 import { setCompendiumData } from '../../reducers/compendium/compendiumSlice'
 
 const Species: FunctionComponent = (): JSX.Element => {
@@ -132,10 +132,10 @@ const Species: FunctionComponent = (): JSX.Element => {
               />
             </div>
             <div className="w-full lg:w-2/4 lg:ml-auto px-3">
-              {error && <ErrorBanner errorText={error}/>}
+              {/*{error && <ErrorBanner errorText={error}/>}*/}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor
-                value={data.content}
+                initialValue={data.content}
                 onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the species.'}
               />}

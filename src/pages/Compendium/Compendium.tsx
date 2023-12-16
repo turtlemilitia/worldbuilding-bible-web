@@ -13,100 +13,65 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
-import ErrorBanner from '../../components/Banners/ErrorBanner'
+import { ErrorBanner } from '../../components/Banners/ErrorBanner'
+import Post from '../../components/Post/component'
 
 const Compendium: FunctionComponent = (): JSX.Element => {
+
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
-
   const navigate = useNavigate()
 
-  const initialState: TCompendium = {
-    name: '',
-    content: ''
-  }
+  const isNew: boolean = !compendium.slug;
 
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string>()
-  const [data, setData] = useState<TCompendium>(initialState)
+  const reset = () => {};
 
-  const fetch = (): void => {
-    setLoading(true)
-    viewCompendium(compendiumId)
-      .then(response => {
-        setLoading(false)
-        dispatch(setCompendiumData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
-      })
-  }
-
-  useEffect(() => {
-
-    if (compendium.id) {
-      setData(compendium);
-      setLoading(false);
-    }
-
-  }, [compendium.id])
-
-  const submit = (event: React.SyntheticEvent) => {
-    setLoading(true)
-    if (!compendium.slug) {
-      storeCompendium(data)
-        .then(({ data }) => {
-          setLoading(false)
-          setData(data.data)
-          dispatch(setCompendiumData(data.data))
-          dispatch(addCompendium(data.data))
-          navigate(`/compendia/${data.data.slug}`)
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
-        })
-    } else {
-      updateCompendium(compendium.slug, data)
+  const fetch = async () => {
+    if (compendiumId && !isNew) {
+      await viewCompendium(compendiumId)
         .then(response => {
-          setLoading(false)
-          setData(response.data.data)
           dispatch(updateCompendiumData(response.data.data))
         })
-        .catch((err: AxiosError) => {
-          setError(err.message)
-        })
+    }
+    if (isNew) {
+      reset()
     }
 
-    event.preventDefault()
+  }
+
+  const submit = (data: any): Promise<TCompendium> => {
+    if (isNew) {
+      return storeCompendium(data)
+        .then(({ data }) => {
+          dispatch(updateCompendiumData(data.data))
+          dispatch(addCompendium(data.data))
+          navigate(`/compendia/${data.data.slug}`)
+          return data.data
+        })
+    } else {
+      return updateCompendium(compendiumId, data)
+        .then(({ data }) => {
+          dispatch(updateCompendiumData(data.data))
+          return data.data;
+        })
+    }
   }
 
   return (
-    <LoadingWrapper loading={loading}>
-      <form onSubmit={submit}>
-        <HeaderWrapper page="Compendium">
-          <PageTitleField value={data.name}
-                          onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, name: value }))}
-                          placeholder={'Compendium Name Here'}/>
-        </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex justify-center -mx-2">
-            <div className="w-full md:w-2/4 max-w-2xl px-2">
-              {error && <ErrorBanner errorText={error}/>}
-              <FormToolbar onSave={submit} onRefresh={() => fetch && fetch()}/>
-              {!loading && <Editor
-                value={data.content}
-                onChange={(value) => setData((prevState: TCompendium) => ({ ...prevState, content: value }))}
-                placeholder={'Write a simple description for the compendium.'}
-              />}
-            </div>
-          </div>
-        </ContentWrapper>
-      </form>
-    </LoadingWrapper>
+    <Post
+      key={compendiumId}
+      initialValues={compendium as TCompendium}
+      name={compendium.name}
+      onSubmit={submit}
+      onFetch={fetch}
+      ready={true}
+      fields={[]}
+      resetData={reset}
+    />
   )
 }
 

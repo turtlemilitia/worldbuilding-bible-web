@@ -13,7 +13,7 @@ import { AxiosError } from 'axios'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import { addNotebook } from '../../reducers/notebook/notebooksIndexSlice'
 import FormToolbar from '../../components/Forms/FormToolbar'
-import ErrorBanner from '../../components/Banners/ErrorBanner'
+import { ErrorBanner } from '../../components/Banners/ErrorBanner'
 
 const Notebook = (): JSX.Element => {
 
@@ -103,10 +103,10 @@ const Notebook = (): JSX.Element => {
         <ContentWrapper>
           <div className="flex justify-center -mx-2">
             <div className="w-full md:w-2/4 max-w-2xl px-2">
-              {error && <ErrorBanner errorText={error}/>}
+              {/*{error && <ErrorBanner errorText={error}/>}*/}
               <FormToolbar onSave={submit} onRefresh={fetch}/>
               {!loading && <Editor
-                value={data.content}
+                initialValue={data.content}
                 onChange={(value) => setData((prevState: TNotebook) => ({ ...prevState, content: value }))}
                 placeholder={'Write a simple description for the notebook.'}
               />}

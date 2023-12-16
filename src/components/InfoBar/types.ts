@@ -1,8 +1,6 @@
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
 import { TCharacter, TConcept, TLocation } from '../../types'
 
-export type TTypesAllowed = TLocation|TCharacter|TConcept
-
 export type TFields = {
   name: string,
   label: string,
@@ -12,9 +10,8 @@ export type TFields = {
   link?: (id: number|string) => string
 }
 
-export type TProps<T> = {
+export type TInfoBarProps<T> = {
   loading: boolean;
-  setReady?: (value: boolean) => any;
   onChange: (key: string, value: any) => void;
   data: T;
   fields: TFields[]
