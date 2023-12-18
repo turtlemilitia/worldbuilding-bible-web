@@ -9,8 +9,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumConceptData,
-  updateCompendiumConceptData,
+  addCompendiumChildData,
+  updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post/component'
 import { TConcept } from '../../types'
@@ -52,7 +52,7 @@ const Concept: FunctionComponent = (): JSX.Element => {
       return storeConcept(compendiumId, validated)
         .then(({ data }) => {
           dispatch(setConceptData(data.data))
-          dispatch(addCompendiumConceptData(data.data))
+          dispatch(addCompendiumChildData({ field: 'concepts', data: data.data }))
           navigate(`/compendia/${compendiumId}/concepts/${data.data.slug}`)
           return data.data
         })
@@ -60,7 +60,7 @@ const Concept: FunctionComponent = (): JSX.Element => {
       return updateConcept(conceptId, validated)
         .then(({ data }) => {
           dispatch(updateConceptData(data.data))
-          dispatch(updateCompendiumConceptData(data.data))
+          dispatch(updateCompendiumChildData({ field: 'concepts', data: data.data }))
           return data.data
         })
     }

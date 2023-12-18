@@ -1,23 +1,19 @@
-import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import LoadingWrapper from '../../components/LoadingWrapper'
-import HeaderWrapper from '../../components/HeaderWrapper'
-import PageTitleField from '../../components/Forms/Fields/PageTitleField'
-import ContentWrapper from '../../components/ContentWrapper'
-import { Editor } from '../../components/Forms/Fields/Editor'
+import React, { FunctionComponent, JSX } from 'react'
 import { storeSpecies, TSpeciesRequest, updateSpecies, viewSpecies } from '../../services/SpeciesService'
 import {
   clearSpeciesData,
   setSpeciesData,
   updateSpeciesData
 } from '../../reducers/compendium/species/speciesSlice'
-import { AxiosError } from 'axios'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import FormToolbar from '../../components/Forms/FormToolbar'
-import SpeciesInfoBar from './SpeciesInfoBar'
-import { ErrorBanner } from '../../components/Banners/ErrorBanner'
-import { setCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import {
+  addCompendiumChildData,
+  updateCompendiumChildData,
+} from '../../reducers/compendium/compendiumSlice'
+import Post from '../../components/Post/component'
+import { TSpecies } from '../../types'
 
 const Species: FunctionComponent = (): JSX.Element => {
 
@@ -29,50 +25,20 @@ const Species: FunctionComponent = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const initialState: any = {
-    name: '',
-    content: '',
-  }
-
-  const [loading, setLoading] = useState(false)
-  const [infoBarReady, setInfoBarReady] = useState(true) // todo turn to false after implementing species
-  const [error, setError] = useState<string>()
-  const [data, setData] = useState(initialState)
-
   const isNew: boolean = speciesId === 'new'
 
-  const fetch = (): void => {
-    setLoading(true)
-    viewSpecies(speciesId, { include: 'compendium' })
-      .then(response => {
-        setLoading(false)
-        setData(response.data.data)
-        dispatch(setSpeciesData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
-      })
-  }
+  const reset = () => dispatch(clearSpeciesData(undefined))
 
-  useEffect(() => {
+  const fetch = async () => {
     if (speciesId && !isNew) {
-      fetch()
+      await viewSpecies(speciesId, { include: 'compendium' })
+        .then(response => {
+          dispatch(setSpeciesData(response.data.data))
+        })
     }
     if (isNew) {
-      setData(initialState)
       dispatch(clearSpeciesData(undefined))
     }
-    return () => {
-      dispatch(clearSpeciesData(undefined))
-    }
-  }, [speciesId])
-
-  const validate = (): boolean => {
-    if (!data.name || !data.content) {
-      setError('Validation failed')
-      return false
-    }
-    return true;
   }
 
   const readyDataForRequest = (data: any): TSpeciesRequest => ({
@@ -80,71 +46,38 @@ const Species: FunctionComponent = (): JSX.Element => {
     content: data.content,
   })
 
-  const submit = (event: React.SyntheticEvent) => {
-    event.preventDefault()
-    if (!validate()) {
-      return;
-    }
-    setLoading(true)
-    const validated = readyDataForRequest(data);
+  const submit = (data: any): Promise<TSpecies> => {
+    const validated = readyDataForRequest(data)
     if (isNew) {
-      storeSpecies(compendiumId, validated)
+      return storeSpecies(compendiumId, validated)
         .then(({ data }) => {
-          setLoading(false)
-          setData(data.data)
           dispatch(setSpeciesData(data.data))
-          dispatch(setCompendiumData({ 'hasSpecies': true }))
-          // dispatch(addSpecies(data.data)) todo
+          dispatch(addCompendiumChildData({ field: 'species', data: data.data }))
           navigate(`/compendia/${compendiumId}/species/${data.data.slug}`)
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+          return data.data
         })
     } else {
-      updateSpecies(speciesId, validated)
-        .then(response => {
-          setLoading(false)
-          setData(response.data.data)
-          dispatch(updateSpeciesData(response.data.data))
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+      return updateSpecies(speciesId, validated)
+        .then(({ data }) => {
+          dispatch(updateSpeciesData(data.data))
+          dispatch(updateCompendiumChildData({ field: 'species', data: data.data }))
+          return data.data
         })
     }
   }
 
   return (
-    <LoadingWrapper loading={loading || !infoBarReady}>
-      <form onSubmit={submit}>
-        <HeaderWrapper page="Species">
-          <PageTitleField value={data.name}
-                          onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
-                          placeholder={'Species Name Here'}/>
-        </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-3">
-            <div className="w-full lg:w-1/4 px-3">
-              <SpeciesInfoBar
-                loading={loading || !infoBarReady}
-                onChange={(key, value) => setData((prevState: any) => ({ ...prevState, [key]: value }))}
-                setReady={setInfoBarReady}
-                data={data}
-              />
-            </div>
-            <div className="w-full lg:w-2/4 lg:ml-auto px-3">
-              {/*{error && <ErrorBanner errorText={error}/>}*/}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <Editor
-                initialValue={data.content}
-                onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
-                placeholder={'Write a simple description for the species.'}
-              />}
-            </div>
-          </div>
-        </ContentWrapper>
-      </form>
-    </LoadingWrapper>
-)
+    <Post
+      key={speciesId}
+      initialValues={species as TSpecies}
+      name={species.name || ''}
+      onSubmit={submit}
+      onFetch={fetch}
+      fields={[]}
+      ready={true}
+      resetData={reset}
+    />
+  )
 }
 
-export default Species;
+export default Species

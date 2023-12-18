@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
-import { TCharacter, TCompendium, TConcept, TLocation } from '../../types'
+import { TCharacter, TCompendium, TConcept, TFaction, TItem, TLanguage, TLocation, TTypesAllowed } from '../../types'
 import character from '../../pages/Compendium/Character'
 
 interface TState {
@@ -16,6 +16,11 @@ const initialState: TState = {
   }
 }
 
+type TCompendiumChildActionProps = {
+  field: 'characters'|'concepts'|'factions'|'items'|'languages'|'locations'|'species'
+  data: TTypesAllowed;
+}
+
 const compendiumSlice: Slice<TState> = createSlice({
   name: 'compendium',
   initialState,
@@ -26,43 +31,19 @@ const compendiumSlice: Slice<TState> = createSlice({
     updateCompendiumData: (state, action: PayloadAction<Partial<TCompendium>>) => {
       state.compendium = { ...state.compendium, ...action.payload }
     },
-    addCompendiumLocationData: (state, action: PayloadAction<TLocation>) => {
+    addCompendiumChildData: (state, action: PayloadAction<TCompendiumChildActionProps>) => {
+      const field = action.payload.field;
       state.compendium = {
         ...state.compendium,
-        hasLocations: true,
-        locations: [...(state.compendium.locations || []), action.payload]
+        [`has${field[0].toUpperCase() + field.slice(1)}`]: true,
+        [field]: [...(state.compendium[field] || []), action.payload.data]
       }
     },
-    updateCompendiumLocationData: (state, action: PayloadAction<TLocation>) => {
+    updateCompendiumChildData: (state, action: PayloadAction<TCompendiumChildActionProps>) => {
+      const field = action.payload.field;
       state.compendium = {
         ...state.compendium,
-        locations: state.compendium.locations?.map(location => location.id === action.payload.id ? { ...location, ...action.payload } : location)
-      }
-    },
-    addCompendiumCharacterData: (state, action: PayloadAction<TCharacter>) => {
-      state.compendium = {
-        ...state.compendium,
-        hasCharacters: true,
-        characters: [...(state.compendium.characters || []), action.payload]
-      }
-    },
-    updateCompendiumCharacterData: (state, action: PayloadAction<TCharacter>) => {
-      state.compendium = {
-        ...state.compendium,
-        characters: state.compendium.characters?.map(character => character.id === action.payload.id ? { ...character, ...action.payload } : character)
-      }
-    },
-    addCompendiumConceptData: (state, action: PayloadAction<TConcept>) => {
-      state.compendium = {
-        ...state.compendium,
-        hasConcepts: true,
-        concepts: [...(state.compendium.concepts || []), action.payload]
-      }
-    },
-    updateCompendiumConceptData: (state, action: PayloadAction<TConcept>) => {
-      state.compendium = {
-        ...state.compendium,
-        concepts: state.compendium.concepts?.map(concept => concept.id === action.payload.id ? { ...concept, ...action.payload } : concept)
+        [field]: state.compendium[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
       }
     },
     clearCompendiumData: (state) => {
@@ -75,12 +56,8 @@ export const {
   setCompendiumData,
   updateCompendiumData,
   clearCompendiumData,
-  addCompendiumLocationData,
-  updateCompendiumLocationData,
-  addCompendiumCharacterData,
-  updateCompendiumCharacterData,
-  addCompendiumConceptData,
-  updateCompendiumConceptData,
+  addCompendiumChildData,
+  updateCompendiumChildData,
 } = compendiumSlice.actions
 
 export default compendiumSlice.reducer

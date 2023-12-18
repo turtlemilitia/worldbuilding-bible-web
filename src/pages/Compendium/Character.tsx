@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumCharacterData,
-  updateCompendiumCharacterData
+  addCompendiumChildData,
+  updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TCharacter, TLocationType } from '../../types'
 import Post from '../../components/Post/component'
@@ -84,7 +84,7 @@ const Character: FunctionComponent = (): JSX.Element => {
       return storeCharacter(compendiumId, validated)
         .then(({ data }) => {
           dispatch(setCharacterData(data.data))
-          dispatch(addCompendiumCharacterData(data.data))
+          dispatch(addCompendiumChildData({ field: 'characters', data: data.data }))
           navigate(`/compendia/${compendiumId}/characters/${data.data.slug}`)
           return data.data
         })
@@ -92,7 +92,7 @@ const Character: FunctionComponent = (): JSX.Element => {
       return updateCharacter(characterId, validated)
         .then(({ data }) => {
           dispatch(updateCharacterData(data.data))
-          dispatch(updateCompendiumCharacterData(data.data))
+          dispatch(updateCompendiumChildData({ field: 'characters', data: data.data }))
           return data.data
         })
     }

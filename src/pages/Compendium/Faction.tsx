@@ -1,23 +1,19 @@
-import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import LoadingWrapper from '../../components/LoadingWrapper'
-import HeaderWrapper from '../../components/HeaderWrapper'
-import PageTitleField from '../../components/Forms/Fields/PageTitleField'
-import ContentWrapper from '../../components/ContentWrapper'
-import { Editor } from '../../components/Forms/Fields/Editor'
+import React, { FunctionComponent, JSX } from 'react'
 import { storeFaction, TFactionRequest, updateFaction, viewFaction } from '../../services/FactionService'
 import {
   clearFactionData,
   setFactionData,
   updateFactionData
 } from '../../reducers/compendium/faction/factionSlice'
-import { AxiosError } from 'axios'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import FormToolbar from '../../components/Forms/FormToolbar'
-import FactionInfoBar from './FactionInfoBar'
-import { ErrorBanner } from '../../components/Banners/ErrorBanner'
-import { setCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import {
+  addCompendiumChildData,
+  updateCompendiumChildData,
+} from '../../reducers/compendium/compendiumSlice'
+import Post from '../../components/Post/component'
+import { TFaction } from '../../types'
 
 const Faction: FunctionComponent = (): JSX.Element => {
 
@@ -29,50 +25,20 @@ const Faction: FunctionComponent = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const initialState: any = {
-    name: '',
-    content: '',
-  }
-
-  const [loading, setLoading] = useState(false)
-  const [infoBarReady, setInfoBarReady] = useState(true) // todo turn to false after implementing species
-  const [error, setError] = useState<string>()
-  const [data, setData] = useState(initialState)
-
   const isNew: boolean = factionId === 'new'
 
-  const fetch = (): void => {
-    setLoading(true)
-    viewFaction(factionId, { include: 'compendium' })
-      .then(response => {
-        setLoading(false)
-        setData(response.data.data)
-        dispatch(setFactionData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
-      })
-  }
+  const reset = () => dispatch(clearFactionData(undefined))
 
-  useEffect(() => {
+  const fetch = async () => {
     if (factionId && !isNew) {
-      fetch()
+      await viewFaction(factionId, { include: 'compendium' })
+        .then(response => {
+          dispatch(setFactionData(response.data.data))
+        })
     }
     if (isNew) {
-      setData(initialState)
       dispatch(clearFactionData(undefined))
     }
-    return () => {
-      dispatch(clearFactionData(undefined))
-    }
-  }, [factionId])
-
-  const validate = (): boolean => {
-    if (!data.name || !data.content) {
-      setError('Validation failed')
-      return false
-    }
-    return true
   }
 
   const readyDataForRequest = (data: any): TFactionRequest => ({
@@ -82,70 +48,37 @@ const Faction: FunctionComponent = (): JSX.Element => {
     content: data.content,
   })
 
-  const submit = (event: React.SyntheticEvent) => {
-    event.preventDefault()
-    if (!validate()) {
-      return
-    }
-    setLoading(true)
+  const submit = (data: any): Promise<TFaction> => {
     const validated = readyDataForRequest(data)
     if (isNew) {
-      storeFaction(compendiumId, validated)
+      return storeFaction(compendiumId, validated)
         .then(({ data }) => {
-          setLoading(false)
-          setData(data.data)
           dispatch(setFactionData(data.data))
-          dispatch(setCompendiumData({ 'hasFactions': true }))
-          // dispatch(addFaction(data.data)) todo
+          dispatch(addCompendiumChildData({ field: 'factions', data: data.data }))
           navigate(`/compendia/${compendiumId}/factions/${data.data.slug}`)
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+          return data.data
         })
     } else {
-      updateFaction(factionId, validated)
-        .then(response => {
-          setLoading(false)
-          setData(response.data.data)
-          dispatch(updateFactionData(response.data.data))
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+      return updateFaction(factionId, validated)
+        .then(({ data }) => {
+          dispatch(updateFactionData(data.data))
+          dispatch(updateCompendiumChildData({ field: 'factions', data: data.data }))
+          return data.data
         })
     }
   }
 
   return (
-    <LoadingWrapper loading={loading || !infoBarReady}>
-      <form onSubmit={submit}>
-        <HeaderWrapper page="Faction">
-          <PageTitleField value={data.name}
-                          onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
-                          placeholder={'Faction Name Here'}/>
-        </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-end -mx-3">
-            <div className="w-full lg:w-1/4 px-3">
-              <FactionInfoBar
-                loading={loading || !infoBarReady}
-                onChange={(key, value) => setData((prevState: any) => ({ ...prevState, [key]: value }))}
-                setReady={setInfoBarReady}
-                data={data}
-              />
-            </div>
-            <div className="w-full lg:w-2/4 lg:ml-auto px-3">
-              {/*{error && <ErrorBanner errorText={error}/>}*/}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <Editor
-                initialValue={data.content}
-                onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
-                placeholder={'Write a simple description for the faction.'}
-              />}
-            </div>
-          </div>
-        </ContentWrapper>
-      </form>
-    </LoadingWrapper>
+    <Post
+      key={factionId}
+      initialValues={faction as TFaction}
+      name={faction.name || ''}
+      onSubmit={submit}
+      onFetch={fetch}
+      fields={[]}
+      ready={true}
+      resetData={reset}
+    />
   )
 }
 

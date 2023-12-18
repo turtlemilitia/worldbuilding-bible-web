@@ -3,7 +3,10 @@ import { indexLocations, storeLocation, TLocationRequest, updateLocation, viewLo
 import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
-import { addCompendiumLocationData, updateCompendiumLocationData } from '../../reducers/compendium/compendiumSlice'
+import {
+  addCompendiumChildData,
+  updateCompendiumChildData,
+} from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post/component'
 import { TFields } from '../../components/InfoBar'
 import { indexLocationTypes } from '../../services/LocationTypeService'
@@ -76,7 +79,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       return storeLocation(compendiumId, validated, { include })
         .then(({ data }) => {
           dispatch(setLocationData(data.data))
-          dispatch(addCompendiumLocationData(data.data))
+          dispatch(addCompendiumChildData({ field: 'locations', data: data.data }))
           navigate(`/compendia/${compendiumId}/locations/${data.data.slug}`)
           return data.data
         })
@@ -84,7 +87,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       return updateLocation(locationId, validated, { include })
         .then(({ data }) => {
           dispatch(updateLocationData(data.data))
-          dispatch(updateCompendiumLocationData(data.data))
+          dispatch(updateCompendiumChildData({ field: 'locations', data: data.data }))
           return data.data
         })
     }

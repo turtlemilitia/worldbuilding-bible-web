@@ -4,8 +4,6 @@ import api from '../api'
 
 export interface TItemRequest {
   name: string;
-  age: string;
-  gender: string;
   content: string;
 }
 type TItemResponse = {
