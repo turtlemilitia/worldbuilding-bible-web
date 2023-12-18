@@ -10,6 +10,10 @@ const initialState: TState = {
   campaign: {
     name: '',
     content: '',
+    visibility: {
+      id: 1,
+      name: 'Public'
+    },
     hasSessions: false,
     sessions: []
   }

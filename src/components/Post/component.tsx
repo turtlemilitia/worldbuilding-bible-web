@@ -71,7 +71,13 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
       .catch((err: any) => {
         setLoading(false);
         if (err && err.message) {
-          setErrors(err.message)
+          if (err.response?.data?.errors) {
+            setErrors(err.response?.data?.errors)
+          } else {
+            setErrors({ error: err.message })
+          }
+        } else {
+          setErrors({ error: 'The was an error in the request.'});
         }
       });
   }

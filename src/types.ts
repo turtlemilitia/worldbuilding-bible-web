@@ -171,11 +171,17 @@ export type TNote = {
   content: string;
 }
 
+export type TCampaignVisibility = {
+  id: number;
+  name: string;
+}
+
 export type TCampaign = {
   id?: number;
   slug?: string;
   name: string;
   content: string;
+  visibility: TCampaignVisibility;
   hasSessions: boolean;
   sessions: TSession[];
 }

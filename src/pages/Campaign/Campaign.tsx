@@ -1,13 +1,14 @@
-import React, { FunctionComponent, JSX } from 'react'
+import React, { FunctionComponent, JSX, useState } from 'react'
 import Post from '../../components/Post/component'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { TCampaign } from '../../types'
+import { TCampaign, TLocationGovernmentType } from '../../types'
 import { updateCampaignData } from '../../reducers/campaign/campaignSlice'
-import { storeCampaign, updateCampaign } from '../../services/CampaignService'
+import { storeCampaign, TCampaignRequest, updateCampaign } from '../../services/CampaignService'
 import { viewCampaign } from '../../services/CampaignService'
 import { addCampaign } from '../../reducers/campaign/campaignsIndexSlice'
+import { TFields } from '../../components/InfoBar'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 
@@ -21,9 +22,16 @@ const Campaign: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = campaignId === 'new'
 
+  const readyDataForRequest = (data: any): TCampaignRequest => ({
+    name: data.name,
+    content: data.content,
+    visibility: data.visibility.id
+  })
+
   const handleSubmit = (data: any): Promise<TCampaign> => {
+    const validated = readyDataForRequest(data)
     if (isNew) {
-      return storeCampaign(data)
+      return storeCampaign(validated)
         .then(({ data }) => {
           dispatch(updateCampaignData(data.data))
           dispatch(addCampaign(data.data))
@@ -31,15 +39,13 @@ const Campaign: FunctionComponent = (): JSX.Element => {
           return data.data
         })
     } else {
-      return updateCampaign(campaignId, data)
+      return updateCampaign(campaignId, validated)
         .then(({ data }) => {
           dispatch(updateCampaignData(data.data))
-          return data.data;
+          return data.data
         })
     }
   }
-
-  const handleReset = () => {};
 
   const handleFetch = async () => {
     if (campaignId && !isNew && !campaign) {
@@ -54,6 +60,20 @@ const Campaign: FunctionComponent = (): JSX.Element => {
 
   }
 
+  const fields: TFields[] = [
+    {
+      name: 'visibility',
+      label: 'Visibiliy',
+      type: 'select',
+      options: [
+        { id: 1, name: 'Public' },
+        { id: 2, name: 'Private' },
+      ]
+    }
+  ]
+
+  const handleReset = () => {}
+
   return (
     <Post
       key={campaignId}
@@ -61,7 +81,7 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       onSubmit={handleSubmit}
       onFetch={handleFetch}
       ready={true}
-      fields={[]}
+      fields={fields}
       resetData={handleReset}
     />
   )

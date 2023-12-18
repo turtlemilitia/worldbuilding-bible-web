@@ -8,10 +8,9 @@ import {
   addCampaignChildData,
   updateCampaignChildData
 } from '../../reducers/campaign/campaignSlice'
-import { TSession, TLocationType } from '../../types'
+import { TSession } from '../../types'
 import Post from '../../components/Post/component'
 import { TFields } from '../../components/InfoBar'
-import { indexSpecies } from '../../services/SpeciesService'
 
 const Session: FunctionComponent = (): JSX.Element => {
 
@@ -26,9 +25,6 @@ const Session: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = sessionId === 'new'
 
-  const [ready, setReady] = useState<boolean>(false)
-  const [species, setSpecies] = useState<TLocationType[]>([])
-
   const reset = () => dispatch(clearSessionData(undefined));
 
   const fetch = async () => {
@@ -42,22 +38,6 @@ const Session: FunctionComponent = (): JSX.Element => {
       reset()
     }
   }
-
-  useEffect(() => {
-
-    if (campaign.slug) {
-      indexSpecies(campaign.slug).then(response => setSpecies(response.data.data))
-    }
-
-  }, [campaign.slug])
-
-  useEffect(() => {
-
-    if (species.length) {
-      setReady(true)
-    }
-
-  }, [species])
 
   useEffect(() => {
     if (sessionId && !isNew) {
@@ -96,29 +76,12 @@ const Session: FunctionComponent = (): JSX.Element => {
     }
   }
 
-  const fields: TFields[] = [
-    {
-      name: 'age',
-      label: 'Age',
-      type: 'number'
-    },
-    {
-      name: 'gender',
-      label: 'Gender',
-      type: 'text'
-    },
-    {
-      name: 'species',
-      label: 'Species',
-      type: 'select',
-      options: species
-    }
-  ]
+  const fields: TFields[] = []
 
   return (
     <Post
       key={sessionId}
-      ready={ready}
+      ready={true}
       initialValues={session as TSession}
       onSubmit={submit}
       onFetch={fetch}

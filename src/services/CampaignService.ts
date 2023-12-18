@@ -2,6 +2,11 @@ import { AxiosResponse } from 'axios'
 import { TCampaign } from '../types'
 import api from '../api'
 
+export interface TCampaignRequest {
+  name: string;
+  content: string;
+  visibility: number;
+}
 interface TCampaignResponse {
   data: TCampaign;
 }
@@ -21,13 +26,13 @@ export const viewCampaign = (slug: string): Promise<AxiosResponse<TCampaignRespo
 
 }
 
-export const storeCampaign = (data: TCampaign): Promise<AxiosResponse<TCampaignResponse>> => {
+export const storeCampaign = (data: TCampaignRequest): Promise<AxiosResponse<TCampaignResponse>> => {
 
   return api.post(`/api/campaigns`, data)
 
 }
 
-export const updateCampaign = (slug: string, data: Partial<TCampaign>): Promise<AxiosResponse<TCampaignResponse>> => {
+export const updateCampaign = (slug: string, data: Partial<TCampaignRequest>): Promise<AxiosResponse<TCampaignResponse>> => {
   return api.put(`/api/campaigns/${slug}`, data)
 }
 
