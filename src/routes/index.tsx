@@ -24,6 +24,8 @@ import Note from '../pages/Notebook/Note/Note'
 import CampaignsWrapper from '../pages/Campaign/CampaignsWrapper'
 import Campaign from '../pages/Campaign/Campaign'
 import Session from '../pages/Campaign/Session'
+import Religion from '../pages/Compendium/Religion'
+import Currency from '../pages/Compendium/Currency'
 
 
 const Routes = (): JSX.Element => {
@@ -93,6 +95,14 @@ const Routes = (): JSX.Element => {
             {
               path: '/compendia/:compendiumId/languages/:languageId',
               element: <Language/>,
+            },
+            {
+              path: '/compendia/:compendiumId/religions/:religionId',
+              element: <Religion/>,
+            },
+            {
+              path: '/compendia/:compendiumId/currencies/:currencyId',
+              element: <Currency/>,
             },
           ]
         },

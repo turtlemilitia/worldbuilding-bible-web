@@ -17,6 +17,8 @@ import noteSlice from './reducers/notebook/note/noteSlice'
 import sessionSlice from './reducers/campaign/session/sessionSlice'
 import campaignSlice from './reducers/campaign/campaignSlice'
 import campaignsIndexSlice from './reducers/campaign/campaignsIndexSlice'
+import religionSlice from './reducers/compendium/religion/religionSlice'
+import currencySlice from './reducers/compendium/currency/currencySlice'
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +38,8 @@ export const store = configureStore({
     item: itemSlice,
     faction: factionSlice,
     language: languageSlice,
+    religion: religionSlice,
+    currency: currencySlice,
     notebook: notebookSlice,
     note: noteSlice,
     // campaign
