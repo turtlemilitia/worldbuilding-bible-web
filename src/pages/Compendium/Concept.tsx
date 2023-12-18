@@ -70,7 +70,6 @@ const Concept: FunctionComponent = (): JSX.Element => {
     <Post
       key={conceptId}
       initialValues={concept as TConcept}
-      name={concept.name || ''}
       onSubmit={submit}
       onFetch={fetch}
       fields={[]}

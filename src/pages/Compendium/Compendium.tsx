@@ -65,7 +65,6 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     <Post
       key={compendiumId}
       initialValues={compendium as TCompendium}
-      name={compendium.name}
       onSubmit={submit}
       onFetch={fetch}
       ready={true}

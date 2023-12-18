@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
-import { TCampaign, TSession } from '../../types'
+import { TCampaign, TSession, TTypesAllowed } from '../../types'
 
 interface TState {
   campaign: TCampaign;
@@ -15,6 +15,11 @@ const initialState: TState = {
   }
 }
 
+type TCampaignChildActionProps = {
+  field: 'sessions'
+  data: TSession;
+}
+
 const campaignSlice: Slice<TState> = createSlice({
   name: 'campaign',
   initialState,
@@ -25,17 +30,19 @@ const campaignSlice: Slice<TState> = createSlice({
     updateCampaignData: (state, action: PayloadAction<Partial<TCampaign>>) => {
       state.campaign = { ...state.campaign, ...action.payload }
     },
-    addCampaignSessionData: (state, action: PayloadAction<TSession>) => {
+    addCampaignChildData: (state, action: PayloadAction<TCampaignChildActionProps>) => {
+      const field = action.payload.field;
       state.campaign = {
         ...state.campaign,
-        hasSessions: true,
-        sessions: [...(state.campaign.sessions || []), action.payload]
+        [`has${field[0].toUpperCase() + field.slice(1)}`]: true,
+        [field]: [...(state.campaign[field] || []), action.payload.data]
       }
     },
-    updateCampaignSessionData: (state, action: PayloadAction<TSession>) => {
+    updateCampaignChildData: (state, action: PayloadAction<TCampaignChildActionProps>) => {
+      const field = action.payload.field;
       state.campaign = {
         ...state.campaign,
-        sessions: state.campaign.sessions?.map(session => session.id === action.payload.id ? { ...session, ...action.payload } : session)
+        [field]: state.campaign[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
       }
     },
     clearCampaignData: (state) => {
@@ -48,8 +55,8 @@ export const {
   setCampaignData,
   updateCampaignData,
   clearCampaignData,
-  addCampaignSessionData,
-  updateCampaignSessionData
+  addCampaignChildData,
+  updateCampaignChildData
 } = campaignSlice.actions
 
 export default campaignSlice.reducer

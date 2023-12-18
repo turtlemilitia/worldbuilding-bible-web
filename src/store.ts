@@ -15,6 +15,8 @@ import languageSlice from './reducers/compendium/language/languageSlice'
 import notebookSlice from './reducers/notebook/notebookSlice'
 import noteSlice from './reducers/notebook/note/noteSlice'
 import sessionSlice from './reducers/campaign/session/sessionSlice'
+import campaignSlice from './reducers/campaign/campaignSlice'
+import campaignsIndexSlice from './reducers/campaign/campaignsIndexSlice'
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +24,7 @@ export const store = configureStore({
     // indexes
     systems: systemsIndexSlice,
     compendia: compendiaIndexSlice,
+    campaigns: campaignsIndexSlice,
     notebooks: notebooksIndexSlice,
     // individual
     system: systemSlice,
@@ -36,6 +39,7 @@ export const store = configureStore({
     notebook: notebookSlice,
     note: noteSlice,
     // campaign
+    campaign: campaignSlice,
     session: sessionSlice,
   }
 })

@@ -72,7 +72,6 @@ const Faction: FunctionComponent = (): JSX.Element => {
     <Post
       key={factionId}
       initialValues={faction as TFaction}
-      name={faction.name || ''}
       onSubmit={submit}
       onFetch={fetch}
       fields={[]}

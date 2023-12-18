@@ -144,7 +144,6 @@ const Location: FunctionComponent = (): JSX.Element => {
       key={locationId}
       ready={ready}
       initialValues={location as TLocation}
-      name={location.name || ''}
       onSubmit={submit}
       onFetch={fetch}
       fields={fields}

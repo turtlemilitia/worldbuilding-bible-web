@@ -70,7 +70,6 @@ const Item: FunctionComponent = (): JSX.Element => {
     <Post
       key={itemId}
       initialValues={item as TItem}
-      name={item.name || ''}
       onSubmit={submit}
       onFetch={fetch}
       fields={[]}

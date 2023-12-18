@@ -14,6 +14,7 @@ const Menu = (): JSX.Element => {
 
   const { systems } = useAppSelector((state: RootState) => state.systems) // redux
   const { compendia } = useAppSelector((state: RootState) => state.compendia) // redux
+  const { campaigns } = useAppSelector((state: RootState) => state.campaigns) // redux
   const { notebooks } = useAppSelector((state: RootState) => state.notebooks) // redux
 
   const menuItems: MenuItemInterface[] = [
@@ -47,7 +48,17 @@ const Menu = (): JSX.Element => {
     },
     {
       title: 'Campaigns',
-      to: '/campaigns'
+      to: '/campaigns',
+      children: [
+        ...campaigns?.map(({ slug, name }) => ({
+          title: name,
+          to: `/campaigns/${slug}`
+        })) || [],
+        {
+          title: 'Create new',
+          to: '/campaigns/new',
+        }
+      ]
     },
     {
       title: 'Notes',

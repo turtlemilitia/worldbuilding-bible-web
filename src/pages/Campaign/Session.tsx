@@ -1,64 +1,69 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import LoadingWrapper from '../../components/LoadingWrapper'
-import HeaderWrapper from '../../components/HeaderWrapper'
-import PageTitle from '../../components/Forms/Fields/PageTitleField'
-import ContentWrapper from '../../components/ContentWrapper'
-import { Editor } from '../../components/Forms/Fields/Editor'
 import { storeSession, TSessionRequest, updateSession, viewSession } from '../../services/SessionService'
-import {
-  clearSessionData,
-  setSessionData,
-  updateSessionData
-} from '../../reducers/campaign/session/sessionSlice'
-import { AxiosError } from 'axios'
+import { clearSessionData, setSessionData, updateSessionData } from '../../reducers/campaign/session/sessionSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import FormToolbar from '../../components/Forms/FormToolbar'
-import { ErrorBanner } from '../../components/Banners/ErrorBanner'
-import { setCampaignData } from '../../reducers/campaign/campaignSlice'
+import {
+  addCampaignChildData,
+  updateCampaignChildData
+} from '../../reducers/campaign/campaignSlice'
+import { TSession, TLocationType } from '../../types'
+import Post from '../../components/Post/component'
+import { TFields } from '../../components/InfoBar'
+import { indexSpecies } from '../../services/SpeciesService'
 
 const Session: FunctionComponent = (): JSX.Element => {
+
+  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { session } = useAppSelector((state: RootState) => state.session) // redux
 
   const dispatch = useAppDispatch() // redux
 
   const { campaignId, sessionId } = useParams() as { campaignId: string; sessionId: string } // router
 
-  const { session } = useAppSelector((state: RootState) => state.session) // redux
-
   const navigate = useNavigate()
-
-  const initialState: any = {
-    name: '',
-    content: '',
-  }
-
-  const [loading, setLoading] = useState(false)
-  const [infoBarReady, setInfoBarReady] = useState(true) // todo turn to false after implementing species
-  const [error, setError] = useState<string>()
-  const [data, setData] = useState(initialState)
 
   const isNew: boolean = sessionId === 'new'
 
-  const fetch = (): void => {
-    setLoading(true)
-    viewSession(sessionId, { include: 'campaign' })
-      .then(response => {
-        setLoading(false)
-        setData(response.data.data)
-        dispatch(setSessionData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
-      })
+  const [ready, setReady] = useState<boolean>(false)
+  const [species, setSpecies] = useState<TLocationType[]>([])
+
+  const reset = () => dispatch(clearSessionData(undefined));
+
+  const fetch = async () => {
+    if (sessionId && !isNew) {
+      await viewSession(sessionId, { include: 'campaign' })
+        .then(response => {
+          dispatch(setSessionData(response.data.data))
+        })
+    }
+    if (isNew) {
+      reset()
+    }
   }
+
+  useEffect(() => {
+
+    if (campaign.slug) {
+      indexSpecies(campaign.slug).then(response => setSpecies(response.data.data))
+    }
+
+  }, [campaign.slug])
+
+  useEffect(() => {
+
+    if (species.length) {
+      setReady(true)
+    }
+
+  }, [species])
 
   useEffect(() => {
     if (sessionId && !isNew) {
       fetch()
     }
     if (isNew) {
-      setData(initialState)
       dispatch(clearSessionData(undefined))
     }
     return () => {
@@ -66,80 +71,60 @@ const Session: FunctionComponent = (): JSX.Element => {
     }
   }, [sessionId])
 
-  const validate = (): boolean => {
-    if (!data.name || !data.content) {
-      setError('Validation failed')
-      return false
-    }
-    return true
-  }
-
   const readyDataForRequest = (data: any): TSessionRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (event: React.SyntheticEvent) => {
-    event.preventDefault()
-    if (!validate()) {
-      return
-    }
-    setLoading(true)
+  const submit = (data: any): Promise<TSession> => {
     const validated = readyDataForRequest(data)
     if (isNew) {
-      storeSession(campaignId, validated)
+      return storeSession(campaignId, validated)
         .then(({ data }) => {
-          setLoading(false)
-          setData(data.data)
           dispatch(setSessionData(data.data))
-          dispatch(setCampaignData({ 'hasSessions': true }))
-          // dispatch(addSession(data.data)) todo
+          dispatch(addCampaignChildData({ field: 'sessions', data: data.data }))
           navigate(`/campaigns/${campaignId}/sessions/${data.data.slug}`)
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+          return data.data
         })
     } else {
-      updateSession(sessionId, validated)
-        .then(response => {
-          setLoading(false)
-          setData(response.data.data)
-          dispatch(updateSessionData(response.data.data))
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+      return updateSession(sessionId, validated)
+        .then(({ data }) => {
+          dispatch(updateSessionData(data.data))
+          dispatch(updateCampaignChildData({ field: 'sessions', data: data.data }))
+          return data.data
         })
     }
   }
 
-  return (
-    <LoadingWrapper loading={loading || !infoBarReady}>
-      <form onSubmit={submit}>
-        <HeaderWrapper page="Session">
-          <PageTitle value={data.name}
-                     onChange={(value) => setData((prevState: any) => ({ ...prevState, name: value }))}
-                     placeholder={'Session Name Here'}/>
-        </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
-            <div className="w-full lg:w-1/4 px-3">
+  const fields: TFields[] = [
+    {
+      name: 'age',
+      label: 'Age',
+      type: 'number'
+    },
+    {
+      name: 'gender',
+      label: 'Gender',
+      type: 'text'
+    },
+    {
+      name: 'species',
+      label: 'Species',
+      type: 'select',
+      options: species
+    }
+  ]
 
-            </div>
-            <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
-              {/*{error && <ErrorBanner errorText={error}/>}*/}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <Editor
-                initialValue={data.content}
-                onChange={(value) => setData((prevState: any) => ({ ...prevState, content: value }))}
-                placeholder={'Write a simple description for the session.'}
-              />}
-            </div>
-            <div className="flex lg:w-1/4 lg:px-3"></div>
-            {/*spacer*/}
-          </div>
-        </ContentWrapper>
-      </form>
-    </LoadingWrapper>
+  return (
+    <Post
+      key={sessionId}
+      ready={ready}
+      initialValues={session as TSession}
+      onSubmit={submit}
+      onFetch={fetch}
+      fields={fields}
+      resetData={reset}
+    />
   )
 }
 

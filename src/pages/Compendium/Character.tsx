@@ -122,7 +122,6 @@ const Character: FunctionComponent = (): JSX.Element => {
       key={characterId}
       ready={ready}
       initialValues={character as TCharacter}
-      name={character.name || ''}
       onSubmit={submit}
       onFetch={fetch}
       fields={fields}

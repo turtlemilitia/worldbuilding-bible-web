@@ -70,7 +70,6 @@ const Language: FunctionComponent = (): JSX.Element => {
     <Post
       key={languageId}
       initialValues={language as TLanguage}
-      name={language.name || ''}
       onSubmit={submit}
       onFetch={fetch}
       fields={[]}

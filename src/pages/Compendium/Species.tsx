@@ -70,7 +70,6 @@ const Species: FunctionComponent = (): JSX.Element => {
     <Post
       key={speciesId}
       initialValues={species as TSpecies}
-      name={species.name || ''}
       onSubmit={submit}
       onFetch={fetch}
       fields={[]}

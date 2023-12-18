@@ -9,8 +9,6 @@ import {
   CircleEllipsisIcon, CircleIcon,
   CoinsIcon,
   FlagIcon,
-  FlagOffIcon,
-  FlagTriangleRightIcon,
   FlowerIcon,
   LanguagesIcon,
   MapIcon,
@@ -32,7 +30,12 @@ import {
   TConcept,
   TFaction,
   TLanguage,
-  TReligion, TPantheon, TCurrency, TStory, TNaturalResource, TPlane
+  TReligion,
+  TPantheon,
+  TCurrency,
+  TStory,
+  TNaturalResource,
+  TPlane
 } from '../../types'
 import { indexLocations } from '../../services/LocationService'
 import { clearCompendiumData, setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'

@@ -16,7 +16,6 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     ready,
     pageTypeName,
     contentPlaceholder,
-    name,
     fields,
     onSubmit,
     onFetch,

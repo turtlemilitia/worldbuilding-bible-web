@@ -21,6 +21,9 @@ import Language from '../pages/Compendium/Language'
 import Notebook from '../pages/Notebook/Notebook'
 import NotebooksWrapper from '../pages/Notebook/NotebooksWrapper'
 import Note from '../pages/Notebook/Note/Note'
+import CampaignsWrapper from '../pages/Campaign/CampaignsWrapper'
+import Campaign from '../pages/Campaign/Campaign'
+import Session from '../pages/Campaign/Session'
 
 
 const Routes = (): JSX.Element => {
@@ -95,7 +98,17 @@ const Routes = (): JSX.Element => {
         },
         {
           path: '/campaigns',
-          element: <>TODO: Campaigns</> // sidebar with sessions, encounters, quests, ...
+          element: <CampaignsWrapper/>, // sidebar with sessions, encounters, quests, ...
+          children: [
+            {
+              path: '/campaigns/:campaignId',
+              element: <Campaign/>
+            },
+            {
+              path: '/campaigns/:campaignId/sessions/:sessionId',
+              element: <Session/>
+            }
+          ]
         },
         {
           path: '/tools',
