@@ -97,7 +97,7 @@ const Location: FunctionComponent = (): JSX.Element => {
     {
       name: 'aliases',
       label: 'Aliases',
-      type: 'text'
+      type: 'text' // todo this is supposed to be a select-create
     },
     {
       name: 'type',

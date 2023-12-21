@@ -22,7 +22,10 @@ module.exports = {
       },
       scale: {
         '-100': '-1'
-      }
+      },
+      transitionProperty: {
+        'width': 'width'
+      },
     },
     fontFamily: {
       'display': ['Playfair Display', ...defaultTheme.fontFamily.sans],
