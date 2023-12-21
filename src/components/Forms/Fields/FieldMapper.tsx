@@ -70,7 +70,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
             {type === 'asyncSelect' && search && (
               <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search}/>
             )}
-            {['text', 'email', 'password'].includes(type) && (
+            {['text', 'number', 'email', 'password'].includes(type) && (
               <TextField
                 value={currentValue}
                 onChange={(value) => onChange(name, value)}
