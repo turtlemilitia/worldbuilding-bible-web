@@ -26,6 +26,14 @@ import Campaign from '../pages/Campaign/Campaign'
 import Session from '../pages/Campaign/Session'
 import Religion from '../pages/Compendium/Religion'
 import Currency from '../pages/Compendium/Currency'
+import Deity from '../pages/Compendium/Deity'
+import Encounter from '../pages/Compendium/Encounter'
+import NaturalResource from '../pages/Compendium/NaturalResource'
+import Plane from '../pages/Compendium/Plane'
+import Quest from '../pages/Compendium/Quest'
+import Spell from '../pages/Compendium/Spell'
+import Story from '../pages/Compendium/Story'
+import Pantheon from '../pages/Compendium/Pantheon'
 
 
 const Routes = (): JSX.Element => {
@@ -69,40 +77,72 @@ const Routes = (): JSX.Element => {
               element: <Compendium/>,
             },
             {
-              path: '/compendia/:compendiumId/concepts/:conceptId',
-              element: <Concept/>,
-            },
-            {
-              path: '/compendia/:compendiumId/species/:speciesId',
-              element: <Species/>,
-            },
-            {
-              path: '/compendia/:compendiumId/locations/:locationId',
-              element: <Location/>,
-            },
-            {
               path: '/compendia/:compendiumId/characters/:characterId',
               element: <Character/>,
             },
             {
-              path: '/compendia/:compendiumId/items/:itemId',
-              element: <Item/>,
+              path: '/compendia/:compendiumId/concepts/:conceptId',
+              element: <Concept/>,
+            },
+            {
+              path: '/compendia/:compendiumId/currencies/:currencyId',
+              element: <Currency/>,
+            },
+            {
+              path: '/compendia/:compendiumId/deities/:deityId',
+              element: <Deity/>,
+            },
+            {
+              path: '/compendia/:compendiumId/encounters/:encounterId',
+              element: <Encounter/>,
             },
             {
               path: '/compendia/:compendiumId/factions/:factionId',
               element: <Faction/>,
             },
             {
+              path: '/compendia/:compendiumId/items/:itemId',
+              element: <Item/>,
+            },
+            {
               path: '/compendia/:compendiumId/languages/:languageId',
               element: <Language/>,
+            },
+            {
+              path: '/compendia/:compendiumId/locations/:locationId',
+              element: <Location/>,
+            },
+            {
+              path: '/compendia/:compendiumId/naturalResources/:naturalResourceId',
+              element: <NaturalResource/>,
+            },
+            {
+              path: '/compendia/:compendiumId/pantheons/:pantheonId',
+              element: <Pantheon/>,
+            },
+            {
+              path: '/compendia/:compendiumId/planes/:planeId',
+              element: <Plane/>,
+            },
+            {
+              path: '/compendia/:compendiumId/quests/:questId',
+              element: <Quest/>,
             },
             {
               path: '/compendia/:compendiumId/religions/:religionId',
               element: <Religion/>,
             },
             {
-              path: '/compendia/:compendiumId/currencies/:currencyId',
-              element: <Currency/>,
+              path: '/compendia/:compendiumId/species/:speciesId',
+              element: <Species/>,
+            },
+            {
+              path: '/compendia/:compendiumId/spells/:spellId',
+              element: <Spell/>,
+            },
+            {
+              path: '/compendia/:compendiumId/stories/:storyId',
+              element: <Story/>,
             },
           ]
         },

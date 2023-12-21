@@ -19,6 +19,14 @@ import campaignSlice from './reducers/campaign/campaignSlice'
 import campaignsIndexSlice from './reducers/campaign/campaignsIndexSlice'
 import religionSlice from './reducers/compendium/religion/religionSlice'
 import currencySlice from './reducers/compendium/currency/currencySlice'
+import storySlice from './reducers/compendium/story/storySlice'
+import deitySlice from './reducers/compendium/deity/deitySlice'
+import encounterSlice from './reducers/compendium/encounter/encounterSlice'
+import questSlice from './reducers/compendium/quest/questSlice'
+import spellSlice from './reducers/compendium/spell/spellSlice'
+import naturalResourceSlice from './reducers/compendium/naturalResource/naturalResourceSlice'
+import planeSlice from './reducers/compendium/plane/planeSlice'
+import pantheonSlice from './reducers/compendium/pantheon/pantheonSlice'
 
 export const store = configureStore({
   reducer: {
@@ -31,15 +39,23 @@ export const store = configureStore({
     // individual
     system: systemSlice,
     compendium: compendiumSlice,
-    concept: conceptSlice,
-    species: speciesSlice,
-    location: locationSlice,
     character: characterSlice,
-    item: itemSlice,
-    faction: factionSlice,
-    language: languageSlice,
-    religion: religionSlice,
+    concept: conceptSlice,
     currency: currencySlice,
+    deity: deitySlice,
+    encounter: encounterSlice,
+    faction: factionSlice,
+    item: itemSlice,
+    language: languageSlice,
+    location: locationSlice,
+    naturalResource: naturalResourceSlice,
+    pantheon: pantheonSlice,
+    plane: planeSlice,
+    quest: questSlice,
+    religion: religionSlice,
+    species: speciesSlice,
+    spell: spellSlice,
+    story: storySlice,
     notebook: notebookSlice,
     note: noteSlice,
     // campaign

@@ -12,12 +12,12 @@ import {
   FlowerIcon,
   LanguagesIcon,
   MapIcon,
-  MapPinIcon,
+  MapPinIcon, MedalIcon,
   PersonStandingIcon,
   ShieldIcon,
-  StarIcon, SunIcon,
-  SwordIcon,
-  UserIcon
+  StarIcon, SunIcon, SunriseIcon,
+  SwordIcon, SwordsIcon,
+  UserIcon, Wand2Icon, WandIcon
 } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
@@ -35,7 +35,7 @@ import {
   TCurrency,
   TStory,
   TNaturalResource,
-  TPlane
+  TPlane, TDeity, TEncounter, TSpell, TQuest
 } from '../../types'
 import { indexLocations } from '../../services/LocationService'
 import { clearCompendiumData, setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
@@ -54,6 +54,7 @@ import { indexNaturalResources } from '../../services/NaturalResourceService'
 import { indexPlanes } from '../../services/PlaneService'
 import { viewCompendium } from '../../services/CompendiumService'
 import LoadingWrapper from '../../components/LoadingWrapper'
+import { indexDeities } from '../../services/DeityService'
 
 
 const mapConcept = (compendium: TCompendium, concept: TConcept): SidebarItemInterface => ({
@@ -110,7 +111,7 @@ const mapReligion = (compendium: TCompendium, religion: TReligion): SidebarItemI
 const mapPantheon = (compendium: TCompendium, pantheon: TPantheon): SidebarItemInterface => ({
   title: pantheon.name,
   to: `/compendia/${compendium?.slug}/pantheons/${pantheon.slug}`,
-  icon: (props) => <ChurchIcon {...props}/>,
+  icon: (props) => <SunIcon {...props}/>,
 })
 
 const mapCurrency = (compendium: TCompendium, currency: TCurrency): SidebarItemInterface => ({
@@ -135,6 +136,30 @@ const mapPlane = (compendium: TCompendium, plane: TPlane): SidebarItemInterface 
   title: plane.name,
   to: `/compendia/${compendium?.slug}/planes/${plane.slug}`,
   icon: (props) => <CircleIcon {...props}/>,
+})
+
+const mapDeity = (compendium: TCompendium, deity: TDeity): SidebarItemInterface => ({
+  title: deity.name,
+  to: `/compendia/${compendium?.slug}/deities/${deity.slug}`,
+  icon: (props) => <PersonStandingIcon {...props}/>,
+})
+
+const mapQuest = (compendium: TCompendium, quest: TQuest): SidebarItemInterface => ({
+  title: quest.name,
+  to: `/compendia/${compendium?.slug}/quests/${quest.slug}`,
+  icon: (props) => <StarIcon {...props}/>,
+})
+
+const mapSpell = (compendium: TCompendium, spell: TSpell): SidebarItemInterface => ({
+  title: spell.name,
+  to: `/compendia/${compendium?.slug}/spells/${spell.slug}`,
+  icon: (props) => <Wand2Icon {...props}/>,
+})
+
+const mapEncounter = (compendium: TCompendium, encounter: TEncounter): SidebarItemInterface => ({
+  title: encounter.name,
+  to: `/compendia/${compendium?.slug}/encounters/${encounter.slug}`,
+  icon: (props) => <SwordsIcon {...props}/>,
 })
 
 const CompendiaWrapper = (): JSX.Element => {
@@ -235,23 +260,57 @@ const CompendiaWrapper = (): JSX.Element => {
                     }
                   },
                   {
-                    title: 'Religions',
-                    hasChildren: compendium.hasReligions,
-                    addNewLink: `/compendia/${compendium.slug}/religions/new`,
-                    icon: (props) => <ChurchIcon {...props}/>,
-                    children: compendium.religions?.map(currency => mapReligion(compendium, currency)),
-                    loadChildren: () => {
-                      indexReligions(compendium.slug)
-                        .then(({ data }) => {
-                          dispatch(updateCompendiumData({religions: data.data}))
-                        })
-                    }
+                    title: 'Religion',
+                    hasChildren: true,
+                    icon: (props) => <SunIcon {...props}/>,
+                    startOpen: true,
+                    children: [
+                      {
+                        title: 'Religions',
+                        hasChildren: compendium.hasReligions,
+                        addNewLink: `/compendia/${compendium.slug}/religions/new`,
+                        icon: (props) => <ChurchIcon {...props}/>,
+                        children: compendium.religions?.map(currency => mapReligion(compendium, currency)),
+                        loadChildren: () => {
+                          indexReligions(compendium.slug)
+                            .then(({ data }) => {
+                              dispatch(updateCompendiumData({religions: data.data}))
+                            })
+                        }
+                      },
+                      {
+                        title: 'Pantheons',
+                        hasChildren: compendium.hasPantheons,
+                        addNewLink: `/compendia/${compendium.slug}/pantheons/new`,
+                        icon: (props) => <SunIcon {...props}/>,
+                        children: compendium.pantheons?.map(pantheon => mapPantheon(compendium, pantheon)),
+                        loadChildren: () => {
+                          indexPantheons(compendium.slug)
+                            .then(({ data }) => {
+                              dispatch(updateCompendiumData({ pantheons: data.data }))
+                            })
+                        }
+                      },
+                      {
+                        title: 'Deities',
+                        hasChildren: compendium.hasDeities,
+                        addNewLink: `/compendia/${compendium.slug}/deities/new`,
+                        icon: (props) => <PersonStandingIcon {...props}/>,
+                        children: compendium.deities?.map(deity => mapDeity(compendium, deity)),
+                        loadChildren: () => {
+                          indexDeities(compendium.slug)
+                            .then(({ data }) => {
+                              dispatch(updateCompendiumData({ deities: data.data }))
+                            })
+                        }
+                      },
+                    ]
                   },
                   {
                     title: 'Currencies',
                     hasChildren: compendium.hasCurrencies,
                     addNewLink: `/compendia/${compendium.slug}/currencies/new`,
-                    icon: (props) => <LanguagesIcon {...props}/>,
+                    icon: (props) => <CoinsIcon {...props}/>,
                     children: compendium.currencies?.map(currency => mapCurrency(compendium, currency)),
                     loadChildren: () => {
                       indexCurrencies(compendium.slug)
@@ -272,19 +331,6 @@ const CompendiaWrapper = (): JSX.Element => {
                   indexFactions(compendium.slug)
                     .then(({ data }) => {
                       dispatch(updateCompendiumData({factions: data.data}))
-                    })
-                }
-              },
-              {
-                title: 'Pantheons',
-                hasChildren: compendium.hasPantheons,
-                addNewLink: `/compendia/${compendium.slug}/pantheons/new`,
-                icon: (props) => <SunIcon {...props}/>,
-                children: compendium.pantheons?.map(pantheon => mapPantheon(compendium, pantheon)),
-                loadChildren: () => {
-                  indexPantheons(compendium.slug)
-                    .then(({ data }) => {
-                      dispatch(updateCompendiumData({pantheons: data.data}))
                     })
                 }
               },
@@ -315,19 +361,6 @@ const CompendiaWrapper = (): JSX.Element => {
                 }
               },
               {
-                title: 'Lore & History',
-                hasChildren: compendium.hasStories,
-                addNewLink: `/compendia/${compendium.slug}/stories/new`,
-                icon: (props) => <BookIcon {...props}/>,
-                children: compendium.stories?.map(story => mapStory(compendium, story)),
-                loadChildren: () => {
-                  indexStories(compendium.slug)
-                    .then(({ data }) => {
-                      dispatch(updateCompendiumData({stories: data.data}))
-                    })
-                }
-              },
-              {
                 title: 'Natural Resources',
                 hasChildren: compendium.hasNaturalResources,
                 addNewLink: `/compendia/${compendium.slug}/naturalResources/new`,
@@ -345,11 +378,63 @@ const CompendiaWrapper = (): JSX.Element => {
                 hasChildren: compendium.hasPlanes,
                 addNewLink: `/compendia/${compendium.slug}/planes/new`,
                 icon: (props) => <CircleIcon {...props}/>,
-                children: compendium.planes?.map(plane => mapItem(compendium, plane)),
+                children: compendium.planes?.map(plane => mapPlane(compendium, plane)),
                 loadChildren: () => {
                   indexPlanes(compendium.slug)
                     .then(({ data }) => {
                       dispatch(updateCompendiumData({planes: data.data}))
+                    })
+                }
+              },
+              {
+                title: 'Lore & History',
+                hasChildren: compendium.hasStories,
+                addNewLink: `/compendia/${compendium.slug}/stories/new`,
+                icon: (props) => <BookIcon {...props}/>,
+                children: compendium.stories?.map(story => mapStory(compendium, story)),
+                loadChildren: () => {
+                  indexStories(compendium.slug)
+                    .then(({ data }) => {
+                      dispatch(updateCompendiumData({stories: data.data}))
+                    })
+                }
+              },
+              {
+                title: 'Spells',
+                hasChildren: compendium.hasSpells,
+                addNewLink: `/compendia/${compendium.slug}/spells/new`,
+                icon: (props) => <WandIcon {...props}/>,
+                children: compendium.spells?.map(spell => mapSpell(compendium, spell)),
+                loadChildren: () => {
+                  indexStories(compendium.slug)
+                    .then(({ data }) => {
+                      dispatch(updateCompendiumData({spells: data.data}))
+                    })
+                }
+              },
+              {
+                title: 'Quests',
+                hasChildren: compendium.hasQuests,
+                addNewLink: `/compendia/${compendium.slug}/quests/new`,
+                icon: (props) => <StarIcon {...props}/>,
+                children: compendium.quests?.map(quest => mapQuest(compendium, quest)),
+                loadChildren: () => {
+                  indexStories(compendium.slug)
+                    .then(({ data }) => {
+                      dispatch(updateCompendiumData({quests: data.data}))
+                    })
+                }
+              },
+              {
+                title: 'Encounters',
+                hasChildren: compendium.hasEncounters,
+                addNewLink: `/compendia/${compendium.slug}/encounters/new`,
+                icon: (props) => <SwordsIcon {...props}/>,
+                children: compendium.encounters?.map(encounter => mapEncounter(compendium, encounter)),
+                loadChildren: () => {
+                  indexStories(compendium.slug)
+                    .then(({ data }) => {
+                      dispatch(updateCompendiumData({encounters: data.data}))
                     })
                 }
               },

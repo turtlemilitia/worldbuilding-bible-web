@@ -15,31 +15,39 @@ export type TCompendium = {
   gender?: string;
   content: string;
   hasConcepts?: boolean;
-  hasSpecies?: boolean;
-  hasLocations?: boolean;
   hasCharacters?: boolean;
+  hasCurrencies?: boolean;
+  hasDeities?: boolean;
   hasItems?: boolean;
+  hasEncounters?: boolean;
   hasFactions?: boolean;
   hasLanguages?: boolean;
+  hasLocations?: boolean;
   hasReligions?: boolean;
   hasPantheons?: boolean;
-  hasCurrencies?: boolean;
+  hasQuests?: boolean;
+  hasSpecies?: boolean;
+  hasSpells?: boolean;
   hasStories?: boolean;
   hasNaturalResources?: boolean;
   hasPlanes?: boolean;
-  concepts?: TConcept[];
-  species?: TSpecies[];
-  locations?: TLocation[];
   characters?: TCharacter[];
-  items?: TItem[];
-  factions?: TFaction[];
-  languages?: TLanguage[];
-  religions?: TReligion[];
-  pantheons?: TPantheon[];
+  concepts?: TConcept[];
   currencies?: TCurrency[];
-  stories?: TStory[];
+  deities?: TDeity[];
+  encounters?: TEncounter[];
+  factions?: TFaction[];
+  items?: TItem[];
+  languages?: TLanguage[];
+  locations?: TLocation[];
   naturalResources?: TNaturalResource[];
+  pantheons?: TPantheon[];
   planes?: TPlane[];
+  quests?: TQuest[];
+  religions?: TReligion[];
+  species?: TSpecies[];
+  spells?: TSpell[];
+  stories?: TStory[];
 }
 
 export type TConcept = {
@@ -49,21 +57,56 @@ export type TConcept = {
   content: string;
 }
 
-export type TSpecies = {
+export type TCharacter = {
+  id: number;
+  slug: string;
+  name: string;
+  age: string;
+  gender: string;
+  content: string;
+  species: TSpecies
+}
+
+export type TCurrency = {
   id: number;
   slug: string;
   name: string;
   content: string;
 }
 
-export type TLocationType = {
+export type TDeity = {
   id: number;
+  slug: string;
   name: string;
+  content: string;
 }
 
-export type TLocationGovernmentType = {
+export type TEncounter = {
   id: number;
+  slug: string;
   name: string;
+  content: string;
+}
+
+export type TFaction = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TItem = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
+}
+
+export type TLanguage = {
+  id: number;
+  slug: string;
+  name: string;
+  content: string;
 }
 
 export type TLocation = {
@@ -82,31 +125,24 @@ export type TLocation = {
   children?: TLocation[]
 }
 
-export type TCharacter = {
+export type TLocationType = {
   id: number;
-  slug: string;
   name: string;
-  age: string;
-  gender: string;
-  content: string;
-  species: TSpecies
 }
 
-export type TItem = {
+export type TLocationGovernmentType = {
   id: number;
-  slug: string;
   name: string;
-  content: string;
 }
 
-export type TFaction = {
+export type TPantheon = {
   id: number;
   slug: string;
   name: string;
   content: string;
 }
 
-export type TLanguage = {
+export type TQuest = {
   id: number;
   slug: string;
   name: string;
@@ -120,14 +156,14 @@ export type TReligion = {
   content: string;
 }
 
-export type TPantheon = {
+export type TSpecies = {
   id: number;
   slug: string;
   name: string;
   content: string;
 }
 
-export type TCurrency = {
+export type TSpell = {
   id: number;
   slug: string;
   name: string;

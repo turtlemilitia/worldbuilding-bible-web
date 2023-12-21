@@ -52,7 +52,7 @@ const Item: FunctionComponent = (): JSX.Element => {
       return storeItem(compendiumId, validated)
         .then(({ data }) => {
           dispatch(setItemData(data.data))
-          dispatch(addCompendiumChildData({ field: 'factions', data: data.data }))
+          dispatch(addCompendiumChildData({ field: 'items', data: data.data }))
           navigate(`/compendia/${compendiumId}/items/${data.data.slug}`)
           return data.data
         })
