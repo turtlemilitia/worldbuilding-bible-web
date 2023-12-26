@@ -11,7 +11,7 @@ api.defaults.withCredentials = true
 api.interceptors.response.use(
   response => response,
   error => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       store.dispatch(setToken(null)) // dispatch action to then handle the redirection if logged in
     } else {
       return Promise.reject(error)

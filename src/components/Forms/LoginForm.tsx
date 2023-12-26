@@ -1,5 +1,4 @@
 import React, { FormEvent, JSX, useEffect, useState } from 'react'
-import PrimaryButton from './Fields/PrimaryButton'
 import { useLocation, useNavigate } from 'react-router-dom'
 import PasswordField from './Fields/PasswordField'
 import EmailField from './Fields/EmailField'

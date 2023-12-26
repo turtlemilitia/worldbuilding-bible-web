@@ -1,6 +1,6 @@
 import React, { FunctionComponent, JSX } from 'react'
 import RippedPaperEffect from '../assets/images/RippedPaperEffect'
-import PrimaryButton from '../components/Forms/Fields/PrimaryButton'
+import { Button } from '../components/Forms/Fields/Button'
 import bgImage from '../assets/images/city-noir.png'
 
 const Home: FunctionComponent = (): JSX.Element => {
@@ -31,7 +31,7 @@ const Home: FunctionComponent = (): JSX.Element => {
               characters, and forge legends that will resonate for ages. Begin your adventure with [Your App Name]
               today.</p>
             <div className="my-3">
-              <PrimaryButton>Get Started</PrimaryButton>
+              <Button>Get Started</Button>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@ const Home: FunctionComponent = (): JSX.Element => {
               </li>
             </ul>
             <div className="my-5">
-              <PrimaryButton>Start your adventure today</PrimaryButton>
+              <Button>Start your adventure today</Button>
             </div>
           </div>
         </div>

@@ -32,13 +32,13 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
         <AlignLeftIcon size={25}/>
       </div>
       <Menu/>
-      <div>
+      <div className="flex flex-row gap-2">
         <Link
-          className="inline-block cursor-pointer"
+          className="cursor-pointer"
           to={'/account'}>
           <User2Icon size={25}/>
         </Link>
-        <button onClick={handleLogout} className="inline-block">
+        <button onClick={handleLogout}>
           <LogOutIcon size={25}/>
         </button>
       </div>
