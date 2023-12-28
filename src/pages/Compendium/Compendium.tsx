@@ -26,22 +26,13 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const isNew: boolean = !compendium.slug;
+  const isNew: boolean = !compendium?.slug;
+
+  console.log(compendium)
 
   const reset = () => {};
 
-  const fetch = async () => {
-    if (compendiumId && !isNew) {
-      await viewCompendium(compendiumId)
-        .then(response => {
-          dispatch(updateCompendiumData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-
-  }
+  const fetch = async () => {}
 
   const submit = (data: any): Promise<TCompendium> => {
     if (isNew) {

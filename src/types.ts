@@ -1,5 +1,13 @@
 export type TQueryParams = string | string[][] | Record<string, string> | URLSearchParams
 
+export type TImage = {
+  id: number;
+  name: string;
+  alt: string;
+  thumbnail: string;
+  original: string;
+}
+
 export type TSystem = {
   id?: number;
   slug?: string;

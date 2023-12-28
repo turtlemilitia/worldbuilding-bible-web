@@ -12,10 +12,10 @@ import {
   FlowerIcon,
   LanguagesIcon,
   MapIcon,
-  MapPinIcon, MedalIcon,
+  MapPinIcon,
   PersonStandingIcon,
   ShieldIcon,
-  StarIcon, SunIcon, SunriseIcon,
+  StarIcon, SunIcon,
   SwordIcon, SwordsIcon,
   UserIcon, Wand2Icon, WandIcon
 } from 'lucide-react'
