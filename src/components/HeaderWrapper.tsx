@@ -1,7 +1,7 @@
 import React, { JSX, PropsWithChildren, useState } from 'react'
 import { SelectImageButton } from './SelectImageButton'
 import { Popover, Transition } from '@headlessui/react'
-import { CoverImagePicker } from './ImagePicker'
+import { ImagePicker } from './ImagePicker'
 
 type TProps = {
   page?: string,
@@ -38,7 +38,7 @@ const HeaderWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({
           </Popover.Button>
 
           <Popover.Panel className="absolute bottom-full mb-4 right-0 z-10">
-            <CoverImagePicker/>
+            <ImagePicker multiple={false}/>
           </Popover.Panel>
 
         </Popover>

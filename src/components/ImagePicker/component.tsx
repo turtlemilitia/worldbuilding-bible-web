@@ -5,13 +5,14 @@ import { FileInput } from '../Forms/Fields/FileInput'
 import { readURL } from '../../utils/fileManager'
 import { PlusIcon, XIcon } from 'lucide-react'
 import { destroyImage, indexImages, storeImage, updateImage } from '../../services/ImageService'
-import { TImage } from './types'
+import { TImage, TImagePickerProps } from './types'
 import LoadingWrapper from '../LoadingWrapper'
 import useErrorHandling from '../../utils/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { ImageThumbnail } from './ImageThumbnail'
+import { multiply } from 'lodash'
 
-const CoverImagePicker: FunctionComponent = () => {
+const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true }) => {
 
   const [loading, setLoading] = useState(false)
   const [showFileInput, setShowFileInput] = useState(false)
@@ -72,6 +73,9 @@ const CoverImagePicker: FunctionComponent = () => {
   const handleSelect = (selectedId: number | undefined) => {
     if (selectedId) {
       setSelected(prevState => {
+        if (!multiple) {
+          return [selectedId];
+        }
         if (prevState.includes(selectedId)) {
           return prevState.filter(prevStateId => prevStateId !== selectedId)
         } else {
@@ -186,4 +190,4 @@ const CoverImagePicker: FunctionComponent = () => {
   )
 }
 
-export default CoverImagePicker
+export default ImagePicker

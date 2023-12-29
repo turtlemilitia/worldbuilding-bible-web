@@ -8,3 +8,7 @@ export type TImage = {
   saving?: boolean;
   fileToUpload?: number;
 }
+
+export type TImagePickerProps = {
+  multiple?: boolean
+}

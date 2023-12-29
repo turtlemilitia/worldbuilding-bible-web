@@ -1,5 +1,5 @@
-import CoverImagePicker from './component'
+import ImagePicker from './component'
 
 export {
-  CoverImagePicker
+  ImagePicker
 }
