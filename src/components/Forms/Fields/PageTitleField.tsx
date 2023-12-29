@@ -19,6 +19,7 @@ const PageTitleField = (props: TProps): JSX.Element => {
       )}
       <h1
         contentEditable
+        suppressContentEditableWarning={true}
         ref={ref}
         className="relative z-10 border-none bg-transparent px-6 -mt-1 break-words text-center outline-none"
         onBlur={(e) => onChange(e.currentTarget.textContent || '')}
