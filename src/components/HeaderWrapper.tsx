@@ -1,6 +1,6 @@
 import React, { JSX, PropsWithChildren, useState } from 'react'
 import { SelectImageButton } from './SelectImageButton'
-import { Popover, Transition } from '@headlessui/react'
+import { Popover } from '@headlessui/react'
 import { ImagePicker } from './ImagePicker'
 
 type TProps = {
@@ -13,8 +13,6 @@ const HeaderWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({
   children,
   bgImage
 }): JSX.Element => {
-
-  const [coverImagePopUpOpen, setCoverImagePopUpOpen] = useState(false)
 
   return (
     <>

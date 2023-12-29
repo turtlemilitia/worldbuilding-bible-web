@@ -1,6 +1,6 @@
 import { FloatingBox } from '../../FloatingBox'
 import { Dialog } from '@headlessui/react'
-import { SaveIcon, XIcon } from 'lucide-react'
+import { XIcon } from 'lucide-react'
 import React, { FunctionComponent } from 'react'
 import { TImageDataDialogProps } from './types'
 import TextField from '../../Forms/Fields/TextField'

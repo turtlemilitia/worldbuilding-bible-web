@@ -10,7 +10,6 @@ import LoadingWrapper from '../LoadingWrapper'
 import useErrorHandling from '../../utils/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { ImageThumbnail } from './ImageThumbnail'
-import { multiply } from 'lodash'
 
 const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true }) => {
 
@@ -151,6 +150,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true }) 
               {images.map((image, index) => {
                 return (
                   <ImageThumbnail
+                    key={index}
                     image={image}
                     selected={!!image.id && selected.includes(image.id)}
                     onSelected={handleSelect}
