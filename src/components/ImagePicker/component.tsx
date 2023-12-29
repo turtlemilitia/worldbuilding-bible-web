@@ -89,13 +89,12 @@ const CoverImagePicker: FunctionComponent = () => {
 
   const handleSaveImage = (data: TImage) => {
     resetErrors();
-
-    debugger;
+    setImageData(data.uniqueId, { saving: true })
 
     if (data.id) {
       updateImage(data.id, { name: data.name, alt: data.alt })
         .then((response) => {
-          setImageData(data.uniqueId, response.data.data)
+          setImageData(data.uniqueId, { ...response.data.data, saving: false })
         })
         .catch((err) => {
           setImageData(data.uniqueId, { saving: false })
@@ -112,7 +111,7 @@ const CoverImagePicker: FunctionComponent = () => {
 
       storeImage(formData)
         .then((response) => {
-          setImageData(data.uniqueId, response.data.data)
+          setImageData(data.uniqueId, { ...response.data.data, saving: false })
         })
         .catch((err) => {
           setImageData(data.uniqueId, { saving: false })
@@ -173,7 +172,7 @@ const CoverImagePicker: FunctionComponent = () => {
           <button onClick={() => setShowFileInput(prevState => !prevState)}>
             {showFileInput ? <XIcon/> : <PlusIcon/>}
           </button>
-          {!showFileInput && (
+          {!showFileInput && selected.length > 0 && (
             <Button>Select</Button>/* add to entity POST/PUT /imageables */
           )}
         </div>
