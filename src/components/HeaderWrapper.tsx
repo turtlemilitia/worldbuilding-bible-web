@@ -33,7 +33,7 @@ const HeaderWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({
 
         <Popover className="z-40 absolute -bottom-7 right-10">
 
-          <Popover.Button>
+          <Popover.Button className="outline-none">
             <SelectImageButton/>
           </Popover.Button>
 

@@ -2,17 +2,9 @@ import { AxiosResponse } from 'axios'
 import { TImage } from '../types'
 import api from '../api'
 
-interface TImageStoreRequest {
-  data: {
-    name?: TImage['name'],
-    image: File
-  };
-}
-
 interface TImageUpdateRequest {
-  data: {
-    name: TImage['name'],
-  };
+  name: TImage['name'],
+  alt: TImage['alt'],
 }
 
 interface TImageResponse {
@@ -50,5 +42,5 @@ export const updateImage = (id: number, data: TImageUpdateRequest): Promise<Axio
 }
 
 export const destroyImage = (id: number): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/images/${id}`)
+  return api.delete(`/api/images/${id}`)
 }
