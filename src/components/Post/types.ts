@@ -9,4 +9,6 @@ export type TPostProps<T> = {
   contentPlaceholder?: string;
   ready: boolean;
   resetData: () => any
+  onImageSelected?: (imageId: number, imageType?: string) => Promise<any>;
+  coverImageUrl?: string;
 }

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
 import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import { Editor } from '../../components/Forms/Fields/Editor'
-import HeaderWrapper from '../../components/HeaderWrapper'
+import { HeaderWrapper } from '../../components/HeaderWrapper'
 import ContentWrapper from '../../components/ContentWrapper'
 import { storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
 import { TSystem } from '../../types'
@@ -13,7 +13,6 @@ import { AxiosError } from 'axios'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import { addSystem } from '../../reducers/system/systemsIndexSlice'
 import FormToolbar from '../../components/Forms/FormToolbar'
-import { ErrorBanner } from '../../components/Banners/ErrorBanner'
 
 const System = (): JSX.Element => {
 
@@ -28,7 +27,7 @@ const System = (): JSX.Element => {
     content: ''
   }
 
-  const remote = useAppSelector((state: RootState) => state.system) // redux
+  const { system } = useAppSelector((state: RootState) => state.system) // redux
 
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<TSystem>(initialState)

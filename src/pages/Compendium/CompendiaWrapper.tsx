@@ -178,7 +178,7 @@ const CompendiaWrapper = (): JSX.Element => {
 
   const fetch = (): void => {
     setLoading(true)
-    viewCompendium(compendiumId)
+    viewCompendium(compendiumId, { include: 'images' })
       .then(response => {
         setLoading(false)
         dispatch(setCompendiumData(response.data.data))

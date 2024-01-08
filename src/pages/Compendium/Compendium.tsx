@@ -1,20 +1,13 @@
-import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import LoadingWrapper from '../../components/LoadingWrapper'
-import HeaderWrapper from '../../components/HeaderWrapper'
-import PageTitleField from '../../components/Forms/Fields/PageTitleField'
+import React, { FunctionComponent, JSX, useCallback } from 'react'
 import { TCompendium } from '../../types'
-import ContentWrapper from '../../components/ContentWrapper'
-import { Editor } from '../../components/Forms/Fields/Editor'
 import { storeCompendium, updateCompendium, viewCompendium } from '../../services/CompendiumService'
-import { clearCompendiumData, setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
-import { AxiosError } from 'axios'
+import { updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import FormToolbar from '../../components/Forms/FormToolbar'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
-import { ErrorBanner } from '../../components/Banners/ErrorBanner'
 import Post from '../../components/Post/component'
+import useImageSelection from '../../utils/useImageSelection'
 
 const Compendium: FunctionComponent = (): JSX.Element => {
 
@@ -27,8 +20,6 @@ const Compendium: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate()
 
   const isNew: boolean = !compendium?.slug;
-
-  console.log(compendium)
 
   const reset = () => {};
 
@@ -52,6 +43,21 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     }
   }
 
+  const coverImage = useCallback(() => compendium.images?.find(image => image.pivot?.type.name.toLowerCase() === 'cover')?.original, [compendium.images]);
+
+  const { onImageSelected, addImageToSelection } = useImageSelection({ entityType: 'compendia', entityId: compendium.slug })
+
+  const selectImage = async (imageId: number, imageType?: string) => {
+    return onImageSelected(imageId, imageType)
+      .then((result) => {
+        if (result && result.data) {
+          const images = addImageToSelection(compendium.images || [], result.data.data)
+          dispatch(updateCompendiumData({ images }))
+        }
+        return result
+      })
+  }
+
   return (
     <Post
       key={compendiumId}
@@ -61,6 +67,8 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       ready={true}
       fields={[]}
       resetData={reset}
+      onImageSelected={selectImage}
+      coverImageUrl={coverImage()}
     />
   )
 }

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
-import HeaderWrapper from '../HeaderWrapper'
+import { HeaderWrapper } from '../HeaderWrapper'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import ContentWrapper from '../ContentWrapper'
 import FormToolbar from '../Forms/FormToolbar'
@@ -20,7 +20,9 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     onSubmit,
     onFetch,
     initialValues,
-    resetData
+    resetData,
+    onImageSelected,
+    coverImageUrl
   } = props
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -41,35 +43,35 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
   }, [initialValues])
 
-  const handleChange = (name: string, value: string) => setData((prevState) => ({...prevState, [name]: value}));
+  const handleChange = (name: string, value: string) => setData((prevState) => ({ ...prevState, [name]: value }))
 
   const handleRefresh = () => {
-    setLoading(true);
-    setErrors({});
+    setLoading(true)
+    setErrors({})
     onFetch()
       .then(() => {
         setLoading(false)
       })
       .catch((err: any) => {
-        setLoading(false);
+        setLoading(false)
         if (err && err.message) {
           setErrors(err.message)
         }
-      });
+      })
   }
 
   const handleOnSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    setErrors({});
+    event.preventDefault()
+    setLoading(true)
+    setErrors({})
     // TODO handle validation
     onSubmit && onSubmit(data)
       .then(data => {
-        setLoading(false);
+        setLoading(false)
         setData(data)
       })
       .catch((err: any) => {
-        setLoading(false);
+        setLoading(false)
         if (err && err.message) {
           if (err.response?.data?.errors) {
             setErrors(err.response?.data?.errors)
@@ -77,15 +79,19 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
             setErrors({ error: err.message })
           }
         } else {
-          setErrors({ error: 'The was an error in the request.'});
+          setErrors({ error: 'The was an error in the request.' })
         }
-      });
+      })
   }
 
   return (
     <LoadingWrapper loading={loading || !ready}>
       <form onSubmit={handleOnSubmit}>
-        <HeaderWrapper page={pageTypeName}>
+        <HeaderWrapper
+          page={pageTypeName}
+          onCoverImageSelected={onImageSelected ? (id) => onImageSelected(id, 'cover') : undefined}
+          coverImage={coverImageUrl}
+        >
           <PageTitleField value={data.name}
                           onChange={(value) => handleChange('name', value)}
                           placeholder={'Name'}/>

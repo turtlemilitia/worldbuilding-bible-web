@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TCompendium } from '../types'
+import { TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
 interface TCompendiumResponse {
@@ -15,9 +15,9 @@ export const indexCompendia = (): Promise<AxiosResponse<TCompendiumIndexResponse
 
 }
 
-export const viewCompendium = (slug: string): Promise<AxiosResponse<TCompendiumResponse>> => {
+export const viewCompendium = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TCompendiumResponse>> => {
 
-  return api.get(`/api/compendia/${slug}`)
+  return api.get(`/api/compendia/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 

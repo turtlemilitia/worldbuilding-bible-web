@@ -59,18 +59,6 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   }, [species])
 
-  useEffect(() => {
-    if (characterId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      dispatch(clearCharacterData(undefined))
-    }
-    return () => {
-      dispatch(clearCharacterData(undefined))
-    }
-  }, [characterId])
-
   const readyDataForRequest = (data: any): TCharacterRequest => ({
     name: data.name,
     age: data.age,

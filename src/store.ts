@@ -27,6 +27,7 @@ import spellSlice from './reducers/compendium/spell/spellSlice'
 import naturalResourceSlice from './reducers/compendium/naturalResource/naturalResourceSlice'
 import planeSlice from './reducers/compendium/plane/planeSlice'
 import pantheonSlice from './reducers/compendium/pantheon/pantheonSlice'
+import imageTypesIndexSlice from './reducers/imageType/imageTypesIndexSlice'
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
     compendia: compendiaIndexSlice,
     campaigns: campaignsIndexSlice,
     notebooks: notebooksIndexSlice,
+    imageTypes: imageTypesIndexSlice,
     // individual
     system: systemSlice,
     compendium: compendiumSlice,

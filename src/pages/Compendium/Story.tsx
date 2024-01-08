@@ -14,7 +14,6 @@ import { TFields } from '../../components/InfoBar'
 
 const Story: FunctionComponent = (): JSX.Element => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
   const { story } = useAppSelector((state: RootState) => state.story) // redux
 
   const dispatch = useAppDispatch() // redux

@@ -10,5 +10,6 @@ export type TImage = {
 }
 
 export type TImagePickerProps = {
-  multiple?: boolean
+  multiple?: boolean,
+  onSelected?: (imagesIds: number[]) => Promise<any>
 }

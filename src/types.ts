@@ -6,6 +6,7 @@ export type TImage = {
   alt: string;
   thumbnail: string;
   original: string;
+  pivot?: TImageableImagePivot
 }
 
 export type TSystem = {
@@ -56,6 +57,7 @@ export type TCompendium = {
   species?: TSpecies[];
   spells?: TSpell[];
   stories?: TStory[];
+  images?: TImage[];
 }
 
 export type TConcept = {
@@ -237,4 +239,16 @@ export type TSession = {
   content: string;
 }
 
+export type TImageableImagePivot = {
+  id: number;
+  type: TImageType,
+  image?: TImage;
+}
+
+export type TImageType = {
+  id: number;
+  name: string;
+}
+
 export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept
+export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'

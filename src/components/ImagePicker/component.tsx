@@ -11,7 +11,7 @@ import useErrorHandling from '../../utils/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { ImageThumbnail } from './ImageThumbnail'
 
-const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true }) => {
+const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, onSelected }) => {
 
   const [loading, setLoading] = useState(false)
   const [showFileInput, setShowFileInput] = useState(false)
@@ -141,6 +141,17 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true }) 
       })
   }
 
+  const handleSelected = () => {
+    if (!onSelected) {
+      return
+    }
+    setLoading(true);
+    onSelected(selected)
+      .then(() => {
+        setLoading(false)
+      })
+  }
+
   return (
     <FloatingBox>
       <LoadingWrapper loading={loading} key="loading-image-picker" colour={'transparent'}>
@@ -177,7 +188,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true }) 
             {showFileInput ? <XIcon/> : <PlusIcon/>}
           </button>
           {!showFileInput && selected.length > 0 && (
-            <Button>Select</Button>/* add to entity POST/PUT /imageables */
+            <Button onClick={handleSelected}>Select</Button>
           )}
         </div>
         {Object.keys(errors).length > 0 && (

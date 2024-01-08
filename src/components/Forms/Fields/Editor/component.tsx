@@ -22,7 +22,7 @@ const Editor: FunctionComponent<TEditorProps> = ({ initialValue, onChange, place
   }, [])
 
   useEffect(() => {
-    getContext()?.setContent(initialValue)
+    getContext()?.setContent(initialValue || '')
   }, [initialValue])
 
   return (

@@ -10,6 +10,8 @@ import { indexNotebooks } from '../services/NotebookService'
 import { setNotebooks } from '../reducers/notebook/notebooksIndexSlice'
 import { setCampaigns } from '../reducers/campaign/campaignsIndexSlice'
 import { indexCampaigns } from '../services/CampaignService'
+import { indexImageTypes } from '../services/ImageTypeService'
+import { setImageTypes } from '../reducers/imageType/imageTypesIndexSlice'
 
 export const ProtectedRoute = (): JSX.Element => {
     const {token} = useAppSelector((state: RootState) => state.auth) // redux
@@ -34,6 +36,10 @@ export const ProtectedRoute = (): JSX.Element => {
             // Fetch the notebooks data from the API
             indexNotebooks()
               .then(response => dispatch(setNotebooks(response.data.data)))
+              .catch(error => console.error('Error fetching notebooks:', error)); // todo show error
+            // Fetch the imageable types data from the API
+            indexImageTypes()
+              .then(response => dispatch(setImageTypes(response.data.data)))
               .catch(error => console.error('Error fetching notebooks:', error)); // todo show error
         }
     }, [token]);
