@@ -7,6 +7,7 @@ export interface TCharacterRequest {
   age: string;
   gender: string;
   content: string;
+  speciesId: number;
 }
 type TCharacterResponse = {
   data: TCharacter;
@@ -27,14 +28,14 @@ export const viewCharacter = (slug: string, query: TQueryParams = {}): Promise<A
 
 }
 
-export const storeCharacter = (compendiumId: TCompendium['slug'], data: TCharacterRequest): Promise<AxiosResponse<TCharacterResponse>> => {
+export const storeCharacter = (compendiumId: TCompendium['slug'], data: TCharacterRequest, query: TQueryParams = {}): Promise<AxiosResponse<TCharacterResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/characters`, data)
+  return api.post(`/api/compendia/${compendiumId}/characters?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateCharacter = (slug: string, data: Partial<TCharacterRequest>): Promise<AxiosResponse<TCharacterResponse>> => {
-  return api.put(`/api/characters/${slug}`, data)
+export const updateCharacter = (slug: string, data: Partial<TCharacterRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TCharacterResponse>> => {
+  return api.put(`/api/characters/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyCharacter = (slug: string): Promise<AxiosResponse<void>> => {

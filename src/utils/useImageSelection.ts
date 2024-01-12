@@ -20,7 +20,7 @@ const useImageSelection = ({ entityType, entityId }: TProps) => {
       image_id: imageId,
       type_id: imageTypes.find(type => type.name.toLowerCase() === imageType)?.id || null
     })
-  }, [entityId, entityType])
+  }, [entityId, entityType, imageTypes])
 
   const addImageToSelection = (originalImages: TImage[], newImage: TImage) => {
     const imageType = 'cover';

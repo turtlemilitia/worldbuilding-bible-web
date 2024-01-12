@@ -1,6 +1,6 @@
 import React, { FunctionComponent, JSX, useCallback } from 'react'
 import { TCompendium } from '../../types'
-import { storeCompendium, updateCompendium, viewCompendium } from '../../services/CompendiumService'
+import { storeCompendium, updateCompendium } from '../../services/CompendiumService'
 import { updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'

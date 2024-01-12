@@ -8,7 +8,6 @@ import { TNote } from '../../../types'
 import { setNotebookData } from '../../../reducers/notebook/notebookSlice'
 import { addNotebooksNotebookNote } from '../../../reducers/notebook/notebooksIndexSlice'
 import Post from '../../../components/Post/component'
-import useImageSelection from '../../../utils/useImageSelection'
 
 const Note = (): JSX.Element => {
 
@@ -18,6 +17,7 @@ const Note = (): JSX.Element => {
 
   const navigate = useNavigate()
 
+  const { notebook } = useAppSelector((state: RootState) => state.notebook) // redux
   const { note } = useAppSelector((state: RootState) => state.note) // redux
 
   const isNew: boolean = noteId === 'new'
@@ -58,6 +58,7 @@ const Note = (): JSX.Element => {
   return (
     <Post
       key={noteId}
+      pageTypeName={'Note'}
       initialValues={note as TNote}
       onSubmit={submit}
       onFetch={fetch}

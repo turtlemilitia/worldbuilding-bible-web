@@ -31,9 +31,11 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   const reset = () => dispatch(clearCharacterData(undefined));
 
+  const include = 'compendium,species';
+
   const fetch = async () => {
     if (characterId && !isNew) {
-      await viewCharacter(characterId, { include: 'compendium' })
+      await viewCharacter(characterId, { include })
         .then(response => {
           dispatch(setCharacterData(response.data.data))
         })
@@ -64,12 +66,13 @@ const Character: FunctionComponent = (): JSX.Element => {
     age: data.age,
     gender: data.gender,
     content: data.content,
+    speciesId: data.species.id
   })
 
   const submit = (data: any): Promise<TCharacter> => {
     const validated = readyDataForRequest(data)
     if (isNew) {
-      return storeCharacter(compendiumId, validated)
+      return storeCharacter(compendiumId, validated, { include })
         .then(({ data }) => {
           dispatch(setCharacterData(data.data))
           dispatch(addCompendiumChildData({ field: 'characters', data: data.data }))
@@ -77,7 +80,7 @@ const Character: FunctionComponent = (): JSX.Element => {
           return data.data
         })
     } else {
-      return updateCharacter(characterId, validated)
+      return updateCharacter(characterId, validated, { include })
         .then(({ data }) => {
           dispatch(updateCharacterData(data.data))
           dispatch(updateCompendiumChildData({ field: 'characters', data: data.data }))
