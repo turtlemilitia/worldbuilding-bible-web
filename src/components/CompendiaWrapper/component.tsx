@@ -1,44 +1,31 @@
-import { JSX, useEffect, useState } from 'react'
+import { FunctionComponent, JSX, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
+import Sidebar from '../../components/Sidebar/Sidebar'
 import {
   AsteriskIcon,
   BookIcon,
   CatIcon,
   ChurchIcon,
-  CircleEllipsisIcon, CircleIcon,
+  CircleEllipsisIcon,
+  CircleIcon,
   CoinsIcon,
-  FlagIcon,
   FlowerIcon,
   LanguagesIcon,
   MapIcon,
-  MapPinIcon,
   PersonStandingIcon,
   ShieldIcon,
-  StarIcon, SunIcon,
-  SwordIcon, SwordsIcon,
-  UserIcon, Wand2Icon, WandIcon
+  StarIcon,
+  SunIcon,
+  SwordIcon,
+  SwordsIcon,
+  WandIcon
 } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
-import {
-  TCompendium,
-  TLocation,
-  TCharacter,
-  TSpecies,
-  TItem,
-  TConcept,
-  TFaction,
-  TLanguage,
-  TReligion,
-  TPantheon,
-  TCurrency,
-  TStory,
-  TNaturalResource,
-  TPlane, TDeity, TEncounter, TSpell, TQuest
-} from '../../types'
+import { TLocation } from '../../types'
 import { indexLocations } from '../../services/LocationService'
-import { clearCompendiumData, setCompendiumData, updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import {
+  clearCompendiumData, setCompendiumData, updateCompendiumData
+} from '../../reducers/compendium/compendiumSlice'
 import { createNestedArray } from '../../utils/treeUtils'
 import { indexCharacters } from '../../services/CharacterService'
 import { indexSpecies } from '../../services/SpeciesService'
@@ -52,147 +39,50 @@ import { indexPantheons } from '../../services/PantheonService'
 import { indexStories } from '../../services/StoryService'
 import { indexNaturalResources } from '../../services/NaturalResourceService'
 import { indexPlanes } from '../../services/PlaneService'
-import { viewCompendium } from '../../services/CompendiumService'
-import LoadingWrapper from '../../components/LoadingWrapper'
 import { indexDeities } from '../../services/DeityService'
+import {
+  mapCharacter,
+  mapConcept,
+  mapCurrency,
+  mapDeity,
+  mapEncounter,
+  mapFaction,
+  mapItem,
+  mapLanguage,
+  mapLocation,
+  mapNaturalResource,
+  mapPantheon,
+  mapPlane,
+  mapQuest,
+  mapReligion,
+  mapSpecies,
+  mapSpell,
+  mapStory
+} from './mapping'
+import { TCompendiaWrapperProps } from './types'
+import { RootState } from '../../store'
+import { viewCompendium } from '../../services/CompendiumService'
 
+const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
-const mapConcept = (compendium: TCompendium, concept: TConcept): SidebarItemInterface => ({
-  title: concept.name,
-  to: `/compendia/${compendium?.slug}/concepts/${concept.slug}`,
-  icon: (props) => <StarIcon {...props}/>,
-})
-
-const mapSpecies = (compendium: TCompendium, species: TSpecies): SidebarItemInterface => ({
-  title: species.name,
-  to: `/compendia/${compendium?.slug}/species/${species.slug}`,
-  icon: (props) => <CatIcon {...props}/>,
-})
-
-const mapCharacter = (compendium: TCompendium, character: TCharacter): SidebarItemInterface => ({
-  title: character.name,
-  to: `/compendia/${compendium?.slug}/characters/${character.slug}`,
-  icon: (props) => <UserIcon {...props}/>,
-})
-
-const mapLocation = (compendium: TCompendium, location: TLocation): SidebarItemInterface => ({
-  title: location.name,
-  to: `/compendia/${compendium?.slug}/locations/${location.slug}`,
-  hasChildren: location.hasSubLocations,
-  // addNewLink: `/compendia/${compendium?.slug}/location/${location.slug}`, // todo add sub location
-  icon: (props) => <MapPinIcon {...props}/>,
-  children: location.children?.map(subLocation => mapLocation(compendium, subLocation))
-})
-
-const mapItem = (compendium: TCompendium, item: TItem): SidebarItemInterface => ({
-  title: item.name,
-  to: `/compendia/${compendium?.slug}/items/${item.slug}`,
-  icon: (props) => <SwordIcon {...props}/>,
-})
-
-const mapFaction = (compendium: TCompendium, faction: TFaction): SidebarItemInterface => ({
-  title: faction.name,
-  to: `/compendia/${compendium?.slug}/factions/${faction.slug}`,
-  icon: (props) => <FlagIcon {...props}/>,
-})
-
-const mapLanguage = (compendium: TCompendium, language: TLanguage): SidebarItemInterface => ({
-  title: language.name,
-  to: `/compendia/${compendium?.slug}/languages/${language.slug}`,
-  icon: (props) => <LanguagesIcon {...props}/>,
-})
-
-const mapReligion = (compendium: TCompendium, religion: TReligion): SidebarItemInterface => ({
-  title: religion.name,
-  to: `/compendia/${compendium?.slug}/religions/${religion.slug}`,
-  icon: (props) => <ChurchIcon {...props}/>,
-})
-
-const mapPantheon = (compendium: TCompendium, pantheon: TPantheon): SidebarItemInterface => ({
-  title: pantheon.name,
-  to: `/compendia/${compendium?.slug}/pantheons/${pantheon.slug}`,
-  icon: (props) => <SunIcon {...props}/>,
-})
-
-const mapCurrency = (compendium: TCompendium, currency: TCurrency): SidebarItemInterface => ({
-  title: currency.name,
-  to: `/compendia/${compendium?.slug}/currencies/${currency.slug}`,
-  icon: (props) => <CoinsIcon {...props}/>,
-})
-
-const mapStory = (compendium: TCompendium, story: TStory): SidebarItemInterface => ({
-  title: story.name,
-  to: `/compendia/${compendium?.slug}/stories/${story.slug}`,
-  icon: (props) => <BookIcon {...props}/>,
-})
-
-const mapNaturalResource = (compendium: TCompendium, naturalResource: TNaturalResource): SidebarItemInterface => ({
-  title: naturalResource.name,
-  to: `/compendia/${compendium?.slug}/naturalResources/${naturalResource.slug}`,
-  icon: (props) => <FlowerIcon {...props}/>,
-})
-
-const mapPlane = (compendium: TCompendium, plane: TPlane): SidebarItemInterface => ({
-  title: plane.name,
-  to: `/compendia/${compendium?.slug}/planes/${plane.slug}`,
-  icon: (props) => <CircleIcon {...props}/>,
-})
-
-const mapDeity = (compendium: TCompendium, deity: TDeity): SidebarItemInterface => ({
-  title: deity.name,
-  to: `/compendia/${compendium?.slug}/deities/${deity.slug}`,
-  icon: (props) => <PersonStandingIcon {...props}/>,
-})
-
-const mapQuest = (compendium: TCompendium, quest: TQuest): SidebarItemInterface => ({
-  title: quest.name,
-  to: `/compendia/${compendium?.slug}/quests/${quest.slug}`,
-  icon: (props) => <StarIcon {...props}/>,
-})
-
-const mapSpell = (compendium: TCompendium, spell: TSpell): SidebarItemInterface => ({
-  title: spell.name,
-  to: `/compendia/${compendium?.slug}/spells/${spell.slug}`,
-  icon: (props) => <Wand2Icon {...props}/>,
-})
-
-const mapEncounter = (compendium: TCompendium, encounter: TEncounter): SidebarItemInterface => ({
-  title: encounter.name,
-  to: `/compendia/${compendium?.slug}/encounters/${encounter.slug}`,
-  icon: (props) => <SwordsIcon {...props}/>,
-})
-
-const CompendiaWrapper = (): JSX.Element => {
-
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
-
+  const { compendium, loading } = useAppSelector((state: RootState) => state.compendium) // redux
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const [loading, setLoading] = useState(false)
-
-  const nestedLocations: TLocation[] = createNestedArray(compendium.locations || []);
-
-  const isNew = (): boolean => compendiumId === 'new'
-
-  const fetch = (): void => {
-    setLoading(true)
-    viewCompendium(compendiumId, { include: 'images' })
-      .then(response => {
-        setLoading(false)
-        dispatch(setCompendiumData(response.data.data))
-      })
-  }
+  const nestedLocations: TLocation[] = createNestedArray(compendium.locations || [])
 
   useEffect(() => {
-    if (compendiumId && !isNew()) {
-      fetch()
+    if (!loading) {
+      viewCompendium(compendiumId, { include: 'images' })
+        .then(({ data }) => {
+          dispatch(setCompendiumData(data.data))
+        })
     }
-    if (isNew()) {
+    return () => { // todo is this the right place?
       dispatch(clearCompendiumData(undefined))
     }
-  }, [compendiumId])
+  }, [])
 
   return (
     <>
@@ -210,7 +100,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexSpecies(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({species: data.data}))
+                      dispatch(updateCompendiumData({ species: data.data }))
                     })
                 }
               },
@@ -223,7 +113,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexCharacters(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({characters: data.data}))
+                      dispatch(updateCompendiumData({ characters: data.data }))
                     })
                 }
               },
@@ -236,7 +126,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexConcepts(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({concepts: data.data}))
+                      dispatch(updateCompendiumData({ concepts: data.data }))
                     })
                 }
               },
@@ -255,7 +145,7 @@ const CompendiaWrapper = (): JSX.Element => {
                     loadChildren: () => {
                       indexLanguages(compendium.slug)
                         .then(({ data }) => {
-                          dispatch(updateCompendiumData({languages: data.data}))
+                          dispatch(updateCompendiumData({ languages: data.data }))
                         })
                     }
                   },
@@ -274,7 +164,7 @@ const CompendiaWrapper = (): JSX.Element => {
                         loadChildren: () => {
                           indexReligions(compendium.slug)
                             .then(({ data }) => {
-                              dispatch(updateCompendiumData({religions: data.data}))
+                              dispatch(updateCompendiumData({ religions: data.data }))
                             })
                         }
                       },
@@ -315,7 +205,7 @@ const CompendiaWrapper = (): JSX.Element => {
                     loadChildren: () => {
                       indexCurrencies(compendium.slug)
                         .then(({ data }) => {
-                          dispatch(updateCompendiumData({currencies: data.data}))
+                          dispatch(updateCompendiumData({ currencies: data.data }))
                         })
                     }
                   },
@@ -330,7 +220,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexFactions(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({factions: data.data}))
+                      dispatch(updateCompendiumData({ factions: data.data }))
                     })
                 }
               },
@@ -343,7 +233,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexLocations(compendium.slug, { include: 'parent' })
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({locations: data.data}))
+                      dispatch(updateCompendiumData({ locations: data.data }))
                     })
                 }
               },
@@ -356,7 +246,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexItems(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({items: data.data}))
+                      dispatch(updateCompendiumData({ items: data.data }))
                     })
                 }
               },
@@ -369,7 +259,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexNaturalResources(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({naturalResources: data.data}))
+                      dispatch(updateCompendiumData({ naturalResources: data.data }))
                     })
                 }
               },
@@ -382,7 +272,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexPlanes(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({planes: data.data}))
+                      dispatch(updateCompendiumData({ planes: data.data }))
                     })
                 }
               },
@@ -395,7 +285,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({stories: data.data}))
+                      dispatch(updateCompendiumData({ stories: data.data }))
                     })
                 }
               },
@@ -408,7 +298,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({spells: data.data}))
+                      dispatch(updateCompendiumData({ spells: data.data }))
                     })
                 }
               },
@@ -421,7 +311,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({quests: data.data}))
+                      dispatch(updateCompendiumData({ quests: data.data }))
                     })
                 }
               },
@@ -434,7 +324,7 @@ const CompendiaWrapper = (): JSX.Element => {
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
-                      dispatch(updateCompendiumData({encounters: data.data}))
+                      dispatch(updateCompendiumData({ encounters: data.data }))
                     })
                 }
               },
@@ -442,9 +332,7 @@ const CompendiaWrapper = (): JSX.Element => {
           }/>
       )}
       <div className="relative w-full">
-        <LoadingWrapper loading={loading}>
-          <Outlet/>
-        </LoadingWrapper>
+        <Outlet/>
       </div>
     </>
   )

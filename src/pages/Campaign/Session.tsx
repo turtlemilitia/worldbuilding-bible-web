@@ -25,32 +25,6 @@ const Session: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = sessionId === 'new'
 
-  const reset = () => dispatch(clearSessionData(undefined));
-
-  const fetch = async () => {
-    if (sessionId && !isNew) {
-      await viewSession(sessionId, { include: 'campaign' })
-        .then(response => {
-          dispatch(setSessionData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
-  useEffect(() => {
-    if (sessionId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      dispatch(clearSessionData(undefined))
-    }
-    return () => {
-      dispatch(clearSessionData(undefined))
-    }
-  }, [sessionId])
-
   const readyDataForRequest = (data: any): TSessionRequest => ({
     name: data.name,
     content: data.content,
@@ -76,17 +50,18 @@ const Session: FunctionComponent = (): JSX.Element => {
     }
   }
 
-  const fields: TFields[] = []
-
   return (
     <Post
       key={sessionId}
+      isNew={isNew}
       ready={true}
-      initialValues={session as TSession}
-      onSubmit={submit}
-      onFetch={fetch}
-      fields={fields}
-      resetData={reset}
+      remoteData={session as TSession}
+      onSave={submit}
+      onFetch={() => viewSession(sessionId, { include: 'campaign' }).then(({data}) => data.data)}
+      fields={[]}
+      setRemoteData={(data) => dispatch(setSessionData(data))}
+      resetData={() => dispatch(clearSessionData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

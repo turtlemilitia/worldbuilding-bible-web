@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import React, { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react'
 import { HeaderWrapper } from '../HeaderWrapper'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import ContentWrapper from '../ContentWrapper'
@@ -9,84 +9,41 @@ import { InfoBar } from '../InfoBar'
 import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { TTypesAllowed } from '../../types'
+import { debounce } from 'lodash'
+import useErrorHandling from '../../utils/hooks/useErrorHandling'
+import useFormHandling from '../../utils/hooks/useFormHandling'
 
 const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
   const {
+    isNew,
     ready,
     pageTypeName,
     contentPlaceholder,
     fields,
-    onSubmit,
+    onSave,
     onFetch,
-    initialValues,
+    remoteData,
+    setRemoteData,
     resetData,
     onImageSelected,
-    coverImageUrl
+    coverImageUrl,
+    requestStructureCallback,
   } = props
 
-  const [loading, setLoading] = useState<boolean>(false)
-  const [data, setData] = useState<TTypesAllowed>(initialValues)
-  const [errors, setErrors] = useState({})
-
-  useEffect(() => {
-
-    handleRefresh()
-
-    return () => resetData()
-
-  }, [])
-
-  useEffect(() => {
-
-    setData(initialValues)
-
-  }, [initialValues])
-
-  const handleChange = (name: string, value: string) => setData((prevState) => ({ ...prevState, [name]: value }))
-
-  const handleRefresh = () => {
-    setLoading(true)
-    setErrors({})
-    onFetch()
-      .then(() => {
-        setLoading(false)
-      })
-      .catch((err: any) => {
-        setLoading(false)
-        if (err && err.message) {
-          setErrors(err.message)
-        }
-      })
-  }
-
-  const handleOnSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault()
-    setLoading(true)
-    setErrors({})
-    // TODO handle validation
-    onSubmit && onSubmit(data)
-      .then(data => {
-        setLoading(false)
-        setData(data)
-      })
-      .catch((err: any) => {
-        setLoading(false)
-        if (err && err.message) {
-          if (err.response?.data?.errors) {
-            setErrors(err.response?.data?.errors)
-          } else {
-            setErrors({ error: err.message })
-          }
-        } else {
-          setErrors({ error: 'The was an error in the request.' })
-        }
-      })
-  }
+  const { errors, data, loading, handleChange, fetchData, handleOnSave } = useFormHandling({
+    isNew,
+    onFetch,
+    onSave,
+    persistedData: remoteData,
+    setPersistedData: setRemoteData,
+    resetPersistedData: resetData,
+    requestStructureCallback
+  })
 
   return (
     <LoadingWrapper loading={loading || !ready}>
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper
           page={pageTypeName}
           onCoverImageSelected={onImageSelected ? (id) => onImageSelected(id, 'cover') : undefined}
@@ -107,9 +64,9 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
-              <FormToolbar onSave={handleOnSubmit} onRefresh={handleRefresh}/>
+              <FormToolbar canManuallySave={isNew} onSave={handleOnSave} onRefresh={fetchData}/>
               <Editor
-                initialValue={initialValues.content}
+                initialValue={data.content}
                 onChange={(value) => handleChange('content', value)}
                 placeholder={contentPlaceholder}
               />

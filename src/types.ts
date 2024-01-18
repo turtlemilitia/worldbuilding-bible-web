@@ -20,8 +20,6 @@ export type TCompendium = {
   id?: number;
   slug?: string;
   name: string;
-  age?: number;
-  gender?: string;
   content: string;
   hasConcepts?: boolean;
   hasCharacters?: boolean;
@@ -206,7 +204,7 @@ export type TNotebook = {
   slug?: string;
   name: string;
   content: string;
-  hasNotes: boolean;
+  hasNotes?: boolean;
   notes?: TNote[]
 }
 
@@ -250,5 +248,5 @@ export type TImageType = {
   name: string;
 }
 
-export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept
+export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept|TNotebook
 export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'

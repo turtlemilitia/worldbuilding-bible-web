@@ -26,21 +26,6 @@ const Religion: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate()
 
   const isNew: boolean = religionId === 'new'
-
-  const reset = () => dispatch(clearReligionData(undefined))
-
-  const fetch = async () => {
-    if (religionId && !isNew) {
-      await viewReligion(religionId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setReligionData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearReligionData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TReligionRequest => ({
     name: data.name,
     content: data.content,
@@ -51,7 +36,7 @@ const Religion: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeReligion(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setReligionData(data.data))
+
           dispatch(addCompendiumChildData({ field: 'religions', data: data.data }))
           navigate(`/compendia/${compendiumId}/religions/${data.data.slug}`)
           return data.data
@@ -69,12 +54,15 @@ const Religion: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={religionId}
-      initialValues={religion as TReligion}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={religion as TReligion}
+      onSave={submit}
+      onFetch={() => viewReligion(religionId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      resetData={() => dispatch(clearReligionData(undefined))}
+      setRemoteData={(data) => dispatch(setReligionData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

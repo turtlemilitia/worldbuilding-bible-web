@@ -26,32 +26,6 @@ const Plane: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = planeId === 'new'
 
-  const reset = () => dispatch(clearPlaneData(undefined));
-
-  const fetch = async () => {
-    if (planeId && !isNew) {
-      await viewPlane(planeId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setPlaneData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
-  useEffect(() => {
-    if (planeId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      dispatch(clearPlaneData(undefined))
-    }
-    return () => {
-      dispatch(clearPlaneData(undefined))
-    }
-  }, [planeId])
-
   const readyDataForRequest = (data: any): TPlaneRequest => ({
     name: data.name,
     content: data.content,
@@ -62,7 +36,6 @@ const Plane: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storePlane(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setPlaneData(data.data))
           dispatch(addCompendiumChildData({ field: 'planes', data: data.data }))
           navigate(`/compendia/${compendiumId}/planes/${data.data.slug}`)
           return data.data
@@ -70,7 +43,6 @@ const Plane: FunctionComponent = (): JSX.Element => {
     } else {
       return updatePlane(planeId, validated)
         .then(({ data }) => {
-          dispatch(updatePlaneData(data.data))
           dispatch(updateCompendiumChildData({ field: 'planes', data: data.data }))
           return data.data
         })
@@ -82,12 +54,15 @@ const Plane: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={planeId}
+      isNew={isNew}
       ready={true}
-      initialValues={plane as TPlane}
-      onSubmit={submit}
-      onFetch={fetch}
+      remoteData={plane as TPlane}
+      onSave={submit}
+      onFetch={() => viewPlane(planeId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={fields}
-      resetData={reset}
+      resetData={() => dispatch(clearPlaneData(undefined))}
+      setRemoteData={(data) => dispatch(updatePlaneData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

@@ -1,13 +1,17 @@
 import React, { FunctionComponent, JSX, useCallback } from 'react'
 import { TCompendium } from '../../types'
-import { storeCompendium, updateCompendium } from '../../services/CompendiumService'
-import { updateCompendiumData } from '../../reducers/compendium/compendiumSlice'
+import { storeCompendium, TCompendiumRequest, updateCompendium, viewCompendium } from '../../services/CompendiumService'
+import {
+  clearCompendiumData,
+  setCompendiumLoading,
+  updateCompendiumData
+} from '../../reducers/compendium/compendiumSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
 import Post from '../../components/Post/component'
-import useImageSelection from '../../utils/useImageSelection'
+import useImageSelection from '../../utils/hooks/useImageSelection'
 
 const Compendium: FunctionComponent = (): JSX.Element => {
 
@@ -19,11 +23,12 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const isNew: boolean = !compendium?.slug;
+  const { onImageSelected, addImageToSelection } = useImageSelection({
+    entityType: 'compendia',
+    entityId: compendium.slug
+  })
 
-  const reset = () => {};
-
-  const fetch = async () => {}
+  const isNew: boolean = compendiumId === 'new'
 
   const submit = (data: any): Promise<TCompendium> => {
     if (isNew) {
@@ -38,14 +43,26 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       return updateCompendium(compendiumId, data)
         .then(({ data }) => {
           dispatch(updateCompendiumData(data.data))
-          return data.data;
+          return data.data
         })
     }
   }
 
-  const coverImage = useCallback(() => compendium.images?.find(image => image.pivot?.type.name.toLowerCase() === 'cover')?.original, [compendium.images]);
+  const readyDataForRequest = (data: TCompendium): TCompendiumRequest => ({
+    name: data.name,
+    content: data.content
+  })
 
-  const { onImageSelected, addImageToSelection } = useImageSelection({ entityType: 'compendia', entityId: compendium.slug })
+  const coverImage = useCallback(() => compendium.images?.find(image => image.pivot?.type.name.toLowerCase() === 'cover')?.original, [compendium.images])
+
+  const onPostFetch = useCallback(() => {
+    // we tell it it's loading so we avoid loading it twice when CompendiaWrapper loads
+    dispatch(setCompendiumLoading(true))
+    return viewCompendium(compendiumId, { include: 'images' }).then(({ data }) => {
+      dispatch(setCompendiumLoading(false))
+      return data.data
+    })
+  }, [dispatch])
 
   const selectImage = async (imageId: number, imageType?: string) => {
     return onImageSelected(imageId, imageType)
@@ -61,14 +78,17 @@ const Compendium: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={compendiumId}
-      initialValues={compendium as TCompendium}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={compendium as TCompendium}
+      onSave={submit}
+      onFetch={onPostFetch}
       ready={true}
       fields={[]}
-      resetData={reset}
+      resetData={() => {}}
       onImageSelected={selectImage}
+      setRemoteData={(data) => dispatch(updateCompendiumData(data))}
       coverImageUrl={coverImage()}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

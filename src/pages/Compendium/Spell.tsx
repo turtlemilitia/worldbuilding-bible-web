@@ -27,20 +27,6 @@ const Spell: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = spellId === 'new'
 
-  const reset = () => dispatch(clearSpellData(undefined))
-
-  const fetch = async () => {
-    if (spellId && !isNew) {
-      await viewSpell(spellId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setSpellData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearSpellData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TSpellRequest => ({
     name: data.name,
     content: data.content,
@@ -51,7 +37,6 @@ const Spell: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeSpell(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setSpellData(data.data))
           dispatch(addCompendiumChildData({ field: 'spells', data: data.data }))
           navigate(`/compendia/${compendiumId}/spells/${data.data.slug}`)
           return data.data
@@ -59,7 +44,6 @@ const Spell: FunctionComponent = (): JSX.Element => {
     } else {
       return updateSpell(spellId, validated)
         .then(({ data }) => {
-          dispatch(updateSpellData(data.data))
           dispatch(updateCompendiumChildData({ field: 'spells', data: data.data }))
           return data.data
         })
@@ -69,12 +53,15 @@ const Spell: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={spellId}
-      initialValues={spell as TSpell}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={spell as TSpell}
+      onSave={submit}
+      onFetch={() => viewSpell(spellId, { include: 'compendium' }).then(({ data }) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      resetData={() => dispatch(clearSpellData(undefined))}
+      setRemoteData={(data) => dispatch(updateSpellData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

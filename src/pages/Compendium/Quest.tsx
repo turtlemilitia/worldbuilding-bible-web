@@ -26,32 +26,6 @@ const Quest: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = questId === 'new'
 
-  const reset = () => dispatch(clearQuestData(undefined));
-
-  const fetch = async () => {
-    if (questId && !isNew) {
-      await viewQuest(questId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setQuestData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
-  useEffect(() => {
-    if (questId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      dispatch(clearQuestData(undefined))
-    }
-    return () => {
-      dispatch(clearQuestData(undefined))
-    }
-  }, [questId])
-
   const readyDataForRequest = (data: any): TQuestRequest => ({
     name: data.name,
     content: data.content,
@@ -62,7 +36,6 @@ const Quest: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeQuest(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setQuestData(data.data))
           dispatch(addCompendiumChildData({ field: 'quests', data: data.data }))
           navigate(`/compendia/${compendiumId}/quests/${data.data.slug}`)
           return data.data
@@ -70,24 +43,24 @@ const Quest: FunctionComponent = (): JSX.Element => {
     } else {
       return updateQuest(questId, validated)
         .then(({ data }) => {
-          dispatch(updateQuestData(data.data))
           dispatch(updateCompendiumChildData({ field: 'quests', data: data.data }))
           return data.data
         })
     }
   }
 
-  const fields: TFields[] = []
-
   return (
     <Post
       key={questId}
+      isNew={isNew}
       ready={true}
-      initialValues={quest as TQuest}
-      onSubmit={submit}
-      onFetch={fetch}
-      fields={fields}
-      resetData={reset}
+      remoteData={quest as TQuest}
+      onSave={submit}
+      onFetch={() => viewQuest(questId, { include: 'compendium' }).then(({data}) => data.data)}
+      fields={[]}
+      resetData={() => dispatch(clearQuestData(undefined))}
+      setRemoteData={(data) => dispatch(setQuestData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

@@ -27,20 +27,6 @@ const Deity: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = deityId === 'new'
 
-  const reset = () => dispatch(clearDeityData(undefined))
-
-  const fetch = async () => {
-    if (deityId && !isNew) {
-      await viewDeity(deityId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setDeityData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearDeityData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TDeityRequest => ({
     name: data.name,
     content: data.content,
@@ -51,7 +37,6 @@ const Deity: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeDeity(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setDeityData(data.data))
           dispatch(addCompendiumChildData({ field: 'deities', data: data.data }))
           navigate(`/compendia/${compendiumId}/deities/${data.data.slug}`)
           return data.data
@@ -59,7 +44,6 @@ const Deity: FunctionComponent = (): JSX.Element => {
     } else {
       return updateDeity(deityId, validated)
         .then(({ data }) => {
-          dispatch(updateDeityData(data.data))
           dispatch(updateCompendiumChildData({ field: 'deities', data: data.data }))
           return data.data
         })
@@ -69,12 +53,15 @@ const Deity: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={deityId}
-      initialValues={deity as TDeity}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={deity as TDeity}
+      onSave={submit}
+      onFetch={() => viewDeity(deityId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      resetData={() => dispatch(clearDeityData(undefined))}
+      setRemoteData={(data) => dispatch(setDeityData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

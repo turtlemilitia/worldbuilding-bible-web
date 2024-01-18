@@ -21,25 +21,12 @@ const Species: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId, speciesId } = useParams() as { compendiumId: string; speciesId: string } // router
 
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
   const { species } = useAppSelector((state: RootState) => state.species) // redux
 
   const navigate = useNavigate()
 
   const isNew: boolean = speciesId === 'new'
-
-  const reset = () => dispatch(clearSpeciesData(undefined))
-
-  const fetch = async () => {
-    if (speciesId && !isNew) {
-      await viewSpecies(speciesId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setSpeciesData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearSpeciesData(undefined))
-    }
-  }
 
   const readyDataForRequest = (data: any): TSpeciesRequest => ({
     name: data.name,
@@ -51,7 +38,6 @@ const Species: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeSpecies(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setSpeciesData(data.data))
           dispatch(addCompendiumChildData({ field: 'species', data: data.data }))
           navigate(`/compendia/${compendiumId}/species/${data.data.slug}`)
           return data.data
@@ -59,7 +45,6 @@ const Species: FunctionComponent = (): JSX.Element => {
     } else {
       return updateSpecies(speciesId, validated)
         .then(({ data }) => {
-          dispatch(updateSpeciesData(data.data))
           dispatch(updateCompendiumChildData({ field: 'species', data: data.data }))
           return data.data
         })
@@ -69,12 +54,15 @@ const Species: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={speciesId}
-      initialValues={species as TSpecies}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={species as TSpecies}
+      onSave={submit}
+      onFetch={() => viewSpecies(speciesId, { include: 'compendium' }).then(({ data }) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      resetData={() => dispatch(clearSpeciesData(undefined))}
+      setRemoteData={(data) => dispatch(updateSpeciesData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

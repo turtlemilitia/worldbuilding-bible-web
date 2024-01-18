@@ -27,20 +27,6 @@ const Faction: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = factionId === 'new'
 
-  const reset = () => dispatch(clearFactionData(undefined))
-
-  const fetch = async () => {
-    if (factionId && !isNew) {
-      await viewFaction(factionId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setFactionData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearFactionData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TFactionRequest => ({
     name: data.name,
     age: data.age,
@@ -53,7 +39,6 @@ const Faction: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeFaction(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setFactionData(data.data))
           dispatch(addCompendiumChildData({ field: 'factions', data: data.data }))
           navigate(`/compendia/${compendiumId}/factions/${data.data.slug}`)
           return data.data
@@ -61,7 +46,6 @@ const Faction: FunctionComponent = (): JSX.Element => {
     } else {
       return updateFaction(factionId, validated)
         .then(({ data }) => {
-          dispatch(updateFactionData(data.data))
           dispatch(updateCompendiumChildData({ field: 'factions', data: data.data }))
           return data.data
         })
@@ -71,12 +55,15 @@ const Faction: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={factionId}
-      initialValues={faction as TFaction}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={faction as TFaction}
+      onSave={submit}
+      onFetch={() => viewFaction(factionId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      setRemoteData={(data) => dispatch(setFactionData(data))}
+      resetData={() => dispatch(clearFactionData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

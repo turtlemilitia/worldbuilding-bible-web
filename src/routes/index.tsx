@@ -8,7 +8,6 @@ import SystemsWrapper from '../pages/System/SystemsWrapper'
 import PageWrapper from "../pages/PageWrapper";
 import { useAppSelector } from '../hooks'
 import { RootState } from '../store'
-import CompendiaWrapper from '../pages/Compendium/CompendiaWrapper'
 import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
 import Home from '../pages/Home'
@@ -34,6 +33,7 @@ import Quest from '../pages/Compendium/Quest'
 import Spell from '../pages/Compendium/Spell'
 import Story from '../pages/Compendium/Story'
 import Pantheon from '../pages/Compendium/Pantheon'
+import CompendiaWrapper from '../components/CompendiaWrapper/component'
 
 
 const Routes = (): JSX.Element => {

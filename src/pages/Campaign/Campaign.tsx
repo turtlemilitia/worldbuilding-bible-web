@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 import { TCampaign, TLocationGovernmentType } from '../../types'
-import { updateCampaignData } from '../../reducers/campaign/campaignSlice'
+import { clearCampaignData, updateCampaignData } from '../../reducers/campaign/campaignSlice'
 import { storeCampaign, TCampaignRequest, updateCampaign } from '../../services/CampaignService'
 import { viewCampaign } from '../../services/CampaignService'
 import { addCampaign } from '../../reducers/campaign/campaignsIndexSlice'
@@ -33,7 +33,6 @@ const Campaign: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeCampaign(validated)
         .then(({ data }) => {
-          dispatch(updateCampaignData(data.data))
           dispatch(addCampaign(data.data))
           navigate(`/campaigns/${data.data.slug}`)
           return data.data
@@ -41,23 +40,9 @@ const Campaign: FunctionComponent = (): JSX.Element => {
     } else {
       return updateCampaign(campaignId, validated)
         .then(({ data }) => {
-          dispatch(updateCampaignData(data.data))
           return data.data
         })
     }
-  }
-
-  const handleFetch = async () => {
-    if (campaignId && !isNew && !campaign) {
-      await viewCampaign(campaignId)
-        .then(response => {
-          dispatch(updateCampaignData(response.data.data))
-        })
-    }
-    if (isNew) {
-      handleReset()
-    }
-
   }
 
   const fields: TFields[] = [
@@ -77,12 +62,15 @@ const Campaign: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={campaignId}
-      initialValues={campaign}
-      onSubmit={handleSubmit}
-      onFetch={handleFetch}
+      isNew={isNew}
+      remoteData={campaign}
+      onSave={handleSubmit}
+      onFetch={() => viewCampaign(campaignId).then(({data}) => data.data)}
       ready={true}
       fields={fields}
-      resetData={handleReset}
+      resetData={() => dispatch(clearCampaignData(undefined))}
+      setRemoteData={(data) => dispatch(updateCampaignData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 

@@ -33,34 +33,12 @@ const Location: FunctionComponent = (): JSX.Element => {
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>([])
   const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>([])
 
-  const reset = () => dispatch(clearLocationData(undefined))
-
-  const fetch = async () => {
-    if (locationId && !isNew) {
-      await viewLocation(locationId, { include })
-        .then(response => {
-          dispatch(setLocationData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
   useEffect(() => {
 
     indexLocationTypes().then(response => setLocationTypes(response.data.data))
     indexGovernmentTypes().then(response => setGovernmentTypes(response.data.data))
 
   }, [])
-
-  useEffect(() => {
-
-    if (locationTypes.length && governmentTypes.length) {
-      setReady(true)
-    }
-
-  }, [locationTypes, governmentTypes])
 
   const readyDataForRequest = (data: any): TLocationRequest => ({
     name: data.name,
@@ -78,7 +56,6 @@ const Location: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeLocation(compendiumId, validated, { include })
         .then(({ data }) => {
-          dispatch(setLocationData(data.data))
           dispatch(addCompendiumChildData({ field: 'locations', data: data.data }))
           navigate(`/compendia/${compendiumId}/locations/${data.data.slug}`)
           return data.data
@@ -86,7 +63,6 @@ const Location: FunctionComponent = (): JSX.Element => {
     } else {
       return updateLocation(locationId, validated, { include })
         .then(({ data }) => {
-          dispatch(updateLocationData(data.data))
           dispatch(updateCompendiumChildData({ field: 'locations', data: data.data }))
           return data.data
         })
@@ -142,12 +118,15 @@ const Location: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={locationId}
+      isNew={isNew}
       ready={ready}
-      initialValues={location as TLocation}
-      onSubmit={submit}
-      onFetch={fetch}
+      remoteData={location as TLocation}
+      onSave={submit}
+      onFetch={() => viewLocation(locationId, { include }).then(({data}) => data.data)}
       fields={fields}
-      resetData={reset}
+      setRemoteData={(data) => dispatch(setLocationData(data))}
+      resetData={() => dispatch(clearLocationData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

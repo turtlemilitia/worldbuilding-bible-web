@@ -27,20 +27,6 @@ const Language: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = languageId === 'new'
 
-  const reset = () => dispatch(clearLanguageData(undefined))
-
-  const fetch = async () => {
-    if (languageId && !isNew) {
-      await viewLanguage(languageId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setLanguageData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearLanguageData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TLanguageRequest => ({
     name: data.name,
     content: data.content,
@@ -51,7 +37,6 @@ const Language: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeLanguage(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setLanguageData(data.data))
           dispatch(addCompendiumChildData({ field: 'languages', data: data.data }))
           navigate(`/compendia/${compendiumId}/languages/${data.data.slug}`)
           return data.data
@@ -59,7 +44,6 @@ const Language: FunctionComponent = (): JSX.Element => {
     } else {
       return updateLanguage(languageId, validated)
         .then(({ data }) => {
-          dispatch(updateLanguageData(data.data))
           dispatch(updateCompendiumChildData({ field: 'languages', data: data.data }))
           return data.data
         })
@@ -69,12 +53,15 @@ const Language: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={languageId}
-      initialValues={language as TLanguage}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={language as TLanguage}
+      onSave={submit}
+      onFetch={() => viewLanguage(languageId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      setRemoteData={(data) => dispatch(setLanguageData(data))}
+      resetData={() => dispatch(clearLanguageData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

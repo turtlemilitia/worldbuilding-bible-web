@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from 'react'
+import React, { JSX, useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -8,11 +8,13 @@ import { Editor } from '../../components/Forms/Fields/Editor'
 import { HeaderWrapper } from '../../components/HeaderWrapper'
 import ContentWrapper from '../../components/ContentWrapper'
 import { storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
-import { TSystem } from '../../types'
+import { TCharacter, TSystem } from '../../types'
 import { AxiosError } from 'axios'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import { addSystem } from '../../reducers/system/systemsIndexSlice'
 import FormToolbar from '../../components/Forms/FormToolbar'
+import Post from '../../components/Post/component'
+import { TDeityRequest } from '../../services/DeityService'
 
 const System = (): JSX.Element => {
 
@@ -22,97 +24,45 @@ const System = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const initialState: TSystem = {
-    name: '',
-    content: ''
-  }
-
   const { system } = useAppSelector((state: RootState) => state.system) // redux
-
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<TSystem>(initialState)
-  const [error, setError] = useState<string>()
 
   const isNew: boolean = systemId === 'new'
 
-  const fetch = () => {
-    setLoading(true)
-    viewSystem(systemId)
-      .then(response => {
-        setLoading(false)
-        setData(response.data.data)
-        dispatch(setSystemData(response.data.data))
-      })
-      .catch(err => {
-        setError(err)
-      })
-  }
-
-  useEffect(() => {
-    if (systemId && !isNew) {
-      fetch()
-    }
+  const submit = useCallback((data: TSystem) => {
     if (isNew) {
-      setData(initialState)
-      dispatch(clearSystemData(undefined))
-    }
-    return () => {
-      dispatch(clearSystemData(undefined))
-    }
-  }, [systemId])
-
-  const submit = (event: React.SyntheticEvent) => {
-    setLoading(true)
-    if (isNew) {
-      storeSystem(data)
-        .then(response => {
-          setLoading(false)
-          setData(response.data.data)
-          dispatch(setSystemData(response.data.data))
-          dispatch(addSystem(response.data.data))
-          navigate(`/systems/${response.data.data.slug}`)
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+      return storeSystem(data)
+        .then(({ data }) => {
+          dispatch(addSystem(data.data))
+          navigate(`/systems/${data.data.slug}`)
+          return data.data
         })
     } else {
-      updateSystem(systemId, data)
-        .then(response => {
-          setLoading(false)
-          setData(response.data.data)
-          dispatch(updateSystemData(response.data.data))
-        })
-        .catch((err: AxiosError) => {
-          setError(err.message)
+      return updateSystem(systemId, data)
+        .then(({ data }) => {
+          dispatch(updateSystemData(data.data))
+          return data.data
         })
     }
+  }, [dispatch, navigate])
 
-    event.preventDefault()
-  }
+  const readyDataForRequest = (data: any): TDeityRequest => ({
+    name: data.name,
+    content: data.content,
+  })
 
   return (
-    <LoadingWrapper loading={loading}>
-      <form onSubmit={submit}>
-        <HeaderWrapper page="System">
-          <PageTitleField value={data.name}
-                          onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, name: value }))}
-                          placeholder={'System Name Here'}/>
-        </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex justify-center -mx-2">
-            <div className="w-full md:w-2/4 max-w-2xl px-2">
-              {/*{error && <ErrorBanner errorText={error}/>}*/}
-              <FormToolbar onSave={submit} onRefresh={fetch}/>
-              {!loading && <Editor
-                initialValue={data.content}
-                onChange={(value) => setData((prevState: TSystem) => ({ ...prevState, content: value }))}
-                placeholder={'Write a simple description for the system.'}
-              />}
-            </div>
-          </div>
-        </ContentWrapper>
-      </form>
-    </LoadingWrapper>
+    <Post
+      key={systemId}
+      isNew={isNew}
+      ready={true}
+      remoteData={system as TSystem}
+      onSave={submit}
+      onFetch={() => viewSystem(systemId).then(({data}) => data.data)}
+      fields={[]}
+      setRemoteData={(data) => dispatch(updateSystemData(data))}
+      resetData={() => dispatch(clearSystemData(undefined))}
+      requestStructureCallback={readyDataForRequest}
+    />
   )
 }
 

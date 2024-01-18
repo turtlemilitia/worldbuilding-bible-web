@@ -27,20 +27,6 @@ const Concept: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = conceptId === 'new'
 
-  const reset = () => dispatch(clearConceptData(undefined))
-
-  const fetch = async () => {
-    if (conceptId && !isNew) {
-      await viewConcept(conceptId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setConceptData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearConceptData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TConceptRequest => ({
     name: data.name,
     content: data.content,
@@ -51,7 +37,6 @@ const Concept: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeConcept(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setConceptData(data.data))
           dispatch(addCompendiumChildData({ field: 'concepts', data: data.data }))
           navigate(`/compendia/${compendiumId}/concepts/${data.data.slug}`)
           return data.data
@@ -59,7 +44,6 @@ const Concept: FunctionComponent = (): JSX.Element => {
     } else {
       return updateConcept(conceptId, validated)
         .then(({ data }) => {
-          dispatch(updateConceptData(data.data))
           dispatch(updateCompendiumChildData({ field: 'concepts', data: data.data }))
           return data.data
         })
@@ -69,12 +53,15 @@ const Concept: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={conceptId}
-      initialValues={concept as TConcept}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={concept as TConcept}
+      onSave={submit}
+      onFetch={() => viewConcept(conceptId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      setRemoteData={(data) => dispatch(setConceptData(data))}
+      resetData={() => dispatch(clearConceptData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

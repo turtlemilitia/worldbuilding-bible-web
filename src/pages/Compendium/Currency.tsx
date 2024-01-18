@@ -27,20 +27,6 @@ const Currency: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = currencyId === 'new'
 
-  const reset = () => dispatch(clearCurrencyData(undefined))
-
-  const fetch = async () => {
-    if (currencyId && !isNew) {
-      await viewCurrency(currencyId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setCurrencyData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearCurrencyData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TCurrencyRequest => ({
     name: data.name,
     content: data.content,
@@ -51,7 +37,6 @@ const Currency: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeCurrency(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setCurrencyData(data.data))
           dispatch(addCompendiumChildData({ field: 'currencies', data: data.data }))
           navigate(`/compendia/${compendiumId}/currencies/${data.data.slug}`)
           return data.data
@@ -59,7 +44,6 @@ const Currency: FunctionComponent = (): JSX.Element => {
     } else {
       return updateCurrency(currencyId, validated)
         .then(({ data }) => {
-          dispatch(updateCurrencyData(data.data))
           dispatch(updateCompendiumChildData({ field: 'currencies', data: data.data }))
           return data.data
         })
@@ -69,12 +53,15 @@ const Currency: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={currencyId}
-      initialValues={currency as TCurrency}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={currency as TCurrency}
+      onSave={submit}
+      onFetch={() => viewCurrency(currencyId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      setRemoteData={(data) => dispatch(updateCurrencyData(data))}
+      resetData={() => dispatch(clearCurrencyData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

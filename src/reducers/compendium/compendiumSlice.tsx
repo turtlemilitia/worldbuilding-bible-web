@@ -4,10 +4,12 @@ import { TCharacter, TCompendium, TConcept, TFaction, TItem, TLanguage, TLocatio
 import character from '../../pages/Compendium/Character'
 
 interface TState {
+  loading: boolean;
   compendium: TCompendium;
 }
 
 const initialState: TState = {
+  loading: false,
   compendium: {
     name: '',
     content: '',
@@ -25,6 +27,9 @@ const compendiumSlice: Slice<TState> = createSlice({
   name: 'compendium',
   initialState,
   reducers: {
+    setCompendiumLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
+    },
     setCompendiumData: (state, action: PayloadAction<TCompendium>) => {
       state.compendium = action.payload
     },
@@ -53,6 +58,7 @@ const compendiumSlice: Slice<TState> = createSlice({
 })
 
 export const {
+  setCompendiumLoading,
   setCompendiumData,
   updateCompendiumData,
   clearCompendiumData,

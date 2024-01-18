@@ -7,7 +7,7 @@ import { PlusIcon, XIcon } from 'lucide-react'
 import { destroyImage, indexImages, storeImage, updateImage } from '../../services/ImageService'
 import { TImage, TImagePickerProps } from './types'
 import LoadingWrapper from '../LoadingWrapper'
-import useErrorHandling from '../../utils/useErrorHandling'
+import useErrorHandling from '../../utils/hooks/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { ImageThumbnail } from './ImageThumbnail'
 

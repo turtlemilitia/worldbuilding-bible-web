@@ -1,17 +1,17 @@
-import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
+import React, { FunctionComponent, JSX } from 'react'
 import { storePantheon, TPantheonRequest, updatePantheon, viewPantheon } from '../../services/PantheonService'
-import { clearPantheonData, setPantheonData, updatePantheonData } from '../../reducers/compendium/pantheon/pantheonSlice'
+import {
+  clearPantheonData,
+  setPantheonData,
+  updatePantheonData
+} from '../../reducers/compendium/pantheon/pantheonSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import {
-  addCompendiumChildData,
-  updateCompendiumChildData
-} from '../../reducers/compendium/compendiumSlice'
-import { TPantheon, TLocationType } from '../../types'
+import { addCompendiumChildData, updateCompendiumChildData } from '../../reducers/compendium/compendiumSlice'
+import { TPantheon } from '../../types'
 import Post from '../../components/Post/component'
 import { TFields } from '../../components/InfoBar'
-import { indexSpecies } from '../../services/SpeciesService'
 
 const Pantheon: FunctionComponent = (): JSX.Element => {
 
@@ -25,32 +25,6 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate()
 
   const isNew: boolean = pantheonId === 'new'
-
-  const reset = () => dispatch(clearPantheonData(undefined));
-
-  const fetch = async () => {
-    if (pantheonId && !isNew) {
-      await viewPantheon(pantheonId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setPantheonData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
-  useEffect(() => {
-    if (pantheonId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      dispatch(clearPantheonData(undefined))
-    }
-    return () => {
-      dispatch(clearPantheonData(undefined))
-    }
-  }, [pantheonId])
 
   const readyDataForRequest = (data: any): TPantheonRequest => ({
     name: data.name,
@@ -77,17 +51,18 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
     }
   }
 
-  const fields: TFields[] = []
-
   return (
     <Post
       key={pantheonId}
+      isNew={isNew}
       ready={true}
-      initialValues={pantheon as TPantheon}
-      onSubmit={submit}
-      onFetch={fetch}
-      fields={fields}
-      resetData={reset}
+      remoteData={pantheon as TPantheon}
+      onSave={submit}
+      onFetch={() => viewPantheon(pantheonId, { include: 'compendium' }).then(({data}) => data.data)}
+      fields={[]}
+      resetData={() => dispatch(clearPantheonData(undefined))}
+      setRemoteData={(data) => dispatch(setPantheonData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

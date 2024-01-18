@@ -1,8 +1,8 @@
-import { useAppSelector } from '../hooks'
-import { RootState } from '../store'
-import { attachImageToEntity } from '../services/ImageableService'
+import { useAppSelector } from '../../hooks'
+import { RootState } from '../../store'
+import { attachImageToEntity } from '../../services/ImageableService'
 import { useCallback } from 'react'
-import { TImage } from '../types'
+import { TImage } from '../../types'
 
 type TProps = {
   entityType: string;

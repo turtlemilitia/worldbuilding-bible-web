@@ -27,20 +27,6 @@ const Item: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = itemId === 'new'
 
-  const reset = () => dispatch(clearItemData(undefined))
-
-  const fetch = async () => {
-    if (itemId && !isNew) {
-      await viewItem(itemId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setItemData(response.data.data))
-        })
-    }
-    if (isNew) {
-      dispatch(clearItemData(undefined))
-    }
-  }
-
   const readyDataForRequest = (data: any): TItemRequest => ({
     name: data.name,
     content: data.content,
@@ -69,12 +55,15 @@ const Item: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={itemId}
-      initialValues={item as TItem}
-      onSubmit={submit}
-      onFetch={fetch}
+      isNew={isNew}
+      remoteData={item as TItem}
+      onSave={submit}
+      onFetch={() => viewItem(itemId, { include: 'compendium' }).then(({ data }) => data.data)}
       fields={[]}
       ready={true}
-      resetData={reset}
+      setRemoteData={(data) => dispatch(setItemData(data))}
+      resetData={() => dispatch(clearItemData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

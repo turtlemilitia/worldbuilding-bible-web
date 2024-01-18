@@ -2,6 +2,10 @@ import { AxiosResponse } from 'axios'
 import { TCompendium, TQueryParams } from '../types'
 import api from '../api'
 
+export type TCompendiumRequest = {
+  name: TCompendium['name'];
+  content: TCompendium['content'];
+}
 interface TCompendiumResponse {
   data: TCompendium;
 }
@@ -21,13 +25,13 @@ export const viewCompendium = (slug: string, query: TQueryParams = {}): Promise<
 
 }
 
-export const storeCompendium = (data: TCompendium): Promise<AxiosResponse<TCompendiumResponse>> => {
+export const storeCompendium = (data: TCompendiumRequest): Promise<AxiosResponse<TCompendiumResponse>> => {
 
   return api.post(`/api/compendia`, data)
 
 }
 
-export const updateCompendium = (slug: string, data: Partial<TCompendium>): Promise<AxiosResponse<TCompendiumResponse>> => {
+export const updateCompendium = (slug: string, data: TCompendiumRequest): Promise<AxiosResponse<TCompendiumResponse>> => {
   return api.put(`/api/compendia/${slug}`, data)
 }
 

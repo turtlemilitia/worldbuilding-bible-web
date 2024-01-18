@@ -15,7 +15,6 @@ import { indexSpecies } from '../../services/SpeciesService'
 
 const Encounter: FunctionComponent = (): JSX.Element => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
   const { encounter } = useAppSelector((state: RootState) => state.encounter) // redux
 
   const dispatch = useAppDispatch() // redux
@@ -25,51 +24,6 @@ const Encounter: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate()
 
   const isNew: boolean = encounterId === 'new'
-
-  const [ready, setReady] = useState<boolean>(false)
-  const [species, setSpecies] = useState<TLocationType[]>([])
-
-  const reset = () => dispatch(clearEncounterData(undefined));
-
-  const fetch = async () => {
-    if (encounterId && !isNew) {
-      await viewEncounter(encounterId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setEncounterData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
-  useEffect(() => {
-
-    if (compendium.slug) {
-      indexSpecies(compendium.slug).then(response => setSpecies(response.data.data))
-    }
-
-  }, [compendium.slug])
-
-  useEffect(() => {
-
-    if (species.length) {
-      setReady(true)
-    }
-
-  }, [species])
-
-  useEffect(() => {
-    if (encounterId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      dispatch(clearEncounterData(undefined))
-    }
-    return () => {
-      dispatch(clearEncounterData(undefined))
-    }
-  }, [encounterId])
 
   const readyDataForRequest = (data: any): TEncounterRequest => ({
     name: data.name,
@@ -81,7 +35,6 @@ const Encounter: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeEncounter(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setEncounterData(data.data))
           dispatch(addCompendiumChildData({ field: 'encounters', data: data.data }))
           navigate(`/compendia/${compendiumId}/encounters/${data.data.slug}`)
           return data.data
@@ -89,24 +42,24 @@ const Encounter: FunctionComponent = (): JSX.Element => {
     } else {
       return updateEncounter(encounterId, validated)
         .then(({ data }) => {
-          dispatch(updateEncounterData(data.data))
           dispatch(updateCompendiumChildData({ field: 'encounters', data: data.data }))
           return data.data
         })
     }
   }
 
-  const fields: TFields[] = []
-
   return (
     <Post
       key={encounterId}
-      ready={ready}
-      initialValues={encounter as TEncounter}
-      onSubmit={submit}
-      onFetch={fetch}
-      fields={fields}
-      resetData={reset}
+      isNew={isNew}
+      ready={true}
+      remoteData={encounter as TEncounter}
+      onSave={submit}
+      onFetch={() => viewEncounter(encounterId, { include: 'compendium' }).then(({data}) => data.data)}
+      fields={[]}
+      setRemoteData={(data) => dispatch(setEncounterData(data))}
+      resetData={() => dispatch(clearEncounterData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

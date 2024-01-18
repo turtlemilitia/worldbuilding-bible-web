@@ -24,32 +24,6 @@ const Story: FunctionComponent = (): JSX.Element => {
 
   const isNew: boolean = storyId === 'new'
 
-  const reset = () => dispatch(clearStoryData(undefined));
-
-  const fetch = async () => {
-    if (storyId && !isNew) {
-      await viewStory(storyId, { include: 'compendium' })
-        .then(response => {
-          dispatch(setStoryData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
-  useEffect(() => {
-    if (storyId && !isNew) {
-      fetch()
-    }
-    if (isNew) {
-      dispatch(clearStoryData(undefined))
-    }
-    return () => {
-      dispatch(clearStoryData(undefined))
-    }
-  }, [storyId])
-
   const readyDataForRequest = (data: any): TStoryRequest => ({
     name: data.name,
     content: data.content,
@@ -60,7 +34,6 @@ const Story: FunctionComponent = (): JSX.Element => {
     if (isNew) {
       return storeStory(compendiumId, validated)
         .then(({ data }) => {
-          dispatch(setStoryData(data.data))
           dispatch(addCompendiumChildData({ field: 'stories', data: data.data }))
           navigate(`/compendia/${compendiumId}/stories/${data.data.slug}`)
           return data.data
@@ -68,7 +41,6 @@ const Story: FunctionComponent = (): JSX.Element => {
     } else {
       return updateStory(storyId, validated)
         .then(({ data }) => {
-          dispatch(updateStoryData(data.data))
           dispatch(updateCompendiumChildData({ field: 'stories', data: data.data }))
           return data.data
         })
@@ -80,12 +52,15 @@ const Story: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={storyId}
+      isNew={isNew}
       ready={true}
-      initialValues={story as TStory}
-      onSubmit={submit}
-      onFetch={fetch}
+      remoteData={story as TStory}
+      onSave={submit}
+      onFetch={() => viewStory(storyId, { include: 'compendium' }).then(({data}) => data.data)}
       fields={fields}
-      resetData={reset}
+      resetData={() => dispatch(clearStoryData(undefined))}
+      setRemoteData={data => dispatch(updateStoryData(data))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }

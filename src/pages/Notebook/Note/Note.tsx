@@ -8,6 +8,7 @@ import { TNote } from '../../../types'
 import { setNotebookData } from '../../../reducers/notebook/notebookSlice'
 import { addNotebooksNotebookNote } from '../../../reducers/notebook/notebooksIndexSlice'
 import Post from '../../../components/Post/component'
+import { TDeityRequest } from '../../../services/DeityService'
 
 const Note = (): JSX.Element => {
 
@@ -22,23 +23,10 @@ const Note = (): JSX.Element => {
 
   const isNew: boolean = noteId === 'new'
 
-  const fetch = async () => {
-    if (noteId && !isNew) {
-      await viewNote(noteId)
-        .then(response => {
-          dispatch(setNoteData(response.data.data))
-        })
-    }
-    if (isNew) {
-      reset()
-    }
-  }
-
   const submit = (data: any) => {
     if (isNew) {
       return storeNote(notebookId, data)
         .then(({ data }) => {
-          dispatch(setNoteData(data.data))
           dispatch(setNotebookData({ hasNotes: true }))
           dispatch(addNotebooksNotebookNote({ slug: notebookId, note: data.data }))
           navigate(`/notebooks/${notebookId}/notes/${data.data.slug}`)
@@ -47,24 +35,29 @@ const Note = (): JSX.Element => {
     } else {
       return updateNote(noteId, data)
         .then(({ data }) => {
-          dispatch(updateNoteData(data.data))
           return data.data
         })
     }
   }
 
-  const reset = () => dispatch(clearNoteData(undefined))
+  const readyDataForRequest = (data: any): TDeityRequest => ({
+    name: data.name,
+    content: data.content,
+  })
 
   return (
     <Post
       key={noteId}
+      isNew={isNew}
       pageTypeName={'Note'}
-      initialValues={note as TNote}
-      onSubmit={submit}
-      onFetch={fetch}
+      remoteData={note as TNote}
+      onSave={submit}
+      onFetch={() => viewNote(noteId).then(({ data }) => data.data)}
+      setRemoteData={(data) => dispatch(updateNoteData(data))}
       ready={true}
       fields={[]}
-      resetData={reset}
+      resetData={() => dispatch(clearNoteData(undefined))}
+      requestStructureCallback={readyDataForRequest}
     />
   )
 }
