@@ -21,48 +21,37 @@ const Species: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId, speciesId } = useParams() as { compendiumId: string; speciesId: string } // router
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
   const { species } = useAppSelector((state: RootState) => state.species) // redux
-
-  const navigate = useNavigate()
-
-  const isNew: boolean = speciesId === 'new'
 
   const readyDataForRequest = (data: any): TSpeciesRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TSpecies> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeSpecies(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'species', data: data.data }))
-          navigate(`/compendia/${compendiumId}/species/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateSpecies(speciesId, validated)
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'species', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={speciesId}
-      isNew={isNew}
-      remoteData={species as TSpecies}
-      onSave={submit}
-      onFetch={() => viewSpecies(speciesId, { include: 'compendium' }).then(({ data }) => data.data)}
-      fields={[]}
+      isNew={speciesId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/species/${data.slug}`}
       ready={true}
-      resetData={() => dispatch(clearSpeciesData(undefined))}
-      setRemoteData={(data) => dispatch(updateSpeciesData(data))}
+
+      onCreate={(data: TSpeciesRequest) => storeSpecies(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TSpeciesRequest) => updateSpecies(speciesId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'species', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'species', data: data }))
+      }}
+      onFetch={() => viewSpecies(speciesId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={species as TSpecies}
+      setPersistedData={(data) => dispatch(setSpeciesData(data))}
+      updatePersistedData={(data) => dispatch(updateSpeciesData(data))}
+      resetPersistedData={() => dispatch(clearSpeciesData(undefined))}
     />
   )
 }

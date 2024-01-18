@@ -23,12 +23,6 @@ const Location: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = locationId === 'new'
-
-  const include = 'type,aliases,governmentType,parent,children'
-
   const [ready, setReady] = useState<boolean>(false)
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>([])
   const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>([])
@@ -50,24 +44,6 @@ const Location: FunctionComponent = (): JSX.Element => {
     governmentTypeId: data.governmentType?.id,
     parentId: data.parent?.id,
   })
-
-  const submit = (data: any): Promise<TLocation> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeLocation(compendiumId, validated, { include })
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'locations', data: data.data }))
-          navigate(`/compendia/${compendiumId}/locations/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateLocation(locationId, validated, { include })
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'locations', data: data.data }))
-          return data.data
-        })
-    }
-  }
 
   const fields: TFields[] = [
     {
@@ -118,15 +94,27 @@ const Location: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={locationId}
-      isNew={isNew}
+      isNew={locationId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/locations/${data.slug}`}
       ready={ready}
-      remoteData={location as TLocation}
-      onSave={submit}
-      onFetch={() => viewLocation(locationId, { include }).then(({data}) => data.data)}
-      fields={fields}
-      setRemoteData={(data) => dispatch(setLocationData(data))}
-      resetData={() => dispatch(clearLocationData(undefined))}
+
+      onCreate={(data: TLocationRequest) => storeLocation(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TLocationRequest) => updateLocation(locationId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'locations', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'locations', data: data }))
+      }}
+      onFetch={() => viewLocation(locationId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={fields}
+
+      persistedData={location as TLocation}
+      setPersistedData={(data) => dispatch(setLocationData(data))}
+      updatePersistedData={(data) => dispatch(updateLocationData(data))}
+      resetPersistedData={() => dispatch(clearLocationData(undefined))}
     />
   )
 }

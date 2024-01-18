@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import { HeaderWrapper } from '../HeaderWrapper'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import ContentWrapper from '../ContentWrapper'
@@ -9,9 +9,7 @@ import { InfoBar } from '../InfoBar'
 import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { TTypesAllowed } from '../../types'
-import { debounce } from 'lodash'
-import useErrorHandling from '../../utils/hooks/useErrorHandling'
-import useFormHandling from '../../utils/hooks/useFormHandling'
+import { useFormHandling } from '../../utils/hooks/useFormHandling'
 
 const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
@@ -21,25 +19,27 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     pageTypeName,
     contentPlaceholder,
     fields,
-    onSave,
-    onFetch,
-    remoteData,
-    setRemoteData,
-    resetData,
+    persistedData,
     onImageSelected,
     coverImageUrl,
-    requestStructureCallback,
   } = props
 
-  const { errors, data, loading, handleChange, fetchData, handleOnSave } = useFormHandling({
-    isNew,
-    onFetch,
-    onSave,
-    persistedData: remoteData,
-    setPersistedData: setRemoteData,
-    resetPersistedData: resetData,
-    requestStructureCallback
-  })
+  const {
+    errors,
+    newData,
+    loading,
+    handleOnFieldChange,
+    handleOnFetch,
+    handleOnSave
+  } = useFormHandling({ ...props })
+
+  useEffect(() => {
+    console.log('mounted Post');
+
+    return () => {
+      console.log('unmounted Post');
+    }
+  }, [])
 
   return (
     <LoadingWrapper loading={loading || !ready}>
@@ -49,8 +49,8 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
           onCoverImageSelected={onImageSelected ? (id) => onImageSelected(id, 'cover') : undefined}
           coverImage={coverImageUrl}
         >
-          <PageTitleField value={data.name}
-                          onChange={(value) => handleChange('name', value)}
+          <PageTitleField value={newData.name}
+                          onChange={(value) => handleOnFieldChange('name', value)}
                           placeholder={'Name'}/>
         </HeaderWrapper>
         <ContentWrapper>
@@ -58,16 +58,16 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
             <div className="w-full lg:w-1/4 px-6">
               <InfoBar
                 loading={loading}
-                onChange={handleChange}
-                data={data}
+                onChange={handleOnFieldChange}
+                data={newData}
                 fields={fields}/>
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
-              <FormToolbar canManuallySave={isNew} onSave={handleOnSave} onRefresh={fetchData}/>
+              <FormToolbar canManuallySave={isNew} onSave={handleOnSave} onRefresh={handleOnFetch}/>
               <Editor
-                initialValue={data.content}
-                onChange={(value) => handleChange('content', value)}
+                initialValue={newData.content}
+                onChange={(value) => handleOnFieldChange('content', value)}
                 placeholder={contentPlaceholder}
               />
             </div>

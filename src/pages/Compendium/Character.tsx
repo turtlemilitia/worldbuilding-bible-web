@@ -2,34 +2,28 @@ import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
 import { storeCharacter, TCharacterRequest, updateCharacter, viewCharacter } from '../../services/CharacterService'
 import { clearCharacterData, setCharacterData, updateCharacterData } from '../../reducers/compendium/character/characterSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCompendiumChildData,
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
-import { TCharacter, TLocationType } from '../../types'
+import { TCharacter, TSpecies } from '../../types'
 import Post from '../../components/Post/component'
 import { TFields } from '../../components/InfoBar'
 import { indexSpecies } from '../../services/SpeciesService'
 
 const Character: FunctionComponent = (): JSX.Element => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
-  const { character } = useAppSelector((state: RootState) => state.character) // redux
-
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = characterId === 'new'
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const { character } = useAppSelector((state: RootState) => state.character) // redux
 
   const [ready, setReady] = useState<boolean>(false)
-  const [species, setSpecies] = useState<TLocationType[]>([])
-
-  const include = 'compendium,species';
+  const [species, setSpecies] = useState<TSpecies[]>([])
 
   useEffect(() => {
 
@@ -55,24 +49,6 @@ const Character: FunctionComponent = (): JSX.Element => {
     speciesId: data.species?.id
   })
 
-  const submit = (data: any): Promise<TCharacter> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeCharacter(compendiumId, validated, { include })
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'characters', data: data.data }))
-          navigate(`/compendia/${compendiumId}/characters/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateCharacter(characterId, validated, { include })
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'characters', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   const fields: TFields[] = [
     {
       name: 'age',
@@ -95,16 +71,27 @@ const Character: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={characterId}
-      pageTypeName={'Character'}
-      isNew={isNew}
+      isNew={characterId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/characters/${data.slug}`}
       ready={ready}
-      remoteData={character as TCharacter}
-      onSave={submit}
-      onFetch={() => viewCharacter(characterId, { include }).then(({data}) => data.data)}
-      fields={fields}
-      resetData={() => dispatch(clearCharacterData(undefined))}
-      setRemoteData={(data) => dispatch(updateCharacterData(data))}
+
+      onCreate={(data: TCharacterRequest) => storeCharacter(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TCharacterRequest) => updateCharacter(characterId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'characters', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'characters', data: data }))
+      }}
+      onFetch={() => viewCharacter(characterId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={fields}
+
+      persistedData={character as TCharacter}
+      setPersistedData={(data) => dispatch(setCharacterData(data))}
+      updatePersistedData={(data) => dispatch(updateCharacterData(data))}
+      resetPersistedData={() => dispatch(clearCharacterData(undefined))}
     />
   )
 }

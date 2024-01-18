@@ -23,45 +23,35 @@ const Concept: FunctionComponent = (): JSX.Element => {
 
   const { concept } = useAppSelector((state: RootState) => state.concept) // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = conceptId === 'new'
-
   const readyDataForRequest = (data: any): TConceptRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TConcept> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeConcept(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'concepts', data: data.data }))
-          navigate(`/compendia/${compendiumId}/concepts/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateConcept(conceptId, validated)
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'concepts', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={conceptId}
-      isNew={isNew}
-      remoteData={concept as TConcept}
-      onSave={submit}
-      onFetch={() => viewConcept(conceptId, { include: 'compendium' }).then(({data}) => data.data)}
-      fields={[]}
+      isNew={conceptId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/concepts/${data.slug}`}
       ready={true}
-      setRemoteData={(data) => dispatch(setConceptData(data))}
-      resetData={() => dispatch(clearConceptData(undefined))}
+
+      onCreate={(data: TConceptRequest) => storeConcept(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TConceptRequest) => updateConcept(conceptId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'concepts', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'concepts', data: data }))
+      }}
+      onFetch={() => viewConcept(conceptId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={concept as TConcept}
+      setPersistedData={(data) => dispatch(setConceptData(data))}
+      updatePersistedData={(data) => dispatch(updateConceptData(data))}
+      resetPersistedData={() => dispatch(clearConceptData(undefined))}
     />
   )
 }

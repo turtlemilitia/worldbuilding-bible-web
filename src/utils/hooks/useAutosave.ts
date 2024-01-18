@@ -5,19 +5,21 @@ import equal from 'fast-deep-equal/react'
 
 type TProps = {
   canAutosave?: boolean;
-  handleSave: (data: any) => any;
   delay: number;
-  initialData: any;
-  newData: any;
+
+  handleOnSave: (data: any) => any;
   requestStructureCallback?: (data: any) => any;
+
+  persistedData: any;
+  newData: any;
 }
 type TAutosave = (props: TProps) => void;
 
 const useAutosave: TAutosave = ({
   canAutosave,
-  handleSave,
+  handleOnSave,
   delay = 5000,
-  initialData,
+  persistedData,
   newData,
   requestStructureCallback,
 }) => {
@@ -48,16 +50,16 @@ const useAutosave: TAutosave = ({
       return;
     }
     // compare previous persisted data and changed data
-    initialData = requestStructureCallback ? requestStructureCallback(initialData) : initialData
+    persistedData = requestStructureCallback ? requestStructureCallback(persistedData) : persistedData
     newData = requestStructureCallback ? requestStructureCallback(newData) : newData
-    if (!equal(initialData, newData)) {
+    if (!equal(persistedData, newData)) {
       // save new data (will make it persisted
-      handleSave(newData)
+      handleOnSave(newData)
       // turn autosave off
       setAutosave(false)
     }
 
-  }, [autosave, newData, handleSave])
+  }, [autosave, newData, handleOnSave])
 
 }
 

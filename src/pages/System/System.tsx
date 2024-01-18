@@ -22,30 +22,9 @@ const System = (): JSX.Element => {
 
   const { systemId } = useParams() as { systemId: string } // router
 
-  const navigate = useNavigate()
-
   const { system } = useAppSelector((state: RootState) => state.system) // redux
 
-  const isNew: boolean = systemId === 'new'
-
-  const submit = useCallback((data: TSystem) => {
-    if (isNew) {
-      return storeSystem(data)
-        .then(({ data }) => {
-          dispatch(addSystem(data.data))
-          navigate(`/systems/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateSystem(systemId, data)
-        .then(({ data }) => {
-          dispatch(updateSystemData(data.data))
-          return data.data
-        })
-    }
-  }, [dispatch, navigate])
-
-  const readyDataForRequest = (data: any): TDeityRequest => ({
+  const readyDataForRequest = (data: any): TSystem => ({
     name: data.name,
     content: data.content,
   })
@@ -53,15 +32,24 @@ const System = (): JSX.Element => {
   return (
     <Post
       key={systemId}
-      isNew={isNew}
+      isNew={systemId === 'new'}
+      pathToNew={(data: TSystem) => `/systems/${data.slug}`}
       ready={true}
-      remoteData={system as TSystem}
-      onSave={submit}
-      onFetch={() => viewSystem(systemId).then(({data}) => data.data)}
-      fields={[]}
-      setRemoteData={(data) => dispatch(updateSystemData(data))}
-      resetData={() => dispatch(clearSystemData(undefined))}
+
+      onCreate={(data: TSystem) => storeSystem(data).then(({ data }) => data.data)}
+      onUpdate={(data: TSystem) => updateSystem(systemId, data).then(({ data }) => data.data)}
+      onCreated={(data: TSystem) => {
+        dispatch(addSystem(data))
+      }}
+      onFetch={() => viewSystem(systemId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={system as TSystem}
+      setPersistedData={(data) => dispatch(setSystemData(data))}
+      updatePersistedData={(data) => dispatch(updateSystemData(data))}
+      resetPersistedData={() => dispatch(clearSystemData(undefined))}
     />
   )
 }

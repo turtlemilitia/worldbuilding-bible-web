@@ -23,46 +23,35 @@ const Religion: FunctionComponent = (): JSX.Element => {
 
   const { religion } = useAppSelector((state: RootState) => state.religion) // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = religionId === 'new'
   const readyDataForRequest = (data: any): TReligionRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TReligion> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeReligion(compendiumId, validated)
-        .then(({ data }) => {
-
-          dispatch(addCompendiumChildData({ field: 'religions', data: data.data }))
-          navigate(`/compendia/${compendiumId}/religions/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateReligion(religionId, validated)
-        .then(({ data }) => {
-          dispatch(updateReligionData(data.data))
-          dispatch(updateCompendiumChildData({ field: 'religions', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={religionId}
-      isNew={isNew}
-      remoteData={religion as TReligion}
-      onSave={submit}
-      onFetch={() => viewReligion(religionId, { include: 'compendium' }).then(({data}) => data.data)}
-      fields={[]}
+      isNew={religionId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/religions/${data.slug}`}
       ready={true}
-      resetData={() => dispatch(clearReligionData(undefined))}
-      setRemoteData={(data) => dispatch(setReligionData(data))}
+
+      onCreate={(data: TReligionRequest) => storeReligion(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TReligionRequest) => updateReligion(religionId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'religions', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'religions', data: data }))
+      }}
+      onFetch={() => viewReligion(religionId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={religion as TReligion}
+      setPersistedData={(data) => dispatch(setReligionData(data))}
+      updatePersistedData={(data) => dispatch(updateReligionData(data))}
+      resetPersistedData={() => dispatch(clearReligionData(undefined))}
     />
   )
 }

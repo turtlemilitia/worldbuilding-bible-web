@@ -23,45 +23,35 @@ const Language: FunctionComponent = (): JSX.Element => {
 
   const { language } = useAppSelector((state: RootState) => state.language) // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = languageId === 'new'
-
   const readyDataForRequest = (data: any): TLanguageRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TLanguage> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeLanguage(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'languages', data: data.data }))
-          navigate(`/compendia/${compendiumId}/languages/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateLanguage(languageId, validated)
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'languages', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={languageId}
-      isNew={isNew}
-      remoteData={language as TLanguage}
-      onSave={submit}
-      onFetch={() => viewLanguage(languageId, { include: 'compendium' }).then(({data}) => data.data)}
-      fields={[]}
+      isNew={languageId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/languages/${data.slug}`}
       ready={true}
-      setRemoteData={(data) => dispatch(setLanguageData(data))}
-      resetData={() => dispatch(clearLanguageData(undefined))}
+
+      onCreate={(data: TLanguageRequest) => storeLanguage(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TLanguageRequest) => updateLanguage(languageId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'languages', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'languages', data: data }))
+      }}
+      onFetch={() => viewLanguage(languageId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={language as TLanguage}
+      setPersistedData={(data) => dispatch(setLanguageData(data))}
+      updatePersistedData={(data) => dispatch(updateLanguageData(data))}
+      resetPersistedData={() => dispatch(clearLanguageData(undefined))}
     />
   )
 }

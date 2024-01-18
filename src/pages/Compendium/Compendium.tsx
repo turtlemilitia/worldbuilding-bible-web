@@ -3,11 +3,12 @@ import { TCompendium } from '../../types'
 import { storeCompendium, TCompendiumRequest, updateCompendium, viewCompendium } from '../../services/CompendiumService'
 import {
   clearCompendiumData,
+  setCompendiumData,
   setCompendiumLoading,
   updateCompendiumData
 } from '../../reducers/compendium/compendiumSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
 import Post from '../../components/Post/component'
@@ -21,32 +22,10 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
-  const navigate = useNavigate()
-
   const { onImageSelected, addImageToSelection } = useImageSelection({
     entityType: 'compendia',
     entityId: compendium.slug
   })
-
-  const isNew: boolean = compendiumId === 'new'
-
-  const submit = (data: any): Promise<TCompendium> => {
-    if (isNew) {
-      return storeCompendium(data)
-        .then(({ data }) => {
-          dispatch(updateCompendiumData(data.data))
-          dispatch(addCompendium(data.data))
-          navigate(`/compendia/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateCompendium(compendiumId, data)
-        .then(({ data }) => {
-          dispatch(updateCompendiumData(data.data))
-          return data.data
-        })
-    }
-  }
 
   const readyDataForRequest = (data: TCompendium): TCompendiumRequest => ({
     name: data.name,
@@ -78,17 +57,27 @@ const Compendium: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={compendiumId}
-      isNew={isNew}
-      remoteData={compendium as TCompendium}
-      onSave={submit}
-      onFetch={onPostFetch}
+      isNew={compendiumId === 'new'}
+      pathToNew={(data) => `/compendia/${data.slug}`}
       ready={true}
-      fields={[]}
-      resetData={() => {}}
-      onImageSelected={selectImage}
-      setRemoteData={(data) => dispatch(updateCompendiumData(data))}
-      coverImageUrl={coverImage()}
+
+      onCreate={(data: TCompendiumRequest) => storeCompendium(data).then(({ data }) => data.data)}
+      onUpdate={(data: TCompendiumRequest) => updateCompendium(compendiumId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendium(data))
+      }}
+      onFetch={onPostFetch}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={compendium as TCompendium}
+      setPersistedData={(data) => dispatch(setCompendiumData(data))}
+      updatePersistedData={(data) => dispatch(updateCompendiumData(data))}
+      resetPersistedData={() => {}}
+
+      onImageSelected={selectImage}
+      coverImageUrl={coverImage()}
     />
   )
 }

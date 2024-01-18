@@ -23,45 +23,35 @@ const Deity: FunctionComponent = (): JSX.Element => {
 
   const { deity } = useAppSelector((state: RootState) => state.deity) // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = deityId === 'new'
-
   const readyDataForRequest = (data: any): TDeityRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TDeity> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeDeity(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'deities', data: data.data }))
-          navigate(`/compendia/${compendiumId}/deities/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateDeity(deityId, validated)
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'deities', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={deityId}
-      isNew={isNew}
-      remoteData={deity as TDeity}
-      onSave={submit}
-      onFetch={() => viewDeity(deityId, { include: 'compendium' }).then(({data}) => data.data)}
-      fields={[]}
+      isNew={deityId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/deities/${data.slug}`}
       ready={true}
-      resetData={() => dispatch(clearDeityData(undefined))}
-      setRemoteData={(data) => dispatch(setDeityData(data))}
+
+      onCreate={(data: TDeityRequest) => storeDeity(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TDeityRequest) => updateDeity(deityId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'deities', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'deities', data: data }))
+      }}
+      onFetch={() => viewDeity(deityId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={deity as TDeity}
+      setPersistedData={(data) => dispatch(setDeityData(data))}
+      updatePersistedData={(data) => dispatch(updateDeityData(data))}
+      resetPersistedData={() => dispatch(clearDeityData(undefined))}
     />
   )
 }

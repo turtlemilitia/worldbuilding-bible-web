@@ -23,10 +23,6 @@ const Faction: FunctionComponent = (): JSX.Element => {
 
   const { faction } = useAppSelector((state: RootState) => state.faction) // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = factionId === 'new'
-
   const readyDataForRequest = (data: any): TFactionRequest => ({
     name: data.name,
     age: data.age,
@@ -34,36 +30,30 @@ const Faction: FunctionComponent = (): JSX.Element => {
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TFaction> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeFaction(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'factions', data: data.data }))
-          navigate(`/compendia/${compendiumId}/factions/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateFaction(factionId, validated)
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'factions', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={factionId}
-      isNew={isNew}
-      remoteData={faction as TFaction}
-      onSave={submit}
-      onFetch={() => viewFaction(factionId, { include: 'compendium' }).then(({data}) => data.data)}
-      fields={[]}
+      isNew={factionId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/factions/${data.slug}`}
       ready={true}
-      setRemoteData={(data) => dispatch(setFactionData(data))}
-      resetData={() => dispatch(clearFactionData(undefined))}
+
+      onCreate={(data: TFactionRequest) => storeFaction(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TFactionRequest) => updateFaction(factionId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'factions', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'factions', data: data }))
+      }}
+      onFetch={() => viewFaction(factionId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={faction as TFaction}
+      setPersistedData={(data) => dispatch(setFactionData(data))}
+      updatePersistedData={(data) => dispatch(updateFactionData(data))}
+      resetPersistedData={() => dispatch(clearFactionData(undefined))}
     />
   )
 }

@@ -6,7 +6,7 @@ import {
   updateSpellData
 } from '../../reducers/compendium/spell/spellSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCompendiumChildData,
@@ -23,45 +23,35 @@ const Spell: FunctionComponent = (): JSX.Element => {
 
   const { spell } = useAppSelector((state: RootState) => state.spell) // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = spellId === 'new'
-
   const readyDataForRequest = (data: any): TSpellRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TSpell> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeSpell(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'spells', data: data.data }))
-          navigate(`/compendia/${compendiumId}/spells/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateSpell(spellId, validated)
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'spells', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={spellId}
-      isNew={isNew}
-      remoteData={spell as TSpell}
-      onSave={submit}
-      onFetch={() => viewSpell(spellId, { include: 'compendium' }).then(({ data }) => data.data)}
-      fields={[]}
+      isNew={spellId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/spells/${data.slug}`}
       ready={true}
-      resetData={() => dispatch(clearSpellData(undefined))}
-      setRemoteData={(data) => dispatch(updateSpellData(data))}
+
+      onCreate={(data: TSpellRequest) => storeSpell(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TSpellRequest) => updateSpell(spellId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'spells', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'spells', data: data }))
+      }}
+      onFetch={() => viewSpell(spellId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={spell as TSpell}
+      setPersistedData={(data) => dispatch(setSpellData(data))}
+      updatePersistedData={(data) => dispatch(updateSpellData(data))}
+      resetPersistedData={() => dispatch(clearSpellData(undefined))}
     />
   )
 }

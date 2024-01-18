@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../../store'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { clearNoteData, setNoteData, updateNoteData } from '../../../reducers/notebook/note/noteSlice'
-import { storeNote, updateNote, viewNote } from '../../../services/NoteService'
+import { storeNote, TNoteRequest, updateNote, viewNote } from '../../../services/NoteService'
 import { TNote } from '../../../types'
-import { setNotebookData } from '../../../reducers/notebook/notebookSlice'
-import { addNotebooksNotebookNote } from '../../../reducers/notebook/notebooksIndexSlice'
+import { updateNotebookData } from '../../../reducers/notebook/notebookSlice'
+import { addNotebooksNotebookNote, updateNotebooksNotebookNote } from '../../../reducers/notebook/notebooksIndexSlice'
 import Post from '../../../components/Post/component'
 import { TDeityRequest } from '../../../services/DeityService'
 
@@ -16,29 +16,7 @@ const Note = (): JSX.Element => {
 
   const { notebookId, noteId } = useParams() as { notebookId: string, noteId: string } // router
 
-  const navigate = useNavigate()
-
-  const { notebook } = useAppSelector((state: RootState) => state.notebook) // redux
   const { note } = useAppSelector((state: RootState) => state.note) // redux
-
-  const isNew: boolean = noteId === 'new'
-
-  const submit = (data: any) => {
-    if (isNew) {
-      return storeNote(notebookId, data)
-        .then(({ data }) => {
-          dispatch(setNotebookData({ hasNotes: true }))
-          dispatch(addNotebooksNotebookNote({ slug: notebookId, note: data.data }))
-          navigate(`/notebooks/${notebookId}/notes/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateNote(noteId, data)
-        .then(({ data }) => {
-          return data.data
-        })
-    }
-  }
 
   const readyDataForRequest = (data: any): TDeityRequest => ({
     name: data.name,
@@ -48,16 +26,28 @@ const Note = (): JSX.Element => {
   return (
     <Post
       key={noteId}
-      isNew={isNew}
-      pageTypeName={'Note'}
-      remoteData={note as TNote}
-      onSave={submit}
-      onFetch={() => viewNote(noteId).then(({ data }) => data.data)}
-      setRemoteData={(data) => dispatch(updateNoteData(data))}
+      isNew={noteId === 'new'}
+      pathToNew={(data) => `/notebooks/${notebookId}/notes/${data.slug}`}
       ready={true}
-      fields={[]}
-      resetData={() => dispatch(clearNoteData(undefined))}
+
+      onCreate={(data: TNoteRequest) => storeNote(notebookId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TNoteRequest) => updateNote(noteId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(updateNotebookData({ hasNotes: true }))
+        dispatch(addNotebooksNotebookNote({ slug: notebookId, note: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateNotebooksNotebookNote({ slug: notebookId, data: data }))
+      }}
+      onFetch={() => viewNote(noteId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={note as TNote}
+      setPersistedData={(data) => dispatch(setNoteData(data))}
+      updatePersistedData={(data) => dispatch(updateNoteData(data))}
+      resetPersistedData={() => dispatch(clearNoteData(undefined))}
     />
   )
 }

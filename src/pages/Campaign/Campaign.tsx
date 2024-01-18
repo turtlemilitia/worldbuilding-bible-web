@@ -3,8 +3,8 @@ import Post from '../../components/Post/component'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { TCampaign, TLocationGovernmentType } from '../../types'
-import { clearCampaignData, updateCampaignData } from '../../reducers/campaign/campaignSlice'
+import { TCampaign, TLocationGovernmentType, TSystem } from '../../types'
+import { clearCampaignData, setCampaignData, updateCampaignData } from '../../reducers/campaign/campaignSlice'
 import { storeCampaign, TCampaignRequest, updateCampaign } from '../../services/CampaignService'
 import { viewCampaign } from '../../services/CampaignService'
 import { addCampaign } from '../../reducers/campaign/campaignsIndexSlice'
@@ -18,32 +18,11 @@ const Campaign: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = campaignId === 'new'
-
   const readyDataForRequest = (data: any): TCampaignRequest => ({
     name: data.name,
     content: data.content,
     visibility: data.visibility.id
   })
-
-  const handleSubmit = (data: any): Promise<TCampaign> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeCampaign(validated)
-        .then(({ data }) => {
-          dispatch(addCampaign(data.data))
-          navigate(`/campaigns/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateCampaign(campaignId, validated)
-        .then(({ data }) => {
-          return data.data
-        })
-    }
-  }
 
   const fields: TFields[] = [
     {
@@ -57,20 +36,27 @@ const Campaign: FunctionComponent = (): JSX.Element => {
     }
   ]
 
-  const handleReset = () => {}
-
   return (
     <Post
       key={campaignId}
-      isNew={isNew}
-      remoteData={campaign}
-      onSave={handleSubmit}
-      onFetch={() => viewCampaign(campaignId).then(({data}) => data.data)}
+      isNew={campaignId === 'new'}
+      pathToNew={(data) => `/campaigns/${data.slug}`}
       ready={true}
-      fields={fields}
-      resetData={() => dispatch(clearCampaignData(undefined))}
-      setRemoteData={(data) => dispatch(updateCampaignData(data))}
+
+      onCreate={(data: TCampaignRequest) => storeCampaign(data).then(({ data }) => data.data)}
+      onUpdate={(data: TCampaignRequest) => updateCampaign(campaignId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCampaign(data))
+      }}
+      onFetch={() => viewCampaign(campaignId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={fields}
+
+      persistedData={campaign as TCampaign}
+      setPersistedData={(data) => dispatch(setCampaignData(data))}
+      updatePersistedData={(data) => dispatch(updateCampaignData(data))}
+      resetPersistedData={() => dispatch(clearCampaignData(undefined))}
     />
   )
 

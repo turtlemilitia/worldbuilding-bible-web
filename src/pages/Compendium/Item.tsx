@@ -23,47 +23,35 @@ const Item: FunctionComponent = (): JSX.Element => {
 
   const { item } = useAppSelector((state: RootState) => state.item) // redux
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = itemId === 'new'
-
   const readyDataForRequest = (data: any): TItemRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TItem> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeItem(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(setItemData(data.data))
-          dispatch(addCompendiumChildData({ field: 'items', data: data.data }))
-          navigate(`/compendia/${compendiumId}/items/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateItem(itemId, validated)
-        .then(({ data }) => {
-          dispatch(updateItemData(data.data))
-          dispatch(updateCompendiumChildData({ field: 'items', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={itemId}
-      isNew={isNew}
-      remoteData={item as TItem}
-      onSave={submit}
-      onFetch={() => viewItem(itemId, { include: 'compendium' }).then(({ data }) => data.data)}
-      fields={[]}
+      isNew={itemId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/items/${data.slug}`}
       ready={true}
-      setRemoteData={(data) => dispatch(setItemData(data))}
-      resetData={() => dispatch(clearItemData(undefined))}
+
+      onCreate={(data: TItemRequest) => storeItem(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TItemRequest) => updateItem(itemId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'items', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'items', data: data }))
+      }}
+      onFetch={() => viewItem(itemId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={item as TItem}
+      setPersistedData={(data) => dispatch(setItemData(data))}
+      updatePersistedData={(data) => dispatch(updateItemData(data))}
+      resetPersistedData={() => dispatch(clearItemData(undefined))}
     />
   )
 }

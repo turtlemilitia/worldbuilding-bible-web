@@ -248,5 +248,5 @@ export type TImageType = {
   name: string;
 }
 
-export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept|TNotebook
-export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'
+export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept|TNotebook|TCampaign
+export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'|'campaign'

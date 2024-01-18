@@ -2,17 +2,14 @@ import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
 import { storeEncounter, TEncounterRequest, updateEncounter, viewEncounter } from '../../services/EncounterService'
 import { clearEncounterData, setEncounterData, updateEncounterData } from '../../reducers/compendium/encounter/encounterSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCompendiumChildData,
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
-import { TEncounter, TLocationType } from '../../types'
+import { TEncounter } from '../../types'
 import Post from '../../components/Post/component'
-import { TFields } from '../../components/InfoBar'
-import { indexSpecies } from '../../services/SpeciesService'
-
 const Encounter: FunctionComponent = (): JSX.Element => {
 
   const { encounter } = useAppSelector((state: RootState) => state.encounter) // redux
@@ -21,45 +18,35 @@ const Encounter: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId, encounterId } = useParams() as { compendiumId: string; encounterId: string } // router
 
-  const navigate = useNavigate()
-
-  const isNew: boolean = encounterId === 'new'
-
   const readyDataForRequest = (data: any): TEncounterRequest => ({
     name: data.name,
     content: data.content,
   })
 
-  const submit = (data: any): Promise<TEncounter> => {
-    const validated = readyDataForRequest(data)
-    if (isNew) {
-      return storeEncounter(compendiumId, validated)
-        .then(({ data }) => {
-          dispatch(addCompendiumChildData({ field: 'encounters', data: data.data }))
-          navigate(`/compendia/${compendiumId}/encounters/${data.data.slug}`)
-          return data.data
-        })
-    } else {
-      return updateEncounter(encounterId, validated)
-        .then(({ data }) => {
-          dispatch(updateCompendiumChildData({ field: 'encounters', data: data.data }))
-          return data.data
-        })
-    }
-  }
-
   return (
     <Post
       key={encounterId}
-      isNew={isNew}
+      isNew={encounterId === 'new'}
+      pathToNew={(data) => `/compendia/${compendiumId}/encounters/${data.slug}`}
       ready={true}
-      remoteData={encounter as TEncounter}
-      onSave={submit}
-      onFetch={() => viewEncounter(encounterId, { include: 'compendium' }).then(({data}) => data.data)}
-      fields={[]}
-      setRemoteData={(data) => dispatch(setEncounterData(data))}
-      resetData={() => dispatch(clearEncounterData(undefined))}
+
+      onCreate={(data: TEncounterRequest) => storeEncounter(compendiumId, data).then(({ data }) => data.data)}
+      onUpdate={(data: TEncounterRequest) => updateEncounter(encounterId, data).then(({ data }) => data.data)}
+      onCreated={(data) => {
+        dispatch(addCompendiumChildData({ field: 'encounters', data: data }))
+      }}
+      onUpdated={(data) => {
+        dispatch(updateCompendiumChildData({ field: 'encounters', data: data }))
+      }}
+      onFetch={() => viewEncounter(encounterId).then(({ data }) => data.data)}
       requestStructureCallback={readyDataForRequest}
+
+      fields={[]}
+
+      persistedData={encounter as TEncounter}
+      setPersistedData={(data) => dispatch(setEncounterData(data))}
+      updatePersistedData={(data) => dispatch(updateEncounterData(data))}
+      resetPersistedData={() => dispatch(clearEncounterData(undefined))}
     />
   )
 }

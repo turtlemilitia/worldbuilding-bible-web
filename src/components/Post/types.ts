@@ -1,17 +1,17 @@
 import { TFields } from '../InfoBar'
+import { useFormHandlingProps } from '../../utils/hooks/useFormHandling'
 
-export type TPostProps<T> = {
-  isNew: boolean;
-  remoteData: T;
+export type TPostProps<T> = useFormHandlingProps<T> & {
   pageTypeName?: string;
-  onSave: (data: T) => Promise<T>;
-  onFetch: () => Promise<T>;
-  fields: TFields[];
   contentPlaceholder?: string;
+
+  // API
   ready: boolean;
-  setRemoteData: (data: T) => any;
-  resetData: () => any
+
+  // form
+  fields: TFields[];
+
+  // image
   onImageSelected?: (imageId: number, imageType?: string) => Promise<any>;
   coverImageUrl?: string;
-  requestStructureCallback?: (data: any) => any;
 }
