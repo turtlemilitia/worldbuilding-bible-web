@@ -56,7 +56,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
-              <FormToolbar canManuallySave={isNew} onSave={handleOnSave} onRefresh={handleOnFetch}/>
+              <FormToolbar canManuallySave={true} onSave={handleOnSave} onRefresh={handleOnFetch}/>
               <Editor
                 initialValue={fetchedData.content}
                 onChange={(value) => handleOnFieldChange('content', value)}
