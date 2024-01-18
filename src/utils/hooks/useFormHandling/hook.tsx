@@ -13,6 +13,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   onCreate,
   onUpdate,
   requestStructureCallback,
+  onFetched,
   onCreated,
   onUpdated,
 
@@ -27,7 +28,10 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
   const [loading, setLoading] = useState(false)
 
+  // data which is changed
   const [newData, setNewData] = useState<TTypesAllowed>(persistedData)
+  // data which came back at the end of the fetch
+  const [fetchedData, setFetchedData] = useState<TTypesAllowed>(persistedData)
 
   useEffect(() => {
 
@@ -48,6 +52,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
     // persisted data doesn't seem to be changing the new data when it changes
     if (!persistedData.id) {
+      setFetchedData(persistedData)
       setNewData(persistedData)
     }
 
@@ -62,6 +67,8 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
       .then((apiData) => {
         setNewData(apiData)
         setPersistedData(apiData)
+        setFetchedData(apiData)
+        onFetched && onFetched(apiData)
       })
       .catch(handleResponseErrors)
       .finally(() => {
@@ -101,7 +108,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     newData
   })
 
-  return { errors, loading, newData, handleOnFieldChange, handleOnFetch, handleOnSave }
+  return { errors, loading, newData, fetchedData, handleOnFieldChange, handleOnFetch, handleOnSave }
 
 }
 

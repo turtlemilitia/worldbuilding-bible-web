@@ -8,6 +8,7 @@ export type useFormHandlingProps<T> = {
   onCreate: (data: any) => Promise<T>;
   onUpdate: (data: any) => Promise<T>;
   requestStructureCallback?: (data: any) => any,
+  onFetched?: (data: T) => any
   onCreated?: (data: T) => any
   onUpdated?: (data: T) => any
 
@@ -22,6 +23,7 @@ export type useFormHandlingType<T> = (data: useFormHandlingProps<T>) => {
   loading: boolean;
 
   newData: T;
+  fetchedData: T;
 
   handleOnFieldChange: (name: string, value: string) => any;
   handleOnFetch: () => void;

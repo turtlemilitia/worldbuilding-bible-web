@@ -19,7 +19,6 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     pageTypeName,
     contentPlaceholder,
     fields,
-    persistedData,
     onImageSelected,
     coverImageUrl,
   } = props
@@ -27,19 +26,12 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
   const {
     errors,
     newData,
+    fetchedData,
     loading,
     handleOnFieldChange,
     handleOnFetch,
-    handleOnSave
+    handleOnSave,
   } = useFormHandling({ ...props })
-
-  useEffect(() => {
-    console.log('mounted Post');
-
-    return () => {
-      console.log('unmounted Post');
-    }
-  }, [])
 
   return (
     <LoadingWrapper loading={loading || !ready}>
@@ -66,7 +58,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
               <FormToolbar canManuallySave={isNew} onSave={handleOnSave} onRefresh={handleOnFetch}/>
               <Editor
-                initialValue={newData.content}
+                initialValue={fetchedData.content}
                 onChange={(value) => handleOnFieldChange('content', value)}
                 placeholder={contentPlaceholder}
               />

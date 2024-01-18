@@ -31,6 +31,7 @@ const Species: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={speciesId}
+      pageTypeName={'Species'}
       isNew={speciesId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/species/${data.slug}`}
       ready={true}
