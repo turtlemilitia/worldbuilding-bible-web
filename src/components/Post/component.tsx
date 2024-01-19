@@ -10,11 +10,11 @@ import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { TTypesAllowed } from '../../types'
 import { useFormHandling } from '../../utils/hooks/useFormHandling'
+import SavingDialog from '../SavingDialog'
 
 const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
   const {
-    isNew,
     ready,
     pageTypeName,
     contentPlaceholder,
@@ -28,6 +28,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     newData,
     fetchedData,
     loading,
+    saving,
     handleOnFieldChange,
     handleOnFetch,
     handleOnSave,
@@ -35,6 +36,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
   return (
     <LoadingWrapper loading={loading || !ready}>
+      <SavingDialog saving={saving}/>
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper
           page={pageTypeName}

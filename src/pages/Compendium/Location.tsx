@@ -7,7 +7,7 @@ import {
   addCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 import { TFields } from '../../components/InfoBar'
 import { indexLocationTypes } from '../../services/LocationTypeService'
 import { indexGovernmentTypes } from '../../services/GovernmentTypeService'

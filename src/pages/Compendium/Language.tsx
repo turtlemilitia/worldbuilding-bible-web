@@ -12,7 +12,7 @@ import {
   addCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 import { TLanguage } from '../../types'
 
 const Language: FunctionComponent = (): JSX.Element => {

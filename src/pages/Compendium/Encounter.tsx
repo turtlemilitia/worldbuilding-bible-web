@@ -9,7 +9,7 @@ import {
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TEncounter } from '../../types'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 const Encounter: FunctionComponent = (): JSX.Element => {
 
   const { encounter } = useAppSelector((state: RootState) => state.encounter) // redux

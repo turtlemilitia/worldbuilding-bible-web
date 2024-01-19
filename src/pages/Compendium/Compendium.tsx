@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 import useImageSelection from '../../utils/hooks/useImageSelection'
 
 const Compendium: FunctionComponent = (): JSX.Element => {

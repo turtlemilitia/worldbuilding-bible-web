@@ -9,7 +9,7 @@ import {
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TPlane } from '../../types'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 import { TFields } from '../../components/InfoBar'
 
 const Plane: FunctionComponent = (): JSX.Element => {

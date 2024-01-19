@@ -12,7 +12,7 @@ import {
   addCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 import { TSpell } from '../../types'
 
 const Spell: FunctionComponent = (): JSX.Element => {

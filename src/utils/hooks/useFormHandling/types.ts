@@ -21,6 +21,7 @@ export type useFormHandlingProps<T> = {
 
 export type useFormHandlingType<T> = (data: useFormHandlingProps<T>) => {
   loading: boolean;
+  saving: boolean;
 
   newData: T;
   fetchedData: T;

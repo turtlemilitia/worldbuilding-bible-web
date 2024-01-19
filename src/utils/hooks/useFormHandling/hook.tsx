@@ -27,6 +27,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
   const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   // data which is changed
   const [newData, setNewData] = useState<TTypesAllowed>(persistedData)
@@ -58,7 +59,10 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
   }, [persistedData])
 
-  const handleOnFieldChange = (name: string, value: string) => setNewData((prevState) => ({ ...prevState, [name]: value }))
+  const handleOnFieldChange = (name: string, value: string) => setNewData((prevState) => ({
+    ...prevState,
+    [name]: value
+  }))
 
   const handleOnFetch = () => {
     setLoading(true)
@@ -77,20 +81,22 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   }
 
   const handleOnSave = () => {
-    // todo setLoading -- one that is Redux based and only shows in the corner somewhere
+    setSaving(true)
     if (isNew) {
       onCreate(newData)
         .then((data) => {
-          setPersistedData(data);
+          setPersistedData(data)
           onCreated && onCreated(data)
           navigate(pathToNew(data))
+          setSaving(false)
         })
         .catch(handleResponseErrors)
     } else {
       onUpdate(newData)
         .then((data) => {
-          updatePersistedData(data);
+          updatePersistedData(data)
           onUpdated && onUpdated(data)
+          setSaving(false)
         })
         .catch(handleResponseErrors)
     }
@@ -108,7 +114,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     newData
   })
 
-  return { errors, loading, newData, fetchedData, handleOnFieldChange, handleOnFetch, handleOnSave }
+  return { errors, loading, saving, newData, fetchedData, handleOnFieldChange, handleOnFetch, handleOnSave }
 
 }
 

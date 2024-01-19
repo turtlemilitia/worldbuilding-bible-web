@@ -9,7 +9,7 @@ import {
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TQuest } from '../../types'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 
 const Quest: FunctionComponent = (): JSX.Element => {
 

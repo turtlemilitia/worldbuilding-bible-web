@@ -5,7 +5,7 @@ type TProps = {
   size?: number;
 }
 const LoadingSpinner: FunctionComponent<TProps> = ({size = 10}): JSX.Element => {
-  return <Loader2Icon className={`animate-spin h-${size} w-${size} stroke-stone-300`}/>
+  return <Loader2Icon className={`animate-spin stroke-stone-300`} size={size}/>
 }
 
 export default LoadingSpinner;

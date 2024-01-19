@@ -9,7 +9,7 @@ import {
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TCharacter, TSpecies } from '../../types'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 import { TFields } from '../../components/InfoBar'
 import { indexSpecies } from '../../services/SpeciesService'
 

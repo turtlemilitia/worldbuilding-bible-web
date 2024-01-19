@@ -13,7 +13,7 @@ import {
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TNaturalResource } from '../../types'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 
 const NaturalResource: FunctionComponent = (): JSX.Element => {
 

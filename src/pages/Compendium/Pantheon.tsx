@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { addCompendiumChildData, updateCompendiumChildData } from '../../reducers/compendium/compendiumSlice'
 import { TPantheon } from '../../types'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post'
 const Pantheon: FunctionComponent = (): JSX.Element => {
 
   const { pantheon } = useAppSelector((state: RootState) => state.pantheon) // redux
