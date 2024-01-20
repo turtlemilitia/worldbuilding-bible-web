@@ -25,22 +25,33 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
   const canDelete: boolean = Boolean(onDelete)
   const collapsable: boolean = Boolean(hasChildren || (children?.length && children.length > 0))
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loadingChildren, setLoadingChildren] = useState<boolean>(false)
+  const [deleting, setDeleting] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(startOpen || false)
 
   const handleOpenChildren = () => {
     if (!open) {
       if (!children?.length && loadChildren) {
-        setLoading(true);
+        setLoadingChildren(true);
         loadChildren()
       }
     }
     setOpen(prev => !prev)
   }
 
+  const handleOnDelete = () => {
+    if (canDelete && onDelete) {
+      setDeleting(true);
+      onDelete()
+        .then(() => {
+          setDeleting(false);
+        })
+    }
+  }
+
   useEffect(() => {
     if (children?.length) {
-      setLoading(false);
+      setLoadingChildren(false);
     }
   }, [children?.length])
 
@@ -73,10 +84,13 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
                 <PlusIcon className="h-5"/>
               </Link>
             )}
-            {onDelete && (
-              <button onClick={onDelete}>
+            {canDelete && !deleting && (
+              <button onClick={handleOnDelete}>
                 <Trash2Icon className="h-4 text-stone-400"/>
               </button>
+            )}
+            {deleting && (
+              <LoadingSpinner size={20}/>
             )}
           </div>
         )}
@@ -88,7 +102,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
           })}
         </ul>
       )}
-      {loading && (
+      {loadingChildren && (
         <div className="flex justify-center">
           <LoadingSpinner/>
         </div>

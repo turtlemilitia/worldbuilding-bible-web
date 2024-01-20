@@ -40,28 +40,10 @@ import { indexStories } from '../../services/StoryService'
 import { indexNaturalResources } from '../../services/NaturalResourceService'
 import { indexPlanes } from '../../services/PlaneService'
 import { indexDeities } from '../../services/DeityService'
-import {
-  mapCharacter,
-  mapConcept,
-  mapCurrency,
-  mapDeity,
-  mapEncounter,
-  mapFaction,
-  mapItem,
-  mapLanguage,
-  mapLocation,
-  mapNaturalResource,
-  mapPantheon,
-  mapPlane,
-  mapQuest,
-  mapReligion,
-  mapSpecies,
-  mapSpell,
-  mapStory
-} from './mapping'
 import { TCompendiaWrapperProps } from './types'
 import { RootState } from '../../store'
 import { viewCompendium } from '../../services/CompendiumService'
+import useCompendiaMapping from './useCompendiaMapping'
 
 const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
@@ -84,6 +66,26 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
     }
   }, [])
 
+  const {
+    mapCharacter,
+    mapConcept,
+    mapCurrency,
+    mapDeity,
+    mapEncounter,
+    mapFaction,
+    mapItem,
+    mapLanguage,
+    mapLocation,
+    mapNaturalResource,
+    mapPantheon,
+    mapPlane,
+    mapQuest,
+    mapReligion,
+    mapSpecies,
+    mapSpell,
+    mapStory
+  } = useCompendiaMapping({ compendium })
+
   return (
     <>
       {compendiumId !== 'new' && (
@@ -96,7 +98,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasSpecies,
                 addNewLink: `/compendia/${compendium.slug}/species/new`,
                 icon: (props) => <CatIcon {...props}/>,
-                children: compendium.species?.map(species => mapSpecies(compendium, species)),
+                children: compendium.species?.map(species => mapSpecies(species)),
                 loadChildren: () => {
                   indexSpecies(compendium.slug)
                     .then(({ data }) => {
@@ -109,7 +111,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasCharacters,
                 addNewLink: `/compendia/${compendium.slug}/characters/new`,
                 icon: (props) => <PersonStandingIcon {...props}/>,
-                children: compendium.characters?.map(character => mapCharacter(compendium, character)),
+                children: compendium.characters?.map(character => mapCharacter(character)),
                 loadChildren: () => {
                   indexCharacters(compendium.slug)
                     .then(({ data }) => {
@@ -122,7 +124,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasConcepts,
                 addNewLink: `/compendia/${compendium.slug}/concepts/new`,
                 icon: (props) => <CircleEllipsisIcon {...props}/>,
-                children: compendium.concepts?.map(concept => mapConcept(compendium, concept)),
+                children: compendium.concepts?.map(concept => mapConcept(concept)),
                 loadChildren: () => {
                   indexConcepts(compendium.slug)
                     .then(({ data }) => {
@@ -141,7 +143,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                     hasChildren: compendium.hasLanguages,
                     addNewLink: `/compendia/${compendium.slug}/languages/new`,
                     icon: (props) => <LanguagesIcon {...props}/>,
-                    children: compendium.languages?.map(language => mapLanguage(compendium, language)),
+                    children: compendium.languages?.map(language => mapLanguage(language)),
                     loadChildren: () => {
                       indexLanguages(compendium.slug)
                         .then(({ data }) => {
@@ -160,7 +162,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                         hasChildren: compendium.hasReligions,
                         addNewLink: `/compendia/${compendium.slug}/religions/new`,
                         icon: (props) => <ChurchIcon {...props}/>,
-                        children: compendium.religions?.map(currency => mapReligion(compendium, currency)),
+                        children: compendium.religions?.map(currency => mapReligion(currency)),
                         loadChildren: () => {
                           indexReligions(compendium.slug)
                             .then(({ data }) => {
@@ -173,7 +175,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                         hasChildren: compendium.hasPantheons,
                         addNewLink: `/compendia/${compendium.slug}/pantheons/new`,
                         icon: (props) => <SunIcon {...props}/>,
-                        children: compendium.pantheons?.map(pantheon => mapPantheon(compendium, pantheon)),
+                        children: compendium.pantheons?.map(pantheon => mapPantheon(pantheon)),
                         loadChildren: () => {
                           indexPantheons(compendium.slug)
                             .then(({ data }) => {
@@ -186,7 +188,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                         hasChildren: compendium.hasDeities,
                         addNewLink: `/compendia/${compendium.slug}/deities/new`,
                         icon: (props) => <PersonStandingIcon {...props}/>,
-                        children: compendium.deities?.map(deity => mapDeity(compendium, deity)),
+                        children: compendium.deities?.map(deity => mapDeity(deity)),
                         loadChildren: () => {
                           indexDeities(compendium.slug)
                             .then(({ data }) => {
@@ -201,7 +203,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                     hasChildren: compendium.hasCurrencies,
                     addNewLink: `/compendia/${compendium.slug}/currencies/new`,
                     icon: (props) => <CoinsIcon {...props}/>,
-                    children: compendium.currencies?.map(currency => mapCurrency(compendium, currency)),
+                    children: compendium.currencies?.map(currency => mapCurrency(currency)),
                     loadChildren: () => {
                       indexCurrencies(compendium.slug)
                         .then(({ data }) => {
@@ -216,7 +218,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasFactions,
                 addNewLink: `/compendia/${compendium.slug}/factions/new`,
                 icon: (props) => <ShieldIcon {...props}/>,
-                children: compendium.factions?.map(faction => mapFaction(compendium, faction)),
+                children: compendium.factions?.map(faction => mapFaction(faction)),
                 loadChildren: () => {
                   indexFactions(compendium.slug)
                     .then(({ data }) => {
@@ -229,7 +231,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasLocations,
                 addNewLink: `/compendia/${compendium.slug}/locations/new`,
                 icon: (props) => <MapIcon {...props}/>,
-                children: nestedLocations?.map(location => mapLocation(compendium, location)),
+                children: nestedLocations?.map(location => mapLocation(location)),
                 loadChildren: () => {
                   indexLocations(compendium.slug, { include: 'parent' })
                     .then(({ data }) => {
@@ -242,7 +244,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasItems,
                 addNewLink: `/compendia/${compendium.slug}/items/new`,
                 icon: (props) => <SwordIcon {...props}/>,
-                children: compendium.items?.map(item => mapItem(compendium, item)),
+                children: compendium.items?.map(item => mapItem(item)),
                 loadChildren: () => {
                   indexItems(compendium.slug)
                     .then(({ data }) => {
@@ -255,7 +257,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasNaturalResources,
                 addNewLink: `/compendia/${compendium.slug}/naturalResources/new`,
                 icon: (props) => <FlowerIcon {...props}/>,
-                children: compendium.naturalResources?.map(naturalResource => mapNaturalResource(compendium, naturalResource)),
+                children: compendium.naturalResources?.map(naturalResource => mapNaturalResource(naturalResource)),
                 loadChildren: () => {
                   indexNaturalResources(compendium.slug)
                     .then(({ data }) => {
@@ -268,7 +270,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasPlanes,
                 addNewLink: `/compendia/${compendium.slug}/planes/new`,
                 icon: (props) => <CircleIcon {...props}/>,
-                children: compendium.planes?.map(plane => mapPlane(compendium, plane)),
+                children: compendium.planes?.map(plane => mapPlane(plane)),
                 loadChildren: () => {
                   indexPlanes(compendium.slug)
                     .then(({ data }) => {
@@ -281,7 +283,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasStories,
                 addNewLink: `/compendia/${compendium.slug}/stories/new`,
                 icon: (props) => <BookIcon {...props}/>,
-                children: compendium.stories?.map(story => mapStory(compendium, story)),
+                children: compendium.stories?.map(story => mapStory(story)),
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
@@ -294,7 +296,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasSpells,
                 addNewLink: `/compendia/${compendium.slug}/spells/new`,
                 icon: (props) => <WandIcon {...props}/>,
-                children: compendium.spells?.map(spell => mapSpell(compendium, spell)),
+                children: compendium.spells?.map(spell => mapSpell(spell)),
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
@@ -307,7 +309,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasQuests,
                 addNewLink: `/compendia/${compendium.slug}/quests/new`,
                 icon: (props) => <StarIcon {...props}/>,
-                children: compendium.quests?.map(quest => mapQuest(compendium, quest)),
+                children: compendium.quests?.map(quest => mapQuest(quest)),
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
@@ -320,7 +322,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
                 hasChildren: compendium.hasEncounters,
                 addNewLink: `/compendia/${compendium.slug}/encounters/new`,
                 icon: (props) => <SwordsIcon {...props}/>,
-                children: compendium.encounters?.map(encounter => mapEncounter(compendium, encounter)),
+                children: compendium.encounters?.map(encounter => mapEncounter(encounter)),
                 loadChildren: () => {
                   indexStories(compendium.slug)
                     .then(({ data }) => {
