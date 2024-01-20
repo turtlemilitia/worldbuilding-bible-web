@@ -8,14 +8,17 @@ import { useNavigate } from 'react-router-dom'
 const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   isNew,
   pathToNew,
+  pathAfterDelete,
 
   onFetch,
   onCreate,
   onUpdate,
+  onDelete,
   requestStructureCallback,
   onFetched,
   onCreated,
   onUpdated,
+  onDeleted,
 
   persistedData,
   setPersistedData,
@@ -114,7 +117,18 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     newData
   })
 
-  return { errors, loading, saving, newData, fetchedData, handleOnFieldChange, handleOnFetch, handleOnSave }
+  const handleOnDelete = () => {
+    setLoading(true);
+    onDelete()
+      .then(() => {
+        onDeleted && onDeleted()
+        navigate(pathAfterDelete)
+        setLoading(false);
+      })
+      .catch(handleResponseErrors)
+  }
+
+  return { errors, loading, saving, newData, fetchedData, handleOnFieldChange, handleOnFetch, handleOnSave, handleOnDelete }
 
 }
 

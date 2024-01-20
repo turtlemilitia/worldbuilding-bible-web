@@ -36,5 +36,5 @@ export const updateConcept = (slug: string, data: Partial<TConceptRequest>): Pro
 }
 
 export const destroyConcept = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/concepts/${slug}`)
+  return api.delete(`/api/concepts/${slug}`)
 }

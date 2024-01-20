@@ -36,5 +36,5 @@ export const updateNaturalResource = (slug: string, data: Partial<TNaturalResour
 }
 
 export const destroyNaturalResource = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/natural-resources/${slug}`)
+  return api.delete(`/api/natural-resources/${slug}`)
 }

@@ -1,11 +1,11 @@
     import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import { storePlane, TPlaneRequest, updatePlane, viewPlane } from '../../services/PlaneService'
+import { destroyPlane, storePlane, TPlaneRequest, updatePlane, viewPlane } from '../../services/PlaneService'
 import { clearPlaneData, setPlaneData, updatePlaneData } from '../../reducers/compendium/plane/planeSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TPlane } from '../../types'
@@ -32,17 +32,22 @@ const Plane: FunctionComponent = (): JSX.Element => {
       key={planeId}
       isNew={planeId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/planes/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewPlane(planeId).then(({ data }) => data.data)}
       onCreate={(data: TPlaneRequest) => storePlane(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TPlaneRequest) => updatePlane(planeId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyPlane(planeId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'planes', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'planes', data: data }))
       }}
-      onFetch={() => viewPlane(planeId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'planes', id: planeId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

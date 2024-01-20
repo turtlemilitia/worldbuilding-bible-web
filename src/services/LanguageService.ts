@@ -36,5 +36,5 @@ export const updateLanguage = (slug: string, data: Partial<TLanguageRequest>): P
 }
 
 export const destroyLanguage = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/languages/${slug}`)
+  return api.delete(`/api/languages/${slug}`)
 }

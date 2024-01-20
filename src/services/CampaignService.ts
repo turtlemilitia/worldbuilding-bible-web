@@ -37,5 +37,5 @@ export const updateCampaign = (slug: string, data: Partial<TCampaignRequest>): P
 }
 
 export const destroyCampaign = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/campaigns/${slug}`)
+  return api.delete(`/api/campaigns/${slug}`)
 }

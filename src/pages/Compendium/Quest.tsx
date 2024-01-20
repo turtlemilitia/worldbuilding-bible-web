@@ -1,11 +1,11 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import { storeQuest, TQuestRequest, updateQuest, viewQuest } from '../../services/QuestService'
+import { destroyQuest, storeQuest, TQuestRequest, updateQuest, viewQuest } from '../../services/QuestService'
 import { clearQuestData, setQuestData, updateQuestData } from '../../reducers/compendium/quest/questSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TQuest } from '../../types'
@@ -29,17 +29,22 @@ const Quest: FunctionComponent = (): JSX.Element => {
       key={questId}
       isNew={questId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/quests/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewQuest(questId).then(({ data }) => data.data)}
       onCreate={(data: TQuestRequest) => storeQuest(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TQuestRequest) => updateQuest(questId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyQuest(questId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'quests', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'quests', data: data }))
       }}
-      onFetch={() => viewQuest(questId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'quests', id: questId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

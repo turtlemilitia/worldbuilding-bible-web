@@ -24,6 +24,11 @@ type TCampaignChildActionProps = {
   data: TSession;
 }
 
+type TCampaignRemoveChildActionProps = {
+  field: 'sessions'
+  id: TSession['slug'];
+}
+
 const campaignSlice: Slice<TState> = createSlice({
   name: 'campaign',
   initialState,
@@ -47,6 +52,13 @@ const campaignSlice: Slice<TState> = createSlice({
       state.campaign = {
         ...state.campaign,
         [field]: state.campaign[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
+      }
+    },
+    removeCompendiumChildData: (state, action: PayloadAction<TCampaignRemoveChildActionProps>) => {
+      const field = action.payload.field;
+      state.campaign = {
+        ...state.campaign,
+        [field]: state.campaign[field]?.filter(child => child.slug !== action.payload.id)
       }
     },
     clearCampaignData: (state) => {

@@ -18,8 +18,8 @@ const campaignsIndexSlice: Slice<TState> = createSlice({
     addCampaign: (state, action: PayloadAction<TCampaign>) => {
       state.campaigns = [...state.campaigns, action.payload]
     },
-    removeCampaign: (state, action: PayloadAction<TCampaign>) => {
-      state.campaigns = state.campaigns.filter((compendium: TCampaign) => compendium.id !== action.payload.id)
+    removeCampaign: (state, action: PayloadAction<{ id: TCampaign['slug'] }>) => {
+      state.campaigns = state.campaigns.filter((campaign: TCampaign) => campaign.slug !== action.payload.id)
     },
     clearCampaigns: (state) => {
       state.campaigns = initialState.campaigns
@@ -27,6 +27,6 @@ const campaignsIndexSlice: Slice<TState> = createSlice({
   }
 })
 
-export const { setCampaigns, addCampaign, clearCampaigns } = campaignsIndexSlice.actions
+export const { setCampaigns, addCampaign, removeCampaign, clearCampaigns } = campaignsIndexSlice.actions
 
 export default campaignsIndexSlice.reducer

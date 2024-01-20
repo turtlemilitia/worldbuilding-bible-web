@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeReligion, TReligionRequest, updateReligion, viewReligion } from '../../services/ReligionService'
+import {
+  destroyReligion,
+  storeReligion,
+  TReligionRequest,
+  updateReligion,
+  viewReligion
+} from '../../services/ReligionService'
 import {
   clearReligionData,
   setReligionData,
@@ -9,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -33,17 +39,22 @@ const Religion: FunctionComponent = (): JSX.Element => {
       key={religionId}
       isNew={religionId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/religions/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewReligion(religionId).then(({ data }) => data.data)}
       onCreate={(data: TReligionRequest) => storeReligion(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TReligionRequest) => updateReligion(religionId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyReligion(religionId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'religions', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'religions', data: data }))
       }}
-      onFetch={() => viewReligion(religionId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'religions', id: religionId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

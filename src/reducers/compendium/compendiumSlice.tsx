@@ -23,6 +23,11 @@ type TCompendiumChildActionProps = {
   data: TTypesAllowed;
 }
 
+type TCompendiumRemoveChildActionProps = {
+  field: 'characters'|'concepts'|'factions'|'items'|'languages'|'locations'|'species'
+  id: TTypesAllowed['slug'];
+}
+
 const compendiumSlice: Slice<TState> = createSlice({
   name: 'compendium',
   initialState,
@@ -51,6 +56,13 @@ const compendiumSlice: Slice<TState> = createSlice({
         [field]: state.compendium[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
       }
     },
+    removeCompendiumChildData: (state, action: PayloadAction<TCompendiumRemoveChildActionProps>) => {
+      const field = action.payload.field;
+      state.compendium = {
+        ...state.compendium,
+        [field]: state.compendium[field]?.filter(child => child.slug !== action.payload.id)
+      }
+    },
     clearCompendiumData: (state) => {
       state.compendium = initialState.compendium
     }
@@ -64,6 +76,7 @@ export const {
   clearCompendiumData,
   addCompendiumChildData,
   updateCompendiumChildData,
+  removeCompendiumChildData,
 } = compendiumSlice.actions
 
 export default compendiumSlice.reducer

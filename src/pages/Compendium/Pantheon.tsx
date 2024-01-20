@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storePantheon, TPantheonRequest, updatePantheon, viewPantheon } from '../../services/PantheonService'
+import {
+  destroyPantheon,
+  storePantheon,
+  TPantheonRequest,
+  updatePantheon,
+  viewPantheon
+} from '../../services/PantheonService'
 import {
   clearPantheonData,
   setPantheonData,
@@ -8,7 +14,11 @@ import {
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import { addCompendiumChildData, updateCompendiumChildData } from '../../reducers/compendium/compendiumSlice'
+import {
+  addCompendiumChildData,
+  removeCompendiumChildData,
+  updateCompendiumChildData
+} from '../../reducers/compendium/compendiumSlice'
 import { TPantheon } from '../../types'
 import Post from '../../components/Post'
 const Pantheon: FunctionComponent = (): JSX.Element => {
@@ -29,17 +39,22 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
       key={pantheonId}
       isNew={pantheonId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/pantheons/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewPantheon(pantheonId).then(({ data }) => data.data)}
       onCreate={(data: TPantheonRequest) => storePantheon(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TPantheonRequest) => updatePantheon(pantheonId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyPantheon(pantheonId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'pantheons', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'pantheons', data: data }))
       }}
-      onFetch={() => viewPantheon(pantheonId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'pantheons', id: pantheonId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

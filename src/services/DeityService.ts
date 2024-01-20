@@ -36,5 +36,5 @@ export const updateDeity = (slug: string, data: Partial<TDeityRequest>): Promise
 }
 
 export const destroyDeity = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/deities/${slug}`)
+  return api.delete(`/api/deities/${slug}`)
 }

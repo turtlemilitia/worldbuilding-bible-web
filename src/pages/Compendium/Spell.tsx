@@ -1,5 +1,5 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeSpell, TSpellRequest, updateSpell, viewSpell } from '../../services/SpellService'
+import { destroySpell, storeSpell, TSpellRequest, updateSpell, viewSpell } from '../../services/SpellService'
 import {
   clearSpellData,
   setSpellData,
@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -33,17 +33,22 @@ const Spell: FunctionComponent = (): JSX.Element => {
       key={spellId}
       isNew={spellId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/spells/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewSpell(spellId).then(({ data }) => data.data)}
       onCreate={(data: TSpellRequest) => storeSpell(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TSpellRequest) => updateSpell(spellId, data).then(({ data }) => data.data)}
+      onDelete={() => destroySpell(spellId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'spells', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'spells', data: data }))
       }}
-      onFetch={() => viewSpell(spellId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'spells', id: spellId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

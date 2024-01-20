@@ -1,25 +1,37 @@
 import React, { FunctionComponent, JSX, SyntheticEvent } from 'react'
-import { RefreshCwIcon, SaveIcon } from 'lucide-react'
+import { RefreshCwIcon, SaveIcon, TrashIcon } from 'lucide-react'
 
 interface TProps {
-  onSave: (event: SyntheticEvent) => void;
+  onSave?: (event: SyntheticEvent) => void;
+  onDelete?: () => void;
   onRefresh?: () => any;
   canManuallySave?: boolean
+  canDelete?: boolean
 }
 
-const FormToolbar: FunctionComponent<TProps> = ({canManuallySave = false, onRefresh, onSave}: TProps): JSX.Element => {
+const FormToolbar: FunctionComponent<TProps> = ({
+  canManuallySave = false,
+  onRefresh,
+  onSave,
+  canDelete,
+  onDelete
+}: TProps): JSX.Element => {
   const handleOnRefresh = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     onRefresh && onRefresh()
   }
   const handleOnSave = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     onSave && onSave(event)
+  }
+  const handleOnDelete = (event: React.SyntheticEvent) => {
+    event.preventDefault()
+    onDelete && onDelete()
   }
   return (
     <div className="flex justify-end px-3 py-2 gap-3">
       {onRefresh && (
-        <button onClick={handleOnRefresh}>
+        <button type="button" onClick={handleOnRefresh}>
           <RefreshCwIcon className="stroke-stone-400 h-5 w-5"/>
         </button>
       )}
@@ -28,8 +40,13 @@ const FormToolbar: FunctionComponent<TProps> = ({canManuallySave = false, onRefr
           <SaveIcon className="stroke-stone-400 h-5 w-5"/>
         </button>
       )}
+      {canDelete && handleOnDelete && (
+        <button type="button" onClick={handleOnDelete}>
+          <TrashIcon className="stroke-stone-400 h-5 w-5"/>
+        </button>
+      )}
     </div>
   )
 }
 
-export default FormToolbar;
+export default FormToolbar

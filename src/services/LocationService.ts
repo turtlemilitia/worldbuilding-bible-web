@@ -42,5 +42,5 @@ export const updateLocation = (slug: string, data: Partial<TLocationRequest>, qu
 }
 
 export const destroyLocation = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/locations/${slug}`)
+  return api.delete(`/api/locations/${slug}`)
 }

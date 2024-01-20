@@ -39,5 +39,5 @@ export const updateCharacter = (slug: string, data: Partial<TCharacterRequest>, 
 }
 
 export const destroyCharacter = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/characters/${slug}`)
+  return api.delete(`/api/characters/${slug}`)
 }

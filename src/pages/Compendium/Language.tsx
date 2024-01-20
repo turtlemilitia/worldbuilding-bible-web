@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeLanguage, TLanguageRequest, updateLanguage, viewLanguage } from '../../services/LanguageService'
+import {
+  destroyLanguage,
+  storeLanguage,
+  TLanguageRequest,
+  updateLanguage,
+  viewLanguage
+} from '../../services/LanguageService'
 import {
   clearLanguageData,
   setLanguageData,
@@ -9,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -33,17 +39,22 @@ const Language: FunctionComponent = (): JSX.Element => {
       key={languageId}
       isNew={languageId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/languages/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewLanguage(languageId).then(({ data }) => data.data)}
       onCreate={(data: TLanguageRequest) => storeLanguage(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TLanguageRequest) => updateLanguage(languageId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyLanguage(languageId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'languages', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'languages', data: data }))
       }}
-      onFetch={() => viewLanguage(languageId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'languages', id: languageId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

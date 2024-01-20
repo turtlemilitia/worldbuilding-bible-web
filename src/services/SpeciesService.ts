@@ -36,5 +36,5 @@ export const updateSpecies = (slug: string, data: Partial<TSpeciesRequest>): Pro
 }
 
 export const destroySpecies = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/species/${slug}`)
+  return api.delete(`/api/species/${slug}`)
 }

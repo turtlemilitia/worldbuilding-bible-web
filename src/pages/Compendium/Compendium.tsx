@@ -1,6 +1,12 @@
 import React, { FunctionComponent, JSX, useCallback } from 'react'
 import { TCompendium } from '../../types'
-import { storeCompendium, TCompendiumRequest, updateCompendium, viewCompendium } from '../../services/CompendiumService'
+import {
+  destroyCompendium,
+  storeCompendium,
+  TCompendiumRequest,
+  updateCompendium,
+  viewCompendium
+} from '../../services/CompendiumService'
 import {
   clearCompendiumData,
   setCompendiumData,
@@ -59,20 +65,28 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       key={compendiumId}
       isNew={compendiumId === 'new'}
       pathToNew={(data) => `/compendia/${data.slug}`}
+      pathAfterDelete={`/`}
       ready={true}
 
+      onFetch={onPostFetch}
       onCreate={(data: TCompendiumRequest) => storeCompendium(data).then(({ data }) => data.data)}
       onUpdate={(data: TCompendiumRequest) => updateCompendium(compendiumId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyCompendium(compendiumId)}
       onCreated={(data) => {
         dispatch(addCompendium(data))
       }}
-      onFetch={onPostFetch}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 
       persistedData={compendium as TCompendium}
-      setPersistedData={(data) => dispatch(setCompendiumData(data))}
+      setPersistedData={(data) => {
+        if (compendium.id && compendium.id !== data.id) {
+          dispatch(setCompendiumData(data))
+        } else {
+          dispatch(updateCompendiumData(data))
+        }
+      }}
       updatePersistedData={(data) => dispatch(updateCompendiumData(data))}
       resetPersistedData={() => {}}
 

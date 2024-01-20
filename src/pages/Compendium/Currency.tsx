@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeCurrency, TCurrencyRequest, updateCurrency, viewCurrency } from '../../services/CurrencyService'
+import {
+  destroyCurrency,
+  storeCurrency,
+  TCurrencyRequest,
+  updateCurrency,
+  viewCurrency
+} from '../../services/CurrencyService'
 import {
   clearCurrencyData,
   setCurrencyData,
@@ -9,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -33,17 +39,22 @@ const Currency: FunctionComponent = (): JSX.Element => {
       key={currencyId}
       isNew={currencyId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/currencies/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewCurrency(currencyId).then(({ data }) => data.data)}
       onCreate={(data: TCurrencyRequest) => storeCurrency(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TCurrencyRequest) => updateCurrency(currencyId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyCurrency(currencyId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'currencies', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'currencies', data: data }))
       }}
-      onFetch={() => viewCurrency(currencyId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'currencies', id: currencyId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

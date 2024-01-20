@@ -1,11 +1,11 @@
 import React, { FunctionComponent, JSX, useEffect } from 'react'
-import { storeStory, TStoryRequest, updateStory, viewStory } from '../../services/StoryService'
+import { destroyStory, storeStory, TStoryRequest, updateStory, viewStory } from '../../services/StoryService'
 import { clearStoryData, setStoryData, updateStoryData } from '../../reducers/compendium/story/storySlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TStory } from '../../types'
@@ -29,17 +29,22 @@ const Story: FunctionComponent = (): JSX.Element => {
       key={storyId}
       isNew={storyId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/stories/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewStory(storyId).then(({ data }) => data.data)}
       onCreate={(data: TStoryRequest) => storeStory(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TStoryRequest) => updateStory(storyId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyStory(storyId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'stories', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'stories', data: data }))
       }}
-      onFetch={() => viewStory(storyId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'stories', id: storyId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

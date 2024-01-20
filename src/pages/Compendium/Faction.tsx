@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeFaction, TFactionRequest, updateFaction, viewFaction } from '../../services/FactionService'
+import {
+  destroyFaction,
+  storeFaction,
+  TFactionRequest,
+  updateFaction,
+  viewFaction
+} from '../../services/FactionService'
 import {
   clearFactionData,
   setFactionData,
@@ -9,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -35,17 +41,22 @@ const Faction: FunctionComponent = (): JSX.Element => {
       key={factionId}
       isNew={factionId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/factions/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewFaction(factionId).then(({ data }) => data.data)}
       onCreate={(data: TFactionRequest) => storeFaction(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TFactionRequest) => updateFaction(factionId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyFaction(factionId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'factions', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'factions', data: data }))
       }}
-      onFetch={() => viewFaction(factionId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'factions', id: factionId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

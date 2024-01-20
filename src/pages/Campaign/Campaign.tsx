@@ -5,9 +5,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 import { TCampaign, TLocationGovernmentType, TSystem } from '../../types'
 import { clearCampaignData, setCampaignData, updateCampaignData } from '../../reducers/campaign/campaignSlice'
-import { storeCampaign, TCampaignRequest, updateCampaign } from '../../services/CampaignService'
+import { destroyCampaign, storeCampaign, TCampaignRequest, updateCampaign } from '../../services/CampaignService'
 import { viewCampaign } from '../../services/CampaignService'
-import { addCampaign } from '../../reducers/campaign/campaignsIndexSlice'
+import { addCampaign, removeCampaign } from '../../reducers/campaign/campaignsIndexSlice'
 import { TFields } from '../../components/InfoBar'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
@@ -41,14 +41,19 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       key={campaignId}
       isNew={campaignId === 'new'}
       pathToNew={(data) => `/campaigns/${data.slug}`}
+      pathAfterDelete={`/`}
       ready={true}
 
+      onFetch={() => viewCampaign(campaignId).then(({ data }) => data.data)}
       onCreate={(data: TCampaignRequest) => storeCampaign(data).then(({ data }) => data.data)}
       onUpdate={(data: TCampaignRequest) => updateCampaign(campaignId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyCampaign(campaignId)}
       onCreated={(data) => {
         dispatch(addCampaign(data))
       }}
-      onFetch={() => viewCampaign(campaignId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCampaign({ id: campaignId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={fields}

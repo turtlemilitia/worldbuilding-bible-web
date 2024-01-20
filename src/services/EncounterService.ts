@@ -36,5 +36,5 @@ export const updateEncounter = (slug: string, data: Partial<TEncounterRequest>):
 }
 
 export const destroyEncounter = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/encounters/${slug}`)
+  return api.delete(`/api/encounters/${slug}`)
 }

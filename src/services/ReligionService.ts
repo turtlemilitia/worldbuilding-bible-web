@@ -36,5 +36,5 @@ export const updateReligion = (slug: string, data: Partial<TReligionRequest>): P
 }
 
 export const destroyReligion = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/religions/${slug}`)
+  return api.delete(`/api/religions/${slug}`)
 }

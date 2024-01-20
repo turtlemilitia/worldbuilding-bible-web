@@ -7,20 +7,21 @@ import PageTitleField from '../../components/Forms/Fields/PageTitleField'
 import { Editor } from '../../components/Forms/Fields/Editor'
 import { HeaderWrapper } from '../../components/HeaderWrapper'
 import ContentWrapper from '../../components/ContentWrapper'
-import { storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
+import { destroySystem, storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
 import { TCharacter, TSystem } from '../../types'
 import { AxiosError } from 'axios'
 import LoadingWrapper from '../../components/LoadingWrapper'
-import { addSystem } from '../../reducers/system/systemsIndexSlice'
+import { addSystem, removeSystem } from '../../reducers/system/systemsIndexSlice'
 import FormToolbar from '../../components/Forms/FormToolbar'
 import Post from '../../components/Post/component'
 import { TDeityRequest } from '../../services/DeityService'
+import compendium from '../Compendium/Compendium'
 
 const System = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
-  const { systemId } = useParams() as { systemId: string } // router
+  const { compendiumId, systemId } = useParams() as { compendiumId: string, systemId: string } // router
 
   const { system } = useAppSelector((state: RootState) => state.system) // redux
 
@@ -34,14 +35,19 @@ const System = (): JSX.Element => {
       key={systemId}
       isNew={systemId === 'new'}
       pathToNew={(data: TSystem) => `/systems/${data.slug}`}
+      pathAfterDelete={`/`}
       ready={true}
 
       onCreate={(data: TSystem) => storeSystem(data).then(({ data }) => data.data)}
+      onFetch={() => viewSystem(systemId).then(({ data }) => data.data)}
       onUpdate={(data: TSystem) => updateSystem(systemId, data).then(({ data }) => data.data)}
+      onDelete={() => destroySystem(systemId)}
       onCreated={(data: TSystem) => {
         dispatch(addSystem(data))
       }}
-      onFetch={() => viewSystem(systemId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeSystem({ id: systemId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

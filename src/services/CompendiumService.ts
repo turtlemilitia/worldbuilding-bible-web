@@ -36,5 +36,5 @@ export const updateCompendium = (slug: string, data: TCompendiumRequest): Promis
 }
 
 export const destroyCompendium = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/compendia/${slug}`)
+  return api.delete(`/api/compendia/${slug}`)
 }

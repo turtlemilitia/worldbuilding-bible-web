@@ -36,5 +36,5 @@ export const updateCurrency = (slug: string, data: Partial<TCurrencyRequest>): P
 }
 
 export const destroyCurrency = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/currencies/${slug}`)
+  return api.delete(`/api/currencies/${slug}`)
 }

@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeNaturalResource, TNaturalResourceRequest, updateNaturalResource, viewNaturalResource } from '../../services/NaturalResourceService'
+import {
+  destroyNaturalResource,
+  storeNaturalResource,
+  TNaturalResourceRequest,
+  updateNaturalResource,
+  viewNaturalResource
+} from '../../services/NaturalResourceService'
 import {
   clearNaturalResourceData,
   setNaturalResourceData,
@@ -9,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TNaturalResource } from '../../types'
@@ -33,17 +39,22 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
       key={naturalResourceId}
       isNew={naturalResourceId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/naturalResources/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewNaturalResource(naturalResourceId).then(({ data }) => data.data)}
       onCreate={(data: TNaturalResourceRequest) => storeNaturalResource(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TNaturalResourceRequest) => updateNaturalResource(naturalResourceId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyNaturalResource(naturalResourceId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'naturalResources', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'naturalResources', data: data }))
       }}
-      onFetch={() => viewNaturalResource(naturalResourceId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'naturalResources', id: naturalResourceId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

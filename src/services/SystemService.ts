@@ -32,5 +32,5 @@ export const updateSystem = (slug: string, data: Partial<TSystem>): Promise<Axio
 }
 
 export const destroySystem = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/systems/${slug}`)
+  return api.delete(`/api/systems/${slug}`)
 }

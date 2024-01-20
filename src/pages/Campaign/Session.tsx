@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import { storeSession, TSessionRequest, updateSession, viewSession } from '../../services/SessionService'
+import {
+  destroySession,
+  storeSession,
+  TSessionRequest,
+  updateSession,
+  viewSession
+} from '../../services/SessionService'
 import { clearSessionData, setSessionData, updateSessionData } from '../../reducers/campaign/session/sessionSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -10,6 +16,7 @@ import {
 } from '../../reducers/campaign/campaignSlice'
 import { TSession } from '../../types'
 import Post from '../../components/Post/component'
+import { removeCompendiumChildData } from '../../reducers/compendium/compendiumSlice'
 
 const Session: FunctionComponent = (): JSX.Element => {
 
@@ -29,17 +36,22 @@ const Session: FunctionComponent = (): JSX.Element => {
       key={sessionId}
       isNew={sessionId === 'new'}
       pathToNew={(data: TSession) => `/campaigns/${campaignId}/sessions/${data.slug}`}
+      pathAfterDelete={`/sessions/${campaignId}`}
       ready={true}
 
+      onFetch={() => viewSession(sessionId).then(({ data }) => data.data)}
       onCreate={(data: TSessionRequest) => storeSession(campaignId, data).then(({ data }) => data.data)}
       onUpdate={(data: TSessionRequest) => updateSession(sessionId, data).then(({ data }) => data.data)}
+      onDelete={() => destroySession(sessionId)}
       onCreated={(data: TSession) => {
         dispatch(addCampaignChildData({ field: 'sessions', data: data }))
       }}
       onUpdated={(data: TSession) => {
         dispatch(updateCampaignChildData({ field: 'sessions', data: data }))
       }}
-      onFetch={() => viewSession(sessionId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'sessions', id: sessionId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

@@ -15,6 +15,7 @@ import SavingDialog from '../SavingDialog'
 const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
   const {
+    isNew,
     ready,
     pageTypeName,
     contentPlaceholder,
@@ -32,10 +33,11 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     handleOnFieldChange,
     handleOnFetch,
     handleOnSave,
+    handleOnDelete,
   } = useFormHandling({ ...props })
 
   return (
-    <LoadingWrapper loading={loading || !ready} opacity={'80'}>
+    <LoadingWrapper loading={loading || !ready} opacity={'90'}>
       <SavingDialog saving={saving}/>
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper
@@ -58,7 +60,13 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
-              <FormToolbar canManuallySave={true} onSave={handleOnSave} onRefresh={handleOnFetch}/>
+              <FormToolbar
+                canManuallySave={true}
+                canDelete={!isNew}
+                onSave={handleOnSave}
+                onRefresh={handleOnFetch}
+                onDelete={handleOnDelete}
+              />
               <Editor
                 initialValue={fetchedData.content}
                 onChange={(value) => handleOnFieldChange('content', value)}

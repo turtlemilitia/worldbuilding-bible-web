@@ -36,5 +36,5 @@ export const updateItem = (slug: string, data: Partial<TItemRequest>): Promise<A
 }
 
 export const destroyItem = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/items/${slug}`)
+  return api.delete(`/api/items/${slug}`)
 }

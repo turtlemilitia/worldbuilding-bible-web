@@ -38,5 +38,5 @@ export const updateFaction = (slug: string, data: Partial<TFactionRequest>): Pro
 }
 
 export const destroyFaction = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/factions/${slug}`)
+  return api.delete(`/api/factions/${slug}`)
 }

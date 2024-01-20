@@ -1,10 +1,17 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import { indexLocations, storeLocation, TLocationRequest, updateLocation, viewLocation } from '../../services/LocationService'
+import {
+  destroyLocation,
+  indexLocations,
+  storeLocation,
+  TLocationRequest,
+  updateLocation,
+  viewLocation
+} from '../../services/LocationService'
 import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -96,17 +103,22 @@ const Location: FunctionComponent = (): JSX.Element => {
       key={locationId}
       isNew={locationId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/locations/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
+      onFetch={() => viewLocation(locationId).then(({ data }) => data.data)}
       onCreate={(data: TLocationRequest) => storeLocation(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TLocationRequest) => updateLocation(locationId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyLocation(locationId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'locations', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'locations', data: data }))
       }}
-      onFetch={() => viewLocation(locationId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'locations', id: locationId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={fields}

@@ -1,11 +1,17 @@
 import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
-import { storeCharacter, TCharacterRequest, updateCharacter, viewCharacter } from '../../services/CharacterService'
+import {
+  destroyCharacter,
+  storeCharacter,
+  TCharacterRequest,
+  updateCharacter,
+  viewCharacter
+} from '../../services/CharacterService'
 import { clearCharacterData, setCharacterData, updateCharacterData } from '../../reducers/compendium/character/characterSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData
 } from '../../reducers/compendium/compendiumSlice'
 import { TCharacter, TSpecies } from '../../types'
@@ -73,17 +79,22 @@ const Character: FunctionComponent = (): JSX.Element => {
       key={characterId}
       isNew={characterId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/characters/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
+      onFetch={() => viewCharacter(characterId).then(({ data }) => data.data)}
       onCreate={(data: TCharacterRequest) => storeCharacter(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TCharacterRequest) => updateCharacter(characterId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyCharacter(characterId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'characters', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'characters', data: data }))
       }}
-      onFetch={() => viewCharacter(characterId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'characters', id: characterId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={fields}

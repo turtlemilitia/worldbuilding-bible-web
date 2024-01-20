@@ -32,5 +32,5 @@ export const updateNotebook = (slug: string, data: Partial<TNotebook>): Promise<
 }
 
 export const destroyNotebook = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/notebooks/${slug}`)
+  return api.delete(`/api/notebooks/${slug}`)
 }

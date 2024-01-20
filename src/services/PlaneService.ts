@@ -36,5 +36,5 @@ export const updatePlane = (slug: string, data: Partial<TPlaneRequest>): Promise
 }
 
 export const destroyPlane = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/planes/${slug}`)
+  return api.delete(`/api/planes/${slug}`)
 }

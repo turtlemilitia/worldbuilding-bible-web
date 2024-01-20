@@ -1,5 +1,5 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeItem, TItemRequest, updateItem, viewItem } from '../../services/ItemService'
+import { destroyItem, storeItem, TItemRequest, updateItem, viewItem } from '../../services/ItemService'
 import {
   clearItemData,
   setItemData,
@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -33,17 +33,22 @@ const Item: FunctionComponent = (): JSX.Element => {
       key={itemId}
       isNew={itemId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/items/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewItem(itemId).then(({ data }) => data.data)}
       onCreate={(data: TItemRequest) => storeItem(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TItemRequest) => updateItem(itemId, data).then(({ data }) => data.data)}
+      onDelete={() => destroyItem(itemId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'items', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'items', data: data }))
       }}
-      onFetch={() => viewItem(itemId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'items', id: itemId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

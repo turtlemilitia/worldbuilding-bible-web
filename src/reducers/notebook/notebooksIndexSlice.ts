@@ -33,13 +33,13 @@ const notebooksIndexSlice: Slice<TState> = createSlice({
         return notebook.slug === action.payload.slug ? { ...notebook, notes: notebook.notes?.map(note => note.id === action.payload.note.id ? {...note, ...action.payload.note} : note) } : notebook
       }) ]
     },
-    removeNotebooksNotebookNote: (state, action: PayloadAction<{ slug: TNotebook['slug'], noteId: TNote['id'] }>) => {
+    removeNotebooksNotebookNote: (state, action: PayloadAction<{ slug: TNotebook['slug'], noteId: TNote['slug'] }>) => {
       state.notebooks = [ ...state.notebooks.map(notebook => {
-        return notebook.slug === action.payload.slug ? { ...notebook, notes: notebook.notes?.filter(note => note.id !== action.payload.noteId) } : notebook
+        return notebook.slug === action.payload.slug ? { ...notebook, notes: notebook.notes?.filter(note => note.slug !== action.payload.noteId) } : notebook
       }) ]
     },
-    removeNotebook: (state, action: PayloadAction<TNotebook>) => {
-      state.notebooks = state.notebooks.filter((notebook: TNotebook) => notebook.id !== action.payload.id)
+    removeNotebook: (state, action: PayloadAction<{ id: TNotebook['slug'] }>) => {
+      state.notebooks = state.notebooks.filter((notebook: TNotebook) => notebook.slug !== action.payload.id)
     },
     clearNotebooks: (state) => {
       state.notebooks = initialState.notebooks
@@ -54,7 +54,8 @@ export const {
   updateNotebooksNotebookData,
   addNotebooksNotebookNote,
   updateNotebooksNotebookNote,
-  removeNotebooksNotebookNote
+  removeNotebooksNotebookNote,
+  removeNotebook
 } = notebooksIndexSlice.actions
 
 export default notebooksIndexSlice.reducer

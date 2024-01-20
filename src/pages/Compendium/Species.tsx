@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX } from 'react'
-import { storeSpecies, TSpeciesRequest, updateSpecies, viewSpecies } from '../../services/SpeciesService'
+import {
+  destroySpecies,
+  storeSpecies,
+  TSpeciesRequest,
+  updateSpecies,
+  viewSpecies
+} from '../../services/SpeciesService'
 import {
   clearSpeciesData,
   setSpeciesData,
@@ -9,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData,
+  addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
@@ -34,17 +40,22 @@ const Species: FunctionComponent = (): JSX.Element => {
       pageTypeName={'Species'}
       isNew={speciesId === 'new'}
       pathToNew={(data) => `/compendia/${compendiumId}/species/${data.slug}`}
+      pathAfterDelete={`/compendia/${compendiumId}`}
       ready={true}
 
+      onFetch={() => viewSpecies(speciesId).then(({ data }) => data.data)}
       onCreate={(data: TSpeciesRequest) => storeSpecies(compendiumId, data).then(({ data }) => data.data)}
       onUpdate={(data: TSpeciesRequest) => updateSpecies(speciesId, data).then(({ data }) => data.data)}
+      onDelete={() => destroySpecies(speciesId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'species', data: data }))
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'species', data: data }))
       }}
-      onFetch={() => viewSpecies(speciesId).then(({ data }) => data.data)}
+      onDeleted={() => {
+        dispatch(removeCompendiumChildData({ field: 'species', id: speciesId }))
+      }}
       requestStructureCallback={readyDataForRequest}
 
       fields={[]}

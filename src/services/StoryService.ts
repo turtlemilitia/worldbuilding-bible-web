@@ -36,5 +36,5 @@ export const updateStory = (slug: string, data: Partial<TStoryRequest>): Promise
 }
 
 export const destroyStory = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/stories/${slug}`)
+  return api.delete(`/api/stories/${slug}`)
 }

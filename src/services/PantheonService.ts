@@ -36,5 +36,5 @@ export const updatePantheon = (slug: string, data: Partial<TPantheonRequest>): P
 }
 
 export const destroyPantheon = (slug: string): Promise<AxiosResponse<void>> => {
-  return api.put(`/api/pantheons/${slug}`)
+  return api.delete(`/api/pantheons/${slug}`)
 }

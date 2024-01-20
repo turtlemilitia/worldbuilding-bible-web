@@ -18,8 +18,8 @@ const systemsIndexSlice: Slice<TState> = createSlice({
     addSystem: (state, action: PayloadAction<TSystem>) => {
       state.systems = [...state.systems, action.payload]
     },
-    removeSystem: (state, action: PayloadAction<TSystem>) => {
-      state.systems = state.systems.filter((system: TSystem) => system.id !== action.payload.id)
+    removeSystem: (state, action: PayloadAction<{ id: TSystem['id'] }>) => {
+      state.systems = state.systems.filter((system: TSystem) => system.slug !== action.payload.id)
     },
     clearSystems: (state) => {
       state.systems = initialState.systems
@@ -27,6 +27,6 @@ const systemsIndexSlice: Slice<TState> = createSlice({
   }
 })
 
-export const { setSystems, addSystem, clearSystems } = systemsIndexSlice.actions
+export const { setSystems, addSystem, removeSystem, clearSystems } = systemsIndexSlice.actions
 
 export default systemsIndexSlice.reducer
