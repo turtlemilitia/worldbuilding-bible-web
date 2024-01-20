@@ -24,9 +24,7 @@ const AuthProvider = ({children}: AuthProviderParams): JSX.Element => {
         } else {
             localStorage.removeItem('token')
 
-            if (location.pathname !== 'login') {
-                navigate('/login', {state: {redirectTo: location.pathname}});
-            }
+            // dont need to navigate to login here as that's in the ProtectedRoute
         }
     }, [token])
 
