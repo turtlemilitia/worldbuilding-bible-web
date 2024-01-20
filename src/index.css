@@ -60,7 +60,7 @@
 }
 .remirror-theme b,
 .remirror-theme strong {
-    @apply text-red-700
+    @apply text-burnOrange
 }
 .remirror-theme em,
 .remirror-theme i {

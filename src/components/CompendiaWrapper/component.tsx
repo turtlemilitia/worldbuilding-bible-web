@@ -55,7 +55,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
   const nestedLocations: TLocation[] = createNestedArray(compendium.locations || [])
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && compendiumId !== 'new') {
       viewCompendium(compendiumId, { include: 'images' })
         .then(({ data }) => {
           dispatch(setCompendiumData(data.data))

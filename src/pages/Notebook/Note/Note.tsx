@@ -44,7 +44,7 @@ const Note = (): JSX.Element => {
         dispatch(addNotebooksNotebookNote({ slug: notebookId, note: data }))
       }}
       onUpdated={(data) => {
-        dispatch(updateNotebooksNotebookNote({ slug: notebookId, data: data }))
+        dispatch(updateNotebooksNotebookNote({ slug: notebookId, note: data }))
       }}
       onDeleted={() => {
         dispatch(removeNotebooksNotebookNote({ slug: notebookId, noteId }))
