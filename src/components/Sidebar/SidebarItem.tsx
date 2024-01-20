@@ -90,7 +90,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
       )}
       {loading && (
         <div className="flex justify-center">
-          <LoadingSpinner size={5}/>
+          <LoadingSpinner/>
         </div>
       )}
     </li>

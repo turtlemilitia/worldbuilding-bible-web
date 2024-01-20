@@ -154,7 +154,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
 
   return (
     <FloatingBox>
-      <LoadingWrapper loading={loading} key="loading-image-picker" colour={'transparent'}>
+      <LoadingWrapper loading={loading} key="loading-image-picker" colour={'transparent'} positioning={'absolute'}>
         {!showFileInput && (
           <div className="h-128 w-128 overflow-scroll">
             <div className="grid grid-cols-4 gap-4">
