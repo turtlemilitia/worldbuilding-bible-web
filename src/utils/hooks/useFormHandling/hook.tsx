@@ -85,8 +85,9 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
   const handleOnSave = () => {
     setSaving(true)
+    const readyData = requestStructureCallback ? requestStructureCallback(newData) : newData
     if (isNew) {
-      onCreate(newData)
+      onCreate(readyData)
         .then((data) => {
           setPersistedData(data)
           onCreated && onCreated(data)
@@ -95,7 +96,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
         })
         .catch(handleResponseErrors)
     } else {
-      onUpdate(newData)
+      onUpdate(readyData)
         .then((data) => {
           updatePersistedData(data)
           onUpdated && onUpdated(data)
@@ -118,17 +119,27 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   })
 
   const handleOnDelete = () => {
-    setLoading(true);
+    setLoading(true)
     onDelete()
       .then(() => {
         onDeleted && onDeleted()
         navigate(pathAfterDelete)
-        setLoading(false);
+        setLoading(false)
       })
       .catch(handleResponseErrors)
   }
 
-  return { errors, loading, saving, newData, fetchedData, handleOnFieldChange, handleOnFetch, handleOnSave, handleOnDelete }
+  return {
+    errors,
+    loading,
+    saving,
+    newData,
+    fetchedData,
+    handleOnFieldChange,
+    handleOnFetch,
+    handleOnSave,
+    handleOnDelete
+  }
 
 }
 

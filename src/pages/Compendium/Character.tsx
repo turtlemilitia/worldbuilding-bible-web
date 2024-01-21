@@ -78,6 +78,7 @@ const Character: FunctionComponent = (): JSX.Element => {
     <Post
       key={characterId}
       isNew={characterId === 'new'}
+      pageTypeName={'Character'}
       pathToNew={(data) => `/compendia/${compendiumId}/characters/${data.slug}`}
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}

@@ -31,8 +31,16 @@ const Location: FunctionComponent = (): JSX.Element => {
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
 
   const [ready, setReady] = useState<boolean>(false)
-  const [locationTypes, setLocationTypes] = useState<TLocationType[]>([])
-  const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>([])
+  const [locationTypes, setLocationTypes] = useState<TLocationType[]>()
+  const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>()
+
+  useEffect(() => {
+
+    if (locationTypes !== undefined && governmentTypes !== undefined) {
+      setReady(true);
+    }
+
+  }, [locationTypes, governmentTypes])
 
   useEffect(() => {
 
@@ -102,13 +110,14 @@ const Location: FunctionComponent = (): JSX.Element => {
     <Post
       key={locationId}
       isNew={locationId === 'new'}
+      pageTypeName={'Location'}
       pathToNew={(data) => `/compendia/${compendiumId}/locations/${data.slug}`}
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
-      onFetch={() => viewLocation(locationId).then(({ data }) => data.data)}
-      onCreate={(data: TLocationRequest) => storeLocation(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TLocationRequest) => updateLocation(locationId, data).then(({ data }) => data.data)}
+      onFetch={() => viewLocation(locationId, { include: 'parent' }).then(({ data }) => data.data)}
+      onCreate={(data: TLocationRequest) => storeLocation(compendiumId, data, { include: 'parent' }).then(({ data }) => data.data)}
+      onUpdate={(data: TLocationRequest) => updateLocation(locationId, data, { include: 'parent' }).then(({ data }) => data.data)}
       onDelete={() => destroyLocation(locationId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'locations', data: data }))
