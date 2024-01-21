@@ -26,6 +26,7 @@ const Notebook = (): JSX.Element => {
     <Post
       key={notebookId}
       isNew={notebookId === 'new'}
+      pageTypeName={'Notebook'}
       pathToNew={(data: TNotebook) => `/notebooks/${data.slug}`}
       pathAfterDelete={`/`}
       ready={true}
