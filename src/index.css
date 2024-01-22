@@ -13,25 +13,25 @@
 .remirror-theme h4,
 .remirror-theme h5,
 .remirror-theme h6 {
-    @apply mt-4 mb-2 border-b
+    @apply mt-4 mb-2 border-b font-sans-serif
 }
 .remirror-theme h1 {
-    @apply text-xl font-bold text-burnOrange border-burnOrange
+    @apply text-xl text-burnOrange border-burnOrange
 }
 .remirror-theme h2 {
-    @apply text-lg font-bold text-yellow-500 border-yellow-500
+    @apply text-lg text-yellow-600 border-yellow-600
 }
 .remirror-theme h3 {
     @apply font-bold text-burnOrange border-burnOrange
 }
 .remirror-theme h4 {
-    @apply font-bold text-yellow-500 border-yellow-500
+    @apply font-bold text-yellow-600 border-yellow-600
 }
 .remirror-theme h5 {
     @apply font-bold text-burnOrange
 }
 .remirror-theme h6 {
-    @apply font-bold text-yellow-500
+    @apply font-bold text-yellow-600
 }
 .remirror-theme p {
     @apply my-1
