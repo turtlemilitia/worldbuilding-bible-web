@@ -43,8 +43,8 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewNaturalResource(naturalResourceId).then(({ data }) => data.data)}
-      onCreate={(data: TNaturalResourceRequest) => storeNaturalResource(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TNaturalResourceRequest) => updateNaturalResource(naturalResourceId, data).then(({ data }) => data.data)}
+      onCreate={(data: TNaturalResourceRequest) => storeNaturalResource(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TNaturalResourceRequest) => updateNaturalResource(naturalResourceId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyNaturalResource(naturalResourceId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'naturalResources', data: data }))
@@ -55,7 +55,6 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'naturalResources', id: naturalResourceId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

@@ -43,8 +43,8 @@ const Religion: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewReligion(religionId).then(({ data }) => data.data)}
-      onCreate={(data: TReligionRequest) => storeReligion(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TReligionRequest) => updateReligion(religionId, data).then(({ data }) => data.data)}
+      onCreate={(data: TReligionRequest) => storeReligion(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TReligionRequest) => updateReligion(religionId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyReligion(religionId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'religions', data: data }))
@@ -55,7 +55,6 @@ const Religion: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'religions', id: religionId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

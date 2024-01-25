@@ -45,8 +45,8 @@ const Faction: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewFaction(factionId).then(({ data }) => data.data)}
-      onCreate={(data: TFactionRequest) => storeFaction(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TFactionRequest) => updateFaction(factionId, data).then(({ data }) => data.data)}
+      onCreate={(data: TFactionRequest) => storeFaction(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TFactionRequest) => updateFaction(factionId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyFaction(factionId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'factions', data: data }))
@@ -57,7 +57,6 @@ const Faction: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'factions', id: factionId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

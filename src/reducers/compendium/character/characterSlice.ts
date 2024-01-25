@@ -22,6 +22,7 @@ const characterSlice: Slice<TState> = createSlice({
       state.character = action.payload
     },
     updateCharacterData: (state, action: PayloadAction<Partial<TCharacter>>) => {
+      debugger;
       state.character = { ...state.character, ...action.payload }
     },
     clearCharacterData: (state) => {

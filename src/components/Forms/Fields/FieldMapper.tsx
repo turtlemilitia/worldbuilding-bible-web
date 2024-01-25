@@ -6,9 +6,11 @@ import SelectField from './SelectField'
 import TextField from './TextField'
 import AsyncSelectField from './AsyncSelectField'
 import ListField from './ListField'
+import MultipleAsyncSelectField from './MultipleAsyncSelectField'
 
 export type TSelectOption = {
   id: string | number,
+  slug?: string,
   name: string
 }
 type TProps = {
@@ -69,6 +71,14 @@ const FieldMapper: FunctionComponent<TProps> = ({
             )}
             {type === 'asyncSelect' && search && (
               <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search}/>
+            )}
+            {type === 'asyncMultiSelect' && search && (
+              <MultipleAsyncSelectField
+                value={currentValue}
+                onChange={(value) => onChange(name, value)}
+                link={link}
+                search={search}
+              />
             )}
             {['text', 'number', 'email', 'password'].includes(type) && (
               <TextField

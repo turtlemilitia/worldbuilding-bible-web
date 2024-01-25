@@ -69,13 +69,12 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={onPostFetch}
-      onCreate={(data: TCompendiumRequest) => storeCompendium(data).then(({ data }) => data.data)}
-      onUpdate={(data: TCompendiumRequest) => updateCompendium(compendiumId, data).then(({ data }) => data.data)}
+      onCreate={(data: TCompendiumRequest) => storeCompendium(readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TCompendiumRequest) => updateCompendium(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyCompendium(compendiumId)}
       onCreated={(data) => {
         dispatch(addCompendium(data))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

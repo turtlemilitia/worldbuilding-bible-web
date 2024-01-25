@@ -4,6 +4,7 @@ import { TTypesAllowed } from '../../../types'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import { useNavigate } from 'react-router-dom'
+import { filterOnlyArrays, filterOutArrays, readyDataForRequest } from '../../dataUtils'
 
 const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   isNew,
@@ -14,7 +15,6 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   onCreate,
   onUpdate,
   onDelete,
-  requestStructureCallback,
   onFetched,
   onCreated,
   onUpdated,
@@ -67,6 +67,11 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     [name]: value
   }))
 
+  const handleOnSaveError = (err: any) => {
+    handleResponseErrors(err);
+    setSaving(false);
+  }
+
   const handleOnFetch = () => {
     setLoading(true)
     resetErrors()
@@ -85,24 +90,24 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
   const handleOnSave = () => {
     setSaving(true)
-    const readyData = requestStructureCallback ? requestStructureCallback(newData) : newData
     if (isNew) {
-      onCreate(readyData)
+      onCreate(newData)
         .then((data) => {
           setPersistedData(data)
           onCreated && onCreated(data)
           navigate(pathToNew(data))
           setSaving(false)
         })
-        .catch(handleResponseErrors)
+        .catch(handleOnSaveError)
     } else {
-      onUpdate(readyData)
+      onUpdate(newData)
         .then((data) => {
+          debugger;
           updatePersistedData(data)
           onUpdated && onUpdated(data)
           setSaving(false)
         })
-        .catch(handleResponseErrors)
+        .catch(handleOnSaveError)
     }
   }
 
@@ -112,7 +117,6 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     delay: 5000,
 
     handleOnSave,
-    requestStructureCallback,
 
     persistedData,
     newData

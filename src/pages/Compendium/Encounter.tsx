@@ -38,8 +38,8 @@ const Encounter: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewEncounter(encounterId).then(({ data }) => data.data)}
-      onCreate={(data: TEncounterRequest) => storeEncounter(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TEncounterRequest) => updateEncounter(encounterId, data).then(({ data }) => data.data)}
+      onCreate={(data: TEncounterRequest) => storeEncounter(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TEncounterRequest) => updateEncounter(encounterId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyEncounter(encounterId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'encounters', data: data }))
@@ -50,7 +50,6 @@ const Encounter: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'encounters', id: encounterId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

@@ -38,3 +38,11 @@ export const updateLanguage = (slug: string, data: Partial<TLanguageRequest>): P
 export const destroyLanguage = (slug: string): Promise<AxiosResponse<void>> => {
   return api.delete(`/api/languages/${slug}`)
 }
+
+export const attachLanguageToCharacter = (slug: string, languageId: number): Promise<AxiosResponse<TLanguageResponse>> => {
+  return api.post(`/api/characters/${slug}/languages`, { languageId })
+}
+
+export const detachLanguageFromCharacter = (slug: string, languageSlug: string): Promise<AxiosResponse<{}>> => {
+  return api.delete(`/api/characters/${slug}/languages/${languageSlug}`)
+}

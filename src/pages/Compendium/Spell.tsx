@@ -37,8 +37,8 @@ const Spell: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewSpell(spellId).then(({ data }) => data.data)}
-      onCreate={(data: TSpellRequest) => storeSpell(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TSpellRequest) => updateSpell(spellId, data).then(({ data }) => data.data)}
+      onCreate={(data: TSpellRequest) => storeSpell(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TSpellRequest) => updateSpell(spellId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroySpell(spellId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'spells', data: data }))
@@ -49,7 +49,6 @@ const Spell: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'spells', id: spellId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

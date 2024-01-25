@@ -37,8 +37,8 @@ const Note = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewNote(noteId).then(({ data }) => data.data)}
-      onCreate={(data: TNoteRequest) => storeNote(notebookId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TNoteRequest) => updateNote(noteId, data).then(({ data }) => data.data)}
+      onCreate={(data: TNoteRequest) => storeNote(notebookId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TNoteRequest) => updateNote(noteId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyNote(noteId)}
       onCreated={(data) => {
         dispatch(updateNotebookData({ hasNotes: true }))
@@ -50,7 +50,6 @@ const Note = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeNotebooksNotebookNote({ slug: notebookId, noteId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

@@ -45,8 +45,8 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewCampaign(campaignId).then(({ data }) => data.data)}
-      onCreate={(data: TCampaignRequest) => storeCampaign(data).then(({ data }) => data.data)}
-      onUpdate={(data: TCampaignRequest) => updateCampaign(campaignId, data).then(({ data }) => data.data)}
+      onCreate={(data: TCampaignRequest) => storeCampaign(readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TCampaignRequest) => updateCampaign(campaignId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyCampaign(campaignId)}
       onCreated={(data) => {
         dispatch(addCampaign(data))
@@ -54,7 +54,6 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCampaign({ id: campaignId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={fields}
 

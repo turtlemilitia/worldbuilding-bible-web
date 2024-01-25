@@ -37,8 +37,8 @@ const Deity: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewDeity(deityId).then(({ data }) => data.data)}
-      onCreate={(data: TDeityRequest) => storeDeity(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TDeityRequest) => updateDeity(deityId, data).then(({ data }) => data.data)}
+      onCreate={(data: TDeityRequest) => storeDeity(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TDeityRequest) => updateDeity(deityId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyDeity(deityId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'deities', data: data }))
@@ -49,7 +49,6 @@ const Deity: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'deities', id: deityId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

@@ -43,8 +43,8 @@ const Currency: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewCurrency(currencyId).then(({ data }) => data.data)}
-      onCreate={(data: TCurrencyRequest) => storeCurrency(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TCurrencyRequest) => updateCurrency(currencyId, data).then(({ data }) => data.data)}
+      onCreate={(data: TCurrencyRequest) => storeCurrency(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TCurrencyRequest) => updateCurrency(currencyId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyCurrency(currencyId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'currencies', data: data }))
@@ -55,7 +55,6 @@ const Currency: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'currencies', id: currencyId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

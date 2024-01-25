@@ -40,8 +40,8 @@ const Session: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewSession(sessionId).then(({ data }) => data.data)}
-      onCreate={(data: TSessionRequest) => storeSession(campaignId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TSessionRequest) => updateSession(sessionId, data).then(({ data }) => data.data)}
+      onCreate={(data: TSessionRequest) => storeSession(campaignId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TSessionRequest) => updateSession(sessionId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroySession(sessionId)}
       onCreated={(data: TSession) => {
         dispatch(addCampaignChildData({ field: 'sessions', data: data }))
@@ -52,7 +52,6 @@ const Session: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'sessions', id: sessionId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

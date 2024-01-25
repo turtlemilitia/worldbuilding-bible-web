@@ -33,8 +33,8 @@ const Story: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewStory(storyId).then(({ data }) => data.data)}
-      onCreate={(data: TStoryRequest) => storeStory(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TStoryRequest) => updateStory(storyId, data).then(({ data }) => data.data)}
+      onCreate={(data: TStoryRequest) => storeStory(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TStoryRequest) => updateStory(storyId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyStory(storyId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'stories', data: data }))
@@ -45,7 +45,6 @@ const Story: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'stories', id: storyId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

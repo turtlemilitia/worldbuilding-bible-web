@@ -95,14 +95,21 @@ const Location: FunctionComponent = (): JSX.Element => {
       search: (term: string) => indexLocations(compendium.slug, { search: term })
         .then(response => response.data.data.map(location => ({
           id: location.id,
+          slug: location.slug,
           name: location.name
         })))
     },
     {
       name: 'children',
       label: 'Child Locations',
-      type: 'list',
-      link: (id: string | number) => `/compendia/${compendium.slug}/locations/${location.children?.find((child: TLocation) => child.id === id)?.slug || ''}`
+      type: 'asyncMultiSelect',
+      link: (id: string | number) => `/compendia/${compendium.slug}/locations/${location.children?.find((child: TLocation) => child.id === id)?.slug || ''}`,
+      search: (term: string) => indexLocations(compendium.slug, { search: term })
+        .then(response => response.data.data.map(location => ({
+          id: location.id,
+          slug: location.slug,
+          name: location.name
+        })))
     },
   ]
 
@@ -115,9 +122,9 @@ const Location: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
-      onFetch={() => viewLocation(locationId, { include: 'parent' }).then(({ data }) => data.data)}
-      onCreate={(data: TLocationRequest) => storeLocation(compendiumId, data, { include: 'parent' }).then(({ data }) => data.data)}
-      onUpdate={(data: TLocationRequest) => updateLocation(locationId, data, { include: 'parent' }).then(({ data }) => data.data)}
+      onFetch={() => viewLocation(locationId, { include: 'parent,children' }).then(({ data }) => data.data)}
+      onCreate={(data: TLocationRequest) => storeLocation(compendiumId, readyDataForRequest(data), { include: 'parent,children' }).then(({ data }) => data.data)}
+      onUpdate={(data: TLocationRequest) => updateLocation(locationId, readyDataForRequest(data), { include: 'parent,children' }).then(({ data }) => data.data)}
       onDelete={() => destroyLocation(locationId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'locations', data: data }))
@@ -128,7 +135,6 @@ const Location: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'locations', id: locationId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={fields}
 

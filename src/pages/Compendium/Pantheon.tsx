@@ -43,8 +43,8 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewPantheon(pantheonId).then(({ data }) => data.data)}
-      onCreate={(data: TPantheonRequest) => storePantheon(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TPantheonRequest) => updatePantheon(pantheonId, data).then(({ data }) => data.data)}
+      onCreate={(data: TPantheonRequest) => storePantheon(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TPantheonRequest) => updatePantheon(pantheonId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyPantheon(pantheonId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'pantheons', data: data }))
@@ -55,7 +55,6 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'pantheons', id: pantheonId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

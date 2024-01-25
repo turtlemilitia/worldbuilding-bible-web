@@ -37,8 +37,8 @@ const Item: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewItem(itemId).then(({ data }) => data.data)}
-      onCreate={(data: TItemRequest) => storeItem(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TItemRequest) => updateItem(itemId, data).then(({ data }) => data.data)}
+      onCreate={(data: TItemRequest) => storeItem(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TItemRequest) => updateItem(itemId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyItem(itemId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'items', data: data }))
@@ -49,7 +49,6 @@ const Item: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'items', id: itemId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

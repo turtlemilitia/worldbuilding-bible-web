@@ -72,7 +72,8 @@ export type TCharacter = {
   age: string;
   gender: string;
   content: string;
-  species: TSpecies
+  species: TSpecies;
+  languages?: TLanguage[];
 }
 
 export type TCurrency = {

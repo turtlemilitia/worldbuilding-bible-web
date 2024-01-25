@@ -36,8 +36,8 @@ const Plane: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewPlane(planeId).then(({ data }) => data.data)}
-      onCreate={(data: TPlaneRequest) => storePlane(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TPlaneRequest) => updatePlane(planeId, data).then(({ data }) => data.data)}
+      onCreate={(data: TPlaneRequest) => storePlane(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TPlaneRequest) => updatePlane(planeId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyPlane(planeId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'planes', data: data }))
@@ -48,7 +48,6 @@ const Plane: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'planes', id: planeId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

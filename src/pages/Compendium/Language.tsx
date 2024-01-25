@@ -43,8 +43,8 @@ const Language: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewLanguage(languageId).then(({ data }) => data.data)}
-      onCreate={(data: TLanguageRequest) => storeLanguage(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TLanguageRequest) => updateLanguage(languageId, data).then(({ data }) => data.data)}
+      onCreate={(data: TLanguageRequest) => storeLanguage(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TLanguageRequest) => updateLanguage(languageId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyLanguage(languageId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'languages', data: data }))
@@ -55,7 +55,6 @@ const Language: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'languages', id: languageId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

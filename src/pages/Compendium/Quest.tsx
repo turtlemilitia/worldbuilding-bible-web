@@ -33,8 +33,8 @@ const Quest: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewQuest(questId).then(({ data }) => data.data)}
-      onCreate={(data: TQuestRequest) => storeQuest(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TQuestRequest) => updateQuest(questId, data).then(({ data }) => data.data)}
+      onCreate={(data: TQuestRequest) => storeQuest(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TQuestRequest) => updateQuest(questId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyQuest(questId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'quests', data: data }))
@@ -45,7 +45,6 @@ const Quest: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'quests', id: questId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

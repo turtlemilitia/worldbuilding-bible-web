@@ -18,6 +18,8 @@ import { TCharacter, TSpecies } from '../../types'
 import Post from '../../components/Post'
 import { TFields } from '../../components/InfoBar'
 import { indexSpecies } from '../../services/SpeciesService'
+import { attachLanguageToCharacter, detachLanguageFromCharacter, indexLanguages } from '../../services/LanguageService'
+import { filterDataByKeys } from '../../utils/dataUtils'
 
 const Character: FunctionComponent = (): JSX.Element => {
 
@@ -71,8 +73,67 @@ const Character: FunctionComponent = (): JSX.Element => {
       label: 'Species',
       type: 'select',
       options: species
+    },
+    {
+      name: 'languages',
+      label: 'Languages',
+      type: 'asyncMultiSelect',
+      link: (id: string | number) => `/compendia/${compendium.slug}/languages/${id}`,
+      search: (term: string) => indexLanguages(compendium.slug, { search: term })
+        .then(response => response.data.data.map(language => ({
+          id: language.id,
+          slug: language.slug,
+          name: language.name
+        })))
     }
   ]
+
+  const include = 'species,languages'
+
+  const handleCreate = (data: TCharacter): Promise<TCharacter> => {
+    return storeCharacter(compendiumId, readyDataForRequest(data), { include })
+      .then((response) => {
+        const responseCharacter = response.data.data;
+        if (!data.languages) {
+          return responseCharacter;
+        }
+        const languageAttachmentPromises = data.languages.map(language =>
+          attachLanguageToCharacter(responseCharacter.slug, language.id)
+            .then(response => response.data.data)
+        );
+        return Promise.all(languageAttachmentPromises)
+          .then((languages) => {
+            return filterDataByKeys(data, { ...responseCharacter, languages })
+          });
+      })
+  }
+
+  const handleUpdate = (data: TCharacter): Promise<TCharacter> => {
+    return updateCharacter(characterId, readyDataForRequest(data), { include }) // TODO compendium is being returned... and then creating a mismatch... how do I remove it?
+      .then((response) => {
+        const updatedCharacter = response.data.data;
+
+        // Determine languages to attach and detach
+        const languagesToAttach = data.languages
+          ?.filter(language => !character.languages?.some(prevlanguage => prevlanguage.id === language.id)) || [];
+        const languagesToDetach = character.languages
+          ?.filter(language => !data.languages?.some(newLanguage => newLanguage.id === language.id)) || [];
+
+        // Create promises for attaching and detaching languages
+        const attachPromises = languagesToAttach.map(language =>
+          attachLanguageToCharacter(updatedCharacter.slug, language.id));
+        const detachPromises = languagesToDetach.map(language =>
+          detachLanguageFromCharacter(updatedCharacter.slug, language.slug));
+
+        // Execute all promises
+        return Promise.all([...attachPromises, ...detachPromises])
+          .then(() => {
+            // Assuming the updateCharacter and language attachment/detachment calls
+            // modify the character, fetch or construct the updated character data
+            return filterDataByKeys(data, { ...updatedCharacter, languages: data.languages });
+          });
+      });
+  }
 
   return (
     <Post
@@ -83,9 +144,9 @@ const Character: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
-      onFetch={() => viewCharacter(characterId).then(({ data }) => data.data)}
-      onCreate={(data: TCharacterRequest) => storeCharacter(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TCharacterRequest) => updateCharacter(characterId, data).then(({ data }) => data.data)}
+      onFetch={() => viewCharacter(characterId, { include }).then(({ data }) => data.data)}
+      onCreate={handleCreate}
+      onUpdate={handleUpdate}
       onDelete={() => destroyCharacter(characterId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'characters', data: data }))
@@ -96,7 +157,6 @@ const Character: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'characters', id: characterId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={fields}
 

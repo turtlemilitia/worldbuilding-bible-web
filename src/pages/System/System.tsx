@@ -38,9 +38,9 @@ const System = (): JSX.Element => {
       pathAfterDelete={`/`}
       ready={true}
 
-      onCreate={(data: TSystem) => storeSystem(data).then(({ data }) => data.data)}
       onFetch={() => viewSystem(systemId).then(({ data }) => data.data)}
-      onUpdate={(data: TSystem) => updateSystem(systemId, data).then(({ data }) => data.data)}
+      onCreate={(data: TSystem) => storeSystem(readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TSystem) => updateSystem(systemId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroySystem(systemId)}
       onCreated={(data: TSystem) => {
         dispatch(addSystem(data))
@@ -48,7 +48,6 @@ const System = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeSystem({ id: systemId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

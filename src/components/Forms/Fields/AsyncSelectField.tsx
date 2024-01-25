@@ -9,7 +9,7 @@ type TProp = {
   onChange: (value: TSelectOption|null) => any;
   search: (term: string) => Promise<TSelectOption[]>;
 }
-const SelectField: FunctionComponent<TProp> = ({ value, onChange, search }) => {
+const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([]);
 
@@ -69,4 +69,4 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, search }) => {
   )
 }
 
-export default SelectField
+export default AsyncSelectField

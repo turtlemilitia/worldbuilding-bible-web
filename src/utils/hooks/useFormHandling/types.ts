@@ -1,3 +1,4 @@
+import { TTypesAllowed } from '../../../types'
 
 export type useFormHandlingProps<T> = {
   isNew: boolean,
@@ -9,7 +10,6 @@ export type useFormHandlingProps<T> = {
   onCreate: (data: any) => Promise<T>;
   onUpdate: (data: any) => Promise<T>;
   onDelete: () => Promise<any>
-  requestStructureCallback?: (data: any) => any,
   onFetched?: (data: T) => any
   onCreated?: (data: T) => any
   onUpdated?: (data: T) => any
@@ -18,7 +18,7 @@ export type useFormHandlingProps<T> = {
   // persisted data
   persistedData: T,
   setPersistedData: (data: T) => any,
-  updatePersistedData: (data: T) => any,
+  updatePersistedData: (data: Partial<T>) => any,
   resetPersistedData: () => any
 }
 

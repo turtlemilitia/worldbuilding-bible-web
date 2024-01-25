@@ -44,8 +44,8 @@ const Species: FunctionComponent = (): JSX.Element => {
       ready={true}
 
       onFetch={() => viewSpecies(speciesId).then(({ data }) => data.data)}
-      onCreate={(data: TSpeciesRequest) => storeSpecies(compendiumId, data).then(({ data }) => data.data)}
-      onUpdate={(data: TSpeciesRequest) => updateSpecies(speciesId, data).then(({ data }) => data.data)}
+      onCreate={(data: TSpeciesRequest) => storeSpecies(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
+      onUpdate={(data: TSpeciesRequest) => updateSpecies(speciesId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroySpecies(speciesId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'species', data: data }))
@@ -56,7 +56,6 @@ const Species: FunctionComponent = (): JSX.Element => {
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'species', id: speciesId }))
       }}
-      requestStructureCallback={readyDataForRequest}
 
       fields={[]}
 

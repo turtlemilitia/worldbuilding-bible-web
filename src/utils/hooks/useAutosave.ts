@@ -2,13 +2,13 @@ import { EffectCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from 'lodash'
 import { current } from '@reduxjs/toolkit'
 import equal from 'fast-deep-equal/react'
+import { readyDataForRequest } from '../dataUtils'
 
 type TProps = {
   canAutosave?: boolean;
   delay: number;
 
   handleOnSave: (data: any) => any;
-  requestStructureCallback?: (data: any) => any;
 
   persistedData: any;
   newData: any;
@@ -21,7 +21,6 @@ const useAutosave: TAutosave = ({
   delay = 5000,
   persistedData,
   newData,
-  requestStructureCallback,
 }) => {
 
   const [autosave, setAutosave] = useState(false)
@@ -50,9 +49,10 @@ const useAutosave: TAutosave = ({
       return;
     }
     // compare previous persisted data and changed data
-    persistedData = requestStructureCallback ? requestStructureCallback(persistedData) : persistedData
-    newData = requestStructureCallback ? requestStructureCallback(newData) : newData
+    persistedData = readyDataForRequest(persistedData)
+    newData = readyDataForRequest(newData)
     if (!equal(persistedData, newData)) {
+      debugger;
       // save new data (will make it persisted
       handleOnSave(newData)
       // turn autosave off
