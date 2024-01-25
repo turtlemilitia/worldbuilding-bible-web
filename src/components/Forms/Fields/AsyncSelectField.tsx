@@ -1,5 +1,5 @@
-import { Combobox, Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDownIcon } from 'lucide-react'
+import { Combobox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronDownIcon, DotIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { TSelectOption } from './FieldMapper'
 import { debounce } from 'lodash';
@@ -55,7 +55,8 @@ const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search })
                     {({ active, selected }) => (
                       <li className="py-1 flex justify-between hover:cursor-pointer">
                         {option?.name}
-                        {selected && <CheckIcon className="text-stone-700 h-5 w-5"/>}
+                        {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
+                        {!selected && active && <DotIcon className="text-stone-300 h-5 w-5"/>}
                       </li>
                     )}
                   </Combobox.Option>

@@ -1,5 +1,3 @@
-import { TTypesAllowed } from '../../../types'
-
 export type useFormHandlingProps<T> = {
   isNew: boolean,
   pathToNew: (data: T) => string

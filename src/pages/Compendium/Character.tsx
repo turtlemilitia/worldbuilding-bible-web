@@ -109,7 +109,7 @@ const Character: FunctionComponent = (): JSX.Element => {
   }
 
   const handleUpdate = (data: TCharacter): Promise<TCharacter> => {
-    return updateCharacter(characterId, readyDataForRequest(data), { include }) // TODO compendium is being returned... and then creating a mismatch... how do I remove it?
+    return updateCharacter(characterId, readyDataForRequest(data), { include })
       .then((response) => {
         const updatedCharacter = response.data.data;
 

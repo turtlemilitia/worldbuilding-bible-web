@@ -1,27 +1,18 @@
-import React, { JSX, useCallback, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { JSX } from 'react'
+import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
-import PageTitleField from '../../components/Forms/Fields/PageTitleField'
-import { Editor } from '../../components/Forms/Fields/Editor'
-import { HeaderWrapper } from '../../components/HeaderWrapper'
-import ContentWrapper from '../../components/ContentWrapper'
 import { destroySystem, storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
-import { TCharacter, TSystem } from '../../types'
-import { AxiosError } from 'axios'
-import LoadingWrapper from '../../components/LoadingWrapper'
+import { TSystem } from '../../types'
 import { addSystem, removeSystem } from '../../reducers/system/systemsIndexSlice'
-import FormToolbar from '../../components/Forms/FormToolbar'
 import Post from '../../components/Post/component'
-import { TDeityRequest } from '../../services/DeityService'
-import compendium from '../Compendium/Compendium'
 
 const System = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
-  const { compendiumId, systemId } = useParams() as { compendiumId: string, systemId: string } // router
+  const { systemId } = useParams() as { systemId: string } // router
 
   const { system } = useAppSelector((state: RootState) => state.system) // redux
 

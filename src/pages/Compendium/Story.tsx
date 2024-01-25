@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useEffect } from 'react'
+import React, { FunctionComponent, JSX } from 'react'
 import { destroyStory, storeStory, TStoryRequest, updateStory, viewStory } from '../../services/StoryService'
 import { clearStoryData, setStoryData, updateStoryData } from '../../reducers/compendium/story/storySlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'

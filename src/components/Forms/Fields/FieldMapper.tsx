@@ -1,7 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react'
-import { Listbox, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from 'lucide-react'
-import { TLocation } from '../../../types'
+import React, { FunctionComponent } from 'react'
 import SelectField from './SelectField'
 import TextField from './TextField'
 import AsyncSelectField from './AsyncSelectField'

@@ -1,4 +1,4 @@
-import React, { JSX, useCallback } from 'react'
+import React, { JSX } from 'react'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'

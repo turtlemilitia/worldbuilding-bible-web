@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
+import React, { FunctionComponent, JSX } from 'react'
 import {
   destroySession,
   storeSession,
@@ -8,7 +8,7 @@ import {
 } from '../../services/SessionService'
 import { clearSessionData, setSessionData, updateSessionData } from '../../reducers/campaign/session/sessionSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCampaignChildData,
