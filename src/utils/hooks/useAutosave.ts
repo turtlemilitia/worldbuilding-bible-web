@@ -50,7 +50,6 @@ const useAutosave: TAutosave = ({
     persistedData = readyDataForRequest(persistedData)
     newData = readyDataForRequest(newData)
     if (!equal(persistedData, newData)) {
-      debugger;
       // save new data (will make it persisted
       handleOnSave(newData)
       // turn autosave off

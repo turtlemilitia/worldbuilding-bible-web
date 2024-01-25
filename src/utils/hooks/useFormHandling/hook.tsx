@@ -102,7 +102,6 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     } else {
       onUpdate(newData)
         .then((data) => {
-          debugger;
           updatePersistedData(data)
           onUpdated && onUpdated(data)
           setSaving(false)
