@@ -40,3 +40,11 @@ export const updateFaction = (slug: string, data: Partial<TFactionRequest>): Pro
 export const destroyFaction = (slug: string): Promise<AxiosResponse<void>> => {
   return api.delete(`/api/factions/${slug}`)
 }
+
+export const attachFactionToCharacter = (slug: string, factionId: number): Promise<AxiosResponse<TFactionResponse>> => {
+  return api.post(`/api/characters/${slug}/factions`, { factionId })
+}
+
+export const detachFactionFromCharacter = (slug: string, factionSlug: string): Promise<AxiosResponse<{}>> => {
+  return api.delete(`/api/characters/${slug}/factions/${factionSlug}`)
+}

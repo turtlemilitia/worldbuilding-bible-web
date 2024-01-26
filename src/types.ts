@@ -74,6 +74,7 @@ export type TCharacter = {
   content: string;
   species: TSpecies;
   languages?: TLanguage[];
+  factions?: TFaction[];
 }
 
 export type TCurrency = {

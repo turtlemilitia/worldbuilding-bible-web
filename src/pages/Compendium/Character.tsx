@@ -20,6 +20,7 @@ import { TFields } from '../../components/InfoBar'
 import { indexSpecies } from '../../services/SpeciesService'
 import { attachLanguageToCharacter, detachLanguageFromCharacter, indexLanguages } from '../../services/LanguageService'
 import { filterDataByKeys } from '../../utils/dataUtils'
+import { attachFactionToCharacter, detachFactionFromCharacter, indexFactions } from '../../services/FactionService'
 
 const Character: FunctionComponent = (): JSX.Element => {
 
@@ -85,23 +86,42 @@ const Character: FunctionComponent = (): JSX.Element => {
           slug: language.slug,
           name: language.name
         })))
+    },
+    {
+      name: 'factions',
+      label: 'Factions',
+      type: 'asyncMultiSelect',
+      link: (id: string | number) => `/compendia/${compendium.slug}/factions/${id}`,
+      search: (term: string) => indexFactions(compendium.slug, { search: term })
+        .then(response => response.data.data.map(faction => ({
+          id: faction.id,
+          slug: faction.slug,
+          name: faction.name
+        })))
     }
   ]
 
-  const include = 'species,languages'
+  const include = 'species,languages,factions'
 
   const handleCreate = (data: TCharacter): Promise<TCharacter> => {
     return storeCharacter(compendiumId, readyDataForRequest(data), { include })
       .then((response) => {
         const responseCharacter = response.data.data;
-        if (!data.languages) {
+        if (!data.languages && !data.factions) {
           return responseCharacter;
         }
-        const languageAttachmentPromises = data.languages.map(language =>
+
+        const languageAttachmentPromises = data.languages?.map(language =>
           attachLanguageToCharacter(responseCharacter.slug, language.id)
             .then(response => response.data.data)
-        );
-        return Promise.all(languageAttachmentPromises)
+        ) || [];
+
+        const factionAttachmentPromises = data.factions?.map(faction =>
+          attachFactionToCharacter(responseCharacter.slug, faction.id)
+            .then(response => response.data.data)
+        ) || [];
+
+        return Promise.all([...languageAttachmentPromises, ...factionAttachmentPromises])
           .then((languages) => {
             return filterDataByKeys(data, { ...responseCharacter, languages })
           });
@@ -119,18 +139,37 @@ const Character: FunctionComponent = (): JSX.Element => {
         const languagesToDetach = character.languages
           ?.filter(language => !data.languages?.some(newLanguage => newLanguage.id === language.id)) || [];
 
+        // Determine factions to attach and detach
+        const factionsToAttach = data.factions
+          ?.filter(faction => !character.factions?.some(prevfaction => prevfaction.id === faction.id)) || [];
+        const factionsToDetach = character.factions
+          ?.filter(faction => !data.factions?.some(newFaction => newFaction.id === faction.id)) || [];
+
         // Create promises for attaching and detaching languages
-        const attachPromises = languagesToAttach.map(language =>
+        const attachLanguagePromises = languagesToAttach.map(language =>
           attachLanguageToCharacter(updatedCharacter.slug, language.id));
-        const detachPromises = languagesToDetach.map(language =>
+        const detachLanguagePromises = languagesToDetach.map(language =>
           detachLanguageFromCharacter(updatedCharacter.slug, language.slug));
+        const attachFactionPromises = factionsToAttach.map(faction =>
+          attachFactionToCharacter(updatedCharacter.slug, faction.id));
+        const detachFactionPromises = factionsToDetach.map(faction =>
+          detachFactionFromCharacter(updatedCharacter.slug, faction.slug));
 
         // Execute all promises
-        return Promise.all([...attachPromises, ...detachPromises])
+        return Promise.all([
+          ...attachLanguagePromises,
+          ...detachLanguagePromises,
+          ...attachFactionPromises,
+          ...detachFactionPromises
+        ])
           .then(() => {
             // Assuming the updateCharacter and language attachment/detachment calls
             // modify the character, fetch or construct the updated character data
-            return filterDataByKeys(data, { ...updatedCharacter, languages: data.languages });
+            return filterDataByKeys(data, {
+              ...updatedCharacter,
+              languages: data.languages,
+              factions: data.factions
+            });
           });
       });
   }
