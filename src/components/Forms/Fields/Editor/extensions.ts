@@ -5,7 +5,12 @@ import {
   BulletListExtension,
   CalloutExtension,
   HeadingExtension,
-  ItalicExtension, LinkExtension, MarkdownExtension, OrderedListExtension, TaskListExtension, TaskListItemExtension
+  ItalicExtension,
+  // LinkExtension,
+  MarkdownExtension,
+  OrderedListExtension,
+  TaskListExtension,
+  TaskListItemExtension
 } from 'remirror/extensions'
 import { PlaceholderExtension } from '@remirror/react'
 import { IdeaListExtension, IdeaListItemExtension } from '../../../../utils/remirror/extensions/IdeaListItemExtension'
@@ -26,7 +31,7 @@ export function getExtensions (placeholder?: string): AnyExtension[] {
     new IdeaListExtension(),
     new IdeaListItemExtension(),
     new BlockquoteExtension(),
-    new LinkExtension(),
+    // new LinkExtension(),
     new MarkdownExtension({
       htmlToMarkdown: (html) => turndownService.turndown(html),
       markdownToHtml: (markdown) => convertMarkdown(markdown),
