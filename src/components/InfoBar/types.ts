@@ -1,5 +1,4 @@
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
-import { TCharacter, TConcept, TLocation } from '../../types'
 
 export type TFields = {
   name: string,
@@ -14,5 +13,7 @@ export type TInfoBarProps<T> = {
   loading: boolean;
   onChange: (key: string, value: any) => void;
   data: T;
-  fields: TFields[]
+  fields: TFields[],
+  profileImage?: string
+  onProfileImageSelected?: (imageId: number) => Promise<any>;
 }

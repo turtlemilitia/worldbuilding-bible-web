@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FunctionComponent } from 'react'
 import { HeaderWrapper } from '../HeaderWrapper'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import ContentWrapper from '../ContentWrapper'
@@ -22,6 +22,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     fields,
     onImageSelected,
     coverImageUrl,
+    profileImageUrl,
   } = props
 
   const {
@@ -56,7 +57,9 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
                 loading={loading}
                 onChange={handleOnFieldChange}
                 data={newData}
-                fields={fields}/>
+                fields={fields}
+                profileImage={profileImageUrl}
+                onProfileImageSelected={onImageSelected ? (id) => onImageSelected(id, 'profile') : undefined}/>
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}

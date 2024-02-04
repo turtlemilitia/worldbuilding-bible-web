@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
+import React, { FunctionComponent, JSX, useCallback, useEffect, useState } from 'react'
 import {
   destroyCharacter,
   storeCharacter,
@@ -11,8 +11,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
-  addCompendiumChildData, removeCompendiumChildData,
-  updateCompendiumChildData
+  addCompendiumChildData,
+  removeCompendiumChildData,
+  updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import { TCharacter, TSpecies } from '../../types'
 import Post from '../../components/Post'
@@ -21,6 +22,7 @@ import { indexSpecies } from '../../services/SpeciesService'
 import { attachLanguageToCharacter, detachLanguageFromCharacter, indexLanguages } from '../../services/LanguageService'
 import { filterDataByKeys } from '../../utils/dataUtils'
 import { attachFactionToCharacter, detachFactionFromCharacter, indexFactions } from '../../services/FactionService'
+import useImageSelection from '../../utils/hooks/useImageSelection'
 
 const Character: FunctionComponent = (): JSX.Element => {
 
@@ -33,6 +35,11 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   const [ready, setReady] = useState<boolean>(false)
   const [species, setSpecies] = useState<TSpecies[]>([])
+
+  const { onImageSelected, addImageToSelection } = useImageSelection({
+    entityType: 'characters',
+    entityId: character.slug
+  })
 
   useEffect(() => {
 
@@ -101,7 +108,7 @@ const Character: FunctionComponent = (): JSX.Element => {
     }
   ]
 
-  const include = 'species,languages,factions'
+  const include = 'species,languages,factions,images'
 
   const handleCreate = (data: TCharacter): Promise<TCharacter> => {
     return storeCharacter(compendiumId, readyDataForRequest(data), { include })
@@ -174,6 +181,8 @@ const Character: FunctionComponent = (): JSX.Element => {
       });
   }
 
+  const getImage = useCallback((type: 'cover'|'profile') => character.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [character.images])
+
   return (
     <Post
       key={characterId}
@@ -203,6 +212,19 @@ const Character: FunctionComponent = (): JSX.Element => {
       setPersistedData={(data) => dispatch(setCharacterData(data))}
       updatePersistedData={(data) => dispatch(updateCharacterData(data))}
       resetPersistedData={() => dispatch(clearCharacterData(undefined))}
+
+      onImageSelected={async (imageId: number, imageType?: string) => {
+        return onImageSelected(imageId, imageType)
+          .then((result) => {
+            if (result && result.data) {
+              const images = addImageToSelection(compendium.images || [], result.data.data)
+              dispatch(updateCharacterData({ images }))
+            }
+            return result
+          })
+      }}
+      coverImageUrl={getImage('cover')}
+      profileImageUrl={getImage('profile')}
     />
   )
 }

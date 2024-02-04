@@ -8,7 +8,6 @@ import {
   viewCompendium
 } from '../../services/CompendiumService'
 import {
-  clearCompendiumData,
   setCompendiumData,
   setCompendiumLoading,
   updateCompendiumData
@@ -38,7 +37,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     content: data.content
   })
 
-  const coverImage = useCallback(() => compendium.images?.find(image => image.pivot?.type.name.toLowerCase() === 'cover')?.original, [compendium.images])
+  const getImage = useCallback((type: 'cover'|'profile') => compendium.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [compendium.images])
 
   const onPostFetch = useCallback(() => {
     // we tell it it's loading so we avoid loading it twice when CompendiaWrapper loads
@@ -90,7 +89,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       resetPersistedData={() => {}}
 
       onImageSelected={selectImage}
-      coverImageUrl={coverImage()}
+      coverImageUrl={getImage('cover')}
     />
   )
 }

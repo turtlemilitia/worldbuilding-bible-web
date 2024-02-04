@@ -1,7 +1,5 @@
 import Post from './component'
 
-export {
-  Post
-}
+export {}
 
 export default Post;
