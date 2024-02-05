@@ -9,7 +9,7 @@ import { InfoBar } from '../InfoBar'
 import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { TTypesAllowed } from '../../types'
-import { useFormHandling } from '../../utils/hooks/useFormHandling'
+import useFormHandling from '../../utils/hooks/useFormHandling'
 import SavingDialog from '../SavingDialog'
 
 const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {

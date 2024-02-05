@@ -191,6 +191,7 @@ const Character: FunctionComponent = (): JSX.Element => {
       pathToNew={(data) => `/compendia/${compendiumId}/characters/${data.slug}`}
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
+      mapData={readyDataForRequest}
 
       onFetch={() => viewCharacter(characterId, { include: `${include},images` }).then(({ data }) => data.data)}
       onCreate={handleCreate}
@@ -218,7 +219,7 @@ const Character: FunctionComponent = (): JSX.Element => {
         return onImageSelected(imageId, imageType)
           .then((result) => {
             if (result && result.data) {
-              const images = addImageToSelection(character.images || [], result.data.data)
+              const images = addImageToSelection(character.images || [], result.data.data, imageType)
               dispatch(updateCharacterData({ images }))
             }
             return result

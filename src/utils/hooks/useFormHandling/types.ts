@@ -2,6 +2,7 @@ export type useFormHandlingProps<T> = {
   isNew: boolean,
   pathToNew: (data: T) => string
   pathAfterDelete: string
+  mapData?: (data: any) => any;
 
   // API
   onFetch: () => Promise<T>,

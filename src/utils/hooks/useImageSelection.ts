@@ -6,7 +6,7 @@ import { TImage } from '../../types'
 
 type TProps = {
   entityType: string;
-  entityId?: string|number;
+  entityId?: string | number;
 }
 const useImageSelection = ({ entityType, entityId }: TProps) => {
 
@@ -14,7 +14,7 @@ const useImageSelection = ({ entityType, entityId }: TProps) => {
 
   const onImageSelected = useCallback(async (imageId: number, imageType?: string) => {
     if (!entityId) {
-      return null;
+      return null
     }
     return attachImageToEntity(entityType, entityId.toString(), {
       image_id: imageId,
@@ -22,12 +22,16 @@ const useImageSelection = ({ entityType, entityId }: TProps) => {
     })
   }, [entityId, entityType, imageTypes])
 
-  const addImageToSelection = (originalImages: TImage[], newImage: TImage) => {
-    const imageType = 'cover';
-    const coverImage = originalImages?.find(image => image.pivot?.type.name.toLowerCase() === 'cover')?.original;
-    return imageType === 'cover' && originalImages && coverImage ? [
-      ...originalImages.map(image => image.pivot?.type.name.toLowerCase() === 'cover' ? newImage : image)
-    ] : [
+  const addImageToSelection = (originalImages: TImage[], newImage: TImage, imageType?: string) => {
+    if (originalImages && imageType && ['cover', 'profile'].includes(imageType)) {
+      const existingImageOfType = originalImages?.find(image => image.pivot?.type.name.toLowerCase() === imageType)?.original
+      if (existingImageOfType) {
+        return [
+          ...originalImages.map(image => image.pivot?.type.name.toLowerCase() === imageType ? newImage : image)
+        ]
+      }
+    }
+    return [
       ...(originalImages || []),
       { ...newImage }
     ]

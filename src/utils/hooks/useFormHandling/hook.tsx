@@ -4,12 +4,12 @@ import { TTypesAllowed } from '../../../types'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import { useNavigate } from 'react-router-dom'
-import { filterOnlyArrays, filterOutArrays, readyDataForRequest } from '../../dataUtils'
 
 const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   isNew,
   pathToNew,
   pathAfterDelete,
+  mapData,
 
   onFetch,
   onCreate,
@@ -118,7 +118,9 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     handleOnSave,
 
     persistedData,
-    newData
+    newData,
+
+    mapData
   })
 
   const handleOnDelete = () => {

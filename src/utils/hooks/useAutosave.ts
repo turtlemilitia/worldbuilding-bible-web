@@ -7,6 +7,7 @@ type TProps = {
   delay: number;
 
   handleOnSave: (data: any) => any;
+  mapData?: (data: any) => any;
 
   persistedData: any;
   newData: any;
@@ -19,6 +20,7 @@ const useAutosave: TAutosave = ({
   delay = 5000,
   persistedData,
   newData,
+  mapData,
 }) => {
 
   const [autosave, setAutosave] = useState(false)
@@ -47,8 +49,8 @@ const useAutosave: TAutosave = ({
       return;
     }
     // compare previous persisted data and changed data
-    persistedData = readyDataForRequest(persistedData)
-    newData = readyDataForRequest(newData)
+    persistedData = mapData ? mapData(newData) : readyDataForRequest(persistedData)
+    newData = mapData ? mapData(newData) : readyDataForRequest(newData)
     if (!equal(persistedData, newData)) {
       // save new data (will make it persisted
       handleOnSave(newData)
