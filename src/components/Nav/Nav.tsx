@@ -10,7 +10,7 @@ const Nav = (): JSX.Element => {
   const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
   return (
-    <header className="relative top-0 w-full">
+    <header className="fixed top-0 w-full z-40">
       {token ? (
         <LoggedInNavBar setSideBarOpen={setOpen}/>
       ) : (
