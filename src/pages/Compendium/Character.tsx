@@ -108,7 +108,7 @@ const Character: FunctionComponent = (): JSX.Element => {
     }
   ]
 
-  const include = 'species,languages,factions,images'
+  const include = 'species,languages,factions'
 
   const handleCreate = (data: TCharacter): Promise<TCharacter> => {
     return storeCharacter(compendiumId, readyDataForRequest(data), { include })
@@ -192,7 +192,7 @@ const Character: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
-      onFetch={() => viewCharacter(characterId, { include }).then(({ data }) => data.data)}
+      onFetch={() => viewCharacter(characterId, { include: `${include},images` }).then(({ data }) => data.data)}
       onCreate={handleCreate}
       onUpdate={handleUpdate}
       onDelete={() => destroyCharacter(characterId)}
@@ -213,11 +213,12 @@ const Character: FunctionComponent = (): JSX.Element => {
       updatePersistedData={(data) => dispatch(updateCharacterData(data))}
       resetPersistedData={() => dispatch(clearCharacterData(undefined))}
 
+      allowProfileImage={true}
       onImageSelected={async (imageId: number, imageType?: string) => {
         return onImageSelected(imageId, imageType)
           .then((result) => {
             if (result && result.data) {
-              const images = addImageToSelection(compendium.images || [], result.data.data)
+              const images = addImageToSelection(character.images || [], result.data.data)
               dispatch(updateCharacterData({ images }))
             }
             return result

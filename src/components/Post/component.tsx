@@ -20,6 +20,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     pageTypeName,
     contentPlaceholder,
     fields,
+    allowProfileImage = false,
     onImageSelected,
     coverImageUrl,
     profileImageUrl,
@@ -59,7 +60,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
                 data={newData}
                 fields={fields}
                 profileImage={profileImageUrl}
-                onProfileImageSelected={onImageSelected ? (id) => onImageSelected(id, 'profile') : undefined}/>
+                onProfileImageSelected={allowProfileImage && onImageSelected ? (id) => onImageSelected(id, 'profile') : undefined}/>
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}

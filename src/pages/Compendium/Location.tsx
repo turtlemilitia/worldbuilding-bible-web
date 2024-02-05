@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
+import React, { FunctionComponent, JSX, useCallback, useEffect, useState } from 'react'
 import {
   destroyLocation,
   indexLocations,
@@ -9,7 +9,7 @@ import {
 } from '../../services/LocationService'
 import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
   addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
@@ -20,6 +20,7 @@ import { indexLocationTypes } from '../../services/LocationTypeService'
 import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
 import { TLocation, TLocationGovernmentType, TLocationType } from '../../types'
 import { RootState } from '../../store'
+import useImageSelection from '../../utils/hooks/useImageSelection'
 
 const Location: FunctionComponent = (): JSX.Element => {
 
@@ -33,6 +34,11 @@ const Location: FunctionComponent = (): JSX.Element => {
   const [ready, setReady] = useState<boolean>(false)
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>()
   const [governmentTypes, setGovernmentTypes] = useState<TLocationGovernmentType[]>()
+
+  const { onImageSelected, addImageToSelection } = useImageSelection({
+    entityType: 'locations',
+    entityId: location.slug
+  })
 
   useEffect(() => {
 
@@ -113,6 +119,8 @@ const Location: FunctionComponent = (): JSX.Element => {
     },
   ]
 
+  const getImage = useCallback((type: 'cover'|'profile') => location.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [location.images])
+
   return (
     <Post
       key={locationId}
@@ -122,7 +130,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
-      onFetch={() => viewLocation(locationId, { include: 'parent,children' }).then(({ data }) => data.data)}
+      onFetch={() => viewLocation(locationId, { include: 'parent,children,images' }).then(({ data }) => data.data)}
       onCreate={(data: TLocationRequest) => storeLocation(compendiumId, readyDataForRequest(data), { include: 'parent,children' }).then(({ data }) => data.data)}
       onUpdate={(data: TLocationRequest) => updateLocation(locationId, readyDataForRequest(data), { include: 'parent,children' }).then(({ data }) => data.data)}
       onDelete={() => destroyLocation(locationId)}
@@ -142,6 +150,19 @@ const Location: FunctionComponent = (): JSX.Element => {
       setPersistedData={(data) => dispatch(setLocationData(data))}
       updatePersistedData={(data) => dispatch(updateLocationData(data))}
       resetPersistedData={() => dispatch(clearLocationData(undefined))}
+
+      onImageSelected={async (imageId: number, imageType?: string) => {
+        return onImageSelected(imageId, imageType)
+          .then((result) => {
+            if (result && result.data) {
+              const images = addImageToSelection(location.images || [], result.data.data)
+              dispatch(updateLocationData({ images }))
+            }
+            return result
+          })
+      }}
+      coverImageUrl={getImage('cover')}
+      profileImageUrl={getImage('profile')}
     />
   )
 }

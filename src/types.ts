@@ -133,7 +133,8 @@ export type TLocation = {
   governmentType?: TLocationGovernmentType;
   hasSubLocations?: boolean;
   aliases?: string[];
-  children?: TLocation[]
+  children?: TLocation[];
+  images?: TImage[];
 }
 
 export type TLocationType = {
