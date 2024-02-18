@@ -2,7 +2,6 @@ import React, { JSX } from 'react'
 import MenuItem from './MenuItem'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { TSystem } from '../../types'
 
 export interface MenuItemInterface {
   title: string;
@@ -74,10 +73,10 @@ const Menu = (): JSX.Element => {
         }
       ]
     }
-  ];
+  ]
 
   return (
-    <ul className="flex space-x-3 items-center text-sm font-thin text-white">
+    <ul className="flex space-x-3 items-center font-serif text-serif-md text-white">
       {menuItems.map((menuItem, index) => {
         return (
           <MenuItem menuItem={menuItem} key={index}/>
@@ -87,4 +86,4 @@ const Menu = (): JSX.Element => {
   )
 }
 
-export default Menu;
+export default Menu

@@ -10,10 +10,10 @@ const DropdownItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Elemen
 
   return (
     <li>
-        <NavLink to={to}
-              className={`block ${!plus && 'w-36'} px-3 py-3 text-sm text-stone-300 text-center hover:bg-stone-600`}>
-          {plus ? <PlusIcon color="white" className="inline-block"/> : title}
-        </NavLink>
+      <NavLink to={to}
+               className={`block ${!plus && 'w-36'} px-3 py-3 font-serif text-serif-md text-stone-300 text-center hover:bg-stone-600`}>
+        {plus ? <PlusIcon color="white" className="inline-block"/> : title}
+      </NavLink>
     </li>
   )
 }

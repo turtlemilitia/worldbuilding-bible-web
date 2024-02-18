@@ -18,7 +18,7 @@ const InfoBar: FunctionComponent<TInfoBarProps<TTypesAllowed>> = ({ loading, onC
         {onProfileImageSelected && (
           <ProfileImage image={profileImage} onSelected={onProfileImageSelected}/>
         )}
-        <ul>
+        <ul className="font-serif text-serif-md leading-tight ">
           {fields.map(({ name, label, type, options, search, link }, index) => {
             const currentValue = data[name as keyof TTypesAllowed]
             return <FieldMapper

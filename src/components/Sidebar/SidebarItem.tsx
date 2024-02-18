@@ -59,12 +59,12 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     <li className="my-3">
       <div className="flex justify-between">
         {to ? (
-          <NavLink to={to} className={({ isActive }) => isActive ? 'font-bold' : ''}>
-            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}{title}
+          <NavLink to={to} className={({ isActive }) => `${isActive ? 'font-bold' : ''} flex items-center`}>
+            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}<span>{title}</span>
           </NavLink>
         ) : (
-          <div>
-            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}{title}
+          <div className="flex items-center">
+            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}<span>{title}</span>
           </div>
         )}
         {(canAddNew || collapsable || onDelete) && (

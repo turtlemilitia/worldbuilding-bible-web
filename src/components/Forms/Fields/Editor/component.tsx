@@ -26,7 +26,7 @@ const Editor: FunctionComponent<TEditorProps> = ({ initialValue, onChange, place
   }, [initialValue])
 
   return (
-    <div className="remirror-theme">
+    <div className="remirror-theme font-serif text-serif-lg">
       <Remirror manager={manager} initialContent={state} onChange={handleEditorChange}/>
     </div>
   )

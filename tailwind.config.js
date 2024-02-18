@@ -26,11 +26,15 @@ module.exports = {
       transitionProperty: {
         'width': 'width'
       },
+      fontSize: {
+        'serif-md': '1.25rem',
+        'serif-lg': '1.35rem'
+      }
     },
     fontFamily: {
       'display': ['Playfair Display', ...defaultTheme.fontFamily.sans],
       'sans-serif': ['Poppins', ...defaultTheme.fontFamily.sans],
-      'serif': ['Merriweather', ...defaultTheme.fontFamily.serif]
+      'serif': ['EB Garamond', 'Merriweather', ...defaultTheme.fontFamily.serif]
     }
   },
   plugins: [],

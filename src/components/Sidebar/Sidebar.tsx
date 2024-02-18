@@ -1,5 +1,4 @@
 import { JSX, useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
 import { LucideProps } from 'lucide-react'
 import SidebarItem from './SidebarItem'
 import { FloatingBox } from '../FloatingBox'
@@ -37,7 +36,7 @@ const Sidebar = ({ title, items }: TOwnProps): JSX.Element => {
           <FloatingBox>
             <div className="max-h-underScreen overflow-y-auto">
               <h2 className="text-xl font-sans-serif tracking-widest uppercase text-stone-400">{title}</h2>
-              <ul className="mt-5 text-sm">
+              <ul className="mt-5 font-serif text-serif-md leading-none">
                 {items.map((item, index) => {
                   return <SidebarItem item={item} key={index}/>
                 })}

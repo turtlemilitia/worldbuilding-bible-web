@@ -20,9 +20,9 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
       <label className={`flex items-center justify-center w-4 h-4`}>
         { type === 'i' && <InfoIcon className="text-blue-500"/>}
         { type === 'I' && <LightbulbIcon className="text-amber-500"/>}
-        { type === 'k' && <KeyIcon className="text-amber-500"/>}
-        { type === 'l' && <MapPinIcon className="text-pink-600"/>}
-        { type === '?' && <HelpCircleIcon className="text-amber-500"/>}
+        { type === 'k' && <KeyIcon className="text-yellow-500"/>}
+        { type === 'l' && <MapPinIcon className="text-green-600"/>}
+        { type === '?' && <HelpCircleIcon className="text-fuchsia-500"/>}
         { type === '!' && <AlertTriangle className="text-amber-500"/>}
         { type === '"' && <QuoteIcon className="text-emerald-600"/>}
         { type === '*' && <StarIcon className="text-amber-500"/>}

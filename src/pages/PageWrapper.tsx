@@ -8,9 +8,7 @@ import AuthProvider from '../providers/AuthProvider'
 const PageWrapper = (): JSX.Element => {
   return (
     <AuthProvider>
-      <div
-        className="font-serif min-h-screen"
-        >
+      <div className="min-h-screen font-sans-serif">
         <div className="-z-10 fixed w-full h-full bg-cover bg-no-repeat bg-center" style={{ backgroundImage: `url(${bgImage})` }}/>
         <Nav/>
         <Outlet/>
