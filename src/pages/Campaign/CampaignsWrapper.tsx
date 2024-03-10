@@ -1,4 +1,4 @@
-import { JSX, useEffect, useState } from 'react'
+import { JSX, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import { BookIcon, StickyNoteIcon } from 'lucide-react'
@@ -10,7 +10,6 @@ import { viewCampaign } from '../../services/CampaignService'
 import LoadingWrapper from '../../components/LoadingWrapper'
 import { indexSessions } from '../../services/SessionService'
 
-
 const mapSession = (campaign: TCampaign, session: TSession): SidebarItemInterface => ({
   title: session.name,
   to: `/campaigns/${campaign?.slug}/sessions/${session.slug}`,
@@ -19,30 +18,22 @@ const mapSession = (campaign: TCampaign, session: TSession): SidebarItemInterfac
 
 const CampaignsWrapper = (): JSX.Element => {
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { campaign, loading } = useAppSelector((state: RootState) => state.campaign) // redux
 
   const { campaignId } = useParams() as { campaignId: string } // router
 
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState(false)
-
   const isNew = (): boolean => campaignId === 'new'
 
-  const fetch = (): void => {
-    setLoading(true)
-    viewCampaign(campaignId)
-      .then(response => {
-        setLoading(false)
-        dispatch(setCampaignData(response.data.data))
-      })
-  }
-
   useEffect(() => {
-    if (campaignId && !isNew()) {
-      fetch()
+    if (!loading && !isNew()) {
+      viewCampaign(campaignId, { include: 'users,invitations' })
+        .then(({ data }) => {
+          dispatch(setCampaignData(data))
+        })
     }
-    if (isNew()) {
+    return () => {
       dispatch(clearCampaignData(undefined))
     }
   }, [campaignId])

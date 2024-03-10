@@ -16,4 +16,7 @@ export type TPostProps<T> = useFormHandlingProps<T> & {
   onImageSelected?: (imageId: number, imageType?: string) => Promise<any>;
   coverImageUrl?: string;
   profileImageUrl?: string;
+
+  // permissions
+  canEdit?: boolean;
 }

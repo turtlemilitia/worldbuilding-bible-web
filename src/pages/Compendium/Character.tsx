@@ -129,8 +129,12 @@ const Character: FunctionComponent = (): JSX.Element => {
         ) || [];
 
         return Promise.all([...languageAttachmentPromises, ...factionAttachmentPromises])
-          .then((languages) => {
-            return filterDataByKeys(data, { ...responseCharacter, languages })
+          .then(() => {
+            return filterDataByKeys(data, {
+              ...responseCharacter,
+              languages: data.languages,
+              factions: data.factions
+            })
           });
       })
   }
@@ -157,6 +161,7 @@ const Character: FunctionComponent = (): JSX.Element => {
           attachLanguageToCharacter(updatedCharacter.slug, language.id));
         const detachLanguagePromises = languagesToDetach.map(language =>
           detachLanguageFromCharacter(updatedCharacter.slug, language.slug));
+        // Create promises for attaching and detaching factions
         const attachFactionPromises = factionsToAttach.map(faction =>
           attachFactionToCharacter(updatedCharacter.slug, faction.id));
         const detachFactionPromises = factionsToDetach.map(faction =>

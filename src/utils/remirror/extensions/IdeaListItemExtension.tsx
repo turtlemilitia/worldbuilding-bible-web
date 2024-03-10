@@ -112,7 +112,7 @@ export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
   }
 
   createInputRules (): InputRule[] {
-    const regexp = /^[*\-.+]*\s*(\[(i?|I|k|l|\?|!|"|\*|\$|<3|p|m|w|h)]\s)$/;
+    const regexp = /^[*\-.+]*\s*(\[(i?|I|k|l|\?|!|"|\*|\$|<3|p|m|w|h|s)]\s)$/;
     return [
       wrappingInputRule(regexp, this.type, (match) => {
         return { ideaType: getMatchString(match, 2) }

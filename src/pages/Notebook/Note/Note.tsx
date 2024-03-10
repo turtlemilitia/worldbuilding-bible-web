@@ -30,6 +30,7 @@ const Note = (): JSX.Element => {
   return (
     <Post
       key={noteId}
+      canEdit={true}
       isNew={noteId === 'new'}
       pageTypeName={'Note'}
       pathToNew={(data) => `/notebooks/${notebookId}/notes/${data.slug}`}

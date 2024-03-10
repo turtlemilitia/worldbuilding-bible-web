@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom'
 import { getExtensions } from './extensions';
 import { TEditorProps } from './types'
 
-const Editor: FunctionComponent<TEditorProps> = ({ initialValue, onChange, placeholder }) => {
+const Editor: FunctionComponent<TEditorProps> = ({ initialValue, onChange, placeholder, canEdit }) => {
 
   const { manager, state, getContext } = useRemirror({
     extensions: () => getExtensions(placeholder),
@@ -27,7 +27,7 @@ const Editor: FunctionComponent<TEditorProps> = ({ initialValue, onChange, place
 
   return (
     <div className="remirror-theme font-serif text-serif-lg">
-      <Remirror manager={manager} initialContent={state} onChange={handleEditorChange}/>
+      <Remirror editable={canEdit} manager={manager} initialContent={state} onChange={handleEditorChange}/>
     </div>
   )
 }

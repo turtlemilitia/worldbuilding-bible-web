@@ -39,7 +39,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const getImage = useCallback((type: 'cover'|'profile') => compendium.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [compendium.images])
 
-  const onPostFetch = useCallback(() => {
+  const onPostFetch = useCallback(async () => {
     // we tell it it's loading so we avoid loading it twice when CompendiaWrapper loads
     dispatch(setCompendiumLoading(true))
     return viewCompendium(compendiumId, { include: 'images' }).then(({ data }) => {

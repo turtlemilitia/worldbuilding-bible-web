@@ -1,13 +1,20 @@
 import { FunctionComponent, JSX } from 'react'
 import {
-  AlertTriangle, DollarSignIcon, HeartIcon,
-  HelpCircleIcon, HistoryIcon,
+  AlertTriangle,
+  DollarSignIcon,
+  HeartIcon,
+  HelpCircleIcon,
+  HistoryIcon,
   InfoIcon,
   KeyIcon,
   LightbulbIcon,
-  MapPinIcon, MusicIcon, PenIcon,
+  MapPinIcon,
+  MusicIcon,
+  PenIcon,
   QuoteIcon,
-  StarIcon, WandIcon
+  StarIcon,
+  SwordIcon,
+  WandIcon
 } from 'lucide-react'
 
 type TProps = {
@@ -32,6 +39,7 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
         { type === 'm' && <MusicIcon className="text-gray-500"/>}
         { type === 'w' && <WandIcon className="text-amber-500"/>}
         { type === 'h' && <HistoryIcon className="text-emerald-600"/>}
+        { type === 's' && <SwordIcon className="text-amber-600"/>}
       </label>
     </span>
   )

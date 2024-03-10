@@ -1,27 +1,30 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
-import { TCampaign, TSession, TTypesAllowed } from '../../types'
+import { TCampaign, TInvitation, TSession, TTypesAllowed } from '../../types'
 
 interface TState {
+  loading: boolean;
   campaign: TCampaign;
 }
 
 const initialState: TState = {
+  loading: false,
   campaign: {
     name: '',
     content: '',
-    visibility: {
-      id: 1,
-      name: 'Public'
-    },
     hasSessions: false,
-    sessions: []
+    sessions: [],
+    users: [],
+    invitations: [],
   }
 }
 
 type TCampaignChildActionProps = {
   field: 'sessions'
   data: TSession;
+}|{
+  field: 'invitations'
+  data: TInvitation;
 }
 
 type TCampaignRemoveChildActionProps = {
@@ -33,6 +36,9 @@ const campaignSlice: Slice<TState> = createSlice({
   name: 'campaign',
   initialState,
   reducers: {
+    setCampaignLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
+    },
     setCampaignData: (state, action: PayloadAction<TCampaign>) => {
       state.campaign = action.payload
     },
@@ -68,6 +74,7 @@ const campaignSlice: Slice<TState> = createSlice({
 })
 
 export const {
+  setCampaignLoading,
   setCampaignData,
   updateCampaignData,
   clearCampaignData,

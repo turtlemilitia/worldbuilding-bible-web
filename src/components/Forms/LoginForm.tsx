@@ -46,7 +46,7 @@ const LoginForm = (): JSX.Element => {
     setLoginData((prevState) => ({ ...prevState, [field]: value }))
   }
 
-  const fields: {name: 'email'|'password', label: string, type: string}[] = [
+  const fields: {name: 'email'|'password', label: string, type: 'email'|'password'}[] = [
     {
       name: 'email',
       label: 'Email',
@@ -65,8 +65,8 @@ const LoginForm = (): JSX.Element => {
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <ul
         className="text-stone-200">
-        {fields.map(({name, label, type}) => {
-          return <FieldMapper name={name} label={label} type={type} currentValue={loginData[name]} onChange={handleLoginDataChange}/>
+        {fields.map((props) => {
+          return <FieldMapper currentValue={loginData[props.name]} onChange={handleLoginDataChange} {...props}/>
         })}
       </ul>
       <div className="mt-8 -mb-16 flex justify-center">

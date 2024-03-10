@@ -24,6 +24,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     onImageSelected,
     coverImageUrl,
     profileImageUrl,
+    canEdit = true
   } = props
 
   const {
@@ -64,17 +65,20 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
-              <FormToolbar
-                canManuallySave={true}
-                canDelete={!isNew}
-                onSave={handleOnSave}
-                onRefresh={handleOnFetch}
-                onDelete={handleOnDelete}
-              />
+              {canEdit && (
+                <FormToolbar
+                  canManuallySave={true}
+                  canDelete={!isNew}
+                  onSave={handleOnSave}
+                  onRefresh={handleOnFetch}
+                  onDelete={handleOnDelete}
+                />
+              )}
               <Editor
                 initialValue={fetchedData.content}
                 onChange={(value) => handleOnFieldChange('content', value)}
                 placeholder={contentPlaceholder}
+                canEdit={canEdit}
               />
             </div>
             <div className="flex lg:w-1/4 lg:px-6"></div>

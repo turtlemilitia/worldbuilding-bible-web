@@ -4,21 +4,17 @@ import TextField from './TextField'
 import AsyncSelectField from './AsyncSelectField'
 import ListField from './ListField'
 import MultipleAsyncSelectField from './MultipleAsyncSelectField'
+import { TFields } from '../../InfoBar'
+import ListAddName from './ListAddName'
 
 export type TSelectOption = {
   id: string | number,
   slug?: string,
   name: string
 }
-type TProps = {
-  name: string,
+type TProps = TFields & {
   currentValue?: any,
-  label: string,
   onChange: (name: string, value: any) => any,
-  type: string,
-  options?: TSelectOption[],
-  search?: (term: string) => any,
-  link?: (id: number | string) => string
 }
 
 const valueAsString = (value: any): string => {
@@ -49,7 +45,8 @@ const FieldMapper: FunctionComponent<TProps> = ({
   options,
   onChange,
   search,
-  link
+  link,
+  Callback
 }) => {
   return (
     <li>
@@ -82,6 +79,15 @@ const FieldMapper: FunctionComponent<TProps> = ({
                 value={currentValue}
                 onChange={(value) => onChange(name, value)}
                 type={type}/>
+            )}
+            {type === 'listAdd' && (
+              <ListAddName
+                value={currentValue}
+                onSubmit={(value) => onChange(name, [...currentValue, value])}
+              />
+            )}
+            {type === 'callback' && Callback && (
+              <Callback/>
             )}
           </div>
         )}

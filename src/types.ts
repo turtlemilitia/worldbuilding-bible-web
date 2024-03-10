@@ -1,5 +1,15 @@
 export type TQueryParams = string | string[][] | Record<string, string> | URLSearchParams
 
+export type TUser = {
+  id: number;
+  name: string;
+  email: string;
+}
+export type TInvitation = {
+  id: number;
+  email: string;
+}
+
 export type TImage = {
   id: number;
   name: string;
@@ -219,19 +229,16 @@ export type TNote = {
   content: string;
 }
 
-export type TCampaignVisibility = {
-  id: number;
-  name: string;
-}
-
 export type TCampaign = {
   id?: number;
   slug?: string;
   name: string;
   content: string;
-  visibility: TCampaignVisibility;
   hasSessions: boolean;
   sessions: TSession[];
+  gameMaster?: TUser;
+  users: TUser[];
+  invitations: TInvitation[];
 }
 
 export type TSession = {

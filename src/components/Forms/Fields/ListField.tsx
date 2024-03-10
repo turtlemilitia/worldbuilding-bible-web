@@ -10,7 +10,7 @@ type TProps = {
 }
 const ListField: FunctionComponent<TProps> = ({value, link}) => {
   return (
-    <Combobox value={value}/* onChange={setSelectedPeople}*/ multiple>
+    <div>
       {value && value.length > 0 ? (
         <ul>
           {value.map((item) => (
@@ -22,15 +22,7 @@ const ListField: FunctionComponent<TProps> = ({value, link}) => {
       ) : (
         <div className="text-stone-500 italic">Nothing here</div>
       )}
-      {/*<Combobox.Input />
-      <Combobox.Options>
-        {people.map((person) => (
-          <Combobox.Option key={person.id} value={person}>
-            {person.name}
-          </Combobox.Option>
-        ))}
-      </Combobox.Options>*/}
-    </Combobox>
+    </div>
   )
 }
 
