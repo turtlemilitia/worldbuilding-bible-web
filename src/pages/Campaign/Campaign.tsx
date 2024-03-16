@@ -23,7 +23,7 @@ import { addCampaign, removeCampaign } from '../../reducers/campaign/campaignsIn
 import { TFields } from '../../components/InfoBar'
 import ListAddUsers from './ListAddUsers/component'
 
-const include = 'users,invitations'
+const include = 'users;invitations'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 

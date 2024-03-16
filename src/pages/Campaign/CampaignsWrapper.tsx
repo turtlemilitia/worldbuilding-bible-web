@@ -28,7 +28,7 @@ const CampaignsWrapper = (): JSX.Element => {
 
   useEffect(() => {
     if (!loading && !isNew()) {
-      viewCampaign(campaignId, { include: 'users,invitations' })
+      viewCampaign(campaignId, { include: 'users;invitations' })
         .then(({ data }) => {
           dispatch(setCampaignData(data))
         })

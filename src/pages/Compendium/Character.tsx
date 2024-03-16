@@ -108,7 +108,7 @@ const Character: FunctionComponent = (): JSX.Element => {
     }
   ]
 
-  const include = 'species,languages,factions'
+  const include = 'species;languages;factions'
 
   const handleCreate = (data: TCharacter): Promise<TCharacter> => {
     return storeCharacter(compendiumId, readyDataForRequest(data), { include })
@@ -198,7 +198,7 @@ const Character: FunctionComponent = (): JSX.Element => {
       ready={ready}
       mapData={readyDataForRequest}
 
-      onFetch={() => viewCharacter(characterId, { include: `${include},images` }).then(({ data }) => data.data)}
+      onFetch={() => viewCharacter(characterId, { include: `${include};images` }).then(({ data }) => data.data)}
       onCreate={handleCreate}
       onUpdate={handleUpdate}
       onDelete={() => destroyCharacter(characterId)}
