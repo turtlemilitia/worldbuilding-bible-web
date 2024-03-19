@@ -93,31 +93,35 @@ const Location: FunctionComponent = (): JSX.Element => {
       label: 'Government',
       type: 'select',
       options: governmentTypes
-    },
-    {
-      name: 'parent',
-      label: 'Parent Location',
-      type: 'asyncSelect',
-      search: (term: string) => indexLocations(compendium.slug, { search: term })
-        .then(response => response.data.data.map(location => ({
-          id: location.id,
-          slug: location.slug,
-          name: location.name
-        })))
-    },
-    {
-      name: 'children',
-      label: 'Child Locations',
-      type: 'asyncMultiSelect',
-      link: (id: string | number) => `/compendia/${compendium.slug}/locations/${location.children?.find((child: TLocation) => child.id === id)?.slug || ''}`,
-      search: (term: string) => indexLocations(compendium.slug, { search: term })
-        .then(response => response.data.data.map(location => ({
-          id: location.id,
-          slug: location.slug,
-          name: location.name
-        })))
-    },
-  ]
+    }
+  ];
+  if (compendium) {
+    fields.push(
+      {
+        name: 'parent',
+        label: 'Parent Location',
+        type: 'asyncSelect',
+        search: (term: string) => indexLocations(compendium.slug, { search: term })
+          .then(response => response.data.data.map(location => ({
+            id: location.id,
+            slug: location.slug,
+            name: location.name
+          })))
+      },
+      {
+        name: 'children',
+        label: 'Child Locations',
+        type: 'asyncMultiSelect',
+        link: (id: string | number) => `/compendia/${compendium.slug}/locations/${location.children?.find((child: TLocation) => child.id === id)?.slug || ''}`,
+        search: (term: string) => indexLocations(compendium.slug, { search: term })
+          .then(response => response.data.data.map(location => ({
+            id: location.id,
+            slug: location.slug,
+            name: location.name
+          })))
+      }
+    )
+  }
 
   const getImage = useCallback((type: 'cover'|'profile') => location.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [location.images])
 

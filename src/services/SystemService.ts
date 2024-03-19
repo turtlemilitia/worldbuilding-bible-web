@@ -2,6 +2,10 @@ import { AxiosResponse } from 'axios'
 import { TSystem } from '../types'
 import api from '../api'
 
+export type TSystemRequest  = {
+  name: string;
+  content: string;
+}
 interface TSystemResponse {
   data: TSystem;
 }
@@ -21,13 +25,13 @@ export const viewSystem = (slug: string): Promise<AxiosResponse<TSystemResponse>
 
 }
 
-export const storeSystem = (data: TSystem): Promise<AxiosResponse<TSystemResponse>> => {
+export const storeSystem = (data: TSystemRequest): Promise<AxiosResponse<TSystemResponse>> => {
 
   return api.post(`/api/systems`, data)
 
 }
 
-export const updateSystem = (slug: string, data: Partial<TSystem>): Promise<AxiosResponse<TSystemResponse>> => {
+export const updateSystem = (slug: string, data: Partial<TSystemRequest>): Promise<AxiosResponse<TSystemResponse>> => {
   return api.put(`/api/systems/${slug}`, data)
 }
 

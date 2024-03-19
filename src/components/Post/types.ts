@@ -19,4 +19,5 @@ export type TPostProps<T> = useFormHandlingProps<T> & {
 
   // permissions
   canEdit?: boolean;
+  canDelete?: boolean;
 }

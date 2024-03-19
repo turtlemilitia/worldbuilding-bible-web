@@ -1,22 +1,14 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
-import { TCampaign, TInvitation, TSession, TTypesAllowed } from '../../types'
+import { TCampaign, TInvitation, TSession } from '../../types'
 
 interface TState {
   loading: boolean;
-  campaign: TCampaign;
+  campaign?: TCampaign;
 }
 
 const initialState: TState = {
   loading: false,
-  campaign: {
-    name: '',
-    content: '',
-    hasSessions: false,
-    sessions: [],
-    users: [],
-    invitations: [],
-  }
 }
 
 type TCampaignChildActionProps = {
@@ -42,29 +34,35 @@ const campaignSlice: Slice<TState> = createSlice({
     setCampaignData: (state, action: PayloadAction<TCampaign>) => {
       state.campaign = action.payload
     },
-    updateCampaignData: (state, action: PayloadAction<Partial<TCampaign>>) => {
+    updateCampaignData: (state, action: PayloadAction<TCampaign>) => {
       state.campaign = { ...state.campaign, ...action.payload }
     },
     addCampaignChildData: (state, action: PayloadAction<TCampaignChildActionProps>) => {
       const field = action.payload.field;
-      state.campaign = {
-        ...state.campaign,
-        [`has${field[0].toUpperCase() + field.slice(1)}`]: true,
-        [field]: [...(state.campaign[field] || []), action.payload.data]
+      if (state.campaign) {
+        state.campaign = {
+          ...state.campaign,
+          [`has${field[0].toUpperCase() + field.slice(1)}`]: true,
+          [field]: [...(state.campaign[field] || []), action.payload.data]
+        }
       }
     },
     updateCampaignChildData: (state, action: PayloadAction<TCampaignChildActionProps>) => {
       const field = action.payload.field;
-      state.campaign = {
-        ...state.campaign,
-        [field]: state.campaign[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
+      if (state.campaign) {
+        state.campaign = {
+          ...state.campaign,
+          [field]: state.campaign[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
+        }
       }
     },
     removeCompendiumChildData: (state, action: PayloadAction<TCampaignRemoveChildActionProps>) => {
       const field = action.payload.field;
-      state.campaign = {
-        ...state.campaign,
-        [field]: state.campaign[field]?.filter(child => child.slug !== action.payload.id)
+      if (state.campaign) {
+        state.campaign = {
+          ...state.campaign,
+          [field]: state.campaign[field]?.filter(child => child.slug !== action.payload.id)
+        }
       }
     },
     clearCampaignData: (state) => {

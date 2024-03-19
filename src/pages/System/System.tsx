@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
-import { destroySystem, storeSystem, updateSystem, viewSystem } from '../../services/SystemService'
+import { destroySystem, storeSystem, TSystemRequest, updateSystem, viewSystem } from '../../services/SystemService'
 import { TSystem } from '../../types'
 import { addSystem, removeSystem } from '../../reducers/system/systemsIndexSlice'
 import Post from '../../components/Post/component'
@@ -16,7 +16,7 @@ const System = (): JSX.Element => {
 
   const { system } = useAppSelector((state: RootState) => state.system) // redux
 
-  const readyDataForRequest = (data: any): TSystem => ({
+  const readyDataForRequest = (data: any): TSystemRequest => ({
     name: data.name,
     content: data.content,
   })
@@ -25,7 +25,7 @@ const System = (): JSX.Element => {
     <Post
       key={systemId}
       isNew={systemId === 'new'}
-      pathToNew={(data: TSystem) => `/systems/${data.slug}`}
+      pathToNew={(data) => `/systems/${data.slug}`}
       pathAfterDelete={`/`}
       ready={true}
 
@@ -33,7 +33,7 @@ const System = (): JSX.Element => {
       onCreate={(data: TSystem) => storeSystem(readyDataForRequest(data)).then(({ data }) => data.data)}
       onUpdate={(data: TSystem) => updateSystem(systemId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroySystem(systemId)}
-      onCreated={(data: TSystem) => {
+      onCreated={(data) => {
         dispatch(addSystem(data))
       }}
       onDeleted={() => {

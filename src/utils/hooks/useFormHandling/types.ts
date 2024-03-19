@@ -25,7 +25,7 @@ export type useFormHandlingType<T> = (data: useFormHandlingProps<T>) => {
   loading: boolean;
   saving: boolean;
 
-  newData: T;
+  newData: any;
   fetchedData: T;
 
   handleOnFieldChange: (name: string, value: string) => any;

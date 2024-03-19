@@ -1,14 +1,15 @@
-import React, { JSX, useEffect, useRef, useState } from 'react'
+import React, { JSX, useRef, useState } from 'react'
 
 
 interface TProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  canEdit: boolean
 }
 
 const PageTitleField = (props: TProps): JSX.Element => {
-  const {value, onChange, placeholder} = props;
+  const {value, onChange, placeholder, canEdit  } = props;
   const ref = useRef<HTMLHeadingElement>(null)
   const [showPlaceholder, setShowPlaceholder] = useState(!value);
 
@@ -18,7 +19,7 @@ const PageTitleField = (props: TProps): JSX.Element => {
         <div className="absolute z-0 px-6 w-full text-stone-400 text-center">{placeholder}</div>
       )}
       <h1
-        contentEditable
+        contentEditable={canEdit}
         suppressContentEditableWarning={true}
         ref={ref}
         className="relative z-10 border-none bg-transparent px-6 -mt-1 break-words text-center outline-none"

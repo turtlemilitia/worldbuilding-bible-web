@@ -1,9 +1,8 @@
-import React, {JSX} from "react";
-import Index from "../components/BoxWithTitle";
+import React, { FunctionComponent } from 'react'
 import BoxWithTitle from '../components/BoxWithTitle'
-import LoginForm from '../components/Forms/LoginForm'
+import LoginForm from '../components/LoginForm'
 
-const Login = (): JSX.Element => {
+const Login: FunctionComponent = () => {
     return (
         <div
             className="flex h-screen w-full items-center justify-center">

@@ -7,3 +7,5 @@ export {
 export type {
   TFields
 };
+
+export default InfoBar;

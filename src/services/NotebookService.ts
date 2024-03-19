@@ -2,6 +2,10 @@ import { AxiosResponse } from 'axios'
 import { TNotebook } from '../types'
 import api from '../api'
 
+export type TNotebookRequest = {
+  name: string;
+  content: string;
+}
 interface TNotebookResponse {
   data: TNotebook;
 }
@@ -21,13 +25,13 @@ export const viewNotebook = (slug: string): Promise<AxiosResponse<TNotebookRespo
 
 }
 
-export const storeNotebook = (data: TNotebook): Promise<AxiosResponse<TNotebookResponse>> => {
+export const storeNotebook = (data: TNotebookRequest): Promise<AxiosResponse<TNotebookResponse>> => {
 
   return api.post(`/api/notebooks`, data)
 
 }
 
-export const updateNotebook = (slug: string, data: Partial<TNotebook>): Promise<AxiosResponse<TNotebookResponse>> => {
+export const updateNotebook = (slug: string, data: Partial<TNotebookRequest>): Promise<AxiosResponse<TNotebookResponse>> => {
   return api.put(`/api/notebooks/${slug}`, data)
 }
 

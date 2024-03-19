@@ -40,7 +40,7 @@ const CampaignsWrapper = (): JSX.Element => {
 
   return (
     <>
-      {campaignId !== 'new' && (
+      {campaign && (
         <Sidebar
           title={'Campaign'}
           items={

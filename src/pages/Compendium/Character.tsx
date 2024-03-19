@@ -43,11 +43,11 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   useEffect(() => {
 
-    if (compendium.slug) {
+    if (compendium?.slug) {
       indexSpecies(compendium.slug).then(response => setSpecies(response.data.data))
     }
 
-  }, [compendium.slug])
+  }, [compendium?.slug])
 
   useEffect(() => {
 
@@ -81,32 +81,36 @@ const Character: FunctionComponent = (): JSX.Element => {
       label: 'Species',
       type: 'select',
       options: species
-    },
-    {
-      name: 'languages',
-      label: 'Languages',
-      type: 'asyncMultiSelect',
-      link: (id: string | number) => `/compendia/${compendium.slug}/languages/${id}`,
-      search: (term: string) => indexLanguages(compendium.slug, { search: term })
-        .then(response => response.data.data.map(language => ({
-          id: language.id,
-          slug: language.slug,
-          name: language.name
-        })))
-    },
-    {
-      name: 'factions',
-      label: 'Factions',
-      type: 'asyncMultiSelect',
-      link: (id: string | number) => `/compendia/${compendium.slug}/factions/${id}`,
-      search: (term: string) => indexFactions(compendium.slug, { search: term })
-        .then(response => response.data.data.map(faction => ({
-          id: faction.id,
-          slug: faction.slug,
-          name: faction.name
-        })))
     }
-  ]
+  ];
+  if (compendium) {
+    fields.push(
+      {
+        name: 'languages',
+        label: 'Languages',
+        type: 'asyncMultiSelect',
+        link: (id: string | number) => `/compendia/${compendium.slug}/languages/${id}`,
+        search: (term: string) => indexLanguages(compendium.slug, { search: term })
+          .then(response => response.data.data.map(language => ({
+            id: language.id,
+            slug: language.slug,
+            name: language.name
+          })))
+      },
+      {
+        name: 'factions',
+        label: 'Factions',
+        type: 'asyncMultiSelect',
+        link: (id: string | number) => `/compendia/${compendium.slug}/factions/${id}`,
+        search: (term: string) => indexFactions(compendium.slug, { search: term })
+          .then(response => response.data.data.map(faction => ({
+            id: faction.id,
+            slug: faction.slug,
+            name: faction.name
+          })))
+      }
+    )
+  }
 
   const include = 'species;languages;factions'
 

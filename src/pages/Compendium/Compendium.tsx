@@ -29,15 +29,15 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const { onImageSelected, addImageToSelection } = useImageSelection({
     entityType: 'compendia',
-    entityId: compendium.slug
+    entityId: compendium?.slug
   })
 
-  const readyDataForRequest = (data: TCompendium): TCompendiumRequest => ({
+  const readyDataForRequest = (data: TCompendiumRequest): TCompendiumRequest => ({
     name: data.name,
     content: data.content
   })
 
-  const getImage = useCallback((type: 'cover'|'profile') => compendium.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [compendium.images])
+  const getImage = useCallback((type: 'cover'|'profile') => compendium?.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [compendium?.images])
 
   const onPostFetch = useCallback(async () => {
     // we tell it it's loading so we avoid loading it twice when CompendiaWrapper loads
@@ -52,7 +52,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     return onImageSelected(imageId, imageType)
       .then((result) => {
         if (result && result.data) {
-          const images = addImageToSelection(compendium.images || [], result.data.data)
+          const images = addImageToSelection(compendium?.images || [], result.data.data)
           dispatch(updateCompendiumData({ images }))
         }
         return result
@@ -79,7 +79,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
       persistedData={compendium as TCompendium}
       setPersistedData={(data) => {
-        if (compendium.id && compendium.id !== data.id) {
+        if (compendium?.id && compendium.id !== data.id) {
           dispatch(setCompendiumData(data))
         } else {
           dispatch(updateCompendiumData(data))
