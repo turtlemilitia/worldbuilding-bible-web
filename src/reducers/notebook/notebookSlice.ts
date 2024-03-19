@@ -3,15 +3,10 @@ import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 import { TNotebook } from '../../types'
 
 interface TState {
-  notebook: TNotebook;
+  notebook?: TNotebook;
 }
 
 const initialState: TState = {
-  notebook: {
-    name: '',
-    content: '',
-    hasNotes: false
-  }
 }
 
 const notebookSlice: Slice<TState> = createSlice({
@@ -21,7 +16,7 @@ const notebookSlice: Slice<TState> = createSlice({
     setNotebookData: (state, action: PayloadAction<TNotebook>) => {
       state.notebook = action.payload
     },
-    updateNotebookData: (state, action: PayloadAction<Partial<TNotebook>>) => {
+    updateNotebookData: (state, action: PayloadAction<TNotebook>) => {
       state.notebook = { ...state.notebook, ...action.payload }
     },
     clearNotebookData: (state) => {

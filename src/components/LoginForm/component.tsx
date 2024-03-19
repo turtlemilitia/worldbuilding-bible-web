@@ -1,13 +1,12 @@
-import React, { FormEvent, JSX, useEffect, useState } from 'react'
+import React, { FormEvent, JSX, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import PasswordField from './Fields/PasswordField'
-import EmailField from './Fields/EmailField'
 import { login, LoginParams } from '../../services/AuthService'
 import { setToken } from '../../reducers/auth/authSlice'
 import { useAppDispatch } from '../../hooks'
-import { CheckIcon } from 'lucide-react'
-import { indexLocations } from '../../services/LocationService'
-import FieldMapper from './Fields/FieldMapper'
+import FieldMapper from '../Forms/Fields/FieldMapper'
+import { ErrorBanner } from '../Banners/ErrorBanner'
+import useErrorHandling from '../../utils/hooks/useErrorHandling'
+import CheckButton from '../CheckButton'
 
 const LoginForm = (): JSX.Element => {
 
@@ -17,36 +16,41 @@ const LoginForm = (): JSX.Element => {
   const dispatch = useAppDispatch()
 
   const [loginData, setLoginData] = useState<LoginParams>({
-    email: '',
+    email: location.state?.redirectTo || '',
     password: ''
   })
 
-  const [error, setError] = useState<string | null>(null) // State for holding the error message
+  const [loading, setLoading] = useState(false);
+
+  const { errors, handleResponseErrors, hasErrors } = useErrorHandling()
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
 
-    try {
-      login(loginData).then(({ data }) => {
+    setLoading(true);
+
+    login(loginData)
+      .then(() => {
         console.log('logged in at server side... setting token...')
         dispatch(setToken(true))
-        const redirect = location.state?.redirectTo;
+        const redirect = location.state?.redirectTo
         if (redirect && redirect !== '/login') {
           navigate(location.state.redirectTo, { replace: true })
         } else {
           navigate('/', { replace: true })
         }
       })
-    } catch (err) {
-      setError('Login failed. Please try again.') // Set the error message in case of login failure
-    }
+      .catch((err) => handleResponseErrors(err, 'Login failed. Please try again.'))
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const handleLoginDataChange = (field: string, value: string) => {
     setLoginData((prevState) => ({ ...prevState, [field]: value }))
   }
 
-  const fields: {name: 'email'|'password', label: string, type: 'email'|'password'}[] = [
+  const fields: { name: 'email' | 'password', label: string, type: 'email' | 'password' }[] = [
     {
       name: 'email',
       label: 'Email',
@@ -62,7 +66,7 @@ const LoginForm = (): JSX.Element => {
   return (
     <form onSubmit={handleLogin}>
       {/* Display the error message if it exists */}
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {hasErrors && <ErrorBanner errors={errors}/>}
       <ul
         className="text-stone-200">
         {fields.map((props) => {
@@ -70,10 +74,7 @@ const LoginForm = (): JSX.Element => {
         })}
       </ul>
       <div className="mt-8 -mb-16 flex justify-center">
-        <button type="submit"
-                className="rounded-full border border-yellow-500 shadow-lg shadow-stone-950 bg-emerald-800 hover:bg-emerald-700 px-4 py-4 transition-colors duration-300">
-          <CheckIcon size={30}/>
-        </button>
+        <CheckButton loading={loading}/>
       </div>
     </form>
   )

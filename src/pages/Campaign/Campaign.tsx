@@ -1,9 +1,9 @@
 import React, { FunctionComponent, JSX, useCallback } from 'react'
 import Post from '../../components/Post/component'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { TCampaign, TLocationGovernmentType, TSystem } from '../../types'
+import { TCampaign } from '../../types'
 import {
   addCampaignChildData,
   clearCampaignData,
@@ -23,7 +23,7 @@ import { addCampaign, removeCampaign } from '../../reducers/campaign/campaignsIn
 import { TFields } from '../../components/InfoBar'
 import ListAddUsers from './ListAddUsers/component'
 
-const include = 'users,invitations'
+const include = 'users;invitations'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 
@@ -48,7 +48,7 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       })
   }, [dispatch])
 
-  const fields: TFields[] = [
+  const fields: TFields[] = (campaign) ? [
     {
       name: 'invitations',
       label: 'Invite a new player',
@@ -64,7 +64,7 @@ const Campaign: FunctionComponent = (): JSX.Element => {
         }
       />
     }
-  ]
+  ] : [];
 
   return (
     <Post
@@ -74,6 +74,8 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/`}
       ready={true}
       mapData={readyDataForRequest}
+      canEdit={campaign && campaign.canUpdate}
+      canDelete={campaign && campaign.canUpdate}
 
       onFetch={onPostFetch}
       onCreate={(data: TCampaignRequest) => storeCampaign(readyDataForRequest(data), { include }).then(({ data }) => data.data)}

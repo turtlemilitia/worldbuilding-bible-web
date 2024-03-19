@@ -33,7 +33,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   const [saving, setSaving] = useState(false)
 
   // data which is changed
-  const [newData, setNewData] = useState<TTypesAllowed>(persistedData)
+  const [newData, setNewData] = useState<object>({})
   // data which came back at the end of the fetch
   const [fetchedData, setFetchedData] = useState<TTypesAllowed>(persistedData)
 
@@ -55,7 +55,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   useEffect(() => {
 
     // persisted data doesn't seem to be changing the new data when it changes
-    if (!persistedData.id) {
+    if (!persistedData?.id) {
       setFetchedData(persistedData)
       setNewData(persistedData)
     }

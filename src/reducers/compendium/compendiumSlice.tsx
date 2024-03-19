@@ -1,21 +1,14 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
-import { TCharacter, TCompendium, TConcept, TFaction, TItem, TLanguage, TLocation, TTypesAllowed } from '../../types'
-import character from '../../pages/Compendium/Character'
+import { TCompendium, TTypesAllowed } from '../../types'
 
 interface TState {
   loading: boolean;
-  compendium: TCompendium;
+  compendium?: TCompendium;
 }
 
 const initialState: TState = {
   loading: false,
-  compendium: {
-    name: '',
-    content: '',
-    hasLocations: false,
-    locations: []
-  }
 }
 
 type TCompendiumChildActionProps = {
@@ -38,29 +31,35 @@ const compendiumSlice: Slice<TState> = createSlice({
     setCompendiumData: (state, action: PayloadAction<TCompendium>) => {
       state.compendium = action.payload
     },
-    updateCompendiumData: (state, action: PayloadAction<Partial<TCompendium>>) => {
+    updateCompendiumData: (state, action: PayloadAction<TCompendium>) => {
       state.compendium = { ...state.compendium, ...action.payload }
     },
     addCompendiumChildData: (state, action: PayloadAction<TCompendiumChildActionProps>) => {
       const field = action.payload.field;
-      state.compendium = {
-        ...state.compendium,
-        [`has${field[0].toUpperCase() + field.slice(1)}`]: true,
-        [field]: [...(state.compendium[field] || []), action.payload.data]
+      if (state.compendium) {
+        state.compendium = {
+          ...state.compendium,
+          [`has${field[0].toUpperCase() + field.slice(1)}`]: true,
+          [field]: [...(state.compendium[field] || []), action.payload.data]
+        }
       }
     },
     updateCompendiumChildData: (state, action: PayloadAction<TCompendiumChildActionProps>) => {
       const field = action.payload.field;
-      state.compendium = {
-        ...state.compendium,
-        [field]: state.compendium[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
+      if (state.compendium) {
+        state.compendium = {
+          ...state.compendium,
+          [field]: state.compendium[field]?.map(child => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
+        }
       }
     },
     removeCompendiumChildData: (state, action: PayloadAction<TCompendiumRemoveChildActionProps>) => {
       const field = action.payload.field;
-      state.compendium = {
-        ...state.compendium,
-        [field]: state.compendium[field]?.filter(child => child.slug !== action.payload.id)
+      if (state.compendium) {
+        state.compendium = {
+          ...state.compendium,
+          [field]: state.compendium[field]?.filter(child => child.slug !== action.payload.id)
+        }
       }
     },
     clearCompendiumData: (state) => {

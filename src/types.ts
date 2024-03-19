@@ -20,15 +20,15 @@ export type TImage = {
 }
 
 export type TSystem = {
-  id?: number;
-  slug?: string;
+  id: number;
+  slug: string;
   name: string;
   content: string;
 }
 
 export type TCompendium = {
-  id?: number;
-  slug?: string;
+  id: number;
+  slug: string;
   name: string;
   content: string;
   hasConcepts?: boolean;
@@ -214,8 +214,8 @@ export type TPlane = {
 }
 
 export type TNotebook = {
-  id?: number;
-  slug?: string;
+  id: number;
+  slug: string;
   name: string;
   content: string;
   hasNotes?: boolean;
@@ -223,15 +223,15 @@ export type TNotebook = {
 }
 
 export type TNote = {
-  id?: number;
-  slug?: string;
+  id: number;
+  slug: string;
   name: string;
   content: string;
 }
 
 export type TCampaign = {
-  id?: number;
-  slug?: string;
+  id: number;
+  slug: string;
   name: string;
   content: string;
   hasSessions: boolean;
@@ -239,7 +239,7 @@ export type TCampaign = {
   gameMaster?: TUser;
   users: TUser[];
   invitations: TInvitation[];
-}
+} & TPlayerTools;
 
 export type TSession = {
   id?: number;
@@ -259,5 +259,10 @@ export type TImageType = {
   name: string;
 }
 
-export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept|TNotebook|TCampaign
-export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'|'campaign'
+type TPlayerTools = {
+  canUpdate: boolean;
+  canDelete: boolean;
+}
+
+export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept|TNotebook|TCampaign|TSession|TSystem
+export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'|'campaign'|'session'|'system'

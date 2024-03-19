@@ -28,7 +28,7 @@ const CampaignsWrapper = (): JSX.Element => {
 
   useEffect(() => {
     if (!loading && !isNew()) {
-      viewCampaign(campaignId, { include: 'users,invitations' })
+      viewCampaign(campaignId, { include: 'users;invitations' })
         .then(({ data }) => {
           dispatch(setCampaignData(data))
         })
@@ -40,7 +40,7 @@ const CampaignsWrapper = (): JSX.Element => {
 
   return (
     <>
-      {campaignId !== 'new' && (
+      {campaign && (
         <Sidebar
           title={'Campaign'}
           items={

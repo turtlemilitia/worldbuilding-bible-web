@@ -7,7 +7,7 @@ type TProps = {
 }
 const BoxWithTitle = ({title, subTitle, children}: TProps & PropsWithChildren): JSX.Element => {
   return (
-    <FloatingBox width={96}>
+    <FloatingBox width={'w-96'}>
       {title && (
       <div className="mb-8 border-b border-b-yellow-500 pb-8 flex flex-col items-center">
         <h1 className="mb-2 text-xl font-sans-serif tracking-widest uppercase">{title}</h1>

@@ -3,11 +3,16 @@ import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearNotebookData, setNotebookData, updateNotebookData } from '../../reducers/notebook/notebookSlice'
-import { destroyNotebook, storeNotebook, updateNotebook, viewNotebook } from '../../services/NotebookService'
+import {
+  destroyNotebook,
+  storeNotebook,
+  TNotebookRequest,
+  updateNotebook,
+  viewNotebook
+} from '../../services/NotebookService'
 import { TNotebook } from '../../types'
 import { addNotebook, removeNotebook, updateNotebooksNotebookData } from '../../reducers/notebook/notebooksIndexSlice'
 import Post from '../../components/Post/component'
-import { TDeityRequest } from '../../services/DeityService'
 
 const Notebook = (): JSX.Element => {
 
@@ -17,7 +22,7 @@ const Notebook = (): JSX.Element => {
 
   const { notebook } = useAppSelector((state: RootState) => state.notebook) // redux
 
-  const readyDataForRequest = (data: any): TDeityRequest => ({
+  const readyDataForRequest = (data: any): TNotebookRequest => ({
     name: data.name,
     content: data.content,
   })
@@ -27,7 +32,7 @@ const Notebook = (): JSX.Element => {
       key={notebookId}
       isNew={notebookId === 'new'}
       pageTypeName={'Notebook'}
-      pathToNew={(data: TNotebook) => `/notebooks/${data.slug}`}
+      pathToNew={(data) => `/notebooks/${data.slug}`}
       pathAfterDelete={`/`}
       ready={true}
 
@@ -35,10 +40,10 @@ const Notebook = (): JSX.Element => {
       onCreate={(data: TNotebook) => storeNotebook(readyDataForRequest(data)).then(({ data }) => data.data)}
       onUpdate={(data: TNotebook) => updateNotebook(notebookId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyNotebook(notebookId)}
-      onCreated={(data: TNotebook) => {
+      onCreated={(data) => {
         dispatch(addNotebook(data))
       }}
-      onUpdated={(data: TNotebook) => {
+      onUpdated={(data) => {
         dispatch(updateNotebooksNotebookData(data))
       }}
       onDeleted={() => {

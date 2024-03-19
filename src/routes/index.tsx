@@ -34,6 +34,10 @@ import Spell from '../pages/Compendium/Spell'
 import Story from '../pages/Compendium/Story'
 import Pantheon from '../pages/Compendium/Pantheon'
 import CompendiaWrapper from '../components/CompendiaWrapper/component'
+import CampaignInvitation from '../pages/CampaignInvitation'
+import { checkCampaignInvitation } from '../services/CampaignInvitationService'
+import Register from '../pages/Register'
+import NotFound from '../pages/NotFound'
 
 
 const Routes = (): JSX.Element => {
@@ -45,6 +49,13 @@ const Routes = (): JSX.Element => {
     {
       path: '/about',
       element: <>TODO: About us</>
+    },
+    {
+      path: '/campaigns/:campaignId/invitations/:token',
+      element: <CampaignInvitation/>,
+      loader: ({params}) => checkCampaignInvitation(params.campaignId as string, params.token as string)
+          .then(({ data }) => data?.data),
+      errorElement: <NotFound/>
     }
   ]
 
@@ -187,6 +198,10 @@ const Routes = (): JSX.Element => {
           element: <>TODO: User Profile</>
         },
       ]
+    },
+    {
+      path: '*',
+      element: <NotFound/>
     }
   ]
 
@@ -199,6 +214,10 @@ const Routes = (): JSX.Element => {
     {
       path: '/login',
       element: <Login/>,
+    },
+    {
+      path: '/register',
+      element: <Register/>,
     },
   ]
 

@@ -4,14 +4,10 @@ import { TSystem } from '../../types'
 
 
 interface TState {
-  system: TSystem;
+  system?: TSystem;
 }
 
 const initialState: TState = {
-  system: {
-    name: '',
-    content: '',
-  }
 }
 
 const systemSlice: Slice<TState> = createSlice({
@@ -21,7 +17,7 @@ const systemSlice: Slice<TState> = createSlice({
     setSystemData: (state, action: PayloadAction<TSystem>) => {
       state.system = action.payload
     },
-    updateSystemData: (state, action: PayloadAction<Partial<TSystem>>) => {
+    updateSystemData: (state, action: PayloadAction<TSystem>) => {
       state.system = { ...state.system, ...action.payload }
     },
     clearSystemData: (state) => {

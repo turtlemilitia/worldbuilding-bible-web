@@ -24,7 +24,8 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     onImageSelected,
     coverImageUrl,
     profileImageUrl,
-    canEdit = true
+    canEdit = true,
+    canDelete = true
   } = props
 
   const {
@@ -48,9 +49,11 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
           onCoverImageSelected={onImageSelected ? (id) => onImageSelected(id, 'cover') : undefined}
           coverImage={coverImageUrl}
         >
-          <PageTitleField value={newData.name}
+          <PageTitleField value={newData?.name || ''}
                           onChange={(value) => handleOnFieldChange('name', value)}
-                          placeholder={'Name'}/>
+                          placeholder={'Name'}
+                          canEdit={isNew || canEdit}
+          />
         </HeaderWrapper>
         <ContentWrapper>
           <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
@@ -65,20 +68,20 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
-              {canEdit && (
+              {(isNew || canEdit) && (
                 <FormToolbar
                   canManuallySave={true}
-                  canDelete={!isNew}
+                  canDelete={canDelete}
                   onSave={handleOnSave}
                   onRefresh={handleOnFetch}
                   onDelete={handleOnDelete}
                 />
               )}
               <Editor
-                initialValue={fetchedData.content}
+                initialValue={fetchedData?.content}
                 onChange={(value) => handleOnFieldChange('content', value)}
                 placeholder={contentPlaceholder}
-                canEdit={canEdit}
+                canEdit={isNew || canEdit}
               />
             </div>
             <div className="flex lg:w-1/4 lg:px-6"></div>
