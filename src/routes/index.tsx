@@ -38,6 +38,7 @@ import CampaignInvitation from '../pages/CampaignInvitation'
 import { checkCampaignInvitation } from '../services/CampaignInvitationService'
 import Register from '../pages/Register'
 import NotFound from '../pages/NotFound'
+import CampaignInvitationInvalid from '../pages/CampaignInvitationInvalid'
 
 
 const Routes = (): JSX.Element => {
@@ -55,7 +56,7 @@ const Routes = (): JSX.Element => {
       element: <CampaignInvitation/>,
       loader: ({params}) => checkCampaignInvitation(params.campaignId as string, params.token as string)
           .then(({ data }) => data?.data),
-      errorElement: <NotFound/>
+      errorElement: <CampaignInvitationInvalid/>
     }
   ]
 
