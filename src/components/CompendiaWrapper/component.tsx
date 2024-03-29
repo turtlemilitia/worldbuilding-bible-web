@@ -16,9 +16,11 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
 
   const dispatch = useAppDispatch()
 
+  const includes = 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories'
+
   useEffect(() => {
     if (!loading && compendiumId !== 'new') {
-      viewCompendium(compendiumId, { include: 'images' })
+      viewCompendium(compendiumId, { include: includes })
         .then(({ data }) => {
           dispatch(setCompendiumData(data.data))
         })

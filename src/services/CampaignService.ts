@@ -1,27 +1,16 @@
 import { AxiosResponse } from 'axios'
-import { TCampaign, TInvitation, TQueryParams, TSession, TUser } from '../types'
+import { TCampaign, TGenericPostList, TInvitation, TQueryParams, TSession, TUser } from '../types'
 import api from '../api'
 
 export interface TCampaignRequest {
   name: string;
   content: string;
 }
-type TResponseCampaign = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-  hasSessions: boolean;
-  gameMaster: TUser;
-  sessions?: TSession[];
-  users?: TUser[];
-  invitations?: TInvitation[];
-}
 interface TCampaignResponse {
-  data: TResponseCampaign;
+  data: TCampaign;
 }
 interface TCampaignIndexResponse {
-  data: TResponseCampaign[];
+  data: TGenericPostList[];
 }
 
 export const indexCampaigns = (query: TQueryParams = {}): Promise<AxiosResponse<TCampaignIndexResponse>> => {

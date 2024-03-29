@@ -12,6 +12,8 @@ import { TTypesAllowed } from '../../types'
 import useFormHandling from '../../utils/hooks/useFormHandling'
 import SavingDialog from '../SavingDialog'
 
+interface PostProps {id: string}
+
 const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
   const {

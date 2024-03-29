@@ -1,5 +1,6 @@
-import { FunctionComponent, JSX, PropsWithChildren } from 'react'
+import { Fragment, FunctionComponent, JSX, PropsWithChildren } from 'react'
 import LoadingSpinner from './LoadingSpinner'
+import { Transition } from '@headlessui/react'
 
 interface TProps extends PropsWithChildren {
   loading: boolean
@@ -21,12 +22,21 @@ const LoadingWrapper: FunctionComponent<TProps> = ({
 
   return (
     <div className="relative">
-      {loading ? (
+      <Transition
+        show={loading}
+        as={Fragment}
+        enter="transition ease-in duration-500"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition ease-in duration-500"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
         <div
           className={`${positioning} z-50 top-0 ${colourHandler} w-full ${opacityHandler} h-full ${colour !== 'transparent' ? 'backdrop-blur-md' : ''} flex flex-wrap place-content-center`}>
           <LoadingSpinner size={30}/>
         </div>
-      ) : ''}
+      </Transition>
       {children}
     </div>
   )

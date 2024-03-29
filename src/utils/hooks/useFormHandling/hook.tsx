@@ -33,7 +33,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   const [saving, setSaving] = useState(false)
 
   // data which is changed
-  const [newData, setNewData] = useState<object>({})
+  const [newData, setNewData] = useState<object>(persistedData)
   // data which came back at the end of the fetch
   const [fetchedData, setFetchedData] = useState<TTypesAllowed>(persistedData)
 
@@ -42,11 +42,14 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     // fetch data on mount
     if (!isNew) {
       handleOnFetch()
+    } else {
+      resetPersistedData()
+      setLoading(false)
     }
 
     // on unmount reset the data
     return () => {
-      resetPersistedData()
+      setLoading(true)
     }
 
   }, [])

@@ -1,16 +1,16 @@
 import { AxiosResponse } from 'axios'
-import { TCompendium, TQueryParams } from '../types'
+import { TCompendium, TGenericPostList, TQueryParams } from '../types'
 import api from '../api'
 
 export type TCompendiumRequest = {
   name: TCompendium['name'];
   content: TCompendium['content'];
 }
-interface TCompendiumResponse {
+type TCompendiumResponse = {
   data: TCompendium;
 }
-interface TCompendiumIndexResponse {
-  data: TCompendium[];
+type TCompendiumIndexResponse = {
+  data: TGenericPostList;
 }
 
 export const indexCompendia = (): Promise<AxiosResponse<TCompendiumIndexResponse>> => {

@@ -26,7 +26,7 @@ import { indexStories } from '../../../services/StoryService'
 import useCompendiaMapping from '../useCompendiaMapping'
 import { FunctionComponent } from 'react'
 import { TCompendiumSidebarProps } from './types'
-import { TLocation } from '../../../types'
+import { TLocation, TLocationList } from '../../../types'
 import { createNestedArray } from '../../../utils/treeUtils'
 import { useAppDispatch } from '../../../hooks'
 
@@ -34,7 +34,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
 
   const dispatch = useAppDispatch()
 
-  const nestedLocations: TLocation[] = createNestedArray(compendium.locations || [])
+  const nestedLocations = createNestedArray(compendium.locations || [])
 
   const {
     mapCharacter,
@@ -59,7 +59,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
   const items: SidebarItemInterface[] = [
     {
       title: 'Bestiary',
-      hasChildren: compendium.hasSpecies,
       addNewLink: `/compendia/${compendium.slug}/species/new`,
       icon: (props) => <CatIcon {...props}/>,
       children: compendium.species?.map(species => mapSpecies(species)),
@@ -72,7 +71,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Characters',
-      hasChildren: compendium.hasCharacters,
       addNewLink: `/compendia/${compendium.slug}/characters/new`,
       icon: (props) => <PersonStandingIcon {...props}/>,
       children: compendium.characters?.map(character => mapCharacter(character)),
@@ -85,7 +83,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Concepts',
-      hasChildren: compendium.hasConcepts,
       addNewLink: `/compendia/${compendium.slug}/concepts/new`,
       icon: (props) => <CircleEllipsisIcon {...props}/>,
       children: compendium.concepts?.map(concept => mapConcept(concept)),
@@ -98,13 +95,10 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Culture',
-      hasChildren: true,
       icon: (props) => <AsteriskIcon {...props}/>,
-      startOpen: true,
       children: [
         {
           title: 'Languages',
-          hasChildren: compendium.hasLanguages,
           addNewLink: `/compendia/${compendium.slug}/languages/new`,
           icon: (props) => <LanguagesIcon {...props}/>,
           children: compendium.languages?.map(language => mapLanguage(language)),
@@ -117,13 +111,10 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
         },
         {
           title: 'Religion',
-          hasChildren: true,
           icon: (props) => <SunIcon {...props}/>,
-          startOpen: true,
           children: [
             {
               title: 'Religions',
-              hasChildren: compendium.hasReligions,
               addNewLink: `/compendia/${compendium.slug}/religions/new`,
               icon: (props) => <ChurchIcon {...props}/>,
               children: compendium.religions?.map(currency => mapReligion(currency)),
@@ -136,7 +127,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
             },
             {
               title: 'Pantheons',
-              hasChildren: compendium.hasPantheons,
               addNewLink: `/compendia/${compendium.slug}/pantheons/new`,
               icon: (props) => <SunIcon {...props}/>,
               children: compendium.pantheons?.map(pantheon => mapPantheon(pantheon)),
@@ -149,7 +139,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
             },
             {
               title: 'Deities',
-              hasChildren: compendium.hasDeities,
               addNewLink: `/compendia/${compendium.slug}/deities/new`,
               icon: (props) => <PersonStandingIcon {...props}/>,
               children: compendium.deities?.map(deity => mapDeity(deity)),
@@ -164,7 +153,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
         },
         {
           title: 'Currencies',
-          hasChildren: compendium.hasCurrencies,
           addNewLink: `/compendia/${compendium.slug}/currencies/new`,
           icon: (props) => <CoinsIcon {...props}/>,
           children: compendium.currencies?.map(currency => mapCurrency(currency)),
@@ -179,7 +167,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Factions & Societies',
-      hasChildren: compendium.hasFactions,
       addNewLink: `/compendia/${compendium.slug}/factions/new`,
       icon: (props) => <ShieldIcon {...props}/>,
       children: compendium.factions?.map(faction => mapFaction(faction)),
@@ -192,7 +179,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Geography',
-      hasChildren: compendium.hasLocations,
       addNewLink: `/compendia/${compendium.slug}/locations/new`,
       icon: (props) => <MapIcon {...props}/>,
       children: nestedLocations?.map(location => mapLocation(location)),
@@ -205,7 +191,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Items',
-      hasChildren: compendium.hasItems,
       addNewLink: `/compendia/${compendium.slug}/items/new`,
       icon: (props) => <SwordIcon {...props}/>,
       children: compendium.items?.map(item => mapItem(item)),
@@ -218,7 +203,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Natural Resources',
-      hasChildren: compendium.hasNaturalResources,
       addNewLink: `/compendia/${compendium.slug}/naturalResources/new`,
       icon: (props) => <FlowerIcon {...props}/>,
       children: compendium.naturalResources?.map(naturalResource => mapNaturalResource(naturalResource)),
@@ -231,7 +215,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Planes',
-      hasChildren: compendium.hasPlanes,
       addNewLink: `/compendia/${compendium.slug}/planes/new`,
       icon: (props) => <CircleIcon {...props}/>,
       children: compendium.planes?.map(plane => mapPlane(plane)),
@@ -244,7 +227,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Lore & History',
-      hasChildren: compendium.hasStories,
       addNewLink: `/compendia/${compendium.slug}/stories/new`,
       icon: (props) => <BookIcon {...props}/>,
       children: compendium.stories?.map(story => mapStory(story)),
@@ -257,7 +239,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Spells',
-      hasChildren: compendium.hasSpells,
       addNewLink: `/compendia/${compendium.slug}/spells/new`,
       icon: (props) => <WandIcon {...props}/>,
       children: compendium.spells?.map(spell => mapSpell(spell)),
@@ -270,7 +251,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Quests',
-      hasChildren: compendium.hasQuests,
       addNewLink: `/compendia/${compendium.slug}/quests/new`,
       icon: (props) => <StarIcon {...props}/>,
       children: compendium.quests?.map(quest => mapQuest(quest)),
@@ -283,7 +263,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Encounters',
-      hasChildren: compendium.hasEncounters,
       addNewLink: `/compendia/${compendium.slug}/encounters/new`,
       icon: (props) => <SwordsIcon {...props}/>,
       children: compendium.encounters?.map(encounter => mapEncounter(encounter)),
