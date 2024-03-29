@@ -9,7 +9,6 @@ import {
 } from '../../services/CompendiumService'
 import {
   setCompendiumData,
-  setCompendiumLoading,
   updateCompendiumData
 } from '../../reducers/compendium/compendiumSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -18,11 +17,10 @@ import { RootState } from '../../store'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
 import Post from '../../components/Post'
 import useImageSelection from '../../utils/hooks/useImageSelection'
-import { motion } from 'framer-motion'
 
 const Compendium: FunctionComponent = (): JSX.Element => {
 
-  const { compendium, loading } = useAppSelector((state: RootState) => state.compendium) // redux
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
   const dispatch = useAppDispatch() // redux
 
@@ -41,35 +39,6 @@ const Compendium: FunctionComponent = (): JSX.Element => {
   })
 
   const getImage = useCallback((type: 'cover' | 'profile') => compendium?.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [compendium?.images])
-
-  const onPostFetch = useCallback(async (): Promise<TCompendium> => {
-    // If loading, wait until loading is finished and compendium is present
-    if (loading) {
-      return new Promise(resolve => {
-        const checkInterval = setInterval(() => {
-          // Check if loading is done and compendium is present
-          if (!loading && compendium) {
-            clearInterval(checkInterval);
-            resolve(compendium);
-          }
-        }, 100); // Check every 100ms
-      });
-    }
-
-    // If compendium is not present, trigger loading
-    if (!compendium) {
-      // Indicate that it's loading to avoid duplicate loading attempts
-      dispatch(setCompendiumLoading(true));
-      // Fetch the compendium
-      return viewCompendium(compendiumId, { include: includes }).then(({ data }) => {
-        dispatch(setCompendiumLoading(false)); // Loading finished
-        return data.data; // Return the loaded compendium data
-      });
-    }
-
-    // If compendium is already loaded, return it directly
-    return compendium;
-  }, [dispatch, loading, compendium])
 
   const selectImage = async (imageId: number, imageType?: string) => {
     return onImageSelected(imageId, imageType)
@@ -90,7 +59,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/`}
       ready={true}
 
-      onFetch={onPostFetch}
+      onFetch={() => viewCompendium(compendiumId, { include: includes }).then(({data}) => data.data)}
       onCreate={(data: TCompendiumRequest) => storeCompendium(readyDataForRequest(data)).then(({ data }) => data.data)}
       onUpdate={(data: TCompendiumRequest) => updateCompendium(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyCompendium(compendiumId)}
@@ -101,13 +70,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       fields={[]}
 
       persistedData={compendium as TCompendium}
-      setPersistedData={(data) => {
-        if (compendium?.id && compendium.id !== data.id) {
-          dispatch(setCompendiumData(data))
-        } else {
-          dispatch(updateCompendiumData(data))
-        }
-      }}
+      setPersistedData={(data) => dispatch(setCompendiumData(data))}
       updatePersistedData={(data) => dispatch(updateCompendiumData(data))}
       resetPersistedData={() => {}}
 

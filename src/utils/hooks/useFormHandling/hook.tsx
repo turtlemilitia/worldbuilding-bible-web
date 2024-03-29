@@ -81,7 +81,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     onFetch()
       .then((apiData) => {
         setNewData(apiData)
-        setPersistedData(apiData)
+        updatePersistedData(apiData)
         setFetchedData(apiData)
         onFetched && onFetched(apiData)
       })

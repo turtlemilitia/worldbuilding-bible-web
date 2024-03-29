@@ -5,6 +5,10 @@ import api from '../api'
 export interface TSessionRequest {
   name: string;
   content: string;
+  scheduled_at: string;
+  session_number: string;
+  duration?: number
+  location?: string
 }
 type TSessionResponse = {
   data: TSession;

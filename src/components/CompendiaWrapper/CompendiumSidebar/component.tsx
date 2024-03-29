@@ -1,12 +1,20 @@
 import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import {
-  AsteriskIcon, BookIcon,
+  AsteriskIcon,
+  BookIcon,
   CatIcon,
   ChurchIcon,
-  CircleEllipsisIcon, CircleIcon, CoinsIcon, FlowerIcon,
-  LanguagesIcon, MapIcon,
-  PersonStandingIcon, ShieldIcon, StarIcon,
-  SunIcon, SwordIcon, SwordsIcon, WandIcon
+  CircleEllipsisIcon,
+  CircleIcon,
+  CoinsIcon,
+  FlowerIcon,
+  LanguagesIcon,
+  MapIcon,
+  PersonStandingIcon,
+  ShieldIcon,
+  SunIcon,
+  SwordIcon,
+  WandIcon
 } from 'lucide-react'
 import { indexSpecies } from '../../../services/SpeciesService'
 import { updateCompendiumData } from '../../../reducers/compendium/compendiumSlice'
@@ -26,7 +34,6 @@ import { indexStories } from '../../../services/StoryService'
 import useCompendiaMapping from '../useCompendiaMapping'
 import { FunctionComponent } from 'react'
 import { TCompendiumSidebarProps } from './types'
-import { TLocation, TLocationList } from '../../../types'
 import { createNestedArray } from '../../../utils/treeUtils'
 import { useAppDispatch } from '../../../hooks'
 
@@ -41,7 +48,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     mapConcept,
     mapCurrency,
     mapDeity,
-    mapEncounter,
     mapFaction,
     mapItem,
     mapLanguage,
@@ -49,7 +55,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     mapNaturalResource,
     mapPantheon,
     mapPlane,
-    mapQuest,
     mapReligion,
     mapSpecies,
     mapSpell,
@@ -246,30 +251,6 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
         indexStories(compendium.slug)
           .then(({ data }) => {
             dispatch(updateCompendiumData({ spells: data.data }))
-          })
-      }
-    },
-    {
-      title: 'Quests',
-      addNewLink: `/compendia/${compendium.slug}/quests/new`,
-      icon: (props) => <StarIcon {...props}/>,
-      children: compendium.quests?.map(quest => mapQuest(quest)),
-      loadChildren: () => {
-        indexStories(compendium.slug)
-          .then(({ data }) => {
-            dispatch(updateCompendiumData({ quests: data.data }))
-          })
-      }
-    },
-    {
-      title: 'Encounters',
-      addNewLink: `/compendia/${compendium.slug}/encounters/new`,
-      icon: (props) => <SwordsIcon {...props}/>,
-      children: compendium.encounters?.map(encounter => mapEncounter(encounter)),
-      loadChildren: () => {
-        indexStories(compendium.slug)
-          .then(({ data }) => {
-            dispatch(updateCompendiumData({ encounters: data.data }))
           })
       }
     }

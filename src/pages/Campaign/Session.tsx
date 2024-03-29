@@ -29,6 +29,10 @@ const Session: FunctionComponent = (): JSX.Element => {
   const readyDataForRequest = (data: any): TSessionRequest => ({
     name: data.name,
     content: data.content,
+    session_number: data.session_number,
+    scheduled_at: data.scheduled_at,
+    duration: data.duration,
+    location: data.location,
   })
 
   return (
@@ -53,7 +57,30 @@ const Session: FunctionComponent = (): JSX.Element => {
         dispatch(removeCompendiumChildData({ field: 'sessions', id: sessionId }))
       }}
 
-      fields={[]}
+      fields={[
+        {
+          name: 'session_number',
+          label: 'Session number',
+          type: 'number',
+          required: true
+        },
+        {
+          name: 'scheduled_at',
+          label: 'Scheduled at',
+          type: 'text',
+          required: true
+        },
+        {
+          name: 'duration',
+          label: 'Duration (hours)',
+          type: 'number'
+        },
+        {
+          name: 'location',
+          label: 'Location',
+          type: 'text'
+        }
+      ]}
 
       persistedData={session as TSession}
       setPersistedData={(data) => dispatch(setSessionData(data))}

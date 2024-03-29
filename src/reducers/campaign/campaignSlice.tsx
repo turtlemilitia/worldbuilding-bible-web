@@ -3,13 +3,10 @@ import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 import { TCampaign, TInvitation, TSession } from '../../types'
 
 interface TState {
-  loading: boolean;
   campaign?: TCampaign;
 }
 
-const initialState: TState = {
-  loading: false,
-}
+const initialState: TState = {}
 
 type TCampaignChildActionProps = {
   field: 'sessions'
@@ -28,9 +25,6 @@ const campaignSlice: Slice<TState> = createSlice({
   name: 'campaign',
   initialState,
   reducers: {
-    setCampaignLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload
-    },
     setCampaignData: (state, action: PayloadAction<TCampaign>) => {
       state.campaign = action.payload
     },
@@ -72,7 +66,6 @@ const campaignSlice: Slice<TState> = createSlice({
 })
 
 export const {
-  setCampaignLoading,
   setCampaignData,
   updateCampaignData,
   clearCampaignData,

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import { HeaderWrapper } from '../HeaderWrapper'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import ContentWrapper from '../ContentWrapper'
@@ -11,8 +11,9 @@ import { ErrorBanner } from '../Banners/ErrorBanner'
 import { TTypesAllowed } from '../../types'
 import useFormHandling from '../../utils/hooks/useFormHandling'
 import SavingDialog from '../SavingDialog'
-
-interface PostProps {id: string}
+import { setLoading } from '../../reducers/post/postSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { RootState } from '../../store'
 
 const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
 
@@ -34,13 +35,22 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     errors,
     newData,
     fetchedData,
-    loading,
+    loading: formLoading,
     saving,
     handleOnFieldChange,
     handleOnFetch,
     handleOnSave,
     handleOnDelete,
   } = useFormHandling({ ...props })
+
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state: RootState) => state.post) // redux
+
+  useEffect(() => {
+
+    dispatch(setLoading(formLoading))
+
+  }, [formLoading])
 
   return (
     <LoadingWrapper loading={loading || !ready} opacity={'90'}>

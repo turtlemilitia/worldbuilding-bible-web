@@ -28,10 +28,13 @@ import naturalResourceSlice from './reducers/compendium/naturalResource/naturalR
 import planeSlice from './reducers/compendium/plane/planeSlice'
 import pantheonSlice from './reducers/compendium/pantheon/pantheonSlice'
 import imageTypesIndexSlice from './reducers/imageType/imageTypesIndexSlice'
+import postSlice from './reducers/post/postSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
+    // system
+    post: postSlice,
     // indexes
     systems: systemsIndexSlice,
     compendia: compendiaIndexSlice,

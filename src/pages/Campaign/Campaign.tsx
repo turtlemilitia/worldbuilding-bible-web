@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useCallback } from 'react'
+import React, { FunctionComponent, JSX } from 'react'
 import Post from '../../components/Post/component'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -8,7 +8,6 @@ import {
   addCampaignChildData,
   clearCampaignData,
   setCampaignData,
-  setCampaignLoading,
   updateCampaignData
 } from '../../reducers/campaign/campaignSlice'
 import {
@@ -38,16 +37,6 @@ const Campaign: FunctionComponent = (): JSX.Element => {
     content: data.content,
   })
 
-  const onPostFetch = useCallback(async () => {
-    // we tell it it's loading so we avoid loading it twice when CompendiaWrapper loads
-    dispatch(setCampaignLoading(true));
-    return viewCampaign(campaignId, { include })
-      .then(({ data }) => {
-        dispatch(setCampaignLoading(false))
-        return data.data
-      })
-  }, [dispatch])
-
   const fields: TFields[] = (campaign) ? [
     {
       name: 'invitations',
@@ -73,11 +62,12 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       pathToNew={(data) => `/campaigns/${data.slug}`}
       pathAfterDelete={`/`}
       ready={true}
+
       mapData={readyDataForRequest}
       canEdit={campaign && campaign.canUpdate}
       canDelete={campaign && campaign.canUpdate}
 
-      onFetch={onPostFetch}
+      onFetch={() => viewCampaign(campaignId, { include }).then(({ data }) => data.data)}
       onCreate={(data: TCampaignRequest) => storeCampaign(readyDataForRequest(data), { include }).then(({ data }) => data.data)}
       onUpdate={(data: TCampaignRequest) => updateCampaign(campaignId, readyDataForRequest(data), { include }).then(({ data }) => data.data)}
       onDelete={() => destroyCampaign(campaignId)}
