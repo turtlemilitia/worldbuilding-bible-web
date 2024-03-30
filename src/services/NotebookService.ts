@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TNotebook } from '../types'
+import { TNotebook, TQueryParams } from '../types'
 import api from '../api'
 
 export type TNotebookRequest = {
@@ -13,9 +13,9 @@ interface TNotebookIndexResponse {
   data: TNotebook[];
 }
 
-export const indexNotebooks = (): Promise<AxiosResponse<TNotebookIndexResponse>> => {
+export const indexNotebooks = (query: TQueryParams = {}): Promise<AxiosResponse<TNotebookIndexResponse>> => {
 
-  return api.get(`/api/notebooks`)
+  return api.get(`/api/notebooks?${new URLSearchParams(query).toString()}`)
 
 }
 
