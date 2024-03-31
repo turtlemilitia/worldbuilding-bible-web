@@ -53,7 +53,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
   }, [formLoading])
 
   return (
-    <LoadingWrapper loading={loading || !ready} opacity={'90'}>
+    <LoadingWrapper loading={loading || !ready} opacity={'100'}>
       <SavingDialog saving={saving}/>
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper

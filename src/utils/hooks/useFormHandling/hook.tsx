@@ -49,6 +49,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
     // on unmount reset the data
     return () => {
+      resetPersistedData()
       setLoading(true)
     }
 

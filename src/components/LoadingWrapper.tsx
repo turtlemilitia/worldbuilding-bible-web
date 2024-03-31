@@ -17,18 +17,26 @@ const LoadingWrapper: FunctionComponent<TProps> = ({
   opacity = '50'
 }): JSX.Element => {
 
-  const colourHandler = `bg-${colour}`;
-  const opacityHandler = `bg-opacity-${opacity}`;
+  let colourHandler = `bg-stone-900`;
+  if (colour === 'transparent') {
+    colourHandler = 'bg-transparent';
+  }
+  let opacityHandler = `bg-opacity-50`;
+  switch (opacity) {
+    case '100':
+      opacityHandler = 'bg-opacity-100'
+      break;
+  }
 
   return (
     <div className="relative">
       <Transition
         show={loading}
         as={Fragment}
-        enter="transition ease-in duration-500"
+        enter="transition ease-in duration-200"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        leave="transition ease-in duration-500"
+        leave="transition ease-in duration-200"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
