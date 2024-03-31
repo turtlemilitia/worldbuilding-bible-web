@@ -4,13 +4,12 @@ import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import { BookIcon, StickyNoteIcon } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { TCampaign, TSession } from '../../types'
-import { clearCampaignData, setCampaignData, updateCampaignData } from '../../reducers/campaign/campaignSlice'
+import { TCampaign, TGenericPostList } from '../../types'
+import { clearCampaignData, updateCampaignData } from '../../reducers/campaign/campaignSlice'
 import { viewCampaign } from '../../services/CampaignService'
-import LoadingWrapper from '../../components/LoadingWrapper'
 import { indexSessions } from '../../services/SessionService'
 
-const mapSession = (campaign: TCampaign, session: TSession): SidebarItemInterface => ({
+const mapSession = (campaign: TCampaign, session: TGenericPostList): SidebarItemInterface => ({
   title: session.name,
   to: `/campaigns/${campaign?.slug}/sessions/${session.slug}`,
   icon: (props) => <StickyNoteIcon {...props}/>,
@@ -18,7 +17,7 @@ const mapSession = (campaign: TCampaign, session: TSession): SidebarItemInterfac
 
 const CampaignsWrapper = (): JSX.Element => {
 
-  const { campaign, loading } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
 
   const { campaignId } = useParams() as { campaignId: string } // router
 
@@ -27,10 +26,10 @@ const CampaignsWrapper = (): JSX.Element => {
   const isNew = (): boolean => campaignId === 'new'
 
   useEffect(() => {
-    if (!loading && !isNew()) {
-      viewCampaign(campaignId, { include: 'users;invitations' })
+    if (!isNew()) {
+      viewCampaign(campaignId, { include: 'sessions' })
         .then(({ data }) => {
-          dispatch(setCampaignData(data))
+          dispatch(updateCampaignData(data.data))
         })
     }
     return () => {
@@ -47,7 +46,6 @@ const CampaignsWrapper = (): JSX.Element => {
             [
               {
                 title: 'Sessions',
-                hasChildren: campaign.hasSessions,
                 addNewLink: `/campaigns/${campaign.slug}/sessions/new`,
                 icon: (props) => <BookIcon {...props}/>,
                 children: campaign.sessions?.map(session => mapSession(campaign, session)),
@@ -62,9 +60,7 @@ const CampaignsWrapper = (): JSX.Element => {
           }/>
       )}
       <div className="relative w-full">
-        <LoadingWrapper loading={loading}>
-          <Outlet/>
-        </LoadingWrapper>
+        <Outlet/>
       </div>
     </>
   )

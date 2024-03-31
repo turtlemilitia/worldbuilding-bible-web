@@ -3,12 +3,10 @@ import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 import { TCompendium, TTypesAllowed } from '../../types'
 
 interface TState {
-  loading: boolean;
   compendium?: TCompendium;
 }
 
 const initialState: TState = {
-  loading: false,
 }
 
 type TCompendiumChildActionProps = {
@@ -25,9 +23,6 @@ const compendiumSlice: Slice<TState> = createSlice({
   name: 'compendium',
   initialState,
   reducers: {
-    setCompendiumLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload
-    },
     setCompendiumData: (state, action: PayloadAction<TCompendium>) => {
       state.compendium = action.payload
     },
@@ -69,7 +64,6 @@ const compendiumSlice: Slice<TState> = createSlice({
 })
 
 export const {
-  setCompendiumLoading,
   setCompendiumData,
   updateCompendiumData,
   clearCompendiumData,

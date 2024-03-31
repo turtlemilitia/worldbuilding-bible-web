@@ -1,5 +1,5 @@
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
-import { FunctionComponent, JSX } from 'react'
+import { FunctionComponent } from 'react'
 
 export type TFields = {
   name: string,
@@ -8,7 +8,8 @@ export type TFields = {
   options?: TSelectOption[],
   search?: (term: string) => Promise<TSelectOption[]>
   link?: (id: number|string) => string,
-  Callback?: FunctionComponent
+  Callback?: FunctionComponent,
+  required?: boolean,
 }
 
 export type TInfoBarProps<T> = {

@@ -2,7 +2,7 @@ import React, { FunctionComponent, JSX, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
-  clearCompendiumData, setCompendiumData
+  clearCompendiumData, updateCompendiumData
 } from '../../reducers/compendium/compendiumSlice'
 import { TCompendiaWrapperProps } from './types'
 import { RootState } from '../../store'
@@ -11,19 +11,23 @@ import CompendiumSidebar from './CompendiumSidebar'
 
 const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
-  const { compendium, loading } = useAppSelector((state: RootState) => state.compendium) // redux
+  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
   const dispatch = useAppDispatch()
 
+  const includes = 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories'
+
+  const isNew = (): boolean => compendiumId === 'new'
+
   useEffect(() => {
-    if (!loading && compendiumId !== 'new') {
-      viewCompendium(compendiumId, { include: 'images' })
+    if (!isNew()) {
+      viewCompendium(compendiumId, { include: includes })
         .then(({ data }) => {
-          dispatch(setCompendiumData(data.data))
+          dispatch(updateCompendiumData(data.data))
         })
     }
-    return () => { // todo is this the right place?
+    return () => {
       dispatch(clearCompendiumData(undefined))
     }
   }, [])

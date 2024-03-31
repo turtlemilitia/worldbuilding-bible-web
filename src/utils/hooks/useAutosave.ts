@@ -49,7 +49,7 @@ const useAutosave: TAutosave = ({
       return;
     }
     // compare previous persisted data and changed data
-    persistedData = mapData ? mapData(newData) : readyDataForRequest(persistedData)
+    persistedData = mapData ? mapData(persistedData) : readyDataForRequest(persistedData)
     newData = mapData ? mapData(newData) : readyDataForRequest(newData)
     if (!equal(persistedData, newData)) {
       // save new data (will make it persisted

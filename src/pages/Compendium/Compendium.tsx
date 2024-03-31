@@ -9,7 +9,6 @@ import {
 } from '../../services/CompendiumService'
 import {
   setCompendiumData,
-  setCompendiumLoading,
   updateCompendiumData
 } from '../../reducers/compendium/compendiumSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -27,6 +26,8 @@ const Compendium: FunctionComponent = (): JSX.Element => {
 
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
+  const includes = 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories'
+
   const { onImageSelected, addImageToSelection } = useImageSelection({
     entityType: 'compendia',
     entityId: compendium?.slug
@@ -37,16 +38,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     content: data.content
   })
 
-  const getImage = useCallback((type: 'cover'|'profile') => compendium?.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [compendium?.images])
-
-  const onPostFetch = useCallback(async () => {
-    // we tell it it's loading so we avoid loading it twice when CompendiaWrapper loads
-    dispatch(setCompendiumLoading(true))
-    return viewCompendium(compendiumId, { include: 'images' }).then(({ data }) => {
-      dispatch(setCompendiumLoading(false))
-      return data.data
-    })
-  }, [dispatch])
+  const getImage = useCallback((type: 'cover' | 'profile') => compendium?.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [compendium?.images])
 
   const selectImage = async (imageId: number, imageType?: string) => {
     return onImageSelected(imageId, imageType)
@@ -67,7 +59,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/`}
       ready={true}
 
-      onFetch={onPostFetch}
+      onFetch={() => viewCompendium(compendiumId, { include: includes }).then(({data}) => data.data)}
       onCreate={(data: TCompendiumRequest) => storeCompendium(readyDataForRequest(data)).then(({ data }) => data.data)}
       onUpdate={(data: TCompendiumRequest) => updateCompendium(compendiumId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroyCompendium(compendiumId)}
@@ -78,13 +70,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       fields={[]}
 
       persistedData={compendium as TCompendium}
-      setPersistedData={(data) => {
-        if (compendium?.id && compendium.id !== data.id) {
-          dispatch(setCompendiumData(data))
-        } else {
-          dispatch(updateCompendiumData(data))
-        }
-      }}
+      setPersistedData={(data) => dispatch(setCompendiumData(data))}
       updatePersistedData={(data) => dispatch(updateCompendiumData(data))}
       resetPersistedData={() => {}}
 

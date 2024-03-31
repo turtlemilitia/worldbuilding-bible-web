@@ -5,6 +5,7 @@ export type TUser = {
   name: string;
   email: string;
 }
+
 export type TInvitation = {
   id: number;
   email: string;
@@ -19,234 +20,127 @@ export type TImage = {
   pivot?: TImageableImagePivot
 }
 
-export type TSystem = {
+export type TGenericPostList = {
+  id: number;
+  slug: string;
+  name: string;
+}
+
+export type TGenericPost = {
   id: number;
   slug: string;
   name: string;
   content: string;
 }
 
-export type TCompendium = {
+type TOptionList = {
   id: number;
-  slug: string;
   name: string;
-  content: string;
-  hasConcepts?: boolean;
-  hasCharacters?: boolean;
-  hasCurrencies?: boolean;
-  hasDeities?: boolean;
-  hasItems?: boolean;
-  hasEncounters?: boolean;
-  hasFactions?: boolean;
-  hasLanguages?: boolean;
-  hasLocations?: boolean;
-  hasReligions?: boolean;
-  hasPantheons?: boolean;
-  hasQuests?: boolean;
-  hasSpecies?: boolean;
-  hasSpells?: boolean;
-  hasStories?: boolean;
-  hasNaturalResources?: boolean;
-  hasPlanes?: boolean;
-  characters?: TCharacter[];
-  concepts?: TConcept[];
-  currencies?: TCurrency[];
-  deities?: TDeity[];
-  encounters?: TEncounter[];
-  factions?: TFaction[];
-  items?: TItem[];
-  languages?: TLanguage[];
-  locations?: TLocation[];
-  naturalResources?: TNaturalResource[];
-  pantheons?: TPantheon[];
-  planes?: TPlane[];
-  quests?: TQuest[];
-  religions?: TReligion[];
-  species?: TSpecies[];
-  spells?: TSpell[];
-  stories?: TStory[];
+}
+
+export type TCanHaveImages = {
   images?: TImage[];
 }
 
-export type TConcept = {
+export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
   id: number;
   slug: string;
   name: string;
   content: string;
 }
 
-export type TCharacter = {
-  id: number;
-  slug: string;
-  name: string;
+export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
+  characters?: TGenericPostList[];
+  concepts?: TGenericPostList[];
+  currencies?: TGenericPostList[];
+  deities?: TGenericPostList[];
+  encounters?: TGenericPostList[];
+  factions?: TGenericPostList[];
+  items?: TGenericPostList[];
+  languages?: TGenericPostList[];
+  locations?: TLocationList[];
+  naturalResources?: TGenericPostList[];
+  pantheons?: TGenericPostList[];
+  planes?: TGenericPostList[];
+  quests?: TGenericPostList[];
+  religions?: TGenericPostList[];
+  species?: TGenericPostList[];
+  spells?: TGenericPostList[];
+  stories?: TGenericPostList[];
+}
+
+export type TConcept = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & {
   age: string;
   gender: string;
-  content: string;
   species: TSpecies;
   languages?: TLanguage[];
   factions?: TFaction[];
-  images?: TImage[];
 }
 
-export type TCurrency = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
+export type TCurrency = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TDeity = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
+export type TDeity = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TEncounter = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
+export type TEncounter = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TFaction = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
+export type TFaction = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TItem = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
+export type TItem = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TLanguage = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
+export type TLanguage = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TLocation = {
-  id: number;
-  slug: string;
+export type TLocation = TGenericPost & TPlayerTools & TCanHaveImages & {
   compendium: TCompendium;
   parent?: TLocation;
-  name: string;
   type: TLocationType;
-  content: string;
   demonym?: string;
   population?: number;
   governmentType?: TLocationGovernmentType;
   hasSubLocations?: boolean;
   aliases?: string[];
   children?: TLocation[];
-  images?: TImage[];
 }
 
-export type TLocationType = {
-  id: number;
-  name: string;
+export type TLocationList = TGenericPostList & {
+  parent?: TLocation;
 }
 
-export type TLocationGovernmentType = {
-  id: number;
-  name: string;
+export type TLocationType = TOptionList
+
+export type TLocationGovernmentType = TOptionList
+
+export type TPantheon = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TReligion = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TSpecies = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TSpell = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TStory = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TNaturalResource = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TPlane = TGenericPost & TPlayerTools & TCanHaveImages
+
+export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
+  notes: TGenericPostList[]
 }
 
-export type TPantheon = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
+export type TNote = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TQuest = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TReligion = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TSpecies = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TSpell = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TStory = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TNaturalResource = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TPlane = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TNotebook = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-  hasNotes?: boolean;
-  notes?: TNote[]
-}
-
-export type TNote = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-}
-
-export type TCampaign = {
-  id: number;
-  slug: string;
-  name: string;
-  content: string;
-  hasSessions: boolean;
-  sessions: TSession[];
+export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
+  sessions: TGenericPostList[];
   gameMaster?: TUser;
   users: TUser[];
   invitations: TInvitation[];
-} & TPlayerTools;
-
-export type TSession = {
-  id?: number;
-  slug?: string;
-  name: string;
-  content: string;
 }
+
+export type TSession = TGenericPost & TPlayerTools & TCanHaveImages
 
 export type TImageableImagePivot = {
   id: number;
@@ -254,15 +148,13 @@ export type TImageableImagePivot = {
   image?: TImage;
 }
 
-export type TImageType = {
-  id: number;
-  name: string;
-}
+export type TImageType = TOptionList
 
 type TPlayerTools = {
   canUpdate: boolean;
   canDelete: boolean;
 }
 
-export type TTypesAllowed = TCompendium|TLocation|TCharacter|TConcept|TNotebook|TCampaign|TSession|TSystem
+export type TTypesAllowed = TGenericPost & TPlayerTools & TCanHaveImages
+
 export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'|'campaign'|'session'|'system'

@@ -134,9 +134,9 @@ const Location: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/compendia/${compendiumId}`}
       ready={ready}
 
-      onFetch={() => viewLocation(locationId, { include: 'parent;children;images' }).then(({ data }) => data.data)}
-      onCreate={(data: TLocationRequest) => storeLocation(compendiumId, readyDataForRequest(data), { include: 'parent;children' }).then(({ data }) => data.data)}
-      onUpdate={(data: TLocationRequest) => updateLocation(locationId, readyDataForRequest(data), { include: 'parent;children' }).then(({ data }) => data.data)}
+      onFetch={() => viewLocation(locationId, { include: 'type;parent;children;images' }).then(({ data }) => data.data)}
+      onCreate={(data: TLocationRequest) => storeLocation(compendiumId, readyDataForRequest(data), { include: 'type;parent;children' }).then(({ data }) => data.data)}
+      onUpdate={(data: TLocationRequest) => updateLocation(locationId, readyDataForRequest(data), { include: 'type;parent;children' }).then(({ data }) => data.data)}
       onDelete={() => destroyLocation(locationId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'locations', data: data }))

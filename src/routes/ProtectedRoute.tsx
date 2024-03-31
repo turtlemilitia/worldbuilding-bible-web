@@ -34,7 +34,7 @@ export const ProtectedRoute = (): JSX.Element => {
               .then(response => dispatch(setCampaigns(response.data.data)))
               .catch(error => console.error('Error fetching systems:', error)); // todo show error
             // Fetch the notebooks data from the API
-            indexNotebooks()
+            indexNotebooks({include: 'notes'})
               .then(response => dispatch(setNotebooks(response.data.data)))
               .catch(error => console.error('Error fetching notebooks:', error)); // todo show error
             // Fetch the imageable types data from the API

@@ -1,32 +1,46 @@
-import { useDispatch } from 'react-redux'
 import {
   TCharacter,
-  TCompendium,
-  TConcept, TCurrency, TDeity, TEncounter,
+  TConcept,
+  TCurrency,
+  TDeity,
+  TEncounter,
   TFaction,
   TItem,
   TLanguage,
-  TLocation, TNaturalResource, TPantheon, TPlane, TQuest,
+  TLocation,
+  TNaturalResource,
+  TPantheon,
+  TPlane,
+  TQuest,
   TReligion,
-  TSpecies, TSpell, TStory, TTypesAllowed, TTypesAllowedString
+  TSpecies,
+  TSpell,
+  TStory,
+  TTypesAllowed
 } from '../../../types'
 import { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import {
   BookIcon,
   CatIcon,
-  ChurchIcon, CircleIcon, CoinsIcon,
-  FlagIcon, FlowerIcon,
+  ChurchIcon,
+  CircleIcon,
+  CoinsIcon,
+  FlagIcon,
+  FlowerIcon,
   LanguagesIcon,
-  MapPinIcon, PersonStandingIcon,
+  MapPinIcon,
+  PersonStandingIcon,
   StarIcon,
   SunIcon,
-  SwordIcon, SwordsIcon,
-  UserIcon, Wand2Icon
+  SwordIcon,
+  SwordsIcon,
+  UserIcon,
+  Wand2Icon
 } from 'lucide-react'
 import { destroyConcept } from '../../../services/ConceptService'
 import { TUseCompendiaMapping } from './types'
 import { removeCompendiumChildData } from '../../../reducers/compendium/compendiumSlice'
-import { NavLink, useLocation, useMatch, useNavigate, useResolvedPath } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
 import { destroyCharacter } from '../../../services/CharacterService'
 import { destroySpecies } from '../../../services/SpeciesService'
@@ -44,10 +58,11 @@ import { destroyDeity } from '../../../services/DeityService'
 import { destroyQuest } from '../../../services/QuestService'
 import { destroySpell } from '../../../services/SpellService'
 import { destroyEncounter } from '../../../services/EncounterService'
+import { useAppDispatch } from '../../../hooks'
 
 const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const location = useLocation()
