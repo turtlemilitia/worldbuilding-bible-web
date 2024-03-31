@@ -22,19 +22,21 @@ import { addCampaign, removeCampaign } from '../../reducers/campaign/campaignsIn
 import { TFields } from '../../components/InfoBar'
 import ListAddUsers from './ListAddUsers/component'
 
-const include = 'users;invitations'
+const include = 'users;invitations;compendium'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 
   const { campaignId } = useParams() as { campaignId: string } // router
 
   const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { compendia } = useAppSelector((state: RootState) => state.compendia) // redux
 
   const dispatch = useAppDispatch() // redux
 
   const readyDataForRequest = (data: any): TCampaignRequest => ({
     name: data.name,
     content: data.content,
+    compendium_id: data.compendium?.id
   })
 
   const fields: TFields[] = (campaign) ? [
@@ -52,6 +54,12 @@ const Campaign: FunctionComponent = (): JSX.Element => {
           })
         }
       />
+    },
+    {
+      name: 'compendium',
+      label: 'Compendium',
+      type: 'select',
+      options: compendia
     }
   ] : [];
 

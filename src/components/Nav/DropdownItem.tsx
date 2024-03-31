@@ -1,10 +1,11 @@
 import React, { JSX } from 'react'
 import { NavLink } from 'react-router-dom'
 import { PlusIcon } from 'lucide-react'
-import { MenuItemInterface } from './Menu'
+
+import { MenuItemInterface } from './MenuItemInterface'
 
 const DropdownItem = ({ menuItem }: { menuItem: MenuItemInterface }): JSX.Element => {
-  const { to, title, children } = menuItem
+  const { to, title } = menuItem
 
   const plus = to.endsWith('new')
 

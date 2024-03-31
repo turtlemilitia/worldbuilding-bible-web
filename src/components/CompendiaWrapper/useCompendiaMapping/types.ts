@@ -1,8 +1,7 @@
-import { TCompendium } from '../../../types'
 import { SidebarItemInterface } from '../../Sidebar/Sidebar';
 
 export type TUseCompendiaMappingProps = {
-  compendium: TCompendium;
+  prefix: string;
 }
 
 export type TUseCompendiaMapping = (props: TUseCompendiaMappingProps) => {

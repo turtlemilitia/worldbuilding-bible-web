@@ -7,9 +7,13 @@ import {
   updateLocation,
   viewLocation
 } from '../../services/LocationService'
-import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
+import {
+  clearLocationData,
+  setLocationData,
+  updateLocationData
+} from '../../reducers/compendium/location/locationSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import {
   addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
@@ -30,6 +34,7 @@ const Location: FunctionComponent = (): JSX.Element => {
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
+  const { parent } = useLocation() as { parent?: TLocation } // use this to populate
 
   const [ready, setReady] = useState<boolean>(false)
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>()
@@ -43,7 +48,7 @@ const Location: FunctionComponent = (): JSX.Element => {
   useEffect(() => {
 
     if (locationTypes !== undefined && governmentTypes !== undefined) {
-      setReady(true);
+      setReady(true)
     }
 
   }, [locationTypes, governmentTypes])
@@ -94,7 +99,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       type: 'select',
       options: governmentTypes
     }
-  ];
+  ]
   if (compendium) {
     fields.push(
       {
@@ -123,7 +128,7 @@ const Location: FunctionComponent = (): JSX.Element => {
     )
   }
 
-  const getImage = useCallback((type: 'cover'|'profile') => location.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [location.images])
+  const getImage = useCallback((type: 'cover' | 'profile') => location.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [location.images])
 
   return (
     <Post

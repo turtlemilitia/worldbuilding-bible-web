@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import equal from 'fast-deep-equal/react'
 import { readyDataForRequest } from '../dataUtils'
+import { isEmpty } from 'lodash'
 
 type TProps = {
   canAutosave?: boolean;
@@ -49,8 +50,8 @@ const useAutosave: TAutosave = ({
       return;
     }
     // compare previous persisted data and changed data
-    persistedData = mapData ? mapData(persistedData) : readyDataForRequest(persistedData)
-    newData = mapData ? mapData(newData) : readyDataForRequest(newData)
+    persistedData = !isEmpty(persistedData) ? (mapData ? mapData(persistedData) : readyDataForRequest(persistedData)) : {}
+    newData = !isEmpty(newData) ? (mapData ? mapData(newData) : readyDataForRequest(newData)) : {}
     if (!equal(persistedData, newData)) {
       // save new data (will make it persisted
       handleOnSave(newData)

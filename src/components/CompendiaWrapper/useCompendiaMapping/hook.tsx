@@ -60,7 +60,7 @@ import { destroySpell } from '../../../services/SpellService'
 import { destroyEncounter } from '../../../services/EncounterService'
 import { useAppDispatch } from '../../../hooks'
 
-const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
+const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -69,14 +69,14 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const onDeleted = (field: string, slug: TTypesAllowed['slug']) => {
     dispatch(removeCompendiumChildData({ field, id: slug }))
-    if (location.pathname.includes(`/compendia/${compendium?.slug}/${field}/${slug}`)) {
-      navigate(`/compendia/${compendium?.slug}`)
+    if (location.pathname.includes(`${prefix}/${field}/${slug}`)) {
+      navigate(`${prefix}`)
     }
   }
 
   const mapConcept = (concept: TConcept): SidebarItemInterface => ({
     title: concept.name,
-    to: `/compendia/${compendium?.slug}/concepts/${concept.slug}`,
+    to: `${prefix}/concepts/${concept.slug}`,
     icon: (props) => <StarIcon {...props}/>,
     onDelete: () => destroyConcept(concept.slug)
       .then(() => onDeleted('concepts', concept.slug))
@@ -84,7 +84,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapSpecies = (species: TSpecies): SidebarItemInterface => ({
     title: species.name,
-    to: `/compendia/${compendium?.slug}/species/${species.slug}`,
+    to: `${prefix}/species/${species.slug}`,
     icon: (props) => <CatIcon {...props}/>,
     onDelete: () => destroySpecies(species.slug)
       .then(() => onDeleted('species', species.slug))
@@ -92,7 +92,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapCharacter = (character: TCharacter): SidebarItemInterface => ({
     title: character.name,
-    to: `/compendia/${compendium?.slug}/characters/${character.slug}`,
+    to: `${prefix}/characters/${character.slug}`,
     icon: (props) => <UserIcon {...props}/>,
     onDelete: () => destroyCharacter(character.slug)
       .then(() => onDeleted('characters', character.slug))
@@ -100,9 +100,10 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapLocation = (location: TLocation): SidebarItemInterface => ({
     title: location.name,
-    to: `/compendia/${compendium?.slug}/locations/${location.slug}`,
+    to: `${prefix}/locations/${location.slug}`,
     icon: (props) => <MapPinIcon {...props}/>,
-    // addNewLink: `/compendia/${compendium?.slug}/location/${location.slug}`, // todo add sub location
+    addNewLink: `${prefix}/locations/new`,
+    addNewLinkState: { parent: location },
     onDelete: () => destroyLocation(location.slug)
       .then(() => onDeleted('locations', location.slug)),
     hasChildren: location.hasSubLocations,
@@ -111,7 +112,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapItem = (item: TItem): SidebarItemInterface => ({
     title: item.name,
-    to: `/compendia/${compendium?.slug}/items/${item.slug}`,
+    to: `${prefix}/items/${item.slug}`,
     icon: (props) => <SwordIcon {...props}/>,
     onDelete: () => destroyItem(item.slug)
       .then(() => onDeleted('items', item.slug))
@@ -119,7 +120,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapFaction = (faction: TFaction): SidebarItemInterface => ({
     title: faction.name,
-    to: `/compendia/${compendium?.slug}/factions/${faction.slug}`,
+    to: `${prefix}/factions/${faction.slug}`,
     icon: (props) => <FlagIcon {...props}/>,
     onDelete: () => destroyFaction(faction.slug)
       .then(() => onDeleted('factions', faction.slug))
@@ -127,7 +128,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapLanguage = (language: TLanguage): SidebarItemInterface => ({
     title: language.name,
-    to: `/compendia/${compendium?.slug}/languages/${language.slug}`,
+    to: `${prefix}/languages/${language.slug}`,
     icon: (props) => <LanguagesIcon {...props}/>,
     onDelete: () => destroyLanguage(language.slug)
       .then(() => onDeleted('languages', language.slug))
@@ -135,7 +136,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapReligion = (religion: TReligion): SidebarItemInterface => ({
     title: religion.name,
-    to: `/compendia/${compendium?.slug}/religions/${religion.slug}`,
+    to: `${prefix}/religions/${religion.slug}`,
     icon: (props) => <ChurchIcon {...props}/>,
     onDelete: () => destroyReligion(religion.slug)
       .then(() => onDeleted('religions', religion.slug))
@@ -143,7 +144,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapPantheon = (pantheon: TPantheon): SidebarItemInterface => ({
     title: pantheon.name,
-    to: `/compendia/${compendium?.slug}/pantheons/${pantheon.slug}`,
+    to: `${prefix}/pantheons/${pantheon.slug}`,
     icon: (props) => <SunIcon {...props}/>,
     onDelete: () => destroyPantheon(pantheon.slug)
       .then(() => onDeleted('pantheons', pantheon.slug))
@@ -151,7 +152,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapCurrency = (currency: TCurrency): SidebarItemInterface => ({
     title: currency.name,
-    to: `/compendia/${compendium?.slug}/currencies/${currency.slug}`,
+    to: `${prefix}/currencies/${currency.slug}`,
     icon: (props) => <CoinsIcon {...props}/>,
     onDelete: () => destroyCurrency(currency.slug)
       .then(() => onDeleted('currencies', currency.slug))
@@ -159,7 +160,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapStory = (story: TStory): SidebarItemInterface => ({
     title: story.name,
-    to: `/compendia/${compendium?.slug}/stories/${story.slug}`,
+    to: `${prefix}/stories/${story.slug}`,
     icon: (props) => <BookIcon {...props}/>,
     onDelete: () => destroyStory(story.slug)
       .then(() => onDeleted('stories', story.slug))
@@ -167,7 +168,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapNaturalResource = (naturalResource: TNaturalResource): SidebarItemInterface => ({
     title: naturalResource.name,
-    to: `/compendia/${compendium?.slug}/natural-resources/${naturalResource.slug}`,
+    to: `${prefix}/natural-resources/${naturalResource.slug}`,
     icon: (props) => <FlowerIcon {...props}/>,
     onDelete: () => destroyNaturalResource(naturalResource.slug)
       .then(() => onDeleted('naturalResources', naturalResource.slug))
@@ -175,7 +176,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapPlane = (plane: TPlane): SidebarItemInterface => ({
     title: plane.name,
-    to: `/compendia/${compendium?.slug}/planes/${plane.slug}`,
+    to: `${prefix}/planes/${plane.slug}`,
     icon: (props) => <CircleIcon {...props}/>,
     onDelete: () => destroyPlane(plane.slug)
       .then(() => onDeleted('planes', plane.slug))
@@ -183,7 +184,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapDeity = (deity: TDeity): SidebarItemInterface => ({
     title: deity.name,
-    to: `/compendia/${compendium?.slug}/deities/${deity.slug}`,
+    to: `${prefix}/deities/${deity.slug}`,
     icon: (props) => <PersonStandingIcon {...props}/>,
     onDelete: () => destroyDeity(deity.slug)
       .then(() => onDeleted('deities', deity.slug))
@@ -191,7 +192,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapQuest = (quest: TQuest): SidebarItemInterface => ({
     title: quest.name,
-    to: `/compendia/${compendium?.slug}/quests/${quest.slug}`,
+    to: `${prefix}/quests/${quest.slug}`,
     icon: (props) => <StarIcon {...props}/>,
     onDelete: () => destroyQuest(quest.slug)
       .then(() => onDeleted('quests', quest.slug))
@@ -199,7 +200,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapSpell = (spell: TSpell): SidebarItemInterface => ({
     title: spell.name,
-    to: `/compendia/${compendium?.slug}/spells/${spell.slug}`,
+    to: `${prefix}/spells/${spell.slug}`,
     icon: (props) => <Wand2Icon {...props}/>,
     onDelete: () => destroySpell(spell.slug)
       .then(() => onDeleted('spells', spell.slug))
@@ -207,7 +208,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ compendium }) => {
 
   const mapEncounter = (encounter: TEncounter): SidebarItemInterface => ({
     title: encounter.name,
-    to: `/compendia/${compendium?.slug}/encounters/${encounter.slug}`,
+    to: `${prefix}/encounters/${encounter.slug}`,
     icon: (props) => <SwordsIcon {...props}/>,
     onDelete: () => destroyEncounter(encounter.slug)
       .then(() => onDeleted('encounters', encounter.slug))

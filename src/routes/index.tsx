@@ -50,7 +50,7 @@ const Routes = (): JSX.Element => {
 
   const loadPost = useCallback(() => {
     dispatch(setLoading(true))
-    return wait(200).then(() => true)
+    return wait(250).then(() => true)
   }, [dispatch])
 
   // Define public routes accessible to all users
@@ -69,6 +69,103 @@ const Routes = (): JSX.Element => {
   ]
 
   // Define routes accessible only to authenticated users
+  const compendiumRoutes = {
+        path: 'compendia/:compendiumId',
+        element: <CompendiaWrapper/>, // sidebar with bestiary, characters, locations, ...
+        children: [
+          {
+            path: '',
+            element: <Compendium/>,
+            loader: loadPost
+          },
+          {
+            path: 'characters/:characterId',
+            element: <Character/>,
+            loader: loadPost
+          },
+          {
+            path: 'concepts/:conceptId',
+            element: <Concept/>,
+            loader: loadPost
+          },
+          {
+            path: 'currencies/:currencyId',
+            element: <Currency/>,
+            loader: loadPost
+          },
+          {
+            path: 'deities/:deityId',
+            element: <Deity/>,
+            loader: loadPost
+          },
+          {
+            path: 'encounters/:encounterId',
+            element: <Encounter/>,
+            loader: loadPost
+          },
+          {
+            path: 'factions/:factionId',
+            element: <Faction/>,
+            loader: loadPost
+          },
+          {
+            path: 'items/:itemId',
+            element: <Item/>,
+            loader: loadPost
+          },
+          {
+            path: 'languages/:languageId',
+            element: <Language/>,
+            loader: loadPost
+          },
+          {
+            path: 'locations/:locationId',
+            element: <Location/>,
+            loader: loadPost
+          },
+          {
+            path: 'naturalResources/:naturalResourceId',
+            element: <NaturalResource/>,
+            loader: loadPost
+          },
+          {
+            path: 'pantheons/:pantheonId',
+            element: <Pantheon/>,
+            loader: loadPost
+          },
+          {
+            path: 'planes/:planeId',
+            element: <Plane/>,
+            loader: loadPost
+          },
+          {
+            path: 'quests/:questId',
+            element: <Quest/>,
+            loader: loadPost
+          },
+          {
+            path: 'religions/:religionId',
+            element: <Religion/>,
+            loader: loadPost
+          },
+          {
+            path: 'species/:speciesId',
+            element: <Species/>,
+            loader: loadPost
+          },
+          {
+            path: 'spells/:spellId',
+            element: <Spell/>,
+            loader: loadPost
+          },
+          {
+            path: 'stories/:storyId',
+            element: <Story/>,
+            loader: loadPost
+          },
+        ]
+      };
+
   const routesForAuthenticatedOnly: RouteObject[] = [
     {
       path: '/',
@@ -89,116 +186,58 @@ const Routes = (): JSX.Element => {
             }
           ]
         },
+        compendiumRoutes,
         {
-          path: '/compendia/:compendiumId',
-          element: <CompendiaWrapper/>, // sidebar with bestiary, characters, locations, ...
-          children: [
-            {
-              path: '/compendia/:compendiumId',
-              element: <Compendium/>,
-              loader: loadPost
-            },
-            {
-              path: 'characters/:characterId',
-              element: <Character/>,
-              loader: loadPost
-            },
-            {
-              path: 'concepts/:conceptId',
-              element: <Concept/>,
-              loader: loadPost
-            },
-            {
-              path: 'currencies/:currencyId',
-              element: <Currency/>,
-              loader: loadPost
-            },
-            {
-              path: 'deities/:deityId',
-              element: <Deity/>,
-              loader: loadPost
-            },
-            {
-              path: 'encounters/:encounterId',
-              element: <Encounter/>,
-              loader: loadPost
-            },
-            {
-              path: 'factions/:factionId',
-              element: <Faction/>,
-              loader: loadPost
-            },
-            {
-              path: 'items/:itemId',
-              element: <Item/>,
-              loader: loadPost
-            },
-            {
-              path: 'languages/:languageId',
-              element: <Language/>,
-              loader: loadPost
-            },
-            {
-              path: 'locations/:locationId',
-              element: <Location/>,
-              loader: loadPost
-            },
-            {
-              path: 'naturalResources/:naturalResourceId',
-              element: <NaturalResource/>,
-              loader: loadPost
-            },
-            {
-              path: 'pantheons/:pantheonId',
-              element: <Pantheon/>,
-              loader: loadPost
-            },
-            {
-              path: 'planes/:planeId',
-              element: <Plane/>,
-              loader: loadPost
-            },
-            {
-              path: 'quests/:questId',
-              element: <Quest/>,
-              loader: loadPost
-            },
-            {
-              path: 'religions/:religionId',
-              element: <Religion/>,
-              loader: loadPost
-            },
-            {
-              path: 'species/:speciesId',
-              element: <Species/>,
-              loader: loadPost
-            },
-            {
-              path: 'spells/:spellId',
-              element: <Spell/>,
-              loader: loadPost
-            },
-            {
-              path: 'stories/:storyId',
-              element: <Story/>,
-              loader: loadPost
-            },
-          ]
-        },
-        {
-          path: '/campaigns',
+          path: 'campaigns',
           element: <CampaignsWrapper/>, // sidebar with sessions, encounters, quests, ...
           children: [
             {
-              path: '/campaigns/:campaignId',
-              element: <Campaign/>,
-              loader: loadPost
+              path: ':campaignId',
+              children: [
+                {
+                  path: '',
+                  element: <Campaign/>,
+                  loader: loadPost,
+                },
+                compendiumRoutes,
+                {
+                  path: 'quests',
+                  element: <>TODO</>,
+                  loader: loadPost,
+                  children: [
+                    {
+                      path: ':questId',
+                      element: <Quest/>,
+                      loader: loadPost
+                    }
+                  ]
+                },
+                {
+                  path: 'encounters',
+                  element: <>TODO</>,
+                  loader: loadPost,
+                  children: [
+                    {
+                      path: ':encounterId',
+                      element: <Encounter/>,
+                      loader: loadPost
+                    }
+                  ]
+                },
+                {
+                  path: 'sessions',
+                  element: <>TODO</>,
+                  loader: loadPost,
+                  children: [
+                    {
+                      path: ':sessionId',
+                      element: <Session/>,
+                      loader: loadPost
+                    }
+                  ]
+                }
+              ]
             },
-            {
-              path: '/campaigns/:campaignId/sessions/:sessionId',
-              element: <Session/>,
-              loader: loadPost
-            }
           ]
         },
         {

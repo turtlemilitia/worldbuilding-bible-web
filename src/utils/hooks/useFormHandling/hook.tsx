@@ -29,7 +29,7 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   const navigate = useNavigate()
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
   // data which is changed
@@ -49,7 +49,6 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
     // on unmount reset the data
     return () => {
-      resetPersistedData()
       setLoading(true)
     }
 

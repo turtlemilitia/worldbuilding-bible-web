@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { SidebarItemInterface } from './Sidebar'
-import { ChevronDownIcon, PlusIcon, Trash2Icon, TrashIcon } from 'lucide-react'
+import { ChevronDownIcon, PlusIcon, Trash2Icon } from 'lucide-react'
 import LoadingSpinner from '../LoadingSpinner'
 
 interface TProps {
@@ -15,6 +15,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     to,
     icon,
     addNewLink,
+    addNewLinkState,
     hasChildren,
     children,
     loadChildren,
@@ -59,7 +60,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     <li className="my-3">
       <div className="flex justify-between">
         {to ? (
-          <NavLink to={to} className={({ isActive }) => `${isActive ? 'font-bold' : ''} flex items-center`}>
+          <NavLink to={to} className={({ isActive }) => `${isActive ? 'text-amber-500' : ''} hover:text-amber-500 flex items-center`}>
             {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}<span>{title}</span>
           </NavLink>
         ) : (
@@ -80,6 +81,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
             {canAddNew && addNewLink && (
               <Link
                 to={addNewLink}
+                state={addNewLinkState}
               >
                 <PlusIcon className="h-5"/>
               </Link>

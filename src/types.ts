@@ -136,6 +136,7 @@ export type TNote = TGenericPost & TPlayerTools & TCanHaveImages
 export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   sessions: TGenericPostList[];
   gameMaster?: TUser;
+  compendium?: TGenericPost;
   users: TUser[];
   invitations: TInvitation[];
 }

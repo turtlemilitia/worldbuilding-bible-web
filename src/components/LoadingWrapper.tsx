@@ -41,7 +41,7 @@ const LoadingWrapper: FunctionComponent<TProps> = ({
         leaveTo="opacity-0"
       >
         <div
-          className={`${positioning} z-50 top-0 ${colourHandler} w-full ${opacityHandler} h-full ${colour !== 'transparent' ? 'backdrop-blur-md' : ''} flex flex-wrap place-content-center`}>
+          className={`${positioning} z-40 top-0 ${colourHandler} w-full ${opacityHandler} h-full ${colour !== 'transparent' ? 'backdrop-blur-md' : ''} flex flex-wrap place-content-center`}>
           <LoadingSpinner size={30}/>
         </div>
       </Transition>
