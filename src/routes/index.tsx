@@ -1,12 +1,12 @@
 import { ProtectedRoute } from './ProtectedRoute'
 import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom'
-import React, { JSX } from 'react'
+import React, { JSX, useCallback } from 'react'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import Login from '../pages/Login'
 import System from '../pages/System/System'
 import SystemsWrapper from '../pages/System/SystemsWrapper'
-import PageWrapper from "../pages/PageWrapper";
-import { useAppSelector } from '../hooks'
+import PageWrapper from '../pages/PageWrapper'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../store'
 import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
@@ -39,12 +39,19 @@ import { checkCampaignInvitation } from '../services/CampaignInvitationService'
 import Register from '../pages/Register'
 import NotFound from '../pages/NotFound'
 import CampaignInvitationInvalid from '../pages/CampaignInvitationInvalid'
-import { viewCompendium } from '../services/CompendiumService'
-
+import { setLoading } from '../reducers/post/postSlice'
+import { wait } from '@testing-library/user-event/dist/utils'
 
 const Routes = (): JSX.Element => {
 
   const { token } = useAppSelector((state: RootState) => state.auth) // redux
+
+  const dispatch = useAppDispatch()
+
+  const loadPost = useCallback(() => {
+    dispatch(setLoading(true))
+    return wait(200).then(() => true)
+  }, [dispatch])
 
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
@@ -55,8 +62,8 @@ const Routes = (): JSX.Element => {
     {
       path: '/campaigns/:campaignId/invitations/:token',
       element: <CampaignInvitation/>,
-      loader: ({params}) => checkCampaignInvitation(params.campaignId as string, params.token as string)
-          .then(({ data }) => data?.data),
+      loader: ({ params }) => checkCampaignInvitation(params.campaignId as string, params.token as string)
+        .then(({ data }) => data?.data),
       errorElement: <CampaignInvitationInvalid/>
     }
   ]
@@ -77,7 +84,8 @@ const Routes = (): JSX.Element => {
           children: [
             {
               path: '/systems/:systemId',
-              element: <System/>
+              element: <System/>,
+              loader: loadPost
             }
           ]
         },
@@ -88,74 +96,92 @@ const Routes = (): JSX.Element => {
             {
               path: '/compendia/:compendiumId',
               element: <Compendium/>,
+              loader: loadPost
             },
             {
               path: 'characters/:characterId',
               element: <Character/>,
+              loader: loadPost
             },
             {
               path: 'concepts/:conceptId',
               element: <Concept/>,
+              loader: loadPost
             },
             {
               path: 'currencies/:currencyId',
               element: <Currency/>,
+              loader: loadPost
             },
             {
               path: 'deities/:deityId',
               element: <Deity/>,
+              loader: loadPost
             },
             {
               path: 'encounters/:encounterId',
               element: <Encounter/>,
+              loader: loadPost
             },
             {
               path: 'factions/:factionId',
               element: <Faction/>,
+              loader: loadPost
             },
             {
               path: 'items/:itemId',
               element: <Item/>,
+              loader: loadPost
             },
             {
               path: 'languages/:languageId',
               element: <Language/>,
+              loader: loadPost
             },
             {
               path: 'locations/:locationId',
               element: <Location/>,
+              loader: loadPost
             },
             {
               path: 'naturalResources/:naturalResourceId',
               element: <NaturalResource/>,
+              loader: loadPost
             },
             {
               path: 'pantheons/:pantheonId',
               element: <Pantheon/>,
+              loader: loadPost
             },
             {
               path: 'planes/:planeId',
               element: <Plane/>,
+              loader: loadPost
             },
             {
               path: 'quests/:questId',
               element: <Quest/>,
+              loader: loadPost
             },
             {
               path: 'religions/:religionId',
               element: <Religion/>,
+              loader: loadPost
             },
             {
               path: 'species/:speciesId',
               element: <Species/>,
+              loader: loadPost
             },
             {
               path: 'spells/:spellId',
               element: <Spell/>,
+              loader: loadPost
             },
             {
               path: 'stories/:storyId',
               element: <Story/>,
+              loader: loadPost
             },
           ]
         },
@@ -165,11 +191,13 @@ const Routes = (): JSX.Element => {
           children: [
             {
               path: '/campaigns/:campaignId',
-              element: <Campaign/>
+              element: <Campaign/>,
+              loader: loadPost
             },
             {
               path: '/campaigns/:campaignId/sessions/:sessionId',
-              element: <Session/>
+              element: <Session/>,
+              loader: loadPost
             }
           ]
         },
@@ -187,11 +215,13 @@ const Routes = (): JSX.Element => {
           children: [
             {
               path: '/notebooks/:notebookId',
-              element: <Notebook/>
+              element: <Notebook/>,
+              loader: loadPost
             },
             {
               path: '/notebooks/:notebookId/notes/:noteId',
-              element: <Note/>
+              element: <Note/>,
+              loader: loadPost
             }
           ]
         },
