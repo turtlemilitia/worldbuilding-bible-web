@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import bgImage from '../assets/images/darkAlley2.png'
+import bgImage from '../assets/images/darkAlley1.png'
 import Nav from '../components/Nav/Nav'
 import { Outlet } from 'react-router-dom'
 import Footer from '../components/Footer/Footer'

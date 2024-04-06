@@ -29,7 +29,7 @@ import Deity from '../pages/Compendium/Deity'
 import Encounter from '../pages/Compendium/Encounter'
 import NaturalResource from '../pages/Compendium/NaturalResource'
 import Plane from '../pages/Compendium/Plane'
-import Quest from '../pages/Compendium/Quest'
+import Quest from '../pages/Campaign/Quest/Quest'
 import Spell from '../pages/Compendium/Spell'
 import Story from '../pages/Compendium/Story'
 import Pantheon from '../pages/Compendium/Pantheon'
@@ -41,6 +41,9 @@ import NotFound from '../pages/NotFound'
 import CampaignInvitationInvalid from '../pages/CampaignInvitationInvalid'
 import { setLoading } from '../reducers/post/postSlice'
 import { wait } from '@testing-library/user-event/dist/utils'
+import QuestWrapper from '../components/QuestWrapper'
+import EncounterWrapper from '../components/EncounterWrapper'
+import SessionWrapper from '../components/SessionWrapper'
 
 const Routes = (): JSX.Element => {
 
@@ -202,7 +205,7 @@ const Routes = (): JSX.Element => {
                 compendiumRoutes,
                 {
                   path: 'quests',
-                  element: <>TODO</>,
+                  element: <QuestWrapper/>,
                   loader: loadPost,
                   children: [
                     {
@@ -214,7 +217,7 @@ const Routes = (): JSX.Element => {
                 },
                 {
                   path: 'encounters',
-                  element: <>TODO</>,
+                  element: <EncounterWrapper/>,
                   loader: loadPost,
                   children: [
                     {
@@ -226,7 +229,7 @@ const Routes = (): JSX.Element => {
                 },
                 {
                   path: 'sessions',
-                  element: <>TODO</>,
+                  element: <SessionWrapper/>,
                   loader: loadPost,
                   children: [
                     {

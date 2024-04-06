@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX } from 'react'
+import React, { FunctionComponent, JSX, useMemo } from 'react'
 import {
   destroySession,
   storeSession,
@@ -24,6 +24,7 @@ const Session: FunctionComponent = (): JSX.Element => {
 
   const { campaignId, sessionId } = useParams() as { campaignId: string; sessionId: string } // router
 
+  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
   const { session } = useAppSelector((state: RootState) => state.session) // redux
 
   const readyDataForRequest = (data: any): TSessionRequest => ({
@@ -35,22 +36,28 @@ const Session: FunctionComponent = (): JSX.Element => {
     location: data.location,
   })
 
+  const nextSessionNumber = useMemo(
+    () => campaign?.sessions.reduce((prev, { session_number }) => ((prev ? prev : Number(session_number)) + 1), 0),
+    [campaign?.sessions]
+  )
+
   return (
     <Post
       key={sessionId}
       isNew={sessionId === 'new'}
-      pathToNew={(data: TSession) => `/campaigns/${campaignId}/sessions/${data.slug}`}
+      pathToNew={(data) => `/campaigns/${campaignId}/sessions/${data.slug}`}
       pathAfterDelete={`/sessions/${campaignId}`}
+      pageTypeName={'Session'}
       ready={true}
 
       onFetch={() => viewSession(sessionId).then(({ data }) => data.data)}
       onCreate={(data: TSessionRequest) => storeSession(campaignId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onUpdate={(data: TSessionRequest) => updateSession(sessionId, readyDataForRequest(data)).then(({ data }) => data.data)}
       onDelete={() => destroySession(sessionId)}
-      onCreated={(data: TSession) => {
+      onCreated={(data) => {
         dispatch(addCampaignChildData({ field: 'sessions', data: data }))
       }}
-      onUpdated={(data: TSession) => {
+      onUpdated={(data) => {
         dispatch(updateCampaignChildData({ field: 'sessions', data: data }))
       }}
       onDeleted={() => {
@@ -81,6 +88,12 @@ const Session: FunctionComponent = (): JSX.Element => {
           type: 'text'
         }
       ]}
+
+      defaultData={{
+        name: `Session ${nextSessionNumber}`,
+        session_number: nextSessionNumber,
+        scheduled_at: new Date().toISOString().substring(0, 10)
+      }}
 
       persistedData={session as TSession}
       setPersistedData={(data) => dispatch(setSessionData(data))}

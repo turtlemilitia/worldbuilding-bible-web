@@ -1,10 +1,11 @@
 import { AxiosResponse } from 'axios'
-import { TEncounter, TCompendium, TQueryParams } from '../types'
+import { TEncounter, TCampaign, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TEncounterRequest {
   name: string;
   content: string;
+  typeId: number
 }
 type TEncounterResponse = {
   data: TEncounter;
@@ -13,9 +14,9 @@ type TEncounterIndexResponse = {
   data: TEncounter[];
 }
 
-export const indexEncounters = (compendiumId: TCompendium['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TEncounterIndexResponse>> => {
+export const indexEncounters = (campaignId: TCampaign['slug'], query: TQueryParams = {}): Promise<AxiosResponse<TEncounterIndexResponse>> => {
 
-  return api.get(`/api/compendia/${compendiumId}/encounters?${new URLSearchParams(query).toString()}`)
+  return api.get(`/api/campaigns/${campaignId}/encounters?${new URLSearchParams(query).toString()}`)
 
 }
 
@@ -25,9 +26,9 @@ export const viewEncounter = (slug: string, query: TQueryParams = {}): Promise<A
 
 }
 
-export const storeEncounter = (compendiumId: TCompendium['slug'], data: TEncounterRequest): Promise<AxiosResponse<TEncounterResponse>> => {
+export const storeEncounter = (campaignId: TCampaign['slug'], data: TEncounterRequest): Promise<AxiosResponse<TEncounterResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/encounters`, data)
+  return api.post(`/api/campaigns/${campaignId}/encounters`, data)
 
 }
 

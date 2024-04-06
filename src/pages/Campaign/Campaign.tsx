@@ -49,19 +49,24 @@ const Campaign: FunctionComponent = (): JSX.Element => {
         invitations={campaign.invitations || []}
         onSubmit={(email) => createCampaignInvitation(campaign.slug, { email })
           .then((response) => {
-            const newInvitationData = response.data.data;
+            const newInvitationData = response.data.data
             dispatch(addCampaignChildData({ field: 'invitations', data: newInvitationData }))
           })
         }
       />
-    },
-    {
-      name: 'compendium',
-      label: 'Compendium',
-      type: 'select',
-      options: compendia
     }
-  ] : [];
+  ] : []
+
+  if (compendia.length > 0) {
+    fields.push(
+      {
+        name: 'compendium',
+        label: 'Compendium',
+        type: 'select',
+        options: compendia
+      }
+    )
+  }
 
   return (
     <Post

@@ -20,6 +20,8 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   onUpdated,
   onDeleted,
 
+  defaultData = {},
+
   persistedData,
   setPersistedData,
   updatePersistedData,
@@ -59,8 +61,8 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
     // persisted data doesn't seem to be changing the new data when it changes
     if (!persistedData?.id) {
-      setFetchedData(persistedData)
-      setNewData(persistedData)
+      setFetchedData(defaultData)
+      setNewData(defaultData)
     }
 
   }, [persistedData])
