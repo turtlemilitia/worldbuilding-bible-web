@@ -98,7 +98,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
     to: `${prefix}/locations/${location.slug}`,
     icon: (props) => <MapPinIcon {...props}/>,
     addNewLink: `${prefix}/locations/new`,
-    addNewLinkState: { parent: location },
+    addNewLinkState: { parent: location.id },
     onDelete: () => destroyLocation(location.slug)
       .then(() => onDeleted('locations', location.slug)),
     hasChildren: location.hasSubLocations,

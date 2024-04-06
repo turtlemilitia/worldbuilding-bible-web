@@ -34,7 +34,8 @@ const Location: FunctionComponent = (): JSX.Element => {
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
-  const { parent } = useLocation() as { parent?: TLocation } // use this to populate
+
+  const { state: locationState } = useLocation()
 
   const [ready, setReady] = useState<boolean>(false)
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>()
@@ -154,6 +155,10 @@ const Location: FunctionComponent = (): JSX.Element => {
       }}
 
       fields={fields}
+
+      defaultData={{
+        parent: locationState?.parent ? compendium?.locations?.find(compendiumLocation => compendiumLocation.id === locationState.parent) : undefined,
+      }}
 
       persistedData={location as TLocation}
       setPersistedData={(data) => dispatch(setLocationData(data))}

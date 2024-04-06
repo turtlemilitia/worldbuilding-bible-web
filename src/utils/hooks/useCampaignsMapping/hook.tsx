@@ -38,7 +38,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
     to: `${prefix}/quests/${quest.slug}`,
     icon: (props) => <StarIcon {...props}/>,
     addNewLink: `${prefix}/quests/new`,
-    addNewLinkState: { parent: quest },
+    addNewLinkState: { type: quest.type.id, parent: quest.id },
     onDelete: () => destroyQuest(quest.slug)
       .then(() => onDeleted('quests', quest.slug)),
     children: quest.children?.map(subQuest => mapQuest(subQuest))

@@ -91,7 +91,10 @@ const Quest: FunctionComponent = (): JSX.Element => {
 
       fields={fields}
 
-      defaultData={{ type: locationState?.type ? types?.find(type => type.id === locationState.type) : undefined }}
+      defaultData={{
+        type: locationState?.type ? types?.find(type => type.id === locationState.type) : undefined,
+        parent: locationState?.parent ? campaign?.quests?.find(campaignQuest => campaignQuest.id === locationState.parent) : undefined,
+      }}
 
       persistedData={quest as TQuest}
       setPersistedData={(data) => dispatch(setQuestData(data))}
