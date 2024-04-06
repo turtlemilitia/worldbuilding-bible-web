@@ -32,7 +32,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
               <ul>
                 {value.map((item) => (
                   <li key={item.id} className="py-1">
-                    {link ? <Link to={link(item.slug as string)}>{item.name}</Link> : item.name}
+                    {link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link> : item.name}
                   </li>
                 ))}
               </ul>

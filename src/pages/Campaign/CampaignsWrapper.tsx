@@ -19,7 +19,7 @@ const CampaignsWrapper = (): JSX.Element => {
 
   useEffect(() => {
     if (!isNew()) {
-      viewCampaign(campaignId, { include: 'sessions;compendium;quests;quests.type;encounters;encounters.type;sessions' })
+      viewCampaign(campaignId, { include: 'sessions;compendium;quests;quests.type;quests.parent;encounters;encounters.type;sessions' })
         .then(({ data }) => {
           dispatch(updateCampaignData(data.data))
         })

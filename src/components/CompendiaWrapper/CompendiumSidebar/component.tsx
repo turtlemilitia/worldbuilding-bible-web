@@ -32,7 +32,7 @@ import { indexNaturalResources } from '../../../services/NaturalResourceService'
 import { indexPlanes } from '../../../services/PlaneService'
 import { indexStories } from '../../../services/StoryService'
 import useCompendiaMapping from '../useCompendiaMapping'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useMemo } from 'react'
 import { TCompendiumSidebarProps } from './types'
 import { createNestedArray } from '../../../utils/treeUtils'
 import { useAppDispatch } from '../../../hooks'
@@ -42,7 +42,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
 
   const dispatch = useAppDispatch()
 
-  const nestedLocations = createNestedArray(compendium.locations || [])
+  const nestedLocations = useMemo(() => createNestedArray(compendium.locations || []), [compendium.locations])
 
   const { campaignId, compendiumId } = useParams()
 

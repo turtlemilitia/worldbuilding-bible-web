@@ -37,8 +37,11 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
     title: quest.name,
     to: `${prefix}/quests/${quest.slug}`,
     icon: (props) => <StarIcon {...props}/>,
+    addNewLink: `${prefix}/quests/new`,
+    addNewLinkState: { parent: quest },
     onDelete: () => destroyQuest(quest.slug)
-      .then(() => onDeleted('quests', quest.slug))
+      .then(() => onDeleted('quests', quest.slug)),
+    children: quest.children?.map(subQuest => mapQuest(subQuest))
   })
 
   const mapSession = (session: TSession): SidebarItemInterface => ({

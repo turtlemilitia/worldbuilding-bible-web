@@ -6,6 +6,7 @@ export interface TQuestRequest {
   name: string;
   typeId: number;
   content: string;
+  parentId?: number;
 }
 type TQuestResponse = {
   data: TQuest;

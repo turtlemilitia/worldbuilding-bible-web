@@ -12,11 +12,13 @@ import {
 import { TQuest } from '../../../types'
 import Post from '../../../components/Post'
 import { QuestWrapperContext } from '../../../components/QuestWrapper/component'
+import { TFields } from '../../../components/InfoBar'
 
-const include = 'type'
+const include = 'type;parent'
 
 const Quest: FunctionComponent = (): JSX.Element => {
 
+  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
   const { quest } = useAppSelector((state: RootState) => state.quest) // redux
 
   const dispatch = useAppDispatch() // redux
@@ -27,7 +29,7 @@ const Quest: FunctionComponent = (): JSX.Element => {
 
   const [ready, setReady] = useState<boolean>(false)
 
-  const types = useContext(QuestWrapperContext);
+  const types = useContext(QuestWrapperContext)
 
   useEffect(() => {
 
@@ -41,7 +43,27 @@ const Quest: FunctionComponent = (): JSX.Element => {
     name: data.name,
     content: data.content,
     typeId: data.type.id,
+    parentId: data.parent?.id,
   })
+
+  const fields: TFields[] = [
+    {
+      name: 'type',
+      label: 'Type',
+      type: 'select',
+      options: types ?? [],
+    }
+  ]
+  if (campaign?.quests.length) {
+    fields.push(
+      {
+        name: 'parent',
+        label: 'Parent',
+        type: 'select',
+        options: campaign?.quests.filter(campaignQuest => campaignQuest.id !== quest.id) ?? []
+      }
+    )
+  }
 
   return (
     <Post
@@ -51,6 +73,7 @@ const Quest: FunctionComponent = (): JSX.Element => {
       pathAfterDelete={`/campaigns/${campaignId}`}
       pageTypeName={'Quest'}
       ready={ready}
+      mapData={readyDataForRequest}
 
       onFetch={() => viewQuest(questId, { include }).then(({ data }) => data.data)}
       onCreate={(data: TQuestRequest) => storeQuest(campaignId, readyDataForRequest(data), { include }).then(({ data }) => data.data)}
@@ -66,14 +89,7 @@ const Quest: FunctionComponent = (): JSX.Element => {
         dispatch(removeCampaignChildData({ field: 'quests', id: questId }))
       }}
 
-      fields={[
-        {
-          name: 'type',
-          label: 'Type',
-          type: 'select',
-          options: types ?? []
-        }
-      ]}
+      fields={fields}
 
       defaultData={{ type: locationState?.type ? types?.find(type => type.id === locationState.type) : undefined }}
 

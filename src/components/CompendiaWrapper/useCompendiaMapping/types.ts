@@ -19,7 +19,5 @@ export type TUseCompendiaMapping = (props: TUseCompendiaMappingProps) => {
   mapNaturalResource: (data: any) => SidebarItemInterface;
   mapPlane: (data: any) => SidebarItemInterface;
   mapDeity: (data: any) => SidebarItemInterface;
-  mapQuest: (data: any) => SidebarItemInterface;
   mapSpell: (data: any) => SidebarItemInterface;
-  mapEncounter: (data: any) => SidebarItemInterface;
 }

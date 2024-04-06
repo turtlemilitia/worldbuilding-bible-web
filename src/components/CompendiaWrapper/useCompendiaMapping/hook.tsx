@@ -3,7 +3,6 @@ import {
   TConcept,
   TCurrency,
   TDeity,
-  TEncounter,
   TFaction,
   TItem,
   TLanguage,
@@ -11,7 +10,6 @@ import {
   TNaturalResource,
   TPantheon,
   TPlane,
-  TQuest,
   TReligion,
   TSpecies,
   TSpell,
@@ -33,7 +31,6 @@ import {
   StarIcon,
   SunIcon,
   SwordIcon,
-  SwordsIcon,
   UserIcon,
   Wand2Icon
 } from 'lucide-react'
@@ -55,9 +52,7 @@ import { destroyStory } from '../../../services/StoryService'
 import { destroyNaturalResource } from '../../../services/NaturalResourceService'
 import { destroyPlane } from '../../../services/PlaneService'
 import { destroyDeity } from '../../../services/DeityService'
-import { destroyQuest } from '../../../services/QuestService'
 import { destroySpell } from '../../../services/SpellService'
-import { destroyEncounter } from '../../../services/EncounterService'
 import { useAppDispatch } from '../../../hooks'
 
 const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
@@ -190,28 +185,12 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
       .then(() => onDeleted('deities', deity.slug))
   })
 
-  const mapQuest = (quest: TQuest): SidebarItemInterface => ({
-    title: quest.name,
-    to: `${prefix}/quests/${quest.slug}`,
-    icon: (props) => <StarIcon {...props}/>,
-    onDelete: () => destroyQuest(quest.slug)
-      .then(() => onDeleted('quests', quest.slug))
-  })
-
   const mapSpell = (spell: TSpell): SidebarItemInterface => ({
     title: spell.name,
     to: `${prefix}/spells/${spell.slug}`,
     icon: (props) => <Wand2Icon {...props}/>,
     onDelete: () => destroySpell(spell.slug)
       .then(() => onDeleted('spells', spell.slug))
-  })
-
-  const mapEncounter = (encounter: TEncounter): SidebarItemInterface => ({
-    title: encounter.name,
-    to: `${prefix}/encounters/${encounter.slug}`,
-    icon: (props) => <SwordsIcon {...props}/>,
-    onDelete: () => destroyEncounter(encounter.slug)
-      .then(() => onDeleted('encounters', encounter.slug))
   })
 
   return {
@@ -229,9 +208,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
     mapNaturalResource,
     mapPlane,
     mapDeity,
-    mapQuest,
     mapSpell,
-    mapEncounter,
   }
 }
 

@@ -33,7 +33,7 @@ export type TGenericPost = {
   content: string;
 }
 
-type TOptionList = {
+export type TOptionList = {
   id: number;
   name: string;
 }
@@ -118,7 +118,9 @@ export type TPantheon = TGenericPost & TPlayerTools & TCanHaveImages
 export type TQuestType = TOptionList
 
 export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages & {
-  type: TQuestType
+  type: TQuestType,
+  parent?: TQuest,
+  children?: TQuest[]
 }
 
 export type TReligion = TGenericPost & TPlayerTools & TCanHaveImages
