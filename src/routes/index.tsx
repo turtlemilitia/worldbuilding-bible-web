@@ -26,14 +26,14 @@ import Session from '../pages/Campaign/Session'
 import Religion from '../pages/Compendium/Religion'
 import Currency from '../pages/Compendium/Currency'
 import Deity from '../pages/Compendium/Deity'
-import Encounter from '../pages/Compendium/Encounter'
+import Encounter from '../pages/Campaign/Encounter/Encounter'
 import NaturalResource from '../pages/Compendium/NaturalResource'
 import Plane from '../pages/Compendium/Plane'
 import Quest from '../pages/Campaign/Quest/Quest'
 import Spell from '../pages/Compendium/Spell'
 import Story from '../pages/Compendium/Story'
 import Pantheon from '../pages/Compendium/Pantheon'
-import CompendiaWrapper from '../components/CompendiaWrapper/component'
+import CompendiaWrapper from '../components/CompendiaWrapper/CompendiaWrapper'
 import CampaignInvitation from '../pages/CampaignInvitation'
 import { checkCampaignInvitation } from '../services/CampaignInvitationService'
 import Register from '../pages/Register'
@@ -127,7 +127,7 @@ const Routes = (): JSX.Element => {
             loader: loadPost
           },
           {
-            path: 'naturalResources/:naturalResourceId',
+            path: 'natural-resources/:naturalResourceId',
             element: <NaturalResource/>,
             loader: loadPost
           },

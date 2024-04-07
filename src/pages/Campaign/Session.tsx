@@ -15,7 +15,7 @@ import {
   updateCampaignChildData
 } from '../../reducers/campaign/campaignSlice'
 import { TSession } from '../../types'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post/Post'
 import { removeCompendiumChildData } from '../../reducers/compendium/compendiumSlice'
 
 const Session: FunctionComponent = (): JSX.Element => {
@@ -45,9 +45,11 @@ const Session: FunctionComponent = (): JSX.Element => {
     <Post
       key={sessionId}
       isNew={sessionId === 'new'}
+      pageTypeName={'Session'}
       pathToNew={(data) => `/campaigns/${campaignId}/sessions/${data.slug}`}
       pathAfterDelete={`/sessions/${campaignId}`}
-      pageTypeName={'Session'}
+      canEdit={session.canUpdate}
+      canDelete={session.canDelete}
       ready={true}
 
       onFetch={() => viewSession(sessionId).then(({ data }) => data.data)}

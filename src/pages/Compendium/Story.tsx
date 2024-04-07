@@ -10,6 +10,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import { TStory } from '../../types'
 import Post from '../../components/Post'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Story: FunctionComponent = (): JSX.Element => {
 
@@ -18,6 +19,8 @@ const Story: FunctionComponent = (): JSX.Element => {
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, storyId } = useParams() as { compendiumId: string; storyId: string } // router
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TStoryRequest => ({
     name: data.name,
@@ -28,8 +31,11 @@ const Story: FunctionComponent = (): JSX.Element => {
     <Post
       key={storyId}
       isNew={storyId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/stories/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Lore/History'}
+      pathToNew={(data) => `${compendiumPath}/stories/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={story.canUpdate}
+      canDelete={story.canDelete}
       ready={true}
 
       onFetch={() => viewStory(storyId).then(({ data }) => data.data)}

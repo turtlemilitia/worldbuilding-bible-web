@@ -14,6 +14,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TItem } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Item: FunctionComponent = (): JSX.Element => {
 
@@ -22,6 +23,8 @@ const Item: FunctionComponent = (): JSX.Element => {
   const { compendiumId, itemId } = useParams() as { compendiumId: string; itemId: string } // router
 
   const { item } = useAppSelector((state: RootState) => state.item) // redux
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TItemRequest => ({
     name: data.name,
@@ -32,8 +35,11 @@ const Item: FunctionComponent = (): JSX.Element => {
     <Post
       key={itemId}
       isNew={itemId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/items/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Item'}
+      pathToNew={(data) => `${compendiumPath}/items/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={item.canUpdate}
+      canDelete={item.canDelete}
       ready={true}
 
       onFetch={() => viewItem(itemId).then(({ data }) => data.data)}

@@ -15,6 +15,7 @@ export type TSelectOption = {
 type TProps = TFields & {
   currentValue?: any,
   onChange: (name: string, value: any) => any,
+  disabled?: boolean
 }
 
 const valueAsString = (value: any): string => {
@@ -46,7 +47,8 @@ const FieldMapper: FunctionComponent<TProps> = ({
   onChange,
   search,
   link,
-  Callback
+  Callback,
+  disabled
 }) => {
   return (
     <li>
@@ -61,10 +63,10 @@ const FieldMapper: FunctionComponent<TProps> = ({
         ) : (
           <div className="font-light">
             {type === 'select' && options?.length && (
-              <SelectField value={currentValue} onChange={(value) => onChange(name, value)} options={options}/>
+              <SelectField value={currentValue} onChange={(value) => onChange(name, value)} options={options} disabled={disabled}/>
             )}
             {type === 'asyncSelect' && search && (
-              <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search}/>
+              <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search} disabled={disabled}/>
             )}
             {type === 'asyncMultiSelect' && search && (
               <MultipleAsyncSelectField
@@ -72,18 +74,22 @@ const FieldMapper: FunctionComponent<TProps> = ({
                 onChange={(value) => onChange(name, value)}
                 link={link}
                 search={search}
+                disabled={disabled}
               />
             )}
             {['text', 'number', 'email', 'password'].includes(type) && (
               <TextField
                 value={currentValue}
                 onChange={(value) => onChange(name, value)}
-                type={type}/>
+                type={type}
+                disabled={disabled}
+              />
             )}
             {type === 'listAdd' && (
               <ListAddName
                 value={currentValue}
                 onSubmit={(value) => onChange(name, [...currentValue, value])}
+                disabled={!disabled}
               />
             )}
             {type === 'callback' && Callback && (

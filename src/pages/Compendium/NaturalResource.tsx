@@ -20,6 +20,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import { TNaturalResource } from '../../types'
 import Post from '../../components/Post'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const NaturalResource: FunctionComponent = (): JSX.Element => {
 
@@ -28,6 +29,8 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, naturalResourceId } = useParams() as { compendiumId: string; naturalResourceId: string } // router
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TNaturalResourceRequest => ({
     name: data.name,
@@ -38,8 +41,11 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
     <Post
       key={naturalResourceId}
       isNew={naturalResourceId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/naturalResources/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Natural Resource'}
+      pathToNew={(data) => `${compendiumPath}/naturalResources/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={naturalResource.canUpdate}
+      canDelete={naturalResource.canDelete}
       ready={true}
 
       onFetch={() => viewNaturalResource(naturalResourceId).then(({ data }) => data.data)}

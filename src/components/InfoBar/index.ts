@@ -1,4 +1,4 @@
-import InfoBar from "./component";
+import InfoBar from "./InfoBar";
 import { TFields } from "./types";
 
 export {

@@ -12,7 +12,7 @@ import {
 } from '../../services/NotebookService'
 import { TNotebook } from '../../types'
 import { addNotebook, removeNotebook, updateNotebooksNotebookData } from '../../reducers/notebook/notebooksIndexSlice'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post/Post'
 
 const Notebook = (): JSX.Element => {
 
@@ -34,6 +34,8 @@ const Notebook = (): JSX.Element => {
       pageTypeName={'Notebook'}
       pathToNew={(data) => `/notebooks/${data.slug}`}
       pathAfterDelete={`/`}
+      canEdit={notebook && notebook.canUpdate}
+      canDelete={notebook && notebook.canDelete}
       ready={true}
 
       onFetch={() => viewNotebook(notebookId).then(({ data }) => data.data)}

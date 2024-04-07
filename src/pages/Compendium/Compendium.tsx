@@ -55,8 +55,11 @@ const Compendium: FunctionComponent = (): JSX.Element => {
     <Post
       key={compendiumId}
       isNew={compendiumId === 'new'}
+      pageTypeName={'Compendium'}
       pathToNew={(data) => `/compendia/${data.slug}`}
       pathAfterDelete={`/`}
+      canEdit={compendium && compendium.canUpdate}
+      canDelete={compendium && compendium.canDelete}
       ready={true}
 
       onFetch={() => viewCompendium(compendiumId, { include: includes }).then(({data}) => data.data)}

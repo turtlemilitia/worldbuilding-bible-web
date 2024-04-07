@@ -1,4 +1,4 @@
-import React, { JSX, PropsWithChildren } from 'react'
+import React, { JSX, PropsWithChildren, useEffect } from 'react'
 import { THeaderWrapperProps } from './types'
 import { CoverImagePicker } from '../CoverImagePicker'
 import bgImage from '../../assets/images/darkAlley1.png'

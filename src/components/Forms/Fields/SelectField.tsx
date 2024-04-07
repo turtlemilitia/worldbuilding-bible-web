@@ -6,9 +6,10 @@ import { TSelectOption } from './FieldMapper'
 type TProp = {
   value: TSelectOption|null;
   onChange: (value: TSelectOption|null) => any;
-  options: (TSelectOption|null)[]
+  options: (TSelectOption|null)[];
+  disabled?: boolean
 }
-const SelectField: FunctionComponent<TProp> = ({ value, onChange, options }) => {
+const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disabled }) => {
   const [query, setQuery] = useState('')
 
   const filteredOptions =
@@ -20,7 +21,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options }) => 
 
   return (
     <div className="relative">
-      <Combobox value={value} onChange={onChange} nullable>
+      <Combobox value={value} onChange={onChange} nullable disabled={disabled}>
         {({ open }) => (
           <>
             <Combobox.Button
@@ -29,7 +30,9 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options }) => 
                 className="w-full bg-transparent outline-none"
                 onChange={(event) => setQuery(event.target.value)}
                 displayValue={(option: TSelectOption) => option?.name}/>
-              <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
+              {!disabled && (
+                <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
+              )}
             </Combobox.Button>
             <Transition
               show={open}

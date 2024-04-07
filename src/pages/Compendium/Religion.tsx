@@ -20,6 +20,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TReligion } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Religion: FunctionComponent = (): JSX.Element => {
 
@@ -28,6 +29,8 @@ const Religion: FunctionComponent = (): JSX.Element => {
   const { compendiumId, religionId } = useParams() as { compendiumId: string; religionId: string } // router
 
   const { religion } = useAppSelector((state: RootState) => state.religion) // redux
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TReligionRequest => ({
     name: data.name,
@@ -38,8 +41,11 @@ const Religion: FunctionComponent = (): JSX.Element => {
     <Post
       key={religionId}
       isNew={religionId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/religions/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Religion'}
+      pathToNew={(data) => `${compendiumPath}/religions/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={religion.canUpdate}
+      canDelete={religion.canDelete}
       ready={true}
 
       onFetch={() => viewReligion(religionId).then(({ data }) => data.data)}

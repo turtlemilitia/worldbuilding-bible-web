@@ -14,6 +14,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TSpell } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Spell: FunctionComponent = (): JSX.Element => {
 
@@ -22,6 +23,8 @@ const Spell: FunctionComponent = (): JSX.Element => {
   const { compendiumId, spellId } = useParams() as { compendiumId: string; spellId: string } // router
 
   const { spell } = useAppSelector((state: RootState) => state.spell) // redux
+
+  const { compendiumPath } = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TSpellRequest => ({
     name: data.name,
@@ -32,8 +35,11 @@ const Spell: FunctionComponent = (): JSX.Element => {
     <Post
       key={spellId}
       isNew={spellId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/spells/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Spell'}
+      pathToNew={(data) => `${compendiumPath}/spells/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={spell.canUpdate}
+      canDelete={spell.canDelete}
       ready={true}
 
       onFetch={() => viewSpell(spellId).then(({ data }) => data.data)}

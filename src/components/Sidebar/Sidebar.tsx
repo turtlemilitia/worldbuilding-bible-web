@@ -14,7 +14,7 @@ export interface SidebarItemInterface {
   children?: SidebarItemInterface[];
   loadChildren?: () => any,
   startOpen?: boolean,
-  onDelete?: () => any
+  onDelete?: () => any;
 }
 
 interface TOwnProps {

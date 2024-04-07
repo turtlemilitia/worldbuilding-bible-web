@@ -69,9 +69,11 @@ const Quest: FunctionComponent = (): JSX.Element => {
     <Post
       key={questId}
       isNew={questId === 'new'}
+      pageTypeName={'Quest'}
       pathToNew={(data) => `/campaigns/${campaignId}/quests/${data.slug}`}
       pathAfterDelete={`/campaigns/${campaignId}`}
-      pageTypeName={'Quest'}
+      canEdit={quest.canUpdate}
+      canDelete={quest.canDelete}
       ready={ready}
       mapData={readyDataForRequest}
 

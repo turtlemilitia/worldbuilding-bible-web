@@ -20,6 +20,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TConcept } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Concept: FunctionComponent = (): JSX.Element => {
 
@@ -28,6 +29,8 @@ const Concept: FunctionComponent = (): JSX.Element => {
   const { compendiumId, conceptId } = useParams() as { compendiumId: string; conceptId: string } // router
 
   const { concept } = useAppSelector((state: RootState) => state.concept) // redux
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TConceptRequest => ({
     name: data.name,
@@ -38,8 +41,11 @@ const Concept: FunctionComponent = (): JSX.Element => {
     <Post
       key={conceptId}
       isNew={conceptId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/concepts/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Concept'}
+      pathToNew={(data) => `${compendiumPath}/concepts/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={concept.canUpdate}
+      canDelete={concept.canDelete}
       ready={true}
 
       onFetch={() => viewConcept(conceptId).then(({ data }) => data.data)}

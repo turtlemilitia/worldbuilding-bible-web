@@ -19,4 +19,5 @@ export type TInfoBarProps<T> = {
   fields: TFields[],
   profileImage?: string
   onProfileImageSelected?: (imageId: number) => Promise<any>;
+  disabled?: boolean
 }

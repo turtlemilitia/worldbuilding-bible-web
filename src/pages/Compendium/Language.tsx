@@ -20,6 +20,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TLanguage } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Language: FunctionComponent = (): JSX.Element => {
 
@@ -28,6 +29,8 @@ const Language: FunctionComponent = (): JSX.Element => {
   const { compendiumId, languageId } = useParams() as { compendiumId: string; languageId: string } // router
 
   const { language } = useAppSelector((state: RootState) => state.language) // redux
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TLanguageRequest => ({
     name: data.name,
@@ -38,8 +41,11 @@ const Language: FunctionComponent = (): JSX.Element => {
     <Post
       key={languageId}
       isNew={languageId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/languages/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Language'}
+      pathToNew={(data) => `${compendiumPath}/languages/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={language.canUpdate}
+      canDelete={language.canDelete}
       ready={true}
 
       onFetch={() => viewLanguage(languageId).then(({ data }) => data.data)}

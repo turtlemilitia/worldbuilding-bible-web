@@ -10,8 +10,9 @@ type TProp = {
   onChange: (value: TSelectOption[]) => any;
   search: (term: string) => Promise<TSelectOption[]>;
   link?: (id: number | string) => string;
+  disabled?: boolean
 }
-const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link }) => {
+const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([])
 
@@ -25,7 +26,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
 
   return (
     <div className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
-      <Combobox value={value} by="id" onChange={onChange} multiple>
+      <Combobox value={value} by="id" onChange={onChange} multiple disabled={disabled}>
         {({ open }) => (
           <>
             {value && value.length > 0 ? (
@@ -44,7 +45,9 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
               <Combobox.Input
                 className="w-full bg-transparent outline-none"
                 onChange={handleSearch}/>
-              <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
+              {!disabled && (
+                <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
+              )}
             </Combobox.Button>
             <Transition
               show={open}

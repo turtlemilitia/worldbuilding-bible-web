@@ -20,6 +20,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TFaction } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Faction: FunctionComponent = (): JSX.Element => {
 
@@ -28,6 +29,8 @@ const Faction: FunctionComponent = (): JSX.Element => {
   const { compendiumId, factionId } = useParams() as { compendiumId: string; factionId: string } // router
 
   const { faction } = useAppSelector((state: RootState) => state.faction) // redux
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TFactionRequest => ({
     name: data.name,
@@ -40,8 +43,11 @@ const Faction: FunctionComponent = (): JSX.Element => {
     <Post
       key={factionId}
       isNew={factionId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/factions/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Faction'}
+      pathToNew={(data) => `${compendiumPath}/factions/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={faction.canUpdate}
+      canDelete={faction.canDelete}
       ready={true}
 
       onFetch={() => viewFaction(factionId).then(({ data }) => data.data)}

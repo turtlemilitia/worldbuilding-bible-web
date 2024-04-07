@@ -14,6 +14,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TDeity } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Deity: FunctionComponent = (): JSX.Element => {
 
@@ -22,6 +23,8 @@ const Deity: FunctionComponent = (): JSX.Element => {
   const { compendiumId, deityId } = useParams() as { compendiumId: string; deityId: string } // router
 
   const { deity } = useAppSelector((state: RootState) => state.deity) // redux
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TDeityRequest => ({
     name: data.name,
@@ -32,8 +35,11 @@ const Deity: FunctionComponent = (): JSX.Element => {
     <Post
       key={deityId}
       isNew={deityId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/deities/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Deity'}
+      pathToNew={(data) => `${compendiumPath}/deities/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={deity.canUpdate}
+      canDelete={deity.canDelete}
       ready={true}
 
       onFetch={() => viewDeity(deityId).then(({ data }) => data.data)}

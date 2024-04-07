@@ -32,7 +32,7 @@ import { indexNaturalResources } from '../../../services/NaturalResourceService'
 import { indexPlanes } from '../../../services/PlaneService'
 import { indexStories } from '../../../services/StoryService'
 import useCompendiaMapping from '../useCompendiaMapping'
-import { FunctionComponent, useMemo } from 'react'
+import { FunctionComponent, useCallback, useMemo } from 'react'
 import { TCompendiumSidebarProps } from './types'
 import { createNestedArray } from '../../../utils/treeUtils'
 import { useAppDispatch } from '../../../hooks'
@@ -67,10 +67,17 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     mapStory
   } = useCompendiaMapping({ prefix })
 
+  const addNewLink = useCallback((typePlural: string): string|undefined => {
+    if (compendium.canUpdate) {
+      return `${prefix}/${typePlural}/new`
+    }
+    return undefined
+  }, [compendium.canUpdate])
+
   const items: SidebarItemInterface[] = [
     {
       title: 'Bestiary',
-      addNewLink: `${prefix}/species/new`,
+      addNewLink: addNewLink('species'),
       icon: (props) => <CatIcon {...props}/>,
       children: compendium.species?.map(species => mapSpecies(species)),
       loadChildren: () => {
@@ -82,7 +89,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Characters',
-      addNewLink: `${prefix}/characters/new`,
+      addNewLink: addNewLink('characters'),
       icon: (props) => <PersonStandingIcon {...props}/>,
       children: compendium.characters?.map(character => mapCharacter(character)),
       loadChildren: () => {
@@ -94,7 +101,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Concepts',
-      addNewLink: `${prefix}/concepts/new`,
+      addNewLink: addNewLink('concepts'),
       icon: (props) => <CircleEllipsisIcon {...props}/>,
       children: compendium.concepts?.map(concept => mapConcept(concept)),
       loadChildren: () => {
@@ -110,7 +117,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
       children: [
         {
           title: 'Languages',
-          addNewLink: `${prefix}/languages/new`,
+          addNewLink: addNewLink('languages'),
           icon: (props) => <LanguagesIcon {...props}/>,
           children: compendium.languages?.map(language => mapLanguage(language)),
           loadChildren: () => {
@@ -126,7 +133,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
           children: [
             {
               title: 'Religions',
-              addNewLink: `${prefix}/religions/new`,
+              addNewLink: addNewLink('religions'),
               icon: (props) => <ChurchIcon {...props}/>,
               children: compendium.religions?.map(currency => mapReligion(currency)),
               loadChildren: () => {
@@ -138,7 +145,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
             },
             {
               title: 'Pantheons',
-              addNewLink: `${prefix}/pantheons/new`,
+              addNewLink: addNewLink('pantheons'),
               icon: (props) => <SunIcon {...props}/>,
               children: compendium.pantheons?.map(pantheon => mapPantheon(pantheon)),
               loadChildren: () => {
@@ -150,7 +157,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
             },
             {
               title: 'Deities',
-              addNewLink: `${prefix}/deities/new`,
+              addNewLink: addNewLink('deities'),
               icon: (props) => <PersonStandingIcon {...props}/>,
               children: compendium.deities?.map(deity => mapDeity(deity)),
               loadChildren: () => {
@@ -164,7 +171,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
         },
         {
           title: 'Currencies',
-          addNewLink: `${prefix}/currencies/new`,
+          addNewLink: addNewLink('currencies'),
           icon: (props) => <CoinsIcon {...props}/>,
           children: compendium.currencies?.map(currency => mapCurrency(currency)),
           loadChildren: () => {
@@ -178,7 +185,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Factions & Societies',
-      addNewLink: `${prefix}/factions/new`,
+      addNewLink: addNewLink('factions'),
       icon: (props) => <ShieldIcon {...props}/>,
       children: compendium.factions?.map(faction => mapFaction(faction)),
       loadChildren: () => {
@@ -190,7 +197,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Geography',
-      addNewLink: `${prefix}/locations/new`,
+      addNewLink: addNewLink('locations'),
       icon: (props) => <MapIcon {...props}/>,
       children: nestedLocations?.map(location => mapLocation(location)),
       loadChildren: () => {
@@ -202,7 +209,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Items',
-      addNewLink: `${prefix}/items/new`,
+      addNewLink: addNewLink('items'),
       icon: (props) => <SwordIcon {...props}/>,
       children: compendium.items?.map(item => mapItem(item)),
       loadChildren: () => {
@@ -214,7 +221,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Natural Resources',
-      addNewLink: `${prefix}/naturalResources/new`,
+      addNewLink: addNewLink('naturalResources'),
       icon: (props) => <FlowerIcon {...props}/>,
       children: compendium.naturalResources?.map(naturalResource => mapNaturalResource(naturalResource)),
       loadChildren: () => {
@@ -226,7 +233,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Planes',
-      addNewLink: `${prefix}/planes/new`,
+      addNewLink: addNewLink('planes'),
       icon: (props) => <CircleIcon {...props}/>,
       children: compendium.planes?.map(plane => mapPlane(plane)),
       loadChildren: () => {
@@ -238,7 +245,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Lore & History',
-      addNewLink: `${prefix}/stories/new`,
+      addNewLink: addNewLink('stories'),
       icon: (props) => <BookIcon {...props}/>,
       children: compendium.stories?.map(story => mapStory(story)),
       loadChildren: () => {
@@ -250,7 +257,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     },
     {
       title: 'Spells',
-      addNewLink: `${prefix}/spells/new`,
+      addNewLink: addNewLink('spells'),
       icon: (props) => <WandIcon {...props}/>,
       children: compendium.spells?.map(spell => mapSpell(spell)),
       loadChildren: () => {

@@ -23,6 +23,7 @@ import { attachLanguageToCharacter, detachLanguageFromCharacter, indexLanguages 
 import { filterDataByKeys } from '../../utils/dataUtils'
 import { attachFactionToCharacter, detachFactionFromCharacter, indexFactions } from '../../services/FactionService'
 import useImageSelection from '../../utils/hooks/useImageSelection'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Character: FunctionComponent = (): JSX.Element => {
 
@@ -190,6 +191,8 @@ const Character: FunctionComponent = (): JSX.Element => {
       });
   }
 
+  const {compendiumPath} = useUrlFormatter()
+
   const getImage = useCallback((type: 'cover'|'profile') => character.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [character.images])
 
   return (
@@ -197,8 +200,10 @@ const Character: FunctionComponent = (): JSX.Element => {
       key={characterId}
       isNew={characterId === 'new'}
       pageTypeName={'Character'}
-      pathToNew={(data) => `/compendia/${compendiumId}/characters/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pathToNew={(data) => `${compendiumPath}/characters/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={character.canUpdate}
+      canDelete={character.canDelete}
       ready={ready}
       mapData={readyDataForRequest}
 

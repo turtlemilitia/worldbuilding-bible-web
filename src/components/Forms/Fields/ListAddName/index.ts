@@ -1,4 +1,4 @@
-import ListAddName from './component'
+import ListAddName from './ListAddName'
 
 export {}
 

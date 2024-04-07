@@ -6,7 +6,7 @@ import { TTypesAllowed } from '../../types'
 import ProfileImage from '../ProfileImage'
 import { Transition } from '@headlessui/react'
 
-const InfoBar: FunctionComponent<TInfoBarProps<any>> = ({ loading, onChange, data, fields, profileImage, onProfileImageSelected }): JSX.Element => {
+const InfoBar: FunctionComponent<TInfoBarProps<any>> = ({ loading, onChange, data, fields, profileImage, onProfileImageSelected, disabled }): JSX.Element => {
 
   return (
     <Transition
@@ -29,6 +29,7 @@ const InfoBar: FunctionComponent<TInfoBarProps<any>> = ({ loading, onChange, dat
               key={index}
               currentValue={currentValue}
               onChange={onChange}
+              disabled={disabled}
               {...props}
             />
           })}

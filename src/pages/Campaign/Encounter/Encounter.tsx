@@ -5,19 +5,19 @@ import {
   TEncounterRequest,
   updateEncounter,
   viewEncounter
-} from '../../services/EncounterService'
-import { clearEncounterData, setEncounterData, updateEncounterData } from '../../reducers/campaign/encounter/encounterSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+} from '../../../services/EncounterService'
+import { clearEncounterData, setEncounterData, updateEncounterData } from '../../../reducers/campaign/encounter/encounterSlice'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { useLocation, useParams } from 'react-router-dom'
-import { RootState } from '../../store'
+import { RootState } from '../../../store'
 import {
   addCampaignChildData,
   removeCampaignChildData,
   updateCampaignChildData
-} from '../../reducers/campaign/campaignSlice'
-import { TEncounter } from '../../types'
-import Post from '../../components/Post'
-import { EncounterWrapperContext } from '../../components/EncounterWrapper/component'
+} from '../../../reducers/campaign/campaignSlice'
+import { TEncounter } from '../../../types'
+import Post from '../../../components/Post'
+import { EncounterWrapperContext } from '../../../components/EncounterWrapper/component'
 
 const Encounter: FunctionComponent = (): JSX.Element => {
 
@@ -51,9 +51,11 @@ const Encounter: FunctionComponent = (): JSX.Element => {
     <Post
       key={encounterId}
       isNew={encounterId === 'new'}
+      pageTypeName={'Encounter'}
       pathToNew={(data) => `/campaigns/${campaignId}/encounters/${data.slug}`}
       pathAfterDelete={`/campaigns/${campaignId}`}
-      pageTypeName={'Encounter'}
+      canEdit={encounter.canUpdate}
+      canDelete={encounter.canDelete}
       ready={ready}
 
       onFetch={() => viewEncounter(encounterId).then(({ data }) => data.data)}

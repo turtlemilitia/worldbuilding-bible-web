@@ -2,7 +2,7 @@ import { PlusIcon } from 'lucide-react'
 import React, { FunctionComponent, useState } from 'react'
 import { TListAddProps } from './types'
 
-const ListAddName: FunctionComponent<TListAddProps> = ({ value, onSubmit, link }) => {
+const ListAddName: FunctionComponent<TListAddProps> = ({ value, onSubmit, link, disabled }) => {
 
   const [textValue, setTextValue] = useState('')
 
@@ -26,10 +26,13 @@ const ListAddName: FunctionComponent<TListAddProps> = ({ value, onSubmit, link }
             <div className="text-stone-500 italic">Nothing here</div>
           )}
           <div className="w-full flex gap-2 justify-between py-2 rounded-lg focus:bg-stone-800">
-            <input type="text" className="w-full bg-transparent outline-none" value={textValue} onChange={(e) => setTextValue(e.target.value)}/>
-            <button type="button" className="outline-none" onClick={handleOnSubmit}>
-              <PlusIcon className="text-stone-300" size={15}/>
-            </button>
+            <input type="text" className="w-full bg-transparent outline-none" value={textValue}
+                   onChange={(e) => setTextValue(e.target.value)} disabled={disabled}/>
+            {!disabled && (
+              <button type="button" className="outline-none" onClick={handleOnSubmit}>
+                <PlusIcon className="text-stone-300" size={15}/>
+              </button>
+            )}
           </div>
         </>
       </div>

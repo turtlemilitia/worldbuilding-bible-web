@@ -1,5 +1,5 @@
 import React, { FunctionComponent, JSX } from 'react'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post/Post'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
@@ -72,6 +72,7 @@ const Campaign: FunctionComponent = (): JSX.Element => {
     <Post
       key={campaignId}
       isNew={campaignId === 'new'}
+      pageTypeName={'Campaign'}
       pathToNew={(data) => `/campaigns/${data.slug}`}
       pathAfterDelete={`/`}
       ready={true}

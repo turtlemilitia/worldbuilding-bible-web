@@ -1,4 +1,4 @@
-import Post from './component'
+import Post from './Post'
 
 export {}
 

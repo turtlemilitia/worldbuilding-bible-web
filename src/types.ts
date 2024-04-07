@@ -31,6 +31,8 @@ export type TGenericPost = {
   slug: string;
   name: string;
   content: string;
+  canUpdate: boolean;
+  canDelete: boolean;
 }
 
 export type TOptionList = {

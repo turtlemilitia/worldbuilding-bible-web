@@ -20,6 +20,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TCurrency } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Currency: FunctionComponent = (): JSX.Element => {
 
@@ -28,6 +29,8 @@ const Currency: FunctionComponent = (): JSX.Element => {
   const { compendiumId, currencyId } = useParams() as { compendiumId: string; currencyId: string } // router
 
   const { currency } = useAppSelector((state: RootState) => state.currency) // redux
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TCurrencyRequest => ({
     name: data.name,
@@ -38,8 +41,11 @@ const Currency: FunctionComponent = (): JSX.Element => {
     <Post
       key={currencyId}
       isNew={currencyId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/currencies/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Currency'}
+      pathToNew={(data) => `${compendiumPath}/currencies/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={currency.canUpdate}
+      canDelete={currency.canDelete}
       ready={true}
 
       onFetch={() => viewCurrency(currencyId).then(({ data }) => data.data)}
