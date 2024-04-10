@@ -1,10 +1,11 @@
 import { AxiosResponse } from 'axios'
-import { TCampaign, TGenericPostList, TInvitation, TQueryParams, TSession, TUser } from '../types'
+import { TCampaign, TGenericPostList, TInvitation, TQueryParams } from '../types'
 import api from '../api'
 
 export interface TCampaignRequest {
   name: string;
   content: string;
+  compendium_id: number;
 }
 interface TCampaignResponse {
   data: TCampaign;

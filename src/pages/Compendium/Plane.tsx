@@ -11,6 +11,7 @@ import {
 import { TPlane } from '../../types'
 import Post from '../../components/Post'
 import { TFields } from '../../components/InfoBar'
+    import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Plane: FunctionComponent = (): JSX.Element => {
 
@@ -19,6 +20,8 @@ const Plane: FunctionComponent = (): JSX.Element => {
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, planeId } = useParams() as { compendiumId: string; planeId: string } // router
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TPlaneRequest => ({
     name: data.name,
@@ -31,8 +34,11 @@ const Plane: FunctionComponent = (): JSX.Element => {
     <Post
       key={planeId}
       isNew={planeId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/planes/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Plane'}
+      pathToNew={(data) => `${compendiumPath}/planes/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={plane.canUpdate}
+      canDelete={plane.canDelete}
       ready={true}
 
       onFetch={() => viewPlane(planeId).then(({ data }) => data.data)}

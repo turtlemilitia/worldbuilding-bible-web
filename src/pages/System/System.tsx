@@ -6,7 +6,7 @@ import { clearSystemData, setSystemData, updateSystemData } from '../../reducers
 import { destroySystem, storeSystem, TSystemRequest, updateSystem, viewSystem } from '../../services/SystemService'
 import { TSystem } from '../../types'
 import { addSystem, removeSystem } from '../../reducers/system/systemsIndexSlice'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post/Post'
 
 const System = (): JSX.Element => {
 
@@ -25,8 +25,11 @@ const System = (): JSX.Element => {
     <Post
       key={systemId}
       isNew={systemId === 'new'}
+      pageTypeName={'System'}
       pathToNew={(data) => `/systems/${data.slug}`}
       pathAfterDelete={`/`}
+      canEdit={system && system.canUpdate}
+      canDelete={system && system.canDelete}
       ready={true}
 
       onFetch={() => viewSystem(systemId).then(({ data }) => data.data)}

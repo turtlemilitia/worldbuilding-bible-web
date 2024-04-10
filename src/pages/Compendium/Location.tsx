@@ -7,9 +7,13 @@ import {
   updateLocation,
   viewLocation
 } from '../../services/LocationService'
-import { clearLocationData, setLocationData, updateLocationData } from '../../reducers/compendium/location/locationSlice'
+import {
+  clearLocationData,
+  setLocationData,
+  updateLocationData
+} from '../../reducers/compendium/location/locationSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import {
   addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
@@ -21,6 +25,7 @@ import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
 import { TLocation, TLocationGovernmentType, TLocationType } from '../../types'
 import { RootState } from '../../store'
 import useImageSelection from '../../utils/hooks/useImageSelection'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Location: FunctionComponent = (): JSX.Element => {
 
@@ -30,6 +35,8 @@ const Location: FunctionComponent = (): JSX.Element => {
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
+
+  const { state: locationState } = useLocation()
 
   const [ready, setReady] = useState<boolean>(false)
   const [locationTypes, setLocationTypes] = useState<TLocationType[]>()
@@ -43,7 +50,7 @@ const Location: FunctionComponent = (): JSX.Element => {
   useEffect(() => {
 
     if (locationTypes !== undefined && governmentTypes !== undefined) {
-      setReady(true);
+      setReady(true)
     }
 
   }, [locationTypes, governmentTypes])
@@ -94,7 +101,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       type: 'select',
       options: governmentTypes
     }
-  ];
+  ]
   if (compendium) {
     fields.push(
       {
@@ -123,15 +130,19 @@ const Location: FunctionComponent = (): JSX.Element => {
     )
   }
 
-  const getImage = useCallback((type: 'cover'|'profile') => location.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [location.images])
+  const {compendiumPath} = useUrlFormatter()
+
+  const getImage = useCallback((type: 'cover' | 'profile') => location.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [location.images])
 
   return (
     <Post
       key={locationId}
       isNew={locationId === 'new'}
       pageTypeName={'Location'}
-      pathToNew={(data) => `/compendia/${compendiumId}/locations/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pathToNew={(data) => `${compendiumPath}/locations/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={location.canUpdate}
+      canDelete={location.canDelete}
       ready={ready}
 
       onFetch={() => viewLocation(locationId, { include: 'type;parent;children;images' }).then(({ data }) => data.data)}
@@ -149,6 +160,10 @@ const Location: FunctionComponent = (): JSX.Element => {
       }}
 
       fields={fields}
+
+      defaultData={{
+        parent: locationState?.parent ? compendium?.locations?.find(compendiumLocation => compendiumLocation.id === locationState.parent) : undefined,
+      }}
 
       persistedData={location as TLocation}
       setPersistedData={(data) => dispatch(setLocationData(data))}

@@ -31,9 +31,11 @@ export type TGenericPost = {
   slug: string;
   name: string;
   content: string;
+  canUpdate: boolean;
+  canDelete: boolean;
 }
 
-type TOptionList = {
+export type TOptionList = {
   id: number;
   name: string;
 }
@@ -54,7 +56,6 @@ export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
   concepts?: TGenericPostList[];
   currencies?: TGenericPostList[];
   deities?: TGenericPostList[];
-  encounters?: TGenericPostList[];
   factions?: TGenericPostList[];
   items?: TGenericPostList[];
   languages?: TGenericPostList[];
@@ -62,7 +63,6 @@ export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
   naturalResources?: TGenericPostList[];
   pantheons?: TGenericPostList[];
   planes?: TGenericPostList[];
-  quests?: TGenericPostList[];
   religions?: TGenericPostList[];
   species?: TGenericPostList[];
   spells?: TGenericPostList[];
@@ -83,7 +83,11 @@ export type TCurrency = TGenericPost & TPlayerTools & TCanHaveImages
 
 export type TDeity = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TEncounter = TGenericPost & TPlayerTools & TCanHaveImages
+export type TEncounterType = TOptionList
+
+export type TEncounter = TGenericPost & TPlayerTools & TCanHaveImages & {
+  type: TEncounterType
+}
 
 export type TFaction = TGenericPost & TPlayerTools & TCanHaveImages
 
@@ -113,7 +117,13 @@ export type TLocationGovernmentType = TOptionList
 
 export type TPantheon = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages
+export type TQuestType = TOptionList
+
+export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages & {
+  type: TQuestType,
+  parent?: TQuest,
+  children?: TQuest[]
+}
 
 export type TReligion = TGenericPost & TPlayerTools & TCanHaveImages
 
@@ -134,13 +144,20 @@ export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
 export type TNote = TGenericPost & TPlayerTools & TCanHaveImages
 
 export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
-  sessions: TGenericPostList[];
   gameMaster?: TUser;
+  compendium?: TGenericPost;
   users: TUser[];
   invitations: TInvitation[];
+  sessions: (TGenericPostList & { session_number: TSession['session_number'] })[];
+  encounters: (TGenericPostList & { type: TEncounter['type'] })[];
+  quests: (TGenericPostList & { type: TQuest['type'] })[];
 }
 
-export type TSession = TGenericPost & TPlayerTools & TCanHaveImages
+export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & {
+  session_number: number
+  scheduled_at: string
+  duration: number
+}
 
 export type TImageableImagePivot = {
   id: number;

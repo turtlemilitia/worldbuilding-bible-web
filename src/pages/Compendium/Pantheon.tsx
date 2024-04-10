@@ -21,6 +21,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import { TPantheon } from '../../types'
 import Post from '../../components/Post'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 const Pantheon: FunctionComponent = (): JSX.Element => {
 
   const { pantheon } = useAppSelector((state: RootState) => state.pantheon) // redux
@@ -28,6 +29,8 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, pantheonId } = useParams() as { compendiumId: string; pantheonId: string } // router
+
+  const {compendiumPath} = useUrlFormatter()
 
   const readyDataForRequest = (data: any): TPantheonRequest => ({
     name: data.name,
@@ -38,8 +41,11 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
     <Post
       key={pantheonId}
       isNew={pantheonId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/pantheons/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Pantheon'}
+      pathToNew={(data) => `${compendiumPath}/pantheons/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={pantheon.canUpdate}
+      canDelete={pantheon.canDelete}
       ready={true}
 
       onFetch={() => viewPantheon(pantheonId).then(({ data }) => data.data)}

@@ -1,4 +1,4 @@
-import MultipleAsyncSelectField from './component'
+import MultipleAsyncSelectField from './MultipleAsyncSelectField'
 
 export {}
 

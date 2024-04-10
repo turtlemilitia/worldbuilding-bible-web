@@ -1,5 +1,5 @@
 import React, { FunctionComponent, JSX } from 'react'
-import Post from '../../components/Post/component'
+import Post from '../../components/Post/Post'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
@@ -22,19 +22,21 @@ import { addCampaign, removeCampaign } from '../../reducers/campaign/campaignsIn
 import { TFields } from '../../components/InfoBar'
 import ListAddUsers from './ListAddUsers/component'
 
-const include = 'users;invitations'
+const include = 'users;invitations;compendium'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 
   const { campaignId } = useParams() as { campaignId: string } // router
 
   const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { compendia } = useAppSelector((state: RootState) => state.compendia) // redux
 
   const dispatch = useAppDispatch() // redux
 
   const readyDataForRequest = (data: any): TCampaignRequest => ({
     name: data.name,
     content: data.content,
+    compendium_id: data.compendium?.id
   })
 
   const fields: TFields[] = (campaign) ? [
@@ -47,18 +49,30 @@ const Campaign: FunctionComponent = (): JSX.Element => {
         invitations={campaign.invitations || []}
         onSubmit={(email) => createCampaignInvitation(campaign.slug, { email })
           .then((response) => {
-            const newInvitationData = response.data.data;
+            const newInvitationData = response.data.data
             dispatch(addCampaignChildData({ field: 'invitations', data: newInvitationData }))
           })
         }
       />
     }
-  ] : [];
+  ] : []
+
+  if (compendia.length > 0) {
+    fields.push(
+      {
+        name: 'compendium',
+        label: 'Compendium',
+        type: 'select',
+        options: compendia
+      }
+    )
+  }
 
   return (
     <Post
       key={campaignId}
       isNew={campaignId === 'new'}
+      pageTypeName={'Campaign'}
       pathToNew={(data) => `/campaigns/${data.slug}`}
       pathAfterDelete={`/`}
       ready={true}

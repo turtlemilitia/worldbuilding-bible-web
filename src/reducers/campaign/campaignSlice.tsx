@@ -36,7 +36,6 @@ const campaignSlice: Slice<TState> = createSlice({
       if (state.campaign) {
         state.campaign = {
           ...state.campaign,
-          [`has${field[0].toUpperCase() + field.slice(1)}`]: true,
           [field]: [...(state.campaign[field] || []), action.payload.data]
         }
       }
@@ -50,7 +49,7 @@ const campaignSlice: Slice<TState> = createSlice({
         }
       }
     },
-    removeCompendiumChildData: (state, action: PayloadAction<TCampaignRemoveChildActionProps>) => {
+    removeCampaignChildData: (state, action: PayloadAction<TCampaignRemoveChildActionProps>) => {
       const field = action.payload.field;
       if (state.campaign) {
         state.campaign = {
@@ -70,7 +69,8 @@ export const {
   updateCampaignData,
   clearCampaignData,
   addCampaignChildData,
-  updateCampaignChildData
+  updateCampaignChildData,
+  removeCampaignChildData
 } = campaignSlice.actions
 
 export default campaignSlice.reducer

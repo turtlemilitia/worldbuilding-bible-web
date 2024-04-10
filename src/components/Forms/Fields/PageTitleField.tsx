@@ -1,5 +1,4 @@
-import React, { JSX, useEffect, useRef, useState } from 'react'
-
+import React, { JSX, useRef, useState } from 'react'
 
 interface TProps {
   value: string;
@@ -9,9 +8,9 @@ interface TProps {
 }
 
 const PageTitleField = (props: TProps): JSX.Element => {
-  const {value, onChange, placeholder, canEdit  } = props;
+  const { value, onChange, placeholder, canEdit } = props
   const ref = useRef<HTMLHeadingElement>(null)
-  const [showPlaceholder, setShowPlaceholder] = useState(!value);
+  const [showPlaceholder, setShowPlaceholder] = useState(value.trim() === '')
 
   return (
     <div className="w-full font-display text-7xl relative">
@@ -22,7 +21,7 @@ const PageTitleField = (props: TProps): JSX.Element => {
         contentEditable={canEdit}
         suppressContentEditableWarning={true}
         ref={ref}
-        className="relative z-10 border-none bg-transparent px-6 -mt-1 break-words text-center outline-none"
+        className={`relative z-10 border-none bg-transparent px-6 -mt-1 break-words text-center outline-none`}
         onBlur={(e) => onChange(e.currentTarget.textContent || '')}
         onInput={(e) => {
           setShowPlaceholder(e.currentTarget.textContent?.trim() === '')

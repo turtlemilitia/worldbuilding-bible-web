@@ -1,8 +1,7 @@
-import { TCompendium } from '../../../types'
 import { SidebarItemInterface } from '../../Sidebar/Sidebar';
 
 export type TUseCompendiaMappingProps = {
-  compendium: TCompendium;
+  prefix: string;
 }
 
 export type TUseCompendiaMapping = (props: TUseCompendiaMappingProps) => {
@@ -20,7 +19,5 @@ export type TUseCompendiaMapping = (props: TUseCompendiaMappingProps) => {
   mapNaturalResource: (data: any) => SidebarItemInterface;
   mapPlane: (data: any) => SidebarItemInterface;
   mapDeity: (data: any) => SidebarItemInterface;
-  mapQuest: (data: any) => SidebarItemInterface;
   mapSpell: (data: any) => SidebarItemInterface;
-  mapEncounter: (data: any) => SidebarItemInterface;
 }

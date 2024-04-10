@@ -1,7 +1,7 @@
-import React, { JSX, PropsWithChildren, useState } from 'react'
+import React, { JSX, PropsWithChildren, useEffect } from 'react'
 import { THeaderWrapperProps } from './types'
 import { CoverImagePicker } from '../CoverImagePicker'
-import bgImage from '../../assets/images/darkAlley2.png'
+import bgImage from '../../assets/images/darkAlley1.png'
 
 const HeaderWrapper: React.FunctionComponent<THeaderWrapperProps & PropsWithChildren> = ({
   page,

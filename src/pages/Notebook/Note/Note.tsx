@@ -11,7 +11,7 @@ import {
   removeNotebooksNotebookNote,
   updateNotebooksNotebookNote
 } from '../../../reducers/notebook/notebooksIndexSlice'
-import Post from '../../../components/Post/component'
+import Post from '../../../components/Post/Post'
 import { TDeityRequest } from '../../../services/DeityService'
 
 const Note = (): JSX.Element => {
@@ -30,11 +30,12 @@ const Note = (): JSX.Element => {
   return (
     <Post
       key={noteId}
-      canEdit={true}
       isNew={noteId === 'new'}
       pageTypeName={'Note'}
       pathToNew={(data) => `/notebooks/${notebookId}/notes/${data.slug}`}
       pathAfterDelete={`/notebooks/${notebookId}`}
+      canEdit={note.canUpdate}
+      canDelete={note.canDelete}
       ready={true}
 
       onFetch={() => viewNote(noteId).then(({ data }) => data.data)}

@@ -1,7 +1,7 @@
 import React, { Fragment, JSX } from 'react'
 import DropdownItem from './DropdownItem'
-import { MenuItemInterface } from './Menu'
 import { Transition } from '@headlessui/react'
+import { MenuItemInterface } from './MenuItemInterface'
 
 interface DropdownParams {
   menuItems: MenuItemInterface[],

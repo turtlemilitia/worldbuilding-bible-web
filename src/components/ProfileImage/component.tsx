@@ -1,7 +1,7 @@
 import ProfileImagePicker from '../ProfileImagePicker'
 import { FunctionComponent } from 'react'
 import { TProfileImageProps } from './types'
-import bgImage from '../../assets/images/darkAlley2.png'
+import bgImage from '../../assets/images/ShadeImage.png'
 
 const ProfileImage: FunctionComponent<TProfileImageProps> = ({ onSelected, image }) => {
   return (

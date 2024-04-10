@@ -20,6 +20,7 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TSpecies } from '../../types'
+import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
 
 const Species: FunctionComponent = (): JSX.Element => {
 
@@ -29,6 +30,8 @@ const Species: FunctionComponent = (): JSX.Element => {
 
   const { species } = useAppSelector((state: RootState) => state.species) // redux
 
+  const {compendiumPath} = useUrlFormatter()
+
   const readyDataForRequest = (data: any): TSpeciesRequest => ({
     name: data.name,
     content: data.content,
@@ -37,10 +40,12 @@ const Species: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       key={speciesId}
-      pageTypeName={'Species'}
       isNew={speciesId === 'new'}
-      pathToNew={(data) => `/compendia/${compendiumId}/species/${data.slug}`}
-      pathAfterDelete={`/compendia/${compendiumId}`}
+      pageTypeName={'Species'}
+      pathToNew={(data) => `${compendiumPath}/species/${data.slug}`}
+      pathAfterDelete={compendiumPath}
+      canEdit={species.canUpdate}
+      canDelete={species.canDelete}
       ready={true}
 
       onFetch={() => viewSpecies(speciesId).then(({ data }) => data.data)}

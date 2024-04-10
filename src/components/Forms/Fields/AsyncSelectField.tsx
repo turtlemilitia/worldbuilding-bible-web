@@ -8,8 +8,9 @@ type TProp = {
   value: TSelectOption|null;
   onChange: (value: TSelectOption|null) => any;
   search: (term: string) => Promise<TSelectOption[]>;
+  disabled?: boolean
 }
-const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search }) => {
+const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, disabled }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([]);
 
@@ -23,7 +24,7 @@ const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search })
 
   return (
     <div className="relative">
-      <Combobox value={value} onChange={onChange} nullable>
+      <Combobox value={value} onChange={onChange} nullable disabled={disabled}>
         {({ open }) => (
           <>
             <Combobox.Button
@@ -32,7 +33,9 @@ const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search })
                 className="w-full bg-transparent outline-none"
                 onChange={handleSearch}
                 displayValue={(option: TSelectOption) => option?.name}/>
-              <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
+              {!disabled && (
+                <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
+              )}
             </Combobox.Button>
             <Transition
               show={open}
