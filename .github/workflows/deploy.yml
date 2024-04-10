@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          cd /path/to/your/project
+          cd /srv/wbb/frontend
           git pull origin main  # Ensure your server has access to your repo
           docker-compose down
           docker-compose build --no-cache  # Build new images
