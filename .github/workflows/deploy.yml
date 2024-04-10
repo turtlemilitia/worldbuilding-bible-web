@@ -22,6 +22,6 @@ jobs:
         script: |
           cd /srv/wbb/frontend
           git pull origin main  # Ensure your server has access to your repo
-          docker-compose down
-          docker-compose build --no-cache  # Build new images
-          docker-compose up -d  # Deploy containers
+          docker compose down
+          docker compose build --no-cache  # Build new images
+          docker compose up -d  # Deploy containers
