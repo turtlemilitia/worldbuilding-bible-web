@@ -40,9 +40,6 @@ jobs:
           name: react-build
           path: |
             build
-            node_modules
-            package.json
-            package-lock.json
 
   deploy:
     runs-on: ubuntu-latest
