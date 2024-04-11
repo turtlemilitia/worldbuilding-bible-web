@@ -1,41 +1,24 @@
-# Stage 1: Development Environment
-FROM node:lts-alpine AS development
-WORKDIR /app
-
-# Set the environment variable
-ENV NODE_ENV development
-
-# Install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
-
-# Copy application code (the rest of your app)
-COPY . .
-
-# Expose the port the app runs on
-EXPOSE ${PORT:-3000}
-
-# Start the app
-CMD ["npm", "start"]
-
-# Stage 2: Production Environment
-FROM node:lts-alpine AS production
-WORKDIR /app
-
-# Set the environment variable
+FROM node:lts-alpine AS builder
 ENV NODE_ENV production
+# Add a work directory
+WORKDIR /app
+# Cache and Install dependencies
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install --production
+# Copy app files
+COPY . .
+# Build the app
+RUN yarn build
 
-# Copy package.json and package-lock.json for production
-COPY package.json package-lock.json ./
-
-# Install only production dependencies
-RUN npm install --only=production
-
-# Copy built files from the development stage
-COPY --from=development /app/dist ./dist
-
-# Expose the port the app runs on
-EXPOSE ${PORT:-3000}
-
-# Start the app
-CMD ["node", "dist/main.js"]
+# Bundle static assets with nginx
+FROM nginx:1.21.0-alpine as production
+ENV NODE_ENV production
+# Copy built assets from builder
+COPY --from=builder /app/build /usr/share/nginx/html
+# Add your nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Expose port
+EXPOSE 80
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
