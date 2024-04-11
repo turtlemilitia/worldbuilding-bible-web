@@ -1,24 +1,15 @@
-FROM node:lts-alpine AS builder
-ENV NODE_ENV production
-# Add a work directory
-WORKDIR /app
-# Cache and Install dependencies
-COPY package.json .
-COPY yarn.lock .
-RUN yarn install --production
-# Copy app files
-COPY . .
-# Build the app
-RUN yarn build
+# Use an official lightweight nginx image
+FROM nginx:alpine
 
-# Bundle static assets with nginx
-FROM nginx:1.21.0-alpine as production
-ENV NODE_ENV production
-# Copy built assets from builder
-COPY --from=builder /app/build /usr/share/nginx/html
-# Add your nginx.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-# Expose port
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
+
+# Remove default nginx static assets
+RUN rm -rf ./*
+
+# Copy static assets from builder stage
+COPY build /usr/share/nginx/html
+
+# Containers run nginx with global directives and daemon off
 EXPOSE 80
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
