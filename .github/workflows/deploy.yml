@@ -23,6 +23,8 @@ jobs:
 
     - name: Build
       run: npm run build  # Assumes a script named "build" is defined in package.json
+      env:
+        CI: false
 
     - name: Archive Production Artifacts
       uses: actions/upload-artifact@v4.3.1
@@ -32,6 +34,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build
 
     steps:
     - name: Checkout code
