@@ -55,7 +55,7 @@ jobs:
           path: distfiles
 
       - name: Deploy to Server
-        uses: appleboy/scp-action@0.1.7
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DROPLET_IP }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -64,7 +64,7 @@ jobs:
           target: "/srv/wbb/frontend"  # Specify the target directory on your server
 
       - name: SSH and Deploy
-        uses: appleboy/ssh-action@0.1.7
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DROPLET_IP }}
           username: ${{ secrets.SSH_USERNAME }}
