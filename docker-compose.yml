@@ -8,3 +8,5 @@ services:
       target: production
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
+    environment:
+      - NODE_ENV=production
