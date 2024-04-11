@@ -272,10 +272,6 @@ const Routes = (): JSX.Element => {
           element: <>TODO: User Profile</>
         },
       ]
-    },
-    {
-      path: '*',
-      element: <NotFound/>
     }
   ]
 
@@ -303,7 +299,11 @@ const Routes = (): JSX.Element => {
       children: [
         ...routesForPublic,
         ...(!token ? routesForNotAuthenticatedOnly : []), // only add these conditionally
-        ...routesForAuthenticatedOnly
+        ...routesForAuthenticatedOnly,
+        {
+          path: '*',
+          element: <NotFound/>
+        }
       ]
     }
   ])
