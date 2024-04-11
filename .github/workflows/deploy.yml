@@ -29,11 +29,14 @@ jobs:
       - name: Install Dependencies
         run: npm install --production
 
+      - name: Setup Environment Variables
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
+
       - name: Build
         run: npm run build
         env:
           CI: false
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
       - name: Upload artifact to enable deployment
         uses: actions/upload-artifact@v4
