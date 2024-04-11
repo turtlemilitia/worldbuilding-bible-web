@@ -58,7 +58,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "distfiles/*"
-          target: "/srv/wbb/frontend"  # Specify the target directory on your server
+          target: "/srv/wbb/frontend/build"  # Specify the target directory on your server
 
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v0.1.7
