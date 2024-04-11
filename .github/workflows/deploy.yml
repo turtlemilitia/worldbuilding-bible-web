@@ -10,45 +10,64 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '21'  # Set this to your project's required Node.js version
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '21'
 
-    - name: Install Dependencies
-      run: npm install --production
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Build
-      run: npm run build  # Assumes a script named "build" is defined in package.json
-      env:
-        CI: false
+      - name: Install Dependencies
+        run: npm install --production
 
-    - name: Archive Production Artifacts
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: dist
-        path: /srv/wbb/frontend
+      - name: Build
+        run: npm run build
+        env:
+          CI: false
+
+      - name: Archive Production Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: dist
+          path: build/
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: react-build
+          path: build/
 
-    - name: SSH and Deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DROPLET_IP }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        script: |
-          cd /srv/wbb/frontend
-          git pull origin main  # Ensure your server has access to your repo
-          docker compose down
-          docker compose build --no-cache  # Build new images
-          docker compose up -d  # Deploy containers
+      - name: Deploy to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "deploy/*"
+          target: "/srv/wbb/frontend/deploy"  # Specify the target directory on your server
+
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd /srv/wbb/frontend
+            git pull origin main  # Ensure your server has access to your repo
+            docker compose down
+            docker compose build --no-cache  # Build new images
+            docker compose up -d  # Deploy containers
