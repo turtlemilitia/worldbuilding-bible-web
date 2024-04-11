@@ -6,6 +6,30 @@ on:
       - main  # Adjust this as necessary for your workflow
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '21'  # Set this to your project's required Node.js version
+
+    - name: Install Dependencies
+      run: npm install --production --no-optional
+
+    - name: Build
+      run: npm run build  # Assumes a script named "build" is defined in package.json
+
+    - name: Archive Production Artifacts
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: dist
+        path: /srv/wbb/frontend
+
   deploy:
     runs-on: ubuntu-latest
 
