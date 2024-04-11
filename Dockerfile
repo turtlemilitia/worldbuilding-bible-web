@@ -10,6 +10,9 @@ RUN rm -rf ./*
 # Copy static assets from builder stage
 COPY build /usr/share/nginx/html
 
+# Copy custom nginx config file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Containers run nginx with global directives and daemon off
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
