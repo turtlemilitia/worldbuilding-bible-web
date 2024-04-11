@@ -5,9 +5,6 @@ services:
     container_name: dnd-app
     build:
       context: .
-      target: development
-    volumes:
-      - /node-modules
-      - ./src:/app/src
+      target: production
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
