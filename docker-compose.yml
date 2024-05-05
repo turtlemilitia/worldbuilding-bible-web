@@ -9,3 +9,8 @@ services:
       - "${PORT:-3000}:80"
     environment:
       - NODE_ENV=${NODE_ENV:-development}
+    networks:
+      - nginx_network      # proxy and app must be in same network
+networks:
+  nginx_network:
+    external: true
