@@ -12,17 +12,19 @@ import {
   updateCompendiumData
 } from '../../reducers/compendium/compendiumSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { addCompendium } from '../../reducers/compendium/compendiaIndexSlice'
 import Post from '../../components/Post'
-import useImageSelection from '../../utils/hooks/useImageSelection'
+import useImageSelection from '../../hooks/useImageSelection'
 
 const Compendium: FunctionComponent = (): JSX.Element => {
 
   const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate()
 
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
@@ -56,8 +58,6 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       key={compendiumId}
       isNew={compendiumId === 'new'}
       pageTypeName={'Compendium'}
-      pathToNew={(data) => `/compendia/${data.slug}`}
-      pathAfterDelete={`/`}
       canEdit={compendium && compendium.canUpdate}
       canDelete={compendium && compendium.canDelete}
       ready={true}
@@ -68,6 +68,10 @@ const Compendium: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyCompendium(compendiumId)}
       onCreated={(data) => {
         dispatch(addCompendium(data))
+        navigate(`/compendia/${data.slug}`)
+      }}
+      onDeleted={() => {
+        navigate(`/`)
       }}
 
       fields={[]}

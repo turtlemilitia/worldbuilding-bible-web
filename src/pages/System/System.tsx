@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearSystemData, setSystemData, updateSystemData } from '../../reducers/system/systemSlice'
@@ -11,6 +11,8 @@ import Post from '../../components/Post/Post'
 const System = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate()
 
   const { systemId } = useParams() as { systemId: string } // router
 
@@ -26,8 +28,6 @@ const System = (): JSX.Element => {
       key={systemId}
       isNew={systemId === 'new'}
       pageTypeName={'System'}
-      pathToNew={(data) => `/systems/${data.slug}`}
-      pathAfterDelete={`/`}
       canEdit={system && system.canUpdate}
       canDelete={system && system.canDelete}
       ready={true}
@@ -38,9 +38,11 @@ const System = (): JSX.Element => {
       onDelete={() => destroySystem(systemId)}
       onCreated={(data) => {
         dispatch(addSystem(data))
+        navigate(`/systems/${data.slug}`)
       }}
       onDeleted={() => {
         dispatch(removeSystem({ id: systemId }))
+        navigate(`/`)
       }}
 
       fields={[]}

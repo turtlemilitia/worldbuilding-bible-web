@@ -1,17 +1,13 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
-import { TCharacter } from '../../../types'
+import { TCharacter, TNote } from '../../../types'
 
 
 interface TState {
-  character: Partial<TCharacter>;
+  character?: TCharacter;
 }
 
 const initialState: TState = {
-  character: {
-    name: '',
-    content: '',
-  }
 }
 
 const characterSlice: Slice<TState> = createSlice({
@@ -22,7 +18,13 @@ const characterSlice: Slice<TState> = createSlice({
       state.character = action.payload
     },
     updateCharacterData: (state, action: PayloadAction<Partial<TCharacter>>) => {
-      state.character = { ...state.character, ...action.payload }
+      state.character = { ...state.character as TCharacter, ...action.payload }
+    },
+    addCharacterNote: (state, action: PayloadAction<TNote>) => {
+      state.character = { ...state.character as TCharacter, notes: [ ...(state.character?.notes ?? []), action.payload ] }
+    },
+    updateCharacterNote: (state, action: PayloadAction<TNote>) => {
+      state.character = { ...state.character as TCharacter, notes: (state.character?.notes ?? []).map((note) => note.id === action.payload.id ? action.payload : note) }
     },
     clearCharacterData: (state) => {
       state.character = initialState.character
@@ -30,6 +32,6 @@ const characterSlice: Slice<TState> = createSlice({
   }
 })
 
-export const { setCharacterData, updateCharacterData, clearCharacterData } = characterSlice.actions
+export const { setCharacterData, updateCharacterData, clearCharacterData, addCharacterNote, updateCharacterNote } = characterSlice.actions
 
 export default characterSlice.reducer

@@ -2,7 +2,7 @@ import React, { FunctionComponent, JSX } from 'react'
 import { destroyStory, storeStory, TStoryRequest, updateStory, viewStory } from '../../services/StoryService'
 import { clearStoryData, setStoryData, updateStoryData } from '../../reducers/compendium/story/storySlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCompendiumChildData, removeCompendiumChildData,
@@ -10,13 +10,15 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import { TStory } from '../../types'
 import Post from '../../components/Post'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Story: FunctionComponent = (): JSX.Element => {
 
   const { story } = useAppSelector((state: RootState) => state.story) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, storyId } = useParams() as { compendiumId: string; storyId: string } // router
 
@@ -32,8 +34,6 @@ const Story: FunctionComponent = (): JSX.Element => {
       key={storyId}
       isNew={storyId === 'new'}
       pageTypeName={'Lore/History'}
-      pathToNew={(data) => `${compendiumPath}/stories/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={story.canUpdate}
       canDelete={story.canDelete}
       ready={true}
@@ -44,12 +44,14 @@ const Story: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyStory(storyId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'stories', data: data }))
+        navigate(`${compendiumPath}/stories/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'stories', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'stories', id: storyId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, JSX } from 'react'
 import Post from '../../components/Post/Post'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 import { TCampaign } from '../../types'
@@ -19,8 +19,8 @@ import {
 } from '../../services/CampaignService'
 import { viewCampaign } from '../../services/CampaignService'
 import { addCampaign, removeCampaign } from '../../reducers/campaign/campaignsIndexSlice'
-import { TFields } from '../../components/InfoBar'
 import ListAddUsers from './ListAddUsers/component'
+import { TField } from '../../hooks/useFields'
 
 const include = 'users;invitations;compendium'
 
@@ -33,13 +33,15 @@ const Campaign: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
+  const navigate = useNavigate();
+
   const readyDataForRequest = (data: any): TCampaignRequest => ({
     name: data.name,
     content: data.content,
     compendium_id: data.compendium?.id
   })
 
-  const fields: TFields[] = (campaign) ? [
+  const fields: TField[] = (campaign) ? [
     {
       name: 'invitations',
       label: 'Invite a new player',
@@ -73,8 +75,6 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       key={campaignId}
       isNew={campaignId === 'new'}
       pageTypeName={'Campaign'}
-      pathToNew={(data) => `/campaigns/${data.slug}`}
-      pathAfterDelete={`/`}
       ready={true}
 
       mapData={readyDataForRequest}
@@ -87,9 +87,11 @@ const Campaign: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyCampaign(campaignId)}
       onCreated={(data) => {
         dispatch(addCampaign(data))
+        navigate(`/campaigns/${data.slug}`)
       }}
       onDeleted={() => {
         dispatch(removeCampaign({ id: campaignId }))
+        navigate(`/`)
       }}
 
       fields={fields}

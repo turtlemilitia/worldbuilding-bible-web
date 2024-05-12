@@ -9,7 +9,7 @@ import { InfoBar } from '../InfoBar'
 import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { TTypesAllowed } from '../../types'
-import useFormHandling from '../../utils/hooks/useFormHandling'
+import useFormHandling from '../../hooks/useFormHandling'
 import SavingDialog from '../SavingDialog'
 import { setLoading } from '../../reducers/post/postSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -28,6 +28,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
     coverImageUrl,
     profileImageUrl,
     canEdit = false,
+    canRefresh = true,
     canDelete = true
   } = props
 
@@ -85,7 +86,8 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
               {(isNew || canEdit) && (
                 <FormToolbar
                   canManuallySave={true}
-                  canDelete={canDelete}
+                  canRefresh={canRefresh && !isNew}
+                  canDelete={canDelete && !isNew}
                   onSave={handleOnSave}
                   onRefresh={handleOnFetch}
                   onDelete={handleOnDelete}
@@ -96,6 +98,7 @@ const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
                 onChange={(value) => handleOnFieldChange('content', value)}
                 placeholder={contentPlaceholder}
                 canEdit={isNew || canEdit}
+                className={'min-h-screen'}
               />
             </div>
             <div className="flex lg:w-1/4 lg:px-6"></div>

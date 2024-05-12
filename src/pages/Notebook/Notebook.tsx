@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { clearNotebookData, setNotebookData, updateNotebookData } from '../../reducers/notebook/notebookSlice'
@@ -18,6 +18,8 @@ const Notebook = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
+  const navigate = useNavigate()
+
   const { notebookId } = useParams() as { notebookId: string } // router
 
   const { notebook } = useAppSelector((state: RootState) => state.notebook) // redux
@@ -32,8 +34,6 @@ const Notebook = (): JSX.Element => {
       key={notebookId}
       isNew={notebookId === 'new'}
       pageTypeName={'Notebook'}
-      pathToNew={(data) => `/notebooks/${data.slug}`}
-      pathAfterDelete={`/`}
       canEdit={notebook && notebook.canUpdate}
       canDelete={notebook && notebook.canDelete}
       ready={true}
@@ -44,12 +44,14 @@ const Notebook = (): JSX.Element => {
       onDelete={() => destroyNotebook(notebookId)}
       onCreated={(data) => {
         dispatch(addNotebook(data))
+        navigate(`/notebooks/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateNotebooksNotebookData(data))
       }}
       onDeleted={() => {
         dispatch(removeNotebook({ id: notebookId }))
+        navigate(`/`)
       }}
 
       fields={[]}

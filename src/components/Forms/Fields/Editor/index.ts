@@ -1,4 +1,4 @@
-import Editor from './component'
+import Editor from './Editor'
 
 export {
   Editor

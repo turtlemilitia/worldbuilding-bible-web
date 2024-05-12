@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react'
 import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import { TSessionSidebarProps } from './types'
-import useCampaignsMapping from '../../../utils/hooks/useCampaignsMapping'
+import useCampaignsMapping from '../../../hooks/useCampaignsMapping'
 
 const SessionSidebar: FunctionComponent<TSessionSidebarProps> = ({ campaign }) => {
 

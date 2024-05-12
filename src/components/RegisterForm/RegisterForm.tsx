@@ -5,7 +5,7 @@ import { register, RegisterParams } from '../../services/AuthService'
 import { setToken } from '../../reducers/auth/authSlice'
 import FieldMapper from '../Forms/Fields/FieldMapper'
 import { TRegisterFormProps } from './types'
-import useErrorHandling from '../../utils/hooks/useErrorHandling'
+import useErrorHandling from '../../hooks/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import CheckButton from '../CheckButton'
 

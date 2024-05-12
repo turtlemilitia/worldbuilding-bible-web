@@ -2,7 +2,7 @@ import React, { FunctionComponent, useContext } from 'react'
 import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import { TEncounterSidebarProps } from './types'
 import { SwordsIcon } from 'lucide-react'
-import useCampaignsMapping from '../../../utils/hooks/useCampaignsMapping'
+import useCampaignsMapping from '../../../hooks/useCampaignsMapping'
 import { EncounterWrapperContext } from '../component'
 
 const EncounterSidebar: FunctionComponent<TEncounterSidebarProps> = ({ campaign }) => {

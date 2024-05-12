@@ -20,11 +20,13 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TLanguage } from '../../types'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Language: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, languageId } = useParams() as { compendiumId: string; languageId: string } // router
 
@@ -42,8 +44,6 @@ const Language: FunctionComponent = (): JSX.Element => {
       key={languageId}
       isNew={languageId === 'new'}
       pageTypeName={'Language'}
-      pathToNew={(data) => `${compendiumPath}/languages/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={language.canUpdate}
       canDelete={language.canDelete}
       ready={true}
@@ -54,12 +54,14 @@ const Language: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyLanguage(languageId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'languages', data: data }))
+        navigate(`${compendiumPath}/languages/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'languages', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'languages', id: languageId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

@@ -44,6 +44,10 @@ export type TCanHaveImages = {
   images?: TImage[];
 }
 
+export type TCanHaveNotes = {
+  notes?: TNote[];
+}
+
 export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
   id: number;
   slug: string;
@@ -52,6 +56,7 @@ export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
 }
 
 export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
+  notebook?: TGenericPostList;
   characters?: TGenericPostList[];
   concepts?: TGenericPostList[];
   currencies?: TGenericPostList[];
@@ -71,7 +76,7 @@ export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
 
 export type TConcept = TGenericPost & TPlayerTools & TCanHaveImages
 
-export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   age: string;
   gender: string;
   species: TSpecies;

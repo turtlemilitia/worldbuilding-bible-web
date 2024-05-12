@@ -12,7 +12,7 @@ import {
   updatePantheonData
 } from '../../reducers/compendium/pantheon/pantheonSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCompendiumChildData,
@@ -21,12 +21,14 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import { TPantheon } from '../../types'
 import Post from '../../components/Post'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 const Pantheon: FunctionComponent = (): JSX.Element => {
 
   const { pantheon } = useAppSelector((state: RootState) => state.pantheon) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, pantheonId } = useParams() as { compendiumId: string; pantheonId: string } // router
 
@@ -42,8 +44,6 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
       key={pantheonId}
       isNew={pantheonId === 'new'}
       pageTypeName={'Pantheon'}
-      pathToNew={(data) => `${compendiumPath}/pantheons/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={pantheon.canUpdate}
       canDelete={pantheon.canDelete}
       ready={true}
@@ -54,12 +54,14 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyPantheon(pantheonId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'pantheons', data: data }))
+        navigate(`${compendiumPath}/pantheons/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'pantheons', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'pantheons', id: pantheonId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

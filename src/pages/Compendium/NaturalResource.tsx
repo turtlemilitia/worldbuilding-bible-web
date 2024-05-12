@@ -20,13 +20,15 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import { TNaturalResource } from '../../types'
 import Post from '../../components/Post'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const NaturalResource: FunctionComponent = (): JSX.Element => {
 
   const { naturalResource } = useAppSelector((state: RootState) => state.naturalResource) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, naturalResourceId } = useParams() as { compendiumId: string; naturalResourceId: string } // router
 
@@ -42,8 +44,6 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
       key={naturalResourceId}
       isNew={naturalResourceId === 'new'}
       pageTypeName={'Natural Resource'}
-      pathToNew={(data) => `${compendiumPath}/naturalResources/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={naturalResource.canUpdate}
       canDelete={naturalResource.canDelete}
       ready={true}
@@ -54,12 +54,14 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyNaturalResource(naturalResourceId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'naturalResources', data: data }))
+        navigate(`${compendiumPath}/natural-resources/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'naturalResources', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'naturalResources', id: naturalResourceId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

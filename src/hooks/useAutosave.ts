@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import equal from 'fast-deep-equal/react'
-import { readyDataForRequest } from '../dataUtils'
+import { readyDataForRequest } from '../utils/dataUtils'
 import { isEmpty } from 'lodash'
 
 type TProps = {

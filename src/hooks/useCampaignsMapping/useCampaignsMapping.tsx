@@ -1,13 +1,13 @@
 import { TUseCampaignsMapping } from './types'
-import { useAppDispatch } from '../../../hooks'
+import { useAppDispatch } from '../../hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { TEncounter, TQuest, TSession, TTypesAllowed } from '../../../types'
-import { removeCampaignChildData } from '../../../reducers/campaign/campaignSlice'
-import { SidebarItemInterface } from '../../../components/Sidebar/Sidebar'
+import { TEncounter, TQuest, TSession, TTypesAllowed } from '../../types'
+import { removeCampaignChildData } from '../../reducers/campaign/campaignSlice'
+import { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import { StarIcon, StickyNoteIcon, SwordsIcon } from 'lucide-react'
-import { destroyEncounter } from '../../../services/EncounterService'
+import { destroyEncounter } from '../../services/EncounterService'
 import React from 'react'
-import { destroyQuest } from '../../../services/QuestService'
+import { destroyQuest } from '../../services/QuestService'
 
 const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
 

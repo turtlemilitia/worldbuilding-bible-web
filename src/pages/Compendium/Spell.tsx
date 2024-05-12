@@ -6,7 +6,7 @@ import {
   updateSpellData
 } from '../../reducers/compendium/spell/spellSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCompendiumChildData, removeCompendiumChildData,
@@ -14,13 +14,15 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TSpell } from '../../types'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Spell: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
   const { compendiumId, spellId } = useParams() as { compendiumId: string; spellId: string } // router
+
+  const navigate = useNavigate();
 
   const { spell } = useAppSelector((state: RootState) => state.spell) // redux
 
@@ -36,8 +38,6 @@ const Spell: FunctionComponent = (): JSX.Element => {
       key={spellId}
       isNew={spellId === 'new'}
       pageTypeName={'Spell'}
-      pathToNew={(data) => `${compendiumPath}/spells/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={spell.canUpdate}
       canDelete={spell.canDelete}
       ready={true}
@@ -48,12 +48,14 @@ const Spell: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroySpell(spellId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'spells', data: data }))
+        navigate(`${compendiumPath}/spells/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'spells', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'spells', id: spellId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

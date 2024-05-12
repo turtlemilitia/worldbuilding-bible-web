@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useFormHandlingType } from './types'
-import { TTypesAllowed } from '../../../types'
+import { useFormHandlingProps, useFormHandlingType } from './types'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
-import { useNavigate } from 'react-router-dom'
+import { isEmpty } from 'lodash'
 
-const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
+const useFormHandling: useFormHandlingType = <T>({
   isNew,
-  pathToNew,
-  pathAfterDelete,
   mapData,
 
   onFetch,
@@ -22,23 +19,27 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
 
   defaultData = {},
 
+  // data which has been saved/persisted, used to compare against new data for the autosave
+  // also possibly used in other child components, eg Campaign and Compendium
   persistedData,
   setPersistedData,
   updatePersistedData,
   resetPersistedData,
-}) => {
-
-  const navigate = useNavigate()
+}: useFormHandlingProps<T>) => {
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
+
+  // when we are fetching or deleting
   const [loading, setLoading] = useState(true)
+  // when we are saving (autosave)
   const [saving, setSaving] = useState(false)
 
   // data which is changed
-  const [newData, setNewData] = useState<object>(persistedData)
+  const [newData, setNewData] = useState<Partial<T>>()
   // data which came back at the end of the fetch
-  const [fetchedData, setFetchedData] = useState<TTypesAllowed>(persistedData)
+  const [fetchedData, setFetchedData] = useState<T>()
 
+  // on mount
   useEffect(() => {
 
     // fetch data on mount
@@ -60,7 +61,16 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   useEffect(() => {
 
     // persisted data doesn't seem to be changing the new data when it changes
-    if (!persistedData?.id) {
+    setPersistedData(fetchedData)
+    setNewData(fetchedData)
+
+  }, [fetchedData])
+
+  // need this to reset the persistedData when its a new page
+  useEffect(() => {
+
+    // persisted data doesn't seem to be changing the new data when it changes
+    if (isEmpty(persistedData)) {
       setFetchedData(defaultData)
       setNewData(defaultData)
     }
@@ -82,8 +92,6 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     resetErrors()
     onFetch()
       .then((apiData) => {
-        setNewData(apiData)
-        updatePersistedData(apiData)
         setFetchedData(apiData)
         onFetched && onFetched(apiData)
       })
@@ -100,7 +108,6 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
         .then((data) => {
           setPersistedData(data)
           onCreated && onCreated(data)
-          navigate(pathToNew(data))
           setSaving(false)
         })
         .catch(handleOnSaveError)
@@ -116,6 +123,16 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
   }
 
   // add autosave feature
+  const handleOnDelete = () => {
+    setLoading(true)
+    onDelete()
+      .then(() => {
+        onDeleted && onDeleted()
+        setLoading(false)
+      })
+      .catch(handleResponseErrors)
+  }
+
   useAutosave({
     canAutosave: !isNew,
     delay: 5000,
@@ -128,15 +145,9 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     mapData
   })
 
-  const handleOnDelete = () => {
-    setLoading(true)
-    onDelete()
-      .then(() => {
-        onDeleted && onDeleted()
-        navigate(pathAfterDelete)
-        setLoading(false)
-      })
-      .catch(handleResponseErrors)
+  const updateAllData = (data: T) => {
+    setNewData(prevState => ({...prevState, ...data}))
+    setFetchedData(prevState => ({...prevState, ...data}))
   }
 
   return {
@@ -144,7 +155,10 @@ const useFormHandling: useFormHandlingType<TTypesAllowed> = ({
     loading,
     saving,
     newData,
+    setNewData,
     fetchedData,
+    setFetchedData,
+    updateAllData,
     handleOnFieldChange,
     handleOnFetch,
     handleOnSave,

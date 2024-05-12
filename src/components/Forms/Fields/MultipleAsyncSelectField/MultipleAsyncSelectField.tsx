@@ -1,5 +1,5 @@
 import { Combobox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDownIcon, DotIcon } from 'lucide-react'
+import { CheckIcon, ChevronDownIcon, DotIcon, PlusIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
@@ -10,11 +10,13 @@ type TProp = {
   onChange: (value: TSelectOption[]) => any;
   search: (term: string) => Promise<TSelectOption[]>;
   link?: (id: number | string) => string;
-  disabled?: boolean
+  disabled?: boolean;
+  OpenDialog?: FunctionComponent<{isOpen: boolean; setIsOpen: (open: boolean) => any, id: string}>
 }
-const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled }) => {
+const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled, OpenDialog }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([])
+  const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
 
   const handleSearch = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 3) {
@@ -45,9 +47,17 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
               <Combobox.Input
                 className="w-full bg-transparent outline-none"
                 onChange={handleSearch}/>
-              {!disabled && (
-                <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
-              )}
+              <div className="flex">
+                {!disabled && (
+                  <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
+                )}
+                {OpenDialog && (
+                  <PlusIcon
+                    className="text-stone-300 h-5 w-5 "
+                    onClick={() => setDialogIsOpen(true)}
+                  />
+                )}
+              </div>
             </Combobox.Button>
             <Transition
               show={open}
@@ -81,6 +91,9 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
           </>
         )}
       </Combobox>
+      {dialogIsOpen && OpenDialog && (
+        <OpenDialog isOpen={dialogIsOpen} setIsOpen={setDialogIsOpen} id={'new'}/>
+      )}
     </div>
   )
 }

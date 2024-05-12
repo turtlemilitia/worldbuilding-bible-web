@@ -27,14 +27,14 @@ export const viewFaction = (slug: string, query: TQueryParams = {}): Promise<Axi
 
 }
 
-export const storeFaction = (compendiumId: TCompendium['slug'], data: TFactionRequest): Promise<AxiosResponse<TFactionResponse>> => {
+export const storeFaction = (compendiumId: TCompendium['slug'], data: TFactionRequest, query: TQueryParams = {}): Promise<AxiosResponse<TFactionResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/factions`, data)
+  return api.post(`/api/compendia/${compendiumId}/factions?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateFaction = (slug: string, data: Partial<TFactionRequest>): Promise<AxiosResponse<TFactionResponse>> => {
-  return api.put(`/api/factions/${slug}`, data)
+export const updateFaction = (slug: string, data: Partial<TFactionRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TFactionResponse>> => {
+  return api.put(`/api/factions/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyFaction = (slug: string): Promise<AxiosResponse<void>> => {

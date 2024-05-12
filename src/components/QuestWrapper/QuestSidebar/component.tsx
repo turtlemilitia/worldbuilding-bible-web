@@ -2,7 +2,7 @@ import React, { FunctionComponent, useContext, useMemo } from 'react'
 import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import { TQuestSidebarProps } from './types'
 import { StarIcon } from 'lucide-react'
-import useCampaignsMapping from '../../../utils/hooks/useCampaignsMapping'
+import useCampaignsMapping from '../../../hooks/useCampaignsMapping'
 import { QuestWrapperContext } from '../component'
 import { createNestedArray } from '../../../utils/treeUtils'
 

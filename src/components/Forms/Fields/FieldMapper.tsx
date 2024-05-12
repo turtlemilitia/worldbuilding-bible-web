@@ -4,15 +4,15 @@ import TextField from './TextField'
 import AsyncSelectField from './AsyncSelectField'
 import ListField from './ListField'
 import MultipleAsyncSelectField from './MultipleAsyncSelectField'
-import { TFields } from '../../InfoBar'
 import ListAddName from './ListAddName'
+import { TField } from '../../../hooks/useFields'
 
 export type TSelectOption = {
   id: string | number,
   slug?: string,
   name: string
 }
-type TProps = TFields & {
+type TProps = TField & {
   currentValue?: any,
   onChange: (name: string, value: any) => any,
   disabled?: boolean
@@ -46,6 +46,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
   options,
   onChange,
   search,
+  Dialog,
   link,
   Callback,
   disabled
@@ -74,6 +75,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
                 onChange={(value) => onChange(name, value)}
                 link={link}
                 search={search}
+                OpenDialog={Dialog}
                 disabled={disabled}
               />
             )}

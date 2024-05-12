@@ -1,8 +1,8 @@
-    import React, { FunctionComponent, JSX, useEffect, useState } from 'react'
+import React, { FunctionComponent, JSX } from 'react'
 import { destroyPlane, storePlane, TPlaneRequest, updatePlane, viewPlane } from '../../services/PlaneService'
 import { clearPlaneData, setPlaneData, updatePlaneData } from '../../reducers/compendium/plane/planeSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCompendiumChildData, removeCompendiumChildData,
@@ -10,14 +10,16 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import { TPlane } from '../../types'
 import Post from '../../components/Post'
-import { TFields } from '../../components/InfoBar'
-    import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import { TField } from '../../hooks/useFields'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Plane: FunctionComponent = (): JSX.Element => {
 
   const { plane } = useAppSelector((state: RootState) => state.plane) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, planeId } = useParams() as { compendiumId: string; planeId: string } // router
 
@@ -28,15 +30,13 @@ const Plane: FunctionComponent = (): JSX.Element => {
     content: data.content,
   })
 
-  const fields: TFields[] = []
+  const fields: TField[] = []
 
   return (
     <Post
       key={planeId}
       isNew={planeId === 'new'}
       pageTypeName={'Plane'}
-      pathToNew={(data) => `${compendiumPath}/planes/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={plane.canUpdate}
       canDelete={plane.canDelete}
       ready={true}
@@ -47,12 +47,14 @@ const Plane: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyPlane(planeId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'planes', data: data }))
+        navigate(`${compendiumPath}/planes/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'planes', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'planes', id: planeId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

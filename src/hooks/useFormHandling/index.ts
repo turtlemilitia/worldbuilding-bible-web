@@ -1,4 +1,4 @@
-import useFormHandling from './hook'
+import useFormHandling from './useFormHandling'
 import { useFormHandlingProps } from './types'
 
 export {}

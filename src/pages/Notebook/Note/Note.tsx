@@ -18,6 +18,8 @@ const Note = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
 
+  const navigate = useNavigate()
+
   const { notebookId, noteId } = useParams() as { notebookId: string, noteId: string } // router
 
   const { note } = useAppSelector((state: RootState) => state.note) // redux
@@ -32,8 +34,6 @@ const Note = (): JSX.Element => {
       key={noteId}
       isNew={noteId === 'new'}
       pageTypeName={'Note'}
-      pathToNew={(data) => `/notebooks/${notebookId}/notes/${data.slug}`}
-      pathAfterDelete={`/notebooks/${notebookId}`}
       canEdit={note.canUpdate}
       canDelete={note.canDelete}
       ready={true}
@@ -45,12 +45,14 @@ const Note = (): JSX.Element => {
       onCreated={(data) => {
         dispatch(updateNotebookData({ hasNotes: true }))
         dispatch(addNotebooksNotebookNote({ slug: notebookId, note: data }))
+        navigate(`/notebooks/${notebookId}/notes/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateNotebooksNotebookNote({ slug: notebookId, note: data }))
       }}
       onDeleted={() => {
         dispatch(removeNotebooksNotebookNote({ slug: notebookId, noteId }))
+        navigate(`/notebooks/${notebookId}`)
       }}
 
       fields={[]}

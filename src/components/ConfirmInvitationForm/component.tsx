@@ -5,7 +5,7 @@ import { useAppSelector } from '../../hooks'
 import { confirmCampaignInvitation } from '../../services/CampaignInvitationService'
 import LoadingSpinner from '../LoadingSpinner'
 import { RootState } from '../../store'
-import useErrorHandling from '../../utils/hooks/useErrorHandling'
+import useErrorHandling from '../../hooks/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { TInvitation } from '../../types'
 

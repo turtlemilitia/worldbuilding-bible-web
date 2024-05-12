@@ -8,7 +8,7 @@ import {
 } from '../../services/SessionService'
 import { clearSessionData, setSessionData, updateSessionData } from '../../reducers/campaign/session/sessionSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../store'
 import {
   addCampaignChildData,
@@ -21,6 +21,8 @@ import { removeCompendiumChildData } from '../../reducers/compendium/compendiumS
 const Session: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate()
 
   const { campaignId, sessionId } = useParams() as { campaignId: string; sessionId: string } // router
 
@@ -46,8 +48,6 @@ const Session: FunctionComponent = (): JSX.Element => {
       key={sessionId}
       isNew={sessionId === 'new'}
       pageTypeName={'Session'}
-      pathToNew={(data) => `/campaigns/${campaignId}/sessions/${data.slug}`}
-      pathAfterDelete={`/sessions/${campaignId}`}
       canEdit={session.canUpdate}
       canDelete={session.canDelete}
       ready={true}
@@ -58,12 +58,14 @@ const Session: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroySession(sessionId)}
       onCreated={(data) => {
         dispatch(addCampaignChildData({ field: 'sessions', data: data }))
+        navigate(`/campaigns/${campaignId}/sessions/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCampaignChildData({ field: 'sessions', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'sessions', id: sessionId }))
+        navigate(`/campaigns/${campaignId}`)
       }}
 
       fields={[

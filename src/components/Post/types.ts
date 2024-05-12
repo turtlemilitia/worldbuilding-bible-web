@@ -1,5 +1,5 @@
-import { TFields } from '../InfoBar'
-import { useFormHandlingProps } from '../../utils/hooks/useFormHandling'
+import { TField } from '../../hooks/useFields'
+import { useFormHandlingProps } from '../../hooks/useFormHandling'
 
 export type TPostProps<T> = useFormHandlingProps<T> & {
   pageTypeName?: string;
@@ -9,7 +9,7 @@ export type TPostProps<T> = useFormHandlingProps<T> & {
   ready: boolean;
 
   // form
-  fields: TFields[];
+  fields: TField[];
 
   // image
   allowProfileImage?: boolean
@@ -18,6 +18,7 @@ export type TPostProps<T> = useFormHandlingProps<T> & {
   profileImageUrl?: string;
 
   // permissions
+  canRefresh?: boolean;
   canEdit?: boolean;
   canDelete?: boolean;
 }

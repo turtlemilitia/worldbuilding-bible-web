@@ -2,7 +2,7 @@ import React, { FunctionComponent, JSX, useContext, useEffect, useState } from '
 import { destroyQuest, storeQuest, TQuestRequest, updateQuest, viewQuest } from '../../../services/QuestService'
 import { clearQuestData, setQuestData, updateQuestData } from '../../../reducers/campaign/quest/questSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../../store'
 import {
   addCampaignChildData,
@@ -12,7 +12,7 @@ import {
 import { TQuest } from '../../../types'
 import Post from '../../../components/Post'
 import { QuestWrapperContext } from '../../../components/QuestWrapper/component'
-import { TFields } from '../../../components/InfoBar'
+import { TField } from '../../../hooks/useFields'
 
 const include = 'type;parent'
 
@@ -22,6 +22,8 @@ const Quest: FunctionComponent = (): JSX.Element => {
   const { quest } = useAppSelector((state: RootState) => state.quest) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate()
 
   const { state: locationState } = useLocation()
 
@@ -46,7 +48,7 @@ const Quest: FunctionComponent = (): JSX.Element => {
     parentId: data.parent?.id,
   })
 
-  const fields: TFields[] = [
+  const fields: TField[] = [
     {
       name: 'type',
       label: 'Type',
@@ -70,8 +72,6 @@ const Quest: FunctionComponent = (): JSX.Element => {
       key={questId}
       isNew={questId === 'new'}
       pageTypeName={'Quest'}
-      pathToNew={(data) => `/campaigns/${campaignId}/quests/${data.slug}`}
-      pathAfterDelete={`/campaigns/${campaignId}`}
       canEdit={quest.canUpdate}
       canDelete={quest.canDelete}
       ready={ready}
@@ -83,12 +83,14 @@ const Quest: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyQuest(questId)}
       onCreated={(data) => {
         dispatch(addCampaignChildData({ field: 'quests', data: data }))
+        navigate(`/campaigns/${campaignId}/quests/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCampaignChildData({ field: 'quests', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCampaignChildData({ field: 'quests', id: questId }))
+        navigate(`/campaigns/${campaignId}`)
       }}
 
       fields={fields}

@@ -1,4 +1,4 @@
-import { SidebarItemInterface } from '../../../components/Sidebar/Sidebar';
+import { SidebarItemInterface } from '../../components/Sidebar/Sidebar';
 
 export type TUseCampaignsMappingProps = {
   campaignId: string;

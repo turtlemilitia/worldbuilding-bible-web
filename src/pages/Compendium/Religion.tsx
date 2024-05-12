@@ -20,11 +20,13 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TReligion } from '../../types'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Religion: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, religionId } = useParams() as { compendiumId: string; religionId: string } // router
 
@@ -42,8 +44,6 @@ const Religion: FunctionComponent = (): JSX.Element => {
       key={religionId}
       isNew={religionId === 'new'}
       pageTypeName={'Religion'}
-      pathToNew={(data) => `${compendiumPath}/religions/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={religion.canUpdate}
       canDelete={religion.canDelete}
       ready={true}
@@ -54,12 +54,14 @@ const Religion: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyReligion(religionId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'religions', data: data }))
+        navigate(`${compendiumPath}/religions/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'religions', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'religions', id: religionId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

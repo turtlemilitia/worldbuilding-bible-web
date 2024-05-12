@@ -1,6 +1,7 @@
 export type TEditorProps = {
-  initialValue: string;
+  initialValue?: string;
   onChange: (value: string) => any;
   placeholder?: string;
-  canEdit?: boolean
+  canEdit?: boolean;
+  className?: string;
 }

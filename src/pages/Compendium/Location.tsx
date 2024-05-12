@@ -13,19 +13,19 @@ import {
   updateLocationData
 } from '../../reducers/compendium/location/locationSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
   addCompendiumChildData, removeCompendiumChildData,
   updateCompendiumChildData,
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
-import { TFields } from '../../components/InfoBar'
+import { TField } from '../../hooks/useFields'
 import { indexLocationTypes } from '../../services/LocationTypeService'
 import { indexGovernmentTypes } from '../../services/GovernmentTypeService'
 import { TLocation, TLocationGovernmentType, TLocationType } from '../../types'
 import { RootState } from '../../store'
-import useImageSelection from '../../utils/hooks/useImageSelection'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useImageSelection from '../../hooks/useImageSelection'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Location: FunctionComponent = (): JSX.Element => {
 
@@ -33,6 +33,8 @@ const Location: FunctionComponent = (): JSX.Element => {
   const { location } = useAppSelector((state: RootState) => state.location) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, locationId } = useParams() as { compendiumId: string; locationId: string } // router
 
@@ -73,7 +75,7 @@ const Location: FunctionComponent = (): JSX.Element => {
     parentId: data.parent?.id,
   })
 
-  const fields: TFields[] = [
+  const fields: TField[] = [
     {
       name: 'aliases',
       label: 'Aliases',
@@ -83,7 +85,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       name: 'type',
       label: 'Type',
       type: 'select',
-      options: locationTypes
+      options: locationTypes ?? []
     },
     {
       name: 'demonym',
@@ -99,7 +101,7 @@ const Location: FunctionComponent = (): JSX.Element => {
       name: 'governmentType',
       label: 'Government',
       type: 'select',
-      options: governmentTypes
+      options: governmentTypes ?? []
     }
   ]
   if (compendium) {
@@ -139,8 +141,6 @@ const Location: FunctionComponent = (): JSX.Element => {
       key={locationId}
       isNew={locationId === 'new'}
       pageTypeName={'Location'}
-      pathToNew={(data) => `${compendiumPath}/locations/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={location.canUpdate}
       canDelete={location.canDelete}
       ready={ready}
@@ -151,12 +151,14 @@ const Location: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyLocation(locationId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'locations', data: data }))
+        navigate(`${compendiumPath}/locations/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'locations', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'locations', id: locationId }))
+        navigate(compendiumPath)
       }}
 
       fields={fields}

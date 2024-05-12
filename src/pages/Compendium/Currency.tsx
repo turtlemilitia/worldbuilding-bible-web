@@ -20,11 +20,13 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TCurrency } from '../../types'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Currency: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, currencyId } = useParams() as { compendiumId: string; currencyId: string } // router
 
@@ -42,8 +44,6 @@ const Currency: FunctionComponent = (): JSX.Element => {
       key={currencyId}
       isNew={currencyId === 'new'}
       pageTypeName={'Currency'}
-      pathToNew={(data) => `${compendiumPath}/currencies/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={currency.canUpdate}
       canDelete={currency.canDelete}
       ready={true}
@@ -54,12 +54,14 @@ const Currency: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyCurrency(currencyId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'currencies', data: data }))
+        navigate(`${compendiumPath}/currencies/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'currencies', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'currencies', id: currencyId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

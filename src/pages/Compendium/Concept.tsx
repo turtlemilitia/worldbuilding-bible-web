@@ -20,11 +20,13 @@ import {
 } from '../../reducers/compendium/compendiumSlice'
 import Post from '../../components/Post'
 import { TConcept } from '../../types'
-import useUrlFormatter from '../../utils/hooks/useUrlFormatter'
+import useUrlFormatter from '../../hooks/useUrlFormatter'
 
 const Concept: FunctionComponent = (): JSX.Element => {
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate();
 
   const { compendiumId, conceptId } = useParams() as { compendiumId: string; conceptId: string } // router
 
@@ -42,8 +44,6 @@ const Concept: FunctionComponent = (): JSX.Element => {
       key={conceptId}
       isNew={conceptId === 'new'}
       pageTypeName={'Concept'}
-      pathToNew={(data) => `${compendiumPath}/concepts/${data.slug}`}
-      pathAfterDelete={compendiumPath}
       canEdit={concept.canUpdate}
       canDelete={concept.canDelete}
       ready={true}
@@ -54,12 +54,14 @@ const Concept: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyConcept(conceptId)}
       onCreated={(data) => {
         dispatch(addCompendiumChildData({ field: 'concepts', data: data }))
+        navigate(`${compendiumPath}/concepts/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCompendiumChildData({ field: 'concepts', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCompendiumChildData({ field: 'concepts', id: conceptId }))
+        navigate(compendiumPath)
       }}
 
       fields={[]}

@@ -8,7 +8,7 @@ import {
 } from '../../../services/EncounterService'
 import { clearEncounterData, setEncounterData, updateEncounterData } from '../../../reducers/campaign/encounter/encounterSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../../store'
 import {
   addCampaignChildData,
@@ -24,6 +24,8 @@ const Encounter: FunctionComponent = (): JSX.Element => {
   const { encounter } = useAppSelector((state: RootState) => state.encounter) // redux
 
   const dispatch = useAppDispatch() // redux
+
+  const navigate = useNavigate()
 
   const { state: locationState } = useLocation()
 
@@ -52,8 +54,6 @@ const Encounter: FunctionComponent = (): JSX.Element => {
       key={encounterId}
       isNew={encounterId === 'new'}
       pageTypeName={'Encounter'}
-      pathToNew={(data) => `/campaigns/${campaignId}/encounters/${data.slug}`}
-      pathAfterDelete={`/campaigns/${campaignId}`}
       canEdit={encounter.canUpdate}
       canDelete={encounter.canDelete}
       ready={ready}
@@ -64,12 +64,14 @@ const Encounter: FunctionComponent = (): JSX.Element => {
       onDelete={() => destroyEncounter(encounterId)}
       onCreated={(data) => {
         dispatch(addCampaignChildData({ field: 'encounters', data: data }))
+        navigate(`/campaigns/${campaignId}/encounters/${data.slug}`)
       }}
       onUpdated={(data) => {
         dispatch(updateCampaignChildData({ field: 'encounters', data: data }))
       }}
       onDeleted={() => {
         dispatch(removeCampaignChildData({ field: 'encounters', id: encounterId }))
+        navigate(`/campaigns/${campaignId}`)
       }}
 
       fields={[
