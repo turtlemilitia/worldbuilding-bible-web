@@ -30,12 +30,11 @@ import {TUseForm} from "../../components/Post/types";
 
 const useCharacterForm = ({isNew}: {isNew: boolean}): TUseForm<TCharacter> => {
 
-  const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
-
   // redux
   const dispatch = useDispatch();
 
   // route
+  const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
   const navigate = useNavigate();
 
   const { compendiumPath } = useUrlFormatter()

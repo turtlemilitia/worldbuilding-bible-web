@@ -21,7 +21,7 @@ const Post = <T,>({
 }: TPostProps<T>): JSX.Element => {
 
   return (
-    <LoadingWrapper loading={form.loading || !fields.ready} opacity={'100'}>
+    <LoadingWrapper loading={form.loading || (!!fields && !fields.ready)} opacity={'100'}>
       <SavingDialog saving={form.saving}/>
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper
@@ -42,7 +42,7 @@ const Post = <T,>({
                 loading={form.loading}
                 onChange={form.handleOnFieldChange}
                 data={form.newData}
-                fields={fields.fields}
+                fields={fields?.fields}
                 profileImage={imageHandler && imageHandler.getImage('profile')}
                 onProfileImageSelected={imageHandler ? (id) => imageHandler.handleOnImageSelected(id, 'profile'): undefined}
                 disabled={!canEdit}

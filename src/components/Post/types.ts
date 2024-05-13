@@ -1,4 +1,3 @@
-import {useFormHandlingProps} from '../../hooks/useFormHandling'
 import {TField} from "../../hooks/useFields";
 import {TGenericPost} from "../../types";
 
@@ -32,23 +31,19 @@ export type TUseImageHandler = {
   getImage: (type: ('cover'|'profile')) => string|undefined
 }
 
-export type TPostProps<T> = useFormHandlingProps<T> & {
+export type TPostProps<T> = {
+  isNew: boolean
+
   pageTypeName?: string;
   contentPlaceholder?: string;
 
   // form
   form: TUseForm<T>;
-  fields: TUseFields;
+  fields?: TUseFields;
   imageHandler?: TUseImageHandler;
 
-  // image
-  allowProfileImage?: boolean
-  onImageSelected?: (imageId: number, imageType?: string) => Promise<any>;
-  coverImageUrl?: string;
-  profileImageUrl?: string;
-
   // permissions
-  canRefresh?: boolean;
+  // canRefresh?: boolean;
   canEdit?: boolean;
-  canDelete?: boolean;
+  // canDelete?: boolean;
 }
