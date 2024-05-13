@@ -1,13 +1,13 @@
 import useImageSelection from '../useImageSelection'
 import { useCallback } from 'react'
-import { updateCharacterData } from '../../reducers/compendium/character/characterSlice'
 import { TCharacter } from '../../types'
+import {TUseImageHandler} from "../../components/Post/types";
 
 type TProps = {
   persistedData?: TCharacter
   updatePersistedData: (data: Partial<TCharacter>) => any
 }
-const useCharacterImageHandling = ({persistedData, updatePersistedData}: TProps) => {
+const useCharacterImageHandling = ({persistedData, updatePersistedData}: TProps): TUseImageHandler => {
 
   const { onImageSelected, addImageToSelection } = useImageSelection({
     entityType: 'characters',
@@ -20,7 +20,7 @@ const useCharacterImageHandling = ({persistedData, updatePersistedData}: TProps)
       updatePersistedData({ images })
     }
     return result
-  }), [onImageSelected, addImageToSelection, persistedData?.images])
+  }), [onImageSelected, addImageToSelection, persistedData?.images, updatePersistedData])
 
   const getImage = useCallback((type: 'cover' | 'profile') => persistedData?.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [persistedData?.images])
 

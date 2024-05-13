@@ -5,6 +5,7 @@ import { TCharacter, TCompendium, TNote, TSpecies } from '../../types'
 import { useEffect, useState } from 'react'
 import { indexSpecies } from '../../services/SpeciesService'
 import useUrlFormatter from '../useUrlFormatter'
+import {TUseFields} from "../../components/Post/types";
 
 type TProps = {
   compendium?: TCompendium,
@@ -13,7 +14,7 @@ type TProps = {
   onNoteUpdated?: (note: TNote) => any,
 }
 
-const useCharacterFields = ({ compendium, character, onNoteCreated, onNoteUpdated }: TProps) => {
+const useCharacterFields = ({ compendium, character, onNoteCreated, onNoteUpdated }: TProps): TUseFields => {
 
   const [ready, setReady] = useState<boolean>(false)
   const [species, setSpecies] = useState<TSpecies[]>([])

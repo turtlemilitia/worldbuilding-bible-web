@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, {JSX} from 'react'
 import { HeaderWrapper } from '../HeaderWrapper'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import ContentWrapper from '../ContentWrapper'
@@ -8,94 +8,61 @@ import LoadingWrapper from '../LoadingWrapper'
 import { InfoBar } from '../InfoBar'
 import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
-import { TTypesAllowed } from '../../types'
-import useFormHandling from '../../hooks/useFormHandling'
 import SavingDialog from '../SavingDialog'
-import { setLoading } from '../../reducers/post/postSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
 
-const Post: FunctionComponent<TPostProps<TTypesAllowed>> = (props) => {
-
-  const {
-    isNew,
-    ready,
-    pageTypeName,
-    contentPlaceholder,
-    fields,
-    allowProfileImage = false,
-    onImageSelected,
-    coverImageUrl,
-    profileImageUrl,
-    canEdit = false,
-    canRefresh = true,
-    canDelete = true
-  } = props
-
-  const {
-    errors,
-    newData,
-    fetchedData,
-    loading: formLoading,
-    saving,
-    handleOnFieldChange,
-    handleOnFetch,
-    handleOnSave,
-    handleOnDelete,
-  } = useFormHandling({ ...props })
-
-  const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((state: RootState) => state.post) // redux
-
-  useEffect(() => {
-
-    dispatch(setLoading(formLoading))
-
-  }, [formLoading])
+const Post = <T,>({
+  pageTypeName,
+  contentPlaceholder,
+  form,
+  fields,
+  imageHandler,
+  isNew = true,
+  canEdit = false,
+}: TPostProps<T>): JSX.Element => {
 
   return (
-    <LoadingWrapper loading={loading || !ready} opacity={'100'}>
-      <SavingDialog saving={saving}/>
+    <LoadingWrapper loading={form.loading || !fields.ready} opacity={'100'}>
+      <SavingDialog saving={form.saving}/>
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper
           page={pageTypeName}
-          onCoverImageSelected={onImageSelected ? (id) => onImageSelected(id, 'cover') : undefined}
-          coverImage={coverImageUrl}
+          onCoverImageSelected={imageHandler ? (id) => imageHandler.handleOnImageSelected(id, 'cover') : undefined}
+          coverImage={imageHandler && imageHandler.getImage('cover')}
         >
-          <PageTitleField value={newData?.name || ''}
-                          onChange={(value) => handleOnFieldChange('name', value)}
+          <PageTitleField value={form.newData?.name ?? ''}
+                          onChange={(value) => form.handleOnFieldChange('name', value)}
                           placeholder={'Name'}
-                          canEdit={isNew || canEdit}
+                          canEdit={canEdit}
           />
         </HeaderWrapper>
         <ContentWrapper>
           <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
             <div className="w-full lg:w-1/4 px-6">
               <InfoBar
-                loading={loading}
-                onChange={handleOnFieldChange}
-                data={newData}
-                fields={fields}
-                profileImage={profileImageUrl}
-                onProfileImageSelected={allowProfileImage && onImageSelected ? (id) => onImageSelected(id, 'profile') : undefined}
-                disabled={!canEdit && !isNew}
+                loading={form.loading}
+                onChange={form.handleOnFieldChange}
+                data={form.newData}
+                fields={fields.fields}
+                profileImage={imageHandler && imageHandler.getImage('profile')}
+                onProfileImageSelected={imageHandler ? (id) => imageHandler.handleOnImageSelected(id, 'profile'): undefined}
+                disabled={!canEdit}
               />
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
-              {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
-              {(isNew || canEdit) && (
+              {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
+              {(canEdit) && (
                 <FormToolbar
                   canManuallySave={true}
-                  canRefresh={canRefresh && !isNew}
-                  canDelete={canDelete && !isNew}
-                  onSave={handleOnSave}
-                  onRefresh={handleOnFetch}
-                  onDelete={handleOnDelete}
+                  canRefresh={!isNew}
+                  canDelete={canEdit}
+                  onSave={form.handleOnSave}
+                  onRefresh={form.handleOnFetch}
+                  onDelete={form.handleOnDelete}
                 />
               )}
               <Editor
-                initialValue={fetchedData?.content}
-                onChange={(value) => handleOnFieldChange('content', value)}
+                initialValue={form.fetchedData?.content}
+                onChange={(value) => form.handleOnFieldChange('content', value)}
                 placeholder={contentPlaceholder}
                 canEdit={isNew || canEdit}
                 className={'min-h-screen'}

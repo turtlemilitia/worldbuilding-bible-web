@@ -20,7 +20,7 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
 
-  const isNew: boolean = useMemo(() => characterId === 'new', [])
+  const isNew: boolean = useMemo(() => characterId === 'new', [characterId])
 
   const form = useCharacterForm({ isNew });
 
@@ -33,10 +33,7 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   const canEdit: boolean = useMemo(() => isNew || form.persistedData?.canUpdate !== undefined, [isNew, form.persistedData?.canUpdate])
 
-  const {
-    handleOnImageSelected,
-    getImage
-  } = useCharacterImageHandling({persistedData: form.persistedData, updatePersistedData: form.updatePersistedData})
+  const imageHandling = useCharacterImageHandling({persistedData: form.persistedData, updatePersistedData: form.updatePersistedData})
 
   return (
     <LoadingWrapper loading={form.loading || !fields.ready} opacity={'100'}>
@@ -44,8 +41,8 @@ const Character: FunctionComponent = (): JSX.Element => {
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper
           page={'Character'}
-          onCoverImageSelected={(id) => handleOnImageSelected(id, 'cover')}
-          coverImage={getImage('cover')}
+          onCoverImageSelected={(id) => imageHandling.handleOnImageSelected(id, 'cover')}
+          coverImage={imageHandling.getImage('cover')}
         >
           <PageTitleField value={form.newData?.name || ''}
                           onChange={(value) => form.handleOnFieldChange('name', value)}
@@ -61,8 +58,8 @@ const Character: FunctionComponent = (): JSX.Element => {
                 onChange={form.handleOnFieldChange}
                 data={form.newData}
                 fields={fields.fields}
-                profileImage={getImage('profile')}
-                onProfileImageSelected={(id) => handleOnImageSelected(id, 'profile')}
+                profileImage={imageHandling.getImage('profile')}
+                onProfileImageSelected={(id) => imageHandling.handleOnImageSelected(id, 'profile')}
                 disabled={!canEdit}
               />
             </div>

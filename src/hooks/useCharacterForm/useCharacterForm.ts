@@ -26,8 +26,9 @@ import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
 import useUrlFormatter from '../useUrlFormatter'
+import {TUseForm} from "../../components/Post/types";
 
-const useCharacterForm = ({isNew}: {isNew: boolean}) => {
+const useCharacterForm = ({isNew}: {isNew: boolean}): TUseForm<TCharacter> => {
 
   const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
 
@@ -133,7 +134,7 @@ const useCharacterForm = ({isNew}: {isNew: boolean}) => {
       })
   }
 
-  const handleSetPersistedData = (data: TCharacter) => dispatch(setCharacterData(data))
+  const handleSetPersistedData = (data?: TCharacter) => dispatch(setCharacterData(data))
   const handleUpdatePersistedData = (data: Partial<TCharacter>) => dispatch(updateCharacterData(data))
 
   const {
