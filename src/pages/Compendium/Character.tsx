@@ -2,9 +2,10 @@ import React, { FunctionComponent, JSX, useMemo } from 'react'
 import { useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { RootState } from '../../store'
-import { useCharacterForm, useCharacterFields, useCharacterImageHandling } from '../../hooks/useCharacterForm'
+import { useCharacterForm, useCharacterFields } from '../../hooks/useCharacterForm'
 import { TCharacter } from '../../types'
 import Post from "../../components/Post";
+import useImageSelection from "../../hooks/useImageSelection";
 
 const Character: FunctionComponent = (): JSX.Element => {
 
@@ -25,7 +26,12 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   const canEdit: boolean = useMemo(() => isNew || form.persistedData?.canUpdate !== undefined, [isNew, form.persistedData?.canUpdate])
 
-  const imageHandler = useCharacterImageHandling({persistedData: form.persistedData, updatePersistedData: form.updatePersistedData})
+  const imageHandler = useImageSelection({
+    entityType: 'character',
+    entityId: form.persistedData?.slug,
+    persistedData: form.persistedData,
+    updatePersistedData: form.updatePersistedData
+  })
 
   return (
     <Post

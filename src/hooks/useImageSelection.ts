@@ -2,13 +2,15 @@ import { useAppSelector } from '../hooks'
 import { RootState } from '../store'
 import { attachImageToEntity } from '../services/ImageableService'
 import { useCallback } from 'react'
-import { TImage } from '../types'
+import {TCanHaveImages, TImage} from '../types'
 
 type TProps = {
   entityType: string;
   entityId?: string | number;
+  persistedData?: TCanHaveImages;
+  updatePersistedData: (data: TCanHaveImages) => any;
 }
-const useImageSelection = ({ entityType, entityId }: TProps) => {
+const useImageSelection = ({ entityType, entityId, persistedData, updatePersistedData }: TProps) => {
 
   const { imageTypes } = useAppSelector((state: RootState) => state.imageTypes) // redux
 
@@ -37,7 +39,17 @@ const useImageSelection = ({ entityType, entityId }: TProps) => {
     ]
   }
 
-  return { onImageSelected, addImageToSelection }
+  const handleOnImageSelected = useCallback((id: number, imageType: string) => onImageSelected(id, imageType).then((result) => {
+    if (result && result.data) {
+      const images = addImageToSelection(persistedData?.images || [], result.data.data, imageType)
+      updatePersistedData({ images })
+    }
+    return result
+  }), [onImageSelected, persistedData?.images, updatePersistedData])
+
+  const getImage = useCallback((type: 'cover' | 'profile') => persistedData?.images?.find(image => image.pivot?.type.name.toLowerCase() === type)?.original, [persistedData?.images])
+
+  return { getImage, handleOnImageSelected }
 }
 
 export default useImageSelection
