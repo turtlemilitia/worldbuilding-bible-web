@@ -3,8 +3,6 @@ import { TAsyncMultiSelectFieldFn, TNoteFieldFn, TNumberFieldFn, TSelectFieldFn,
 import NoteDialog from '../../components/NoteDialog'
 import { attachNoteToEntity } from '../../services/NotableService'
 import { indexNotes } from '../../services/NoteService'
-import { useDispatch } from 'react-redux'
-
 
 const useFields = () => {
 
@@ -38,7 +36,6 @@ const useFields = () => {
     Dialog: (props) =>
       <NoteDialog
         {...props}
-        // @ts-ignore
         notebookId={notebookId}
         onCreated={(noteData) => {
           attachNoteToEntity(notableType, notable.slug, { noteId: noteData.id })

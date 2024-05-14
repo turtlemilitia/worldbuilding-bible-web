@@ -1,43 +1,27 @@
-import React, { FunctionComponent } from 'react'
+import React, { JSX } from 'react'
 import { Dialog } from '@headlessui/react'
 import { FloatingBox } from '../FloatingBox'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import FormToolbar from '../Forms/FormToolbar'
 import { Editor } from '../Forms/Fields/Editor'
-import useFormHandling from '../../hooks/useFormHandling'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import InfoBar from '../InfoBar'
 import { TPostProps } from '../Post/types'
-import { TTypesAllowed } from '../../types'
 import { isEmpty } from 'lodash'
 
 type TProps<T> = TPostProps<T> & {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any
 }
-const PostDialog: FunctionComponent<TProps<TTypesAllowed>> = (props) => {
-
-  const {
-    isOpen,
-    setIsOpen,
-    isNew,
-    contentPlaceholder,
-    fields,
-    canEdit = false,
-    canRefresh = true,
-    canDelete = true,
-  } = props
-
-  const {
-    errors,
-    newData,
-    fetchedData,
-    loading,
-    handleOnFieldChange,
-    handleOnFetch,
-    handleOnSave,
-    handleOnDelete,
-  } = useFormHandling({ ...props })
+const PostDialog = <T,>({
+  isOpen,
+  setIsOpen,
+  contentPlaceholder,
+  form,
+  fields,
+  isNew = true,
+  canEdit = false,
+}: TProps<T>): JSX.Element => {
 
   return (
     <Dialog
@@ -49,8 +33,8 @@ const PostDialog: FunctionComponent<TProps<TTypesAllowed>> = (props) => {
         <FloatingBox className={'w-1/2'}>
           <Dialog.Panel>
             <Dialog.Title className={'mb-10'}>
-              <PageTitleField value={newData?.name || ''}
-                              onChange={(value) => handleOnFieldChange('name', value)}
+              <PageTitleField value={form.newData?.name || ''}
+                              onChange={(value) => form.handleOnFieldChange('name', value)}
                               placeholder={'Name'}
                               canEdit={isNew || canEdit}
               />
@@ -60,29 +44,29 @@ const PostDialog: FunctionComponent<TProps<TTypesAllowed>> = (props) => {
                 {!isEmpty(fields) && (
                   <div className="w-full lg:w-1/4 px-6">
                     <InfoBar
-                      loading={loading}
-                      onChange={handleOnFieldChange}
-                      data={newData}
-                      fields={fields}
+                      loading={form.loading}
+                      onChange={form.handleOnFieldChange}
+                      data={form.newData}
+                      fields={fields?.fields}
                       disabled={!canEdit && !isNew}
                     />
                   </div>
                 )}
                 <div className={`w-full md:w-3/4 max-w-2xl px-3 lg:flex-1`}>
-                  {Object.keys(errors).length > 0 && <ErrorBanner errors={errors}/>}
+                  {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
                   {(isNew || canEdit) && (
                     <FormToolbar
                       canManuallySave={true}
-                      canRefresh={canRefresh && !isNew}
-                      canDelete={canDelete && !isNew}
-                      onSave={handleOnSave}
-                      onRefresh={handleOnFetch}
-                      onDelete={handleOnDelete}
+                      canRefresh={!isNew}
+                      canDelete={canEdit}
+                      onSave={form.handleOnSave}
+                      onRefresh={form.handleOnFetch}
+                      onDelete={form.handleOnDelete}
                     />
                   )}
                   <Editor
-                    initialValue={fetchedData?.content}
-                    onChange={(value) => handleOnFieldChange('content', value)}
+                    initialValue={form.fetchedData?.content}
+                    onChange={(value) => form.handleOnFieldChange('content', value)}
                     placeholder={contentPlaceholder}
                     canEdit={isNew || canEdit}
                   />
