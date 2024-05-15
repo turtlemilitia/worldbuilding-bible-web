@@ -36,6 +36,7 @@ const useFields = () => {
     Dialog: (props) =>
       <NoteDialog
         {...props}
+        noteId={props.id}
         notebookId={notebookId}
         onCreated={(noteData) => {
           attachNoteToEntity(notableType, notable.slug, { noteId: noteData.id })

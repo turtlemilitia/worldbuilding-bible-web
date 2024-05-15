@@ -1,4 +1,4 @@
-import { TCharacter } from '../../types'
+import {TCharacter, TCompendium } from '../../types'
 import {
   destroyCharacter,
   storeCharacter,
@@ -11,10 +11,15 @@ import { attachFactionToCharacter, detachFactionFromCharacter } from '../../serv
 import { filterDataByKeys } from '../../utils/dataUtils'
 import useFormHandling from '../useFormHandling'
 import { useMemo } from 'react'
-import { useParams } from 'react-router-dom'
 import { TUseForm, TUseFormProps } from '../../components/Post/types'
 
+type TOwnProps = {
+  compendiumId: TCompendium['slug'];
+  characterId: TCharacter['slug'];
+}
 const useCharacterForm = ({
+  compendiumId,
+  characterId,
   isNew,
   persistedData,
   setPersistedData,
@@ -24,10 +29,7 @@ const useCharacterForm = ({
   onCreated,
   onUpdated,
   onDeleted,
-}: TUseFormProps<TCharacter>): TUseForm<TCharacter> => {
-
-  // route
-  const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
+}: TOwnProps & TUseFormProps<TCharacter>): TUseForm<TCharacter> => {
 
   const include = useMemo(() => 'species;languages;factions', [])
 

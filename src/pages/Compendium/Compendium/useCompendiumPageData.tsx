@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../../../hooks'
 import { RootState } from '../../../store'
@@ -11,9 +11,11 @@ const useCompendiumPageData = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const { compendiumId } = useParams() as { compendiumId: string; characterId: string } // router
   const { compendium: persistedData } = useAppSelector((state: RootState) => state.compendium) // redux]
 
   return {
+    compendiumId,
     persistedData,
     setPersistedData: (data?: TCompendium) => dispatch(setCompendiumData(data)),
     updatePersistedData: (data: Partial<TCompendium>) => dispatch(updateCompendiumData(data)),

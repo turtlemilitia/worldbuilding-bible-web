@@ -13,7 +13,7 @@ import {
 
 const useCharacterPageData = () => {
 
-  const { characterId } = useParams() as { compendiumId: string; characterId: string } // router
+  const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { compendiumPath } = useUrlFormatter()
@@ -21,6 +21,8 @@ const useCharacterPageData = () => {
   const { character: persistedData } = useAppSelector((state: RootState) => state.character) // redux]
 
   return {
+    compendiumId,
+    characterId,
     persistedData,
     setPersistedData: (data?: TCharacter) => dispatch(setCharacterData(data)),
     updatePersistedData: (data: Partial<TCharacter>) => dispatch(updateCharacterData(data)),

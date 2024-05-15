@@ -34,7 +34,7 @@ const PostDialog = <T,>({
           <Dialog.Panel>
             <Dialog.Title className={'mb-10'}>
               <PageTitleField value={form.newData?.name || ''}
-                              onChange={(value) => form.handleOnFieldChange('name', value)}
+                              onChange={(value) => form.onFieldChange('name', value)}
                               placeholder={'Name'}
                               canEdit={isNew || canEdit}
               />
@@ -45,7 +45,7 @@ const PostDialog = <T,>({
                   <div className="w-full lg:w-1/4 px-6">
                     <InfoBar
                       loading={form.loading}
-                      onChange={form.handleOnFieldChange}
+                      onChange={form.onFieldChange}
                       data={form.newData}
                       fields={fields?.fields}
                       disabled={!canEdit && !isNew}
@@ -59,14 +59,14 @@ const PostDialog = <T,>({
                       canManuallySave={true}
                       canRefresh={!isNew}
                       canDelete={canEdit}
-                      onSave={form.handleOnSave}
-                      onRefresh={form.handleOnFetch}
-                      onDelete={form.handleOnDelete}
+                      onSave={form.onSave}
+                      onRefresh={form.onFetch}
+                      onDelete={form.onDelete}
                     />
                   )}
                   <Editor
                     initialValue={form.fetchedData?.content}
-                    onChange={(value) => form.handleOnFieldChange('content', value)}
+                    onChange={(value) => form.onFieldChange('content', value)}
                     placeholder={contentPlaceholder}
                     canEdit={isNew || canEdit}
                   />

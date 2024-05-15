@@ -13,7 +13,7 @@ import {
 
 const useConceptPageData = () => {
 
-  const { conceptId } = useParams() as { compendiumId: string; conceptId: string } // router
+  const { compendiumId, conceptId } = useParams() as { compendiumId: string; conceptId: string } // router
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { compendiumPath } = useUrlFormatter()
@@ -21,6 +21,8 @@ const useConceptPageData = () => {
   const { concept: persistedData } = useAppSelector((state: RootState) => state.concept) // redux]
 
   return {
+    compendiumId,
+    conceptId,
     persistedData,
     setPersistedData: (data?: TConcept) => dispatch(setConceptData(data)),
     updatePersistedData: (data: Partial<TConcept>) => dispatch(updateConceptData(data)),

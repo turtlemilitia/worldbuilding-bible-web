@@ -1,4 +1,4 @@
-import { TUseForm, TUseFormProps } from '../../components/Post/types'
+import {TUseForm, TUseFormProps} from '../../components/Post/types'
 import {TCompendium} from "../../types";
 import useFormHandling from "../useFormHandling";
 import {
@@ -8,9 +8,12 @@ import {
   updateCompendium,
   viewCompendium
 } from "../../services/CompendiumService";
-import {useParams} from "react-router-dom";
 
+type TOwnProps = {
+  compendiumId: TCompendium['slug'];
+}
 const useCompendiumForm = ({
+  compendiumId,
   isNew,
   persistedData,
   setPersistedData,
@@ -20,10 +23,7 @@ const useCompendiumForm = ({
   onCreated,
   onUpdated,
   onDeleted,
-}: TUseFormProps<TCompendium>): TUseForm<TCompendium> => {
-
-  // route
-  const {compendiumId} = useParams() as { compendiumId: string } // router
+}: TOwnProps & TUseFormProps<TCompendium>): TUseForm<TCompendium> => {
 
   const include = 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories'
 
@@ -49,14 +49,16 @@ const useCompendiumForm = ({
     onCreate,
     onUpdate,
     onDelete,
+    onFetched,
     onCreated,
+    onUpdated,
     onDeleted,
 
     // persisted data
     persistedData,
     setPersistedData,
     updatePersistedData,
-    resetPersistedData: () => {}
+    resetPersistedData
   });
 }
 

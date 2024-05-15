@@ -1,41 +1,45 @@
 import { TNote, TNotebook } from '../../types'
 import React, { FunctionComponent, useMemo } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
-import { useNoteDialogForm } from '../../hooks/useNoteDialogForm'
+import { useNoteForm } from '../../hooks/useNoteForm'
+import useNoteDialogData from "./useNoteDialogData";
 
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
   notebookId: TNotebook['slug'];
-  id: TNote['slug'];
+  noteId: TNote['slug'];
   onCreated?: (data: TNote) => any;
-  onUpdated?: (data: TNote) => any;
+  onUpdated?: (data: Partial<TNote>) => any;
   onDeleted?: (id: TNote['slug']) => any;
 }
 const NoteDialog: FunctionComponent<TProps> = ({
   isOpen,
   setIsOpen,
   notebookId,
-  id,
+  noteId,
   onCreated,
   onUpdated,
   onDeleted
 }) => {
 
-  const isNew: boolean = useMemo(() => id === 'new', [id])
+  const isNew: boolean = useMemo(() => noteId === 'new', [noteId])
 
-  const form = useNoteDialogForm({
-    isNew,
-    isOpen,
-    setIsOpen,
+  const pageData = useNoteDialogData({
     notebookId,
-    id,
+    noteId,
+    setIsOpen,
     onCreated,
     onUpdated,
     onDeleted
+  })
+
+  const form = useNoteForm({
+    isNew,
+    ...pageData
   });
 
-  const canEdit: boolean = useMemo(() => isNew || form.persistedData?.canUpdate !== undefined, [isNew, form.persistedData?.canUpdate])
+  const canEdit: boolean = useMemo(() => isNew || pageData.persistedData?.canUpdate !== undefined, [isNew, pageData.persistedData?.canUpdate])
 
   return (
     <PostDialog

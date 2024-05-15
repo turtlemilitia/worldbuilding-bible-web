@@ -1,4 +1,4 @@
-import { TConcept } from '../../types'
+import {TCompendium, TConcept} from '../../types'
 import {
   destroyConcept,
   storeConcept,
@@ -7,11 +7,16 @@ import {
 } from '../../services/ConceptService'
 import useFormHandling from '../useFormHandling'
 import { useMemo } from 'react'
-import { useParams } from 'react-router-dom'
 import { TUseForm, TUseFormProps } from '../../components/Post/types'
 import { TCompendiumRequest, updateCompendium } from '../../services/CompendiumService'
 
+type TOwnProps = {
+  compendiumId: TCompendium['slug'];
+  conceptId: TConcept['slug'];
+}
 const useConceptForm = ({
+  compendiumId,
+  conceptId,
   isNew,
   persistedData,
   setPersistedData,
@@ -21,10 +26,7 @@ const useConceptForm = ({
   onCreated,
   onUpdated,
   onDeleted,
-}: TUseFormProps<TConcept>): TUseForm<TConcept> => {
-
-  // route
-  const { compendiumId, conceptId } = useParams() as { compendiumId: string; conceptId: string } // router
+}: TOwnProps & TUseFormProps<TConcept>): TUseForm<TConcept> => {
 
   const include = useMemo(() => 'species;languages;factions', [])
 
