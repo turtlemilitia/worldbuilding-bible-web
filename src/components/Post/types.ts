@@ -8,22 +8,39 @@ export type TUseFields = {
 
 type TPost<T> = T & TGenericPost;
 
+export type TUseFormProps<T> = {
+  isNew: boolean;
+
+  onFetched?: (data: T) => any
+  onCreated?: (data: T) => any
+  onUpdated?: (data: T) => any
+  onDeleted?: () => any
+
+  // persisted data
+  persistedData?: T,
+  setPersistedData: (data?: T) => any,
+  updatePersistedData: (data: Partial<T>) => any,
+  resetPersistedData?: () => any
+}
 export type TUseForm<T> = {
   loading: boolean;
   saving: boolean;
 
-  persistedData?: TPost<T>;
   newData?: Partial<TPost<T>>;
   fetchedData?: TPost<T>;
 
   errors: { [key: string]: string };
-  updatePersistedData: (payload: Partial<TPost<T>>) => any;
+
   updateAllData: (payload: TPost<T>) => any;
 
-  handleOnFieldChange: (name: string, value: string) => any;
-  handleOnFetch: () => void;
-  handleOnSave: () => void;
-  handleOnDelete: () => void;
+  onFieldChange: (name: string, value: string) => any;
+  onFetch: () => void;
+  onSave: () => any;
+  onDelete: () => void;
+
+  onCreated?: (data: T) => any
+  onUpdated?: (data: T) => any
+  onDeleted?: () => any
 }
 
 export type TUseImageHandler = {

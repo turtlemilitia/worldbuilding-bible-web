@@ -1,4 +1,4 @@
-import {TUseForm} from "../../components/Post/types";
+import { TUseForm, TUseFormProps } from '../../components/Post/types'
 import {TCompendium} from "../../types";
 import useFormHandling from "../useFormHandling";
 import {
@@ -8,95 +8,56 @@ import {
   updateCompendium,
   viewCompendium
 } from "../../services/CompendiumService";
-import {useNavigate, useParams} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {useAppSelector} from "../../hooks";
-import {RootState} from "../../store";
-import {addCompendium} from "../../reducers/compendium/compendiaIndexSlice";
-import {setCompendiumData, updateCompendiumData} from "../../reducers/compendium/compendiumSlice";
+import {useParams} from "react-router-dom";
 
-const useCompendiumForm = ({isNew}: { isNew: boolean }): TUseForm<TCompendium> => {
-
-  // redux
-  const dispatch = useDispatch();
+const useCompendiumForm = ({
+  isNew,
+  persistedData,
+  setPersistedData,
+  updatePersistedData,
+  resetPersistedData,
+  onFetched,
+  onCreated,
+  onUpdated,
+  onDeleted,
+}: TUseFormProps<TCompendium>): TUseForm<TCompendium> => {
 
   // route
   const {compendiumId} = useParams() as { compendiumId: string } // router
-  const navigate = useNavigate();
-
-  // compendium state
-  const {compendium: persistedData} = useAppSelector((state: RootState) => state.compendium) // redux
 
   const include = 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories'
 
-  const readyDataForRequest = (data: TCompendiumRequest): TCompendiumRequest => ({
+  const mapData = (data: TCompendiumRequest): TCompendiumRequest => ({
     name: data.name,
     content: data.content
   })
 
-  const handleFetch = () => viewCompendium(compendiumId, {include}).then(({data}) => data.data)
+  const onFetch = () => viewCompendium(compendiumId, {include}).then(({data}) => data.data)
 
-  const handleCreate = (data: TCompendiumRequest) => storeCompendium(readyDataForRequest(data)).then(({data}) => data.data)
+  const onCreate = (data: TCompendiumRequest) => storeCompendium(mapData(data)).then(({data}) => data.data)
 
-  const handleUpdate = (data: TCompendiumRequest) => updateCompendium(compendiumId, readyDataForRequest(data)).then(({data}) => data.data)
+  const onUpdate = (data: TCompendiumRequest) => updateCompendium(compendiumId, mapData(data)).then(({data}) => data.data)
 
-  const handleDelete = () => destroyCompendium(compendiumId)
+  const onDelete = () => destroyCompendium(compendiumId)
 
-  const handleSetPersistedData = (data?: TCompendium) => dispatch(setCompendiumData(data));
-
-  const handleUpdatePersistedData = (data: Partial<TCompendium>) => dispatch(updateCompendiumData(data));
-
-  const {
-    errors,
-    newData,
-    fetchedData,
-    updateAllData,
-    loading,
-    saving,
-    handleOnFieldChange,
-    handleOnFetch,
-    handleOnSave,
-    handleOnDelete,
-  } = useFormHandling({
+  return useFormHandling({
     isNew,
-    mapData: readyDataForRequest,
+    mapData,
 
     // API
-    onFetch: handleFetch,
-    onCreate: handleCreate,
-    onUpdate: handleUpdate,
-    onDelete: handleDelete,
-    onCreated: (data) => {
-      dispatch(addCompendium(data))
-      navigate(`/compendia/${data.slug}`)
-    },
-    onDeleted: () => {
-      navigate(`/`)
-    },
+    onFetch,
+    onCreate,
+    onUpdate,
+    onDelete,
+    onCreated,
+    onDeleted,
 
     // persisted data
     persistedData,
-    setPersistedData: handleSetPersistedData,
-    updatePersistedData: handleUpdatePersistedData,
+    setPersistedData,
+    updatePersistedData,
     resetPersistedData: () => {}
   });
-
-  return {
-    persistedData,
-    newData,
-    fetchedData,
-
-    errors,
-    updatePersistedData: handleUpdatePersistedData,
-    updateAllData,
-    loading,
-    saving,
-
-    handleOnSave,
-    handleOnFetch,
-    handleOnDelete,
-    handleOnFieldChange
-  };
 }
 
 export default useCompendiumForm;

@@ -74,7 +74,7 @@ export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
   stories?: TGenericPostList[];
 }
 
-export type TConcept = TGenericPost & TPlayerTools & TCanHaveImages
+export type TConcept = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
 export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   age: string;

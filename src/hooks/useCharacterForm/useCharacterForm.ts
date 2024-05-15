@@ -10,41 +10,28 @@ import { attachLanguageToCharacter, detachLanguageFromCharacter } from '../../se
 import { attachFactionToCharacter, detachFactionFromCharacter } from '../../services/FactionService'
 import { filterDataByKeys } from '../../utils/dataUtils'
 import useFormHandling from '../useFormHandling'
-import {
-  addCompendiumChildData,
-  removeCompendiumChildData,
-  updateCompendiumChildData
-} from '../../reducers/compendium/compendiumSlice'
-import {
-  clearCharacterData,
-  setCharacterData,
-  updateCharacterData
-} from '../../reducers/compendium/character/characterSlice'
 import { useMemo } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
-import useUrlFormatter from '../useUrlFormatter'
-import {TUseForm} from "../../components/Post/types";
+import { useParams } from 'react-router-dom'
+import { TUseForm, TUseFormProps } from '../../components/Post/types'
 
-const useCharacterForm = ({isNew}: {isNew: boolean}): TUseForm<TCharacter> => {
-
-  // redux
-  const dispatch = useDispatch();
+const useCharacterForm = ({
+  isNew,
+  persistedData,
+  setPersistedData,
+  updatePersistedData,
+  resetPersistedData,
+  onFetched,
+  onCreated,
+  onUpdated,
+  onDeleted,
+}: TUseFormProps<TCharacter>): TUseForm<TCharacter> => {
 
   // route
   const { compendiumId, characterId } = useParams() as { compendiumId: string; characterId: string } // router
-  const navigate = useNavigate();
-
-  const { compendiumPath } = useUrlFormatter()
-
-  // Character State
-  const { character: persistedData } = useAppSelector((state: RootState) => state.character) // redux
 
   const include = useMemo(() => 'species;languages;factions', [])
 
-  const readyDataForRequest = (data: any): TCharacterRequest => ({
+  const mapData = (data: any): TCharacterRequest => ({
     name: data.name,
     age: data.age,
     gender: data.gender,
@@ -52,10 +39,10 @@ const useCharacterForm = ({isNew}: {isNew: boolean}): TUseForm<TCharacter> => {
     speciesId: data.species?.id
   })
 
-  const handleFetch = () => viewCharacter(characterId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewCharacter(characterId, { include: `${include};notes;images` }).then(({ data }) => data.data)
 
-  const handleCreate = (data: TCharacter): Promise<TCharacter> => {
-    return storeCharacter(compendiumId, readyDataForRequest(data), { include })
+  const onCreate = (data: TCharacter): Promise<TCharacter> => {
+    return storeCharacter(compendiumId, mapData(data), { include })
       .then((response) => {
         const responseCharacter = response.data.data
         if (!data.languages && !data.factions) {
@@ -83,11 +70,11 @@ const useCharacterForm = ({isNew}: {isNew: boolean}): TUseForm<TCharacter> => {
       })
   }
 
-  const handleUpdate = (data: TCharacter): Promise<TCharacter> => {
+  const onUpdate = (data: TCharacter): Promise<TCharacter> => {
     if (!persistedData) {
       return Promise.reject()
     }
-    return updateCharacter(characterId, readyDataForRequest(data), { include })
+    return updateCharacter(characterId, mapData(data), { include })
       .then((response) => {
         const updatedCharacter = response.data.data
 
@@ -133,64 +120,28 @@ const useCharacterForm = ({isNew}: {isNew: boolean}): TUseForm<TCharacter> => {
       })
   }
 
-  const handleSetPersistedData = (data?: TCharacter) => dispatch(setCharacterData(data))
-  const handleUpdatePersistedData = (data: Partial<TCharacter>) => dispatch(updateCharacterData(data))
+  const onDelete = () => destroyCharacter(characterId)
 
-  const {
-    errors,
-    newData,
-    fetchedData,
-    updateAllData,
-    loading,
-    saving,
-    handleOnFieldChange,
-    handleOnFetch,
-    handleOnSave,
-    handleOnDelete,
-  } = useFormHandling({
+  return useFormHandling({
     isNew,
-    mapData: readyDataForRequest,
+    mapData,
 
     // API
-    onFetch: handleFetch,
-    onCreate: handleCreate,
-    onUpdate: handleUpdate,
-    onDelete: () => destroyCharacter(characterId),
-    onCreated: (data) => {
-      dispatch(addCompendiumChildData({ field: 'characters', data: data }))
-      navigate(`${compendiumPath}/characters/${persistedData?.slug}`)
-    },
-    onUpdated: (data) => {
-      dispatch(updateCompendiumChildData({ field: 'characters', data: data }))
-    },
-    onDeleted: () => {
-      dispatch(removeCompendiumChildData({ field: 'characters', id: characterId }))
-      navigate(compendiumPath)
-    },
+    onFetch,
+    onCreate,
+    onUpdate,
+    onDelete,
+    onFetched,
+    onCreated,
+    onUpdated,
+    onDeleted,
 
     // persisted data
     persistedData,
-    setPersistedData: handleSetPersistedData,
-    updatePersistedData: handleUpdatePersistedData,
-    resetPersistedData: () => dispatch(clearCharacterData(undefined))
+    setPersistedData,
+    updatePersistedData,
+    resetPersistedData
   })
-
-  return {
-    persistedData,
-    newData,
-    fetchedData,
-
-    errors,
-    updatePersistedData: handleUpdatePersistedData,
-    updateAllData,
-    loading,
-    saving,
-
-    handleOnSave,
-    handleOnFetch,
-    handleOnDelete,
-    handleOnFieldChange
-  };
 }
 
 export default useCharacterForm;

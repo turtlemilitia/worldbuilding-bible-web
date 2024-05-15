@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useFormHandlingProps, useFormHandlingType } from './types'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
-import { isEmpty } from 'lodash'
+import equal from 'fast-deep-equal/react'
 
-const useFormHandling: useFormHandlingType = <T>({
+const useFormHandling = <T>({
   isNew,
   mapData,
 
@@ -25,7 +25,7 @@ const useFormHandling: useFormHandlingType = <T>({
   setPersistedData,
   updatePersistedData,
   resetPersistedData,
-}: useFormHandlingProps<T>) => {
+}: useFormHandlingProps<T>): useFormHandlingType<T> => {
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
 
@@ -46,7 +46,7 @@ const useFormHandling: useFormHandlingType = <T>({
     if (!isNew) {
       handleOnFetch()
     } else {
-      resetPersistedData()
+      resetPersistedData && resetPersistedData()
       setLoading(false)
     }
 
@@ -57,10 +57,8 @@ const useFormHandling: useFormHandlingType = <T>({
 
   }, [])
 
-  // need this to reset the persistedData when its a new page
   useEffect(() => {
 
-    // persisted data doesn't seem to be changing the new data when it changes
     setPersistedData(fetchedData)
     setNewData(fetchedData)
 
@@ -70,9 +68,11 @@ const useFormHandling: useFormHandlingType = <T>({
   useEffect(() => {
 
     // persisted data doesn't seem to be changing the new data when it changes
-    if (isEmpty(persistedData)) {
-      setFetchedData(defaultData)
-      setNewData(defaultData)
+    if (!equal(persistedData, fetchedData)) {
+      setFetchedData(persistedData)
+    }
+    if (!equal(persistedData, newData)) {
+      setNewData(persistedData)
     }
 
   }, [persistedData])
@@ -159,10 +159,10 @@ const useFormHandling: useFormHandlingType = <T>({
     fetchedData,
     setFetchedData,
     updateAllData,
-    handleOnFieldChange,
-    handleOnFetch,
-    handleOnSave,
-    handleOnDelete
+    onFieldChange: handleOnFieldChange,
+    onFetch: handleOnFetch,
+    onSave: handleOnSave,
+    onDelete: handleOnDelete
   }
 
 }

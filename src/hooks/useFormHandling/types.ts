@@ -18,10 +18,10 @@ export type useFormHandlingProps<T> = {
   persistedData?: T,
   setPersistedData: (data?: T) => any,
   updatePersistedData: (data: Partial<T>) => any,
-  resetPersistedData: () => any
+  resetPersistedData?: () => any
 }
 
-export type useFormHandlingType = <T>(data: useFormHandlingProps<T>) => {
+export type useFormHandlingType<T> = {
   loading: boolean;
   saving: boolean;
 
@@ -31,10 +31,10 @@ export type useFormHandlingType = <T>(data: useFormHandlingProps<T>) => {
   setFetchedData: (payload: T) => any;
   updateAllData: (payload: T) => any;
 
-  handleOnFieldChange: (name: string, value: string) => any;
-  handleOnFetch: () => void;
-  handleOnSave: () => void;
-  handleOnDelete: () => void;
+  onFieldChange: (name: string, value: string) => any;
+  onFetch: () => void;
+  onSave: () => void;
+  onDelete: () => void;
 
   errors: { [key: string]: string };
 };
