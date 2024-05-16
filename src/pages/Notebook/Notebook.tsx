@@ -1,65 +1,34 @@
-import React, { JSX } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { RootState } from '../../store'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { clearNotebookData, setNotebookData, updateNotebookData } from '../../reducers/notebook/notebookSlice'
-import {
-  destroyNotebook,
-  storeNotebook,
-  TNotebookRequest,
-  updateNotebook,
-  viewNotebook
-} from '../../services/NotebookService'
-import { TNotebook } from '../../types'
-import { addNotebook, removeNotebook, updateNotebooksNotebookData } from '../../reducers/notebook/notebooksIndexSlice'
-import Post from '../../components/Post/Post'
+import React, { FunctionComponent, JSX } from 'react'
+import useNotebookPageData from './useNotebookPageData'
+import { useNotebookFields, useNotebookForm } from '../../hooks/useNotebookForm'
+import useImageSelection from '../../hooks/useImageSelection'
+import Post from '../../components/Post'
 
-const Notebook = (): JSX.Element => {
+const Notebook: FunctionComponent = (): JSX.Element => {
 
-  const dispatch = useAppDispatch() // redux
+  const pageData = useNotebookPageData();
 
-  const navigate = useNavigate()
+  const form = useNotebookForm(pageData);
 
-  const { notebookId } = useParams() as { notebookId: string } // router
+  const fields = useNotebookFields({
+    notebook: pageData.persistedData,
+  });
 
-  const { notebook } = useAppSelector((state: RootState) => state.notebook) // redux
-
-  const readyDataForRequest = (data: any): TNotebookRequest => ({
-    name: data.name,
-    content: data.content,
+  const imageHandler = useImageSelection({
+    entityType: 'notebook',
+    entityId: pageData.persistedData?.slug,
+    persistedData: pageData.persistedData,
+    updatePersistedData: pageData.updatePersistedData
   })
 
   return (
     <Post
-      key={notebookId}
-      isNew={notebookId === 'new'}
+      isNew={pageData.isNew}
       pageTypeName={'Notebook'}
-      canEdit={notebook && notebook.canUpdate}
-      canDelete={notebook && notebook.canDelete}
-      ready={true}
-
-      onFetch={() => viewNotebook(notebookId).then(({ data }) => data.data)}
-      onCreate={(data: TNotebook) => storeNotebook(readyDataForRequest(data)).then(({ data }) => data.data)}
-      onUpdate={(data: TNotebook) => updateNotebook(notebookId, readyDataForRequest(data)).then(({ data }) => data.data)}
-      onDelete={() => destroyNotebook(notebookId)}
-      onCreated={(data) => {
-        dispatch(addNotebook(data))
-        navigate(`/notebooks/${data.slug}`)
-      }}
-      onUpdated={(data) => {
-        dispatch(updateNotebooksNotebookData(data))
-      }}
-      onDeleted={() => {
-        dispatch(removeNotebook({ id: notebookId }))
-        navigate(`/`)
-      }}
-
-      fields={[]}
-
-      persistedData={notebook as TNotebook}
-      setPersistedData={(data) => dispatch(setNotebookData(data))}
-      updatePersistedData={(data) => dispatch(updateNotebookData(data))}
-      resetPersistedData={() => dispatch(clearNotebookData(undefined))}
+      form={form}
+      fields={fields}
+      canEdit={pageData.canEdit}
+      imageHandler={imageHandler}
     />
   )
 }

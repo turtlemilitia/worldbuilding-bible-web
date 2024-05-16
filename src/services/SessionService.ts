@@ -29,14 +29,14 @@ export const viewSession = (slug: string, query: TQueryParams = {}): Promise<Axi
 
 }
 
-export const storeSession = (campaignId: TCampaign['slug'], data: TSessionRequest): Promise<AxiosResponse<TSessionResponse>> => {
+export const storeSession = (campaignId: TCampaign['slug'], data: TSessionRequest, query: TQueryParams = {}): Promise<AxiosResponse<TSessionResponse>> => {
 
-  return api.post(`/api/campaigns/${campaignId}/sessions`, data)
+  return api.post(`/api/campaigns/${campaignId}/sessions?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateSession = (slug: string, data: Partial<TSessionRequest>): Promise<AxiosResponse<TSessionResponse>> => {
-  return api.put(`/api/sessions/${slug}`, data)
+export const updateSession = (slug: string, data: Partial<TSessionRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TSessionResponse>> => {
+  return api.put(`/api/sessions/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroySession = (slug: string): Promise<AxiosResponse<void>> => {

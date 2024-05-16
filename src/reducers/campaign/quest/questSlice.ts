@@ -4,14 +4,10 @@ import { TQuest } from '../../../types'
 
 
 interface TState {
-  quest: Partial<TQuest>;
+  quest?: TQuest;
 }
 
 const initialState: TState = {
-  quest: {
-    name: '',
-    content: '',
-  }
 }
 
 const questSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const questSlice: Slice<TState> = createSlice({
       state.quest = action.payload
     },
     updateQuestData: (state, action: PayloadAction<Partial<TQuest>>) => {
-      state.quest = { ...state.quest, ...action.payload }
+      state.quest = { ...state.quest as TQuest, ...action.payload }
     },
     clearQuestData: (state) => {
       state.quest = initialState.quest

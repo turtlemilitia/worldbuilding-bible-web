@@ -10,6 +10,7 @@ import {
   removeCompendiumChildData,
   updateCompendiumChildData
 } from '../../../reducers/compendium/compendiumSlice'
+import { useMemo } from 'react'
 
 const useCharacterPageData = () => {
 
@@ -20,7 +21,12 @@ const useCharacterPageData = () => {
 
   const { character: persistedData } = useAppSelector((state: RootState) => state.character) // redux]
 
+  const isNew: boolean = useMemo(() => characterId === 'new', [characterId])
+  const canEdit: boolean = useMemo(() => isNew || persistedData?.canUpdate !== undefined, [isNew, persistedData?.canUpdate])
+
   return {
+    isNew,
+    canEdit,
     compendiumId,
     characterId,
     persistedData,

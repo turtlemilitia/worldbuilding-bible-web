@@ -4,14 +4,10 @@ import { TSpecies } from '../../../types'
 
 
 interface TState {
-  species: Partial<TSpecies>;
+  species?: TSpecies;
 }
 
 const initialState: TState = {
-  species: {
-    name: '',
-    content: '',
-  }
 }
 
 const speciesSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const speciesSlice: Slice<TState> = createSlice({
       state.species = action.payload
     },
     updateSpeciesData: (state, action: PayloadAction<Partial<TSpecies>>) => {
-      state.species = { ...state.species, ...action.payload }
+      state.species = { ...state.species as TSpecies, ...action.payload }
     },
     clearSpeciesData: (state) => {
       state.species = initialState.species

@@ -10,20 +10,11 @@ import useImageSelection from '../../../hooks/useImageSelection'
 
 const Concept: FunctionComponent = (): JSX.Element => {
 
-  const { conceptId } = useParams() as { compendiumId: string; conceptId: string } // router
-
   const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
-
-  const isNew: boolean = useMemo(() => conceptId === 'new', [conceptId])
 
   const pageData = useConceptPageData();
 
-  const canEdit: boolean = useMemo(() => isNew || pageData.persistedData?.canUpdate !== undefined, [isNew, pageData.persistedData?.canUpdate])
-
-  const form = useConceptForm({
-    isNew,
-    ...pageData
-  });
+  const form = useConceptForm(pageData);
 
   const fields = useConceptFields({
     compendium,
@@ -33,7 +24,7 @@ const Concept: FunctionComponent = (): JSX.Element => {
   });
 
   const imageHandler = useImageSelection({
-    entityType: 'concept',
+    entityType: 'concepts',
     entityId: pageData.persistedData?.slug,
     persistedData: pageData.persistedData,
     updatePersistedData: pageData.updatePersistedData
@@ -41,11 +32,11 @@ const Concept: FunctionComponent = (): JSX.Element => {
 
   return (
     <Post
-      isNew={isNew}
+      isNew={pageData.isNew}
       pageTypeName={'Concept'}
       form={form}
       fields={fields}
-      canEdit={canEdit}
+      canEdit={pageData.canEdit}
       imageHandler={imageHandler}
     />
   )

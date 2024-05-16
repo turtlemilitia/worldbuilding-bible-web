@@ -3,6 +3,7 @@ import { useFormHandlingProps, useFormHandlingType } from './types'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import equal from 'fast-deep-equal/react'
+import { isEmpty } from 'lodash'
 
 const useFormHandling = <T>({
   isNew,
@@ -16,8 +17,6 @@ const useFormHandling = <T>({
   onCreated,
   onUpdated,
   onDeleted,
-
-  defaultData = {},
 
   // data which has been saved/persisted, used to compare against new data for the autosave
   // also possibly used in other child components, eg Campaign and Compendium
@@ -59,7 +58,7 @@ const useFormHandling = <T>({
 
   useEffect(() => {
 
-    setPersistedData(fetchedData)
+    setPersistedData(fetchedData as T)
     setNewData(fetchedData)
 
   }, [fetchedData])
@@ -67,6 +66,7 @@ const useFormHandling = <T>({
   // need this to reset the persistedData when its a new page
   useEffect(() => {
 
+    // todo this needs to be tested
     // persisted data doesn't seem to be changing the new data when it changes
     if (!equal(persistedData, fetchedData)) {
       setFetchedData(persistedData)

@@ -4,14 +4,10 @@ import { TStory } from '../../../types'
 
 
 interface TState {
-  story: Partial<TStory>;
+  story?: TStory;
 }
 
 const initialState: TState = {
-  story: {
-    name: '',
-    content: '',
-  }
 }
 
 const storySlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const storySlice: Slice<TState> = createSlice({
       state.story = action.payload
     },
     updateStoryData: (state, action: PayloadAction<Partial<TStory>>) => {
-      state.story = { ...state.story, ...action.payload }
+      state.story = { ...state.story as TStory, ...action.payload }
     },
     clearStoryData: (state) => {
       state.story = initialState.story

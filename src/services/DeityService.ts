@@ -25,14 +25,14 @@ export const viewDeity = (slug: string, query: TQueryParams = {}): Promise<Axios
 
 }
 
-export const storeDeity = (compendiumId: TCompendium['slug'], data: TDeityRequest): Promise<AxiosResponse<TDeityResponse>> => {
+export const storeDeity = (compendiumId: TCompendium['slug'], data: TDeityRequest, query: TQueryParams = {}): Promise<AxiosResponse<TDeityResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/deities`, data)
+  return api.post(`/api/compendia/${compendiumId}/deities?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateDeity = (slug: string, data: Partial<TDeityRequest>): Promise<AxiosResponse<TDeityResponse>> => {
-  return api.put(`/api/deities/${slug}`, data)
+export const updateDeity = (slug: string, data: Partial<TDeityRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TDeityResponse>> => {
+  return api.put(`/api/deities/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyDeity = (slug: string): Promise<AxiosResponse<void>> => {

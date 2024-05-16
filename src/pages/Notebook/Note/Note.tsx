@@ -1,66 +1,39 @@
-import React, { JSX } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { FunctionComponent, JSX } from 'react'
+import { useAppSelector } from '../../../hooks'
 import { RootState } from '../../../store'
-import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { clearNoteData, setNoteData, updateNoteData } from '../../../reducers/notebook/note/noteSlice'
-import { destroyNote, storeNote, TNoteRequest, updateNote, viewNote } from '../../../services/NoteService'
-import { TNote } from '../../../types'
-import { updateNotebookData } from '../../../reducers/notebook/notebookSlice'
-import {
-  addNotebooksNotebookNote,
-  removeNotebooksNotebookNote,
-  updateNotebooksNotebookNote
-} from '../../../reducers/notebook/notebooksIndexSlice'
-import Post from '../../../components/Post/Post'
-import { TDeityRequest } from '../../../services/DeityService'
+import Post from '../../../components/Post'
+import useNotePageData from './useNotePageData'
+import { useNoteFields, useNoteForm } from '../../../hooks/useNoteForm'
+import useImageSelection from '../../../hooks/useImageSelection'
 
-const Note = (): JSX.Element => {
+const Note: FunctionComponent = (): JSX.Element => {
 
-  const dispatch = useAppDispatch() // redux
+  const { notebook } = useAppSelector((state: RootState) => state.notebook) // redux
 
-  const navigate = useNavigate()
+  const pageData = useNotePageData();
 
-  const { notebookId, noteId } = useParams() as { notebookId: string, noteId: string } // router
+  const form = useNoteForm(pageData);
 
-  const { note } = useAppSelector((state: RootState) => state.note) // redux
+  const fields = useNoteFields({
+    notebook,
+    note: pageData.persistedData,
+  });
 
-  const readyDataForRequest = (data: any): TDeityRequest => ({
-    name: data.name,
-    content: data.content,
+  const imageHandler = useImageSelection({
+    entityType: 'note',
+    entityId: pageData.persistedData?.slug,
+    persistedData: pageData.persistedData,
+    updatePersistedData: pageData.updatePersistedData
   })
 
   return (
     <Post
-      key={noteId}
-      isNew={noteId === 'new'}
+      isNew={pageData.isNew}
       pageTypeName={'Note'}
-      canEdit={note.canUpdate}
-      canDelete={note.canDelete}
-      ready={true}
-
-      onFetch={() => viewNote(noteId).then(({ data }) => data.data)}
-      onCreate={(data: TNoteRequest) => storeNote(notebookId, readyDataForRequest(data)).then(({ data }) => data.data)}
-      onUpdate={(data: TNoteRequest) => updateNote(noteId, readyDataForRequest(data)).then(({ data }) => data.data)}
-      onDelete={() => destroyNote(noteId)}
-      onCreated={(data) => {
-        dispatch(updateNotebookData({ hasNotes: true }))
-        dispatch(addNotebooksNotebookNote({ slug: notebookId, note: data }))
-        navigate(`/notebooks/${notebookId}/notes/${data.slug}`)
-      }}
-      onUpdated={(data) => {
-        dispatch(updateNotebooksNotebookNote({ slug: notebookId, note: data }))
-      }}
-      onDeleted={() => {
-        dispatch(removeNotebooksNotebookNote({ slug: notebookId, noteId }))
-        navigate(`/notebooks/${notebookId}`)
-      }}
-
-      fields={[]}
-
-      persistedData={note as TNote}
-      setPersistedData={(data) => dispatch(setNoteData(data))}
-      updatePersistedData={(data) => dispatch(updateNoteData(data))}
-      resetPersistedData={() => dispatch(clearNoteData(undefined))}
+      form={form}
+      fields={fields}
+      canEdit={pageData.canEdit}
+      imageHandler={imageHandler}
     />
   )
 }

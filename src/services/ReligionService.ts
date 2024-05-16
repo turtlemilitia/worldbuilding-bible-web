@@ -25,14 +25,14 @@ export const viewReligion = (slug: string, query: TQueryParams = {}): Promise<Ax
 
 }
 
-export const storeReligion = (compendiumId: TCompendium['slug'], data: TReligionRequest): Promise<AxiosResponse<TReligionResponse>> => {
+export const storeReligion = (compendiumId: TCompendium['slug'], data: TReligionRequest, query: TQueryParams = {}): Promise<AxiosResponse<TReligionResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/religions`, data)
+  return api.post(`/api/compendia/${compendiumId}/religions?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateReligion = (slug: string, data: Partial<TReligionRequest>): Promise<AxiosResponse<TReligionResponse>> => {
-  return api.put(`/api/religions/${slug}`, data)
+export const updateReligion = (slug: string, data: Partial<TReligionRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TReligionResponse>> => {
+  return api.put(`/api/religions/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyReligion = (slug: string): Promise<AxiosResponse<void>> => {

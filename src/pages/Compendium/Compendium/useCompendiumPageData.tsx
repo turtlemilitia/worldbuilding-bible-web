@@ -5,6 +5,7 @@ import { RootState } from '../../../store'
 import { TCompendium } from '../../../types'
 import { setCompendiumData, updateCompendiumData } from '../../../reducers/compendium/compendiumSlice'
 import { addCompendium } from '../../../reducers/compendium/compendiaIndexSlice'
+import { removeCampaign } from '../../../reducers/campaign/campaignsIndexSlice'
 
 const useCompendiumPageData = () => {
 
@@ -25,6 +26,7 @@ const useCompendiumPageData = () => {
       navigate(`/compendia/${data.slug}`)
     },
     onDeleted: () => {
+      dispatch(removeCampaign({id: compendiumId}))
       navigate(`/`)
     },
   }

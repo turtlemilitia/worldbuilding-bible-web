@@ -4,14 +4,10 @@ import { TPantheon } from '../../../types'
 
 
 interface TState {
-  pantheon: Partial<TPantheon>;
+  pantheon?: TPantheon;
 }
 
 const initialState: TState = {
-  pantheon: {
-    name: '',
-    content: '',
-  }
 }
 
 const pantheonSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const pantheonSlice: Slice<TState> = createSlice({
       state.pantheon = action.payload
     },
     updatePantheonData: (state, action: PayloadAction<Partial<TPantheon>>) => {
-      state.pantheon = { ...state.pantheon, ...action.payload }
+      state.pantheon = { ...state.pantheon as TPantheon, ...action.payload }
     },
     clearPantheonData: (state) => {
       state.pantheon = initialState.pantheon

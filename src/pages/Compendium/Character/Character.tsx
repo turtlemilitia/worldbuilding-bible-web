@@ -10,20 +10,11 @@ import useCharacterPageData from './useCharacterPageData'
 
 const Character: FunctionComponent = (): JSX.Element => {
 
-  const { characterId } = useParams() as { compendiumId: string; characterId: string } // router
-
   const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
-
-  const isNew: boolean = useMemo(() => characterId === 'new', [characterId])
 
   const pageData = useCharacterPageData();
 
-  const canEdit: boolean = useMemo(() => isNew || pageData.persistedData?.canUpdate !== undefined, [isNew, pageData.persistedData?.canUpdate])
-
-  const form = useCharacterForm({
-    isNew,
-    ...pageData
-  });
+  const form = useCharacterForm(pageData);
 
   const fields = useCharacterFields({
     compendium,
@@ -33,7 +24,7 @@ const Character: FunctionComponent = (): JSX.Element => {
   });
 
   const imageHandler = useImageSelection({
-    entityType: 'character',
+    entityType: 'characters',
     entityId: pageData.persistedData?.slug,
     persistedData: pageData.persistedData,
     updatePersistedData: pageData.updatePersistedData
@@ -41,11 +32,11 @@ const Character: FunctionComponent = (): JSX.Element => {
 
   return (
     <Post
-      isNew={isNew}
+      isNew={pageData.isNew}
       pageTypeName={'Character'}
       form={form}
       fields={fields}
-      canEdit={canEdit}
+      canEdit={pageData.canEdit}
       imageHandler={imageHandler}
     />
   )

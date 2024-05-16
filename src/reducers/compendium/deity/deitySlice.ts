@@ -4,14 +4,10 @@ import { TDeity } from '../../../types'
 
 
 interface TState {
-  deity: Partial<TDeity>;
+  deity?: TDeity;
 }
 
 const initialState: TState = {
-  deity: {
-    name: '',
-    content: '',
-  }
 }
 
 const deitySlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const deitySlice: Slice<TState> = createSlice({
       state.deity = action.payload
     },
     updateDeityData: (state, action: PayloadAction<Partial<TDeity>>) => {
-      state.deity = { ...state.deity, ...action.payload }
+      state.deity = { ...state.deity as TDeity, ...action.payload }
     },
     clearDeityData: (state) => {
       state.deity = initialState.deity

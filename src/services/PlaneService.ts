@@ -25,14 +25,14 @@ export const viewPlane = (slug: string, query: TQueryParams = {}): Promise<Axios
 
 }
 
-export const storePlane = (compendiumId: TCompendium['slug'], data: TPlaneRequest): Promise<AxiosResponse<TPlaneResponse>> => {
+export const storePlane = (compendiumId: TCompendium['slug'], data: TPlaneRequest, query: TQueryParams = {}): Promise<AxiosResponse<TPlaneResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/planes`, data)
+  return api.post(`/api/compendia/${compendiumId}/planes?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updatePlane = (slug: string, data: Partial<TPlaneRequest>): Promise<AxiosResponse<TPlaneResponse>> => {
-  return api.put(`/api/planes/${slug}`, data)
+export const updatePlane = (slug: string, data: Partial<TPlaneRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TPlaneResponse>> => {
+  return api.put(`/api/planes/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyPlane = (slug: string): Promise<AxiosResponse<void>> => {

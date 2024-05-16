@@ -25,14 +25,14 @@ export const viewSpell = (slug: string, query: TQueryParams = {}): Promise<Axios
 
 }
 
-export const storeSpell = (compendiumId: TCompendium['slug'], data: TSpellRequest): Promise<AxiosResponse<TSpellResponse>> => {
+export const storeSpell = (compendiumId: TCompendium['slug'], data: TSpellRequest, query: TQueryParams = {}): Promise<AxiosResponse<TSpellResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/spells`, data)
+  return api.post(`/api/compendia/${compendiumId}/spells?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateSpell = (slug: string, data: Partial<TSpellRequest>): Promise<AxiosResponse<TSpellResponse>> => {
-  return api.put(`/api/spells/${slug}`, data)
+export const updateSpell = (slug: string, data: Partial<TSpellRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TSpellResponse>> => {
+  return api.put(`/api/spells/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroySpell = (slug: string): Promise<AxiosResponse<void>> => {

@@ -4,14 +4,10 @@ import { TSpell } from '../../../types'
 
 
 interface TState {
-  spell: Partial<TSpell>;
+  spell?: TSpell;
 }
 
 const initialState: TState = {
-  spell: {
-    name: '',
-    content: '',
-  }
 }
 
 const spellSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const spellSlice: Slice<TState> = createSlice({
       state.spell = action.payload
     },
     updateSpellData: (state, action: PayloadAction<Partial<TSpell>>) => {
-      state.spell = { ...state.spell, ...action.payload }
+      state.spell = { ...state.spell as TSpell, ...action.payload }
     },
     clearSpellData: (state) => {
       state.spell = initialState.spell

@@ -25,14 +25,14 @@ export const viewPantheon = (slug: string, query: TQueryParams = {}): Promise<Ax
 
 }
 
-export const storePantheon = (compendiumId: TCompendium['slug'], data: TPantheonRequest): Promise<AxiosResponse<TPantheonResponse>> => {
+export const storePantheon = (compendiumId: TCompendium['slug'], data: TPantheonRequest, query: TQueryParams = {}): Promise<AxiosResponse<TPantheonResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/pantheons`, data)
+  return api.post(`/api/compendia/${compendiumId}/pantheons?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updatePantheon = (slug: string, data: Partial<TPantheonRequest>): Promise<AxiosResponse<TPantheonResponse>> => {
-  return api.put(`/api/pantheons/${slug}`, data)
+export const updatePantheon = (slug: string, data: Partial<TPantheonRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TPantheonResponse>> => {
+  return api.put(`/api/pantheons/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyPantheon = (slug: string): Promise<AxiosResponse<void>> => {

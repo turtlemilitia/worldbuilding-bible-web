@@ -4,14 +4,10 @@ import { TCurrency } from '../../../types'
 
 
 interface TState {
-  currency: Partial<TCurrency>;
+  currency?: TCurrency;
 }
 
 const initialState: TState = {
-  currency: {
-    name: '',
-    content: '',
-  }
 }
 
 const currencySlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const currencySlice: Slice<TState> = createSlice({
       state.currency = action.payload
     },
     updateCurrencyData: (state, action: PayloadAction<Partial<TCurrency>>) => {
-      state.currency = { ...state.currency, ...action.payload }
+      state.currency = { ...state.currency as TCurrency, ...action.payload }
     },
     clearCurrencyData: (state) => {
       state.currency = initialState.currency

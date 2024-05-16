@@ -1,7 +1,13 @@
-import {TUseForm, TUseFormProps} from '../../components/Post/types'
-import { TNote, TNotebook } from '../../types'
-import { destroyNote, storeNote, TNoteRequest, updateNote, viewNote } from '../../services/NoteService'
+import {TNotebook, TNote} from '../../types'
+import {
+  destroyNote,
+  storeNote,
+  TNoteRequest, updateNote,
+  viewNote
+} from '../../services/NoteService'
 import useFormHandling from '../useFormHandling'
+import { useMemo } from 'react'
+import { TUseForm, TUseFormProps } from '../../components/Post/types'
 
 type TOwnProps = {
   notebookId: TNotebook['slug'];
@@ -21,20 +27,30 @@ const useNoteForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TNote>): TUseForm<TNote> => {
 
+  const include = useMemo(() => '', [])
+
   const mapData = (data: any): TNoteRequest => ({
     name: data.name,
     content: data.content,
   })
+
+  const onFetch = () => viewNote(noteId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+
+  const onCreate = (data: TNote): Promise<TNote> => storeNote(notebookId, mapData(data), { include }).then((response) => response.data.data)
+
+  const onUpdate = (data: TNoteRequest) => updateNote(notebookId, mapData(data)).then(({data}) => data.data)
+
+  const onDelete = () => destroyNote(noteId);
 
   return useFormHandling({
     isNew,
     mapData,
 
     // API
-    onFetch: () => viewNote(noteId).then(({ data }) => data.data),
-    onCreate: (data: TNoteRequest) => storeNote(notebookId, mapData(data)).then(({ data }) => data.data),
-    onUpdate: (data: TNoteRequest) => updateNote(noteId, mapData(data)).then(({ data }) => data.data),
-    onDelete: () => destroyNote(noteId),
+    onFetch,
+    onCreate,
+    onUpdate,
+    onDelete,
     onFetched,
     onCreated,
     onUpdated,
@@ -48,4 +64,4 @@ const useNoteForm = ({
   })
 }
 
-export default useNoteForm
+export default useNoteForm;

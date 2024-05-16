@@ -12,8 +12,6 @@ export type useFormHandlingProps<T> = {
   onUpdated?: (data: T) => any
   onDeleted?: () => any
 
-  defaultData?: any
-
   // persisted data
   persistedData?: T,
   setPersistedData: (data?: T) => any,

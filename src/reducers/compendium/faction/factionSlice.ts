@@ -4,14 +4,10 @@ import { TFaction } from '../../../types'
 
 
 interface TState {
-  faction: Partial<TFaction>;
+  faction?: TFaction;
 }
 
 const initialState: TState = {
-  faction: {
-    name: '',
-    content: '',
-  }
 }
 
 const factionSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const factionSlice: Slice<TState> = createSlice({
       state.faction = action.payload
     },
     updateFactionData: (state, action: PayloadAction<Partial<TFaction>>) => {
-      state.faction = { ...state.faction, ...action.payload }
+      state.faction = { ...state.faction as TFaction, ...action.payload }
     },
     clearFactionData: (state) => {
       state.faction = initialState.faction

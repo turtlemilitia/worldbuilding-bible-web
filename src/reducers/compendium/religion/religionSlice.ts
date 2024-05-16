@@ -4,14 +4,10 @@ import { TReligion } from '../../../types'
 
 
 interface TState {
-  religion: Partial<TReligion>;
+  religion?: TReligion;
 }
 
 const initialState: TState = {
-  religion: {
-    name: '',
-    content: '',
-  }
 }
 
 const religionSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const religionSlice: Slice<TState> = createSlice({
       state.religion = action.payload
     },
     updateReligionData: (state, action: PayloadAction<Partial<TReligion>>) => {
-      state.religion = { ...state.religion, ...action.payload }
+      state.religion = { ...state.religion as TReligion, ...action.payload }
     },
     clearReligionData: (state) => {
       state.religion = initialState.religion

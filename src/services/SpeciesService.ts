@@ -25,14 +25,14 @@ export const viewSpecies = (slug: string, query: TQueryParams = {}): Promise<Axi
 
 }
 
-export const storeSpecies = (compendiumId: TCompendium['slug'], data: TSpeciesRequest): Promise<AxiosResponse<TSpeciesResponse>> => {
+export const storeSpecies = (compendiumId: TCompendium['slug'], data: TSpeciesRequest, query: TQueryParams = {}): Promise<AxiosResponse<TSpeciesResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/species`, data)
+  return api.post(`/api/compendia/${compendiumId}/species?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateSpecies = (slug: string, data: Partial<TSpeciesRequest>): Promise<AxiosResponse<TSpeciesResponse>> => {
-  return api.put(`/api/species/${slug}`, data)
+export const updateSpecies = (slug: string, data: Partial<TSpeciesRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TSpeciesResponse>> => {
+  return api.put(`/api/species/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroySpecies = (slug: string): Promise<AxiosResponse<void>> => {

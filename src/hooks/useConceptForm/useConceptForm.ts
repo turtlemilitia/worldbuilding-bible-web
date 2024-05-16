@@ -2,13 +2,12 @@ import {TCompendium, TConcept} from '../../types'
 import {
   destroyConcept,
   storeConcept,
-  TConceptRequest,
+  TConceptRequest, updateConcept,
   viewConcept
 } from '../../services/ConceptService'
 import useFormHandling from '../useFormHandling'
 import { useMemo } from 'react'
 import { TUseForm, TUseFormProps } from '../../components/Post/types'
-import { TCompendiumRequest, updateCompendium } from '../../services/CompendiumService'
 
 type TOwnProps = {
   compendiumId: TCompendium['slug'];
@@ -28,7 +27,7 @@ const useConceptForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TConcept>): TUseForm<TConcept> => {
 
-  const include = useMemo(() => 'species;languages;factions', [])
+  const include = useMemo(() => '', [])
 
   const mapData = (data: any): TConceptRequest => ({
     name: data.name,
@@ -39,7 +38,7 @@ const useConceptForm = ({
 
   const onCreate = (data: TConcept): Promise<TConcept> => storeConcept(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
-  const onUpdate = (data: TCompendiumRequest) => updateCompendium(compendiumId, mapData(data)).then(({data}) => data.data)
+  const onUpdate = (data: TConceptRequest) => updateConcept(conceptId, mapData(data)).then(({data}) => data.data)
 
   const onDelete = () => destroyConcept(conceptId);
 

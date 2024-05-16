@@ -4,14 +4,10 @@ import { TEncounter } from '../../../types'
 
 
 interface TState {
-  encounter: Partial<TEncounter>;
+  encounter?: TEncounter;
 }
 
 const initialState: TState = {
-  encounter: {
-    name: '',
-    content: '',
-  }
 }
 
 const encounterSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const encounterSlice: Slice<TState> = createSlice({
       state.encounter = action.payload
     },
     updateEncounterData: (state, action: PayloadAction<Partial<TEncounter>>) => {
-      state.encounter = { ...state.encounter, ...action.payload }
+      state.encounter = { ...state.encounter as TEncounter, ...action.payload }
     },
     clearEncounterData: (state) => {
       state.encounter = initialState.encounter
