@@ -35,7 +35,7 @@ const useFactionPageData = () => {
     resetPersistedData: () => dispatch(setFactionData(undefined)),
     onCreated: (data: TFaction) => {
       dispatch(addCompendiumChildData({ field: 'factions', data: data }))
-      navigate(`${compendiumPath}/factions/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/factions/${data?.slug}`)
     },
     onUpdated: (data: TFaction) => {
       dispatch(updateCompendiumChildData({ field: 'factions', data: data }))

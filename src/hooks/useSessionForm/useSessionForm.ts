@@ -38,7 +38,7 @@ const useSessionForm = ({
     location: data.location,
   })
 
-  const onFetch = () => viewSession(sessionId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewSession(sessionId, { include: `${include ? `${include};` : ''}images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TSession): Promise<TSession> => storeSession(campaignId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -47,6 +47,7 @@ const useSessionForm = ({
   const onDelete = () => destroySession(sessionId);
 
   return useFormHandling({
+    id: sessionId,
     isNew,
     mapData,
 

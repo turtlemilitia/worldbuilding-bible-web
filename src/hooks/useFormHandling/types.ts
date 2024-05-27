@@ -1,4 +1,8 @@
+import { TPostProps } from '../../components/Post/types'
+import { TGenericPost } from '../../types'
+
 export type useFormHandlingProps<T> = {
+  id: TGenericPost['slug']|'new'
   isNew: boolean,
   mapData?: (data: any) => any;
 
@@ -25,9 +29,6 @@ export type useFormHandlingType<T> = {
 
   newData?: Partial<T>;
   setNewData: (payload: T) => any;
-  fetchedData?: T;
-  setFetchedData: (payload: T) => any;
-  updateAllData: (payload: T) => any;
 
   onFieldChange: (name: string, value: string) => any;
   onFetch: () => void;

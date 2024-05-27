@@ -19,8 +19,8 @@ const Religion: FunctionComponent = (): JSX.Element => {
   const fields = useReligionFields({
     compendium,
     religion: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TReligion, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TReligion, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TReligion, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TReligion, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

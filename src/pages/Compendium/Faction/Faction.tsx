@@ -19,8 +19,8 @@ const Faction: FunctionComponent = (): JSX.Element => {
   const fields = useFactionFields({
     compendium,
     faction: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TFaction, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TFaction, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TFaction, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TFaction, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

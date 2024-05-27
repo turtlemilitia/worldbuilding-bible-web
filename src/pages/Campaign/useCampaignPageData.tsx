@@ -31,11 +31,11 @@ const useCampaignPageData = () => {
     resetPersistedData: () => dispatch(setCampaignData(undefined)),
     onCreated: (data: TCampaign) => {
       dispatch(addCampaign(data))
-      navigate(`${compendiumPath}/campaigns/${persistedData?.slug}`)
+      navigate(`/campaigns/${data?.slug}`)
     },
     onDeleted: () => {
       dispatch(removeCampaign({id: campaignId}))
-      navigate(`${compendiumPath}/campaigns`)
+      navigate(`/campaigns`)
     },
   }
 

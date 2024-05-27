@@ -46,7 +46,7 @@ const useEncounterPageData = () => {
     resetPersistedData: () => dispatch(setEncounterData(undefined)),
     onCreated: (data: TEncounter) => {
       dispatch(addCampaignChildData({ field: 'encounters', data: data }))
-      navigate(`/campaigns/${campaignId}/encounters/${persistedData?.slug}`)
+      navigate(`/campaigns/${campaignId}/encounters/${data?.slug}`)
     },
     onUpdated: (data: TEncounter) => {
       dispatch(updateCampaignChildData({ field: 'encounters', data: data }))

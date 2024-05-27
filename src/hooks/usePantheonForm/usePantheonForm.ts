@@ -34,7 +34,7 @@ const usePantheonForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewPantheon(pantheonId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewPantheon(pantheonId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TPantheon): Promise<TPantheon> => storePantheon(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const usePantheonForm = ({
   const onDelete = () => destroyPantheon(pantheonId);
 
   return useFormHandling({
+    id: pantheonId,
     isNew,
     mapData,
 

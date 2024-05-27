@@ -19,8 +19,8 @@ const Concept: FunctionComponent = (): JSX.Element => {
   const fields = useConceptFields({
     compendium,
     concept: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TConcept, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TConcept, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TConcept, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TConcept, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

@@ -19,8 +19,8 @@ const NaturalResource: FunctionComponent = (): JSX.Element => {
   const fields = useNaturalResourceFields({
     compendium,
     naturalResource: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TNaturalResource, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TNaturalResource, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TNaturalResource, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TNaturalResource, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

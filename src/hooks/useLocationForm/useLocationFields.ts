@@ -67,7 +67,7 @@ const useLocationFields = ({ compendium, location, onNoteCreated, onNoteUpdated 
       }
     ]
 
-    if (compendium && location) {
+    if (compendium) {
       fields.push(
         {
           name: 'parent',
@@ -79,20 +79,24 @@ const useLocationFields = ({ compendium, location, onNoteCreated, onNoteUpdated 
               slug: location.slug,
               name: location.name
             })))
-        },
-        {
-          name: 'children',
-          label: 'Child Locations',
-          type: 'asyncMultiSelect',
-          link: (id: string | number) => `/compendia/${compendium.slug}/locations/${location.children?.find((child: TLocation) => child.id === id)?.slug || ''}`,
-          search: (term: string) => indexLocations(compendium.slug, { search: term })
-            .then(response => response.data.data.map(location => ({
-              id: location.id,
-              slug: location.slug,
-              name: location.name
-            })))
         }
       )
+      if (location) {
+        fields.push(
+          {
+            name: 'children',
+            label: 'Child Locations',
+            type: 'asyncMultiSelect',
+            link: (id: string | number) => `/compendia/${compendium.slug}/locations/${location.children?.find((child: TLocation) => child.id === id)?.slug || ''}`,
+            search: (term: string) => indexLocations(compendium.slug, { search: term })
+              .then(response => response.data.data.map(location => ({
+                id: location.id,
+                slug: location.slug,
+                name: location.name
+              })))
+          }
+        )
+      }
     }
 
     if (location && compendium?.notebook) {
@@ -107,8 +111,8 @@ const useLocationFields = ({ compendium, location, onNoteCreated, onNoteUpdated 
       )
     }
 
-    return fields;
-  }, [compendium, location]);
+    return fields
+  }, [compendium, location, locationTypes, governmentTypes])
 
   return { fields, ready }
 }

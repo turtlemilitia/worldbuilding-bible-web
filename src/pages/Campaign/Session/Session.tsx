@@ -19,8 +19,8 @@ const Session: FunctionComponent = (): JSX.Element => {
   const fields = useSessionFields({
     campaign,
     session: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TSession, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TSession, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TSession, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TSession, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

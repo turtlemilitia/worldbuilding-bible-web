@@ -34,7 +34,7 @@ const useFactionForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewFaction(factionId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewFaction(factionId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TFaction): Promise<TFaction> => storeFaction(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useFactionForm = ({
   const onDelete = () => destroyFaction(factionId);
 
   return useFormHandling({
+    id: factionId,
     isNew,
     mapData,
 

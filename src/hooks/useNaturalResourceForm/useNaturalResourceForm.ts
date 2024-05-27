@@ -34,7 +34,7 @@ const useNaturalResourceForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewNaturalResource(naturalResourceId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewNaturalResource(naturalResourceId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TNaturalResource): Promise<TNaturalResource> => storeNaturalResource(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useNaturalResourceForm = ({
   const onDelete = () => destroyNaturalResource(naturalResourceId);
 
   return useFormHandling({
+    id: naturalResourceId,
     isNew,
     mapData,
 

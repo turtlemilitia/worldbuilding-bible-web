@@ -34,15 +34,16 @@ const useNoteForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewNote(noteId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewNote(noteId, { include: `${include ? `${include};` : ''}images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TNote): Promise<TNote> => storeNote(notebookId, mapData(data), { include }).then((response) => response.data.data)
 
-  const onUpdate = (data: TNoteRequest) => updateNote(notebookId, mapData(data)).then(({data}) => data.data)
+  const onUpdate = (data: TNoteRequest) => updateNote(noteId, mapData(data)).then(({data}) => data.data)
 
   const onDelete = () => destroyNote(noteId);
 
   return useFormHandling({
+    id: noteId,
     isNew,
     mapData,
 

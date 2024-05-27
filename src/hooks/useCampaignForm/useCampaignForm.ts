@@ -1,4 +1,4 @@
-import {TCampaign} from '../../types'
+import { TCampaign } from '../../types'
 import {
   destroyCampaign,
   storeCampaign,
@@ -25,7 +25,7 @@ const useCampaignForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TCampaign>): TUseForm<TCampaign> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'compendium', [])
 
   const mapData = (data: TCampaign): TCampaignRequest => ({
     name: data.name,
@@ -33,15 +33,16 @@ const useCampaignForm = ({
     compendiumId: data.compendium?.id
   })
 
-  const onFetch = () => viewCampaign(campaignId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewCampaign(campaignId, { include: `${include ? `${include};` : ''}images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TCampaign): Promise<TCampaign> => storeCampaign(mapData(data), { include }).then((response) => response.data.data)
 
-  const onUpdate = (data: TCampaign) => updateCampaign(campaignId, mapData(data)).then(({data}) => data.data)
+  const onUpdate = (data: TCampaign) => updateCampaign(campaignId, mapData(data), { include }).then(({ data }) => data.data)
 
-  const onDelete = () => destroyCampaign(campaignId);
+  const onDelete = () => destroyCampaign(campaignId)
 
   return useFormHandling({
+    id: campaignId,
     isNew,
     mapData,
 
@@ -63,4 +64,4 @@ const useCampaignForm = ({
   })
 }
 
-export default useCampaignForm;
+export default useCampaignForm

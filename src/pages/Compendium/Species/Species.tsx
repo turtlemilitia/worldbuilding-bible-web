@@ -21,8 +21,8 @@ const Species: FunctionComponent = (): JSX.Element => {
   const fields = useSpeciesFields({
     compendium,
     species: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TSpecies, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TSpecies, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TSpecies, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TSpecies, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

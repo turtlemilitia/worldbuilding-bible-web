@@ -19,8 +19,8 @@ const Item: FunctionComponent = (): JSX.Element => {
   const fields = useItemFields({
     compendium,
     item: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TItem, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TItem, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TItem, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TItem, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

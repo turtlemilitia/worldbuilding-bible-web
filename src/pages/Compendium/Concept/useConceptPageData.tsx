@@ -35,7 +35,7 @@ const useConceptPageData = () => {
     resetPersistedData: () => dispatch(setConceptData(undefined)),
     onCreated: (data: TConcept) => {
       dispatch(addCompendiumChildData({ field: 'concepts', data: data }))
-      navigate(`${compendiumPath}/concepts/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/concepts/${data?.slug}`)
     },
     onUpdated: (data: TConcept) => {
       dispatch(updateCompendiumChildData({ field: 'concepts', data: data }))

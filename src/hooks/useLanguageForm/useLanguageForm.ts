@@ -34,7 +34,7 @@ const useLanguageForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewLanguage(languageId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewLanguage(languageId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TLanguage): Promise<TLanguage> => storeLanguage(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useLanguageForm = ({
   const onDelete = () => destroyLanguage(languageId);
 
   return useFormHandling({
+    id: languageId,
     isNew,
     mapData,
 

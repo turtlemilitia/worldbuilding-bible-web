@@ -35,7 +35,7 @@ const useEncounterForm = ({
     typeId: data.type.id,
   })
 
-  const onFetch = () => viewEncounter(encounterId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewEncounter(encounterId, { include: `${include ? `${include};` : ''}images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TEncounter): Promise<TEncounter> => storeEncounter(campaignId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -44,6 +44,7 @@ const useEncounterForm = ({
   const onDelete = () => destroyEncounter(encounterId);
 
   return useFormHandling({
+    id: encounterId,
     isNew,
     mapData,
 

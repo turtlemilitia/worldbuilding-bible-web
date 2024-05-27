@@ -32,7 +32,7 @@ const useSystemForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewSystem(systemId, { include: `${include};images` }).then(({ data }) => data.data)
+  const onFetch = () => viewSystem(systemId, { include: `${include ? `${include};` : ''}images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TSystem): Promise<TSystem> => storeSystem(mapData(data), { include }).then((response) => response.data.data)
 
@@ -41,6 +41,7 @@ const useSystemForm = ({
   const onDelete = () => destroySystem(systemId);
 
   return useFormHandling({
+    id: systemId,
     isNew,
     mapData,
 

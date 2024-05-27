@@ -35,7 +35,7 @@ const useNaturalResourcePageData = () => {
     resetPersistedData: () => dispatch(setNaturalResourceData(undefined)),
     onCreated: (data: TNaturalResource) => {
       dispatch(addCompendiumChildData({ field: 'naturalResources', data: data }))
-      navigate(`${compendiumPath}/naturalResources/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/naturalResources/${data?.slug}`)
     },
     onUpdated: (data: TNaturalResource) => {
       dispatch(updateCompendiumChildData({ field: 'naturalResources', data: data }))

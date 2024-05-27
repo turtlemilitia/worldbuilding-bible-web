@@ -50,7 +50,7 @@ const useSessionPageData = () => {
     resetPersistedData: () => dispatch(setSessionData(undefined)),
     onCreated: (data: TSession) => {
       dispatch(addCampaignChildData({ field: 'sessions', data: data }))
-      navigate(`/campaigns/${campaignId}/sessions/${persistedData?.slug}`)
+      navigate(`/campaigns/${campaignId}/sessions/${data?.slug}`)
     },
     onUpdated: (data: TSession) => {
       dispatch(updateCampaignChildData({ field: 'sessions', data: data }))

@@ -34,7 +34,7 @@ const useItemForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewItem(itemId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewItem(itemId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TItem): Promise<TItem> => storeItem(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useItemForm = ({
   const onDelete = () => destroyItem(itemId);
 
   return useFormHandling({
+    id: itemId,
     isNew,
     mapData,
 

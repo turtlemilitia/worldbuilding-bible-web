@@ -19,8 +19,8 @@ const Character: FunctionComponent = (): JSX.Element => {
   const fields = useCharacterFields({
     compendium,
     character: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TCharacter, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TCharacter, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TCharacter, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TCharacter, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

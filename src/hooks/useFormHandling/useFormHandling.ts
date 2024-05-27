@@ -3,9 +3,9 @@ import { useFormHandlingProps, useFormHandlingType } from './types'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import equal from 'fast-deep-equal/react'
-import { isEmpty } from 'lodash'
 
-const useFormHandling = <T>({
+const useFormHandling = <T> ({
+  id,
   isNew,
   mapData,
 
@@ -32,16 +32,10 @@ const useFormHandling = <T>({
   const [loading, setLoading] = useState(true)
   // when we are saving (autosave)
   const [saving, setSaving] = useState(false)
-
-  // data which is changed
   const [newData, setNewData] = useState<Partial<T>>()
-  // data which came back at the end of the fetch
-  const [fetchedData, setFetchedData] = useState<T>()
 
-  // on mount
+  // Fetch data on mount
   useEffect(() => {
-
-    // fetch data on mount
     if (!isNew) {
       handleOnFetch()
     } else {
@@ -49,51 +43,40 @@ const useFormHandling = <T>({
       setLoading(false)
     }
 
-    // on unmount reset the data
+    // Reset loading state on unmount
     return () => {
       setLoading(true)
     }
 
-  }, [])
+  }, [id])
 
+  // Sync newData with persistedData
   useEffect(() => {
-
-    setPersistedData(fetchedData as T)
-    setNewData(fetchedData)
-
-  }, [fetchedData])
-
-  // need this to reset the persistedData when its a new page
-  useEffect(() => {
-
-    // todo this needs to be tested
-    // persisted data doesn't seem to be changing the new data when it changes
-    if (!equal(persistedData, fetchedData)) {
-      setFetchedData(persistedData)
-    }
     if (!equal(persistedData, newData)) {
       setNewData(persistedData)
     }
-
   }, [persistedData])
 
+  // Handle field changes
   const handleOnFieldChange = (name: string, value: string) => setNewData((prevState) => ({
     ...prevState,
     [name]: value
   }))
 
+  // Handle save errors
   const handleOnSaveError = (err: any) => {
-    handleResponseErrors(err);
-    setSaving(false);
+    handleResponseErrors(err)
+    setSaving(false)
   }
 
+  // Fetch data function
   const handleOnFetch = () => {
     setLoading(true)
     resetErrors()
     onFetch()
       .then((apiData) => {
-        setFetchedData(apiData)
         onFetched && onFetched(apiData)
+        setPersistedData(apiData)
       })
       .catch(handleResponseErrors)
       .finally(() => {
@@ -101,6 +84,7 @@ const useFormHandling = <T>({
       })
   }
 
+  // Save data function
   const handleOnSave = () => {
     setSaving(true)
     if (isNew) {
@@ -122,7 +106,7 @@ const useFormHandling = <T>({
     }
   }
 
-  // add autosave feature
+  // Delete data function
   const handleOnDelete = () => {
     setLoading(true)
     onDelete()
@@ -133,22 +117,15 @@ const useFormHandling = <T>({
       .catch(handleResponseErrors)
   }
 
+  // Set up autosave
   useAutosave({
     canAutosave: !isNew,
     delay: 5000,
-
     handleOnSave,
-
     persistedData,
     newData,
-
     mapData
   })
-
-  const updateAllData = (data: T) => {
-    setNewData(prevState => ({...prevState, ...data}))
-    setFetchedData(prevState => ({...prevState, ...data}))
-  }
 
   return {
     errors,
@@ -156,9 +133,6 @@ const useFormHandling = <T>({
     saving,
     newData,
     setNewData,
-    fetchedData,
-    setFetchedData,
-    updateAllData,
     onFieldChange: handleOnFieldChange,
     onFetch: handleOnFetch,
     onSave: handleOnSave,

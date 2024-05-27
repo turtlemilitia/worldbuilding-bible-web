@@ -18,8 +18,8 @@ const Encounter: FunctionComponent = (): JSX.Element => {
   const fields = useEncounterFields({
     campaign,
     encounter: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TEncounter, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TEncounter, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TEncounter, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TEncounter, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

@@ -19,8 +19,8 @@ const Language: FunctionComponent = (): JSX.Element => {
   const fields = useLanguageFields({
     compendium,
     language: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TLanguage, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TLanguage, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TLanguage, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TLanguage, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

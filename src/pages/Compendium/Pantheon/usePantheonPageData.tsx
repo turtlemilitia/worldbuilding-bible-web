@@ -35,7 +35,7 @@ const usePantheonPageData = () => {
     resetPersistedData: () => dispatch(setPantheonData(undefined)),
     onCreated: (data: TPantheon) => {
       dispatch(addCompendiumChildData({ field: 'pantheons', data: data }))
-      navigate(`${compendiumPath}/pantheons/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/pantheons/${data?.slug}`)
     },
     onUpdated: (data: TPantheon) => {
       dispatch(updateCompendiumChildData({ field: 'pantheons', data: data }))

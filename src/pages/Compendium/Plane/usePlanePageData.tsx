@@ -35,7 +35,7 @@ const usePlanePageData = () => {
     resetPersistedData: () => dispatch(setPlaneData(undefined)),
     onCreated: (data: TPlane) => {
       dispatch(addCompendiumChildData({ field: 'planes', data: data }))
-      navigate(`${compendiumPath}/planes/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/planes/${data?.slug}`)
     },
     onUpdated: (data: TPlane) => {
       dispatch(updateCompendiumChildData({ field: 'planes', data: data }))

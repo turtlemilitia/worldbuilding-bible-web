@@ -27,7 +27,7 @@ const useQuestForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TQuest>): TUseForm<TQuest> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'type;parent', [])
 
   const mapData = (data: any): TQuestRequest => ({
     name: data.name,
@@ -36,15 +36,16 @@ const useQuestForm = ({
     parentId: data.parent?.id,
   })
 
-  const onFetch = () => viewQuest(questId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewQuest(questId, { include: `${include ? `${include};` : ''}images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TQuest): Promise<TQuest> => storeQuest(campaignId, mapData(data), { include }).then((response) => response.data.data)
 
-  const onUpdate = (data: TQuestRequest) => updateQuest(questId, mapData(data)).then(({data}) => data.data)
+  const onUpdate = (data: TQuestRequest) => updateQuest(questId, mapData(data), { include }).then(({data}) => data.data)
 
   const onDelete = () => destroyQuest(questId);
 
   return useFormHandling({
+    id: questId,
     isNew,
     mapData,
 

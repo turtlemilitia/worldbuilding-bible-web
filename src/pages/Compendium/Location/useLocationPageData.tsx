@@ -35,7 +35,7 @@ const useLocationPageData = () => {
     resetPersistedData: () => dispatch(setLocationData(undefined)),
     onCreated: (data: TLocation) => {
       dispatch(addCompendiumChildData({ field: 'locations', data: data }))
-      navigate(`${compendiumPath}/locations/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/locations/${data?.slug}`)
     },
     onUpdated: (data: TLocation) => {
       dispatch(updateCompendiumChildData({ field: 'locations', data: data }))

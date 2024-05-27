@@ -19,8 +19,8 @@ const Currency: FunctionComponent = (): JSX.Element => {
   const fields = useCurrencyFields({
     compendium,
     currency: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TCurrency, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TCurrency, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TCurrency, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TCurrency, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

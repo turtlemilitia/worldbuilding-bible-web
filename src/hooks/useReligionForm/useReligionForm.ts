@@ -34,7 +34,7 @@ const useReligionForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewReligion(religionId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewReligion(religionId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TReligion): Promise<TReligion> => storeReligion(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useReligionForm = ({
   const onDelete = () => destroyReligion(religionId);
 
   return useFormHandling({
+    id: religionId,
     isNew,
     mapData,
 

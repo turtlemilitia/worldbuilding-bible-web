@@ -34,7 +34,7 @@ const useConceptForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewConcept(conceptId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewConcept(conceptId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TConcept): Promise<TConcept> => storeConcept(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useConceptForm = ({
   const onDelete = () => destroyConcept(conceptId);
 
   return useFormHandling({
+    id: conceptId,
     isNew,
     mapData,
 

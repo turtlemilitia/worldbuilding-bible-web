@@ -21,8 +21,8 @@ const Story: FunctionComponent = (): JSX.Element => {
   const fields = useStoryFields({
     compendium,
     story: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TStory, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TStory, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TStory, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TStory, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

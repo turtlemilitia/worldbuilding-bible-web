@@ -34,7 +34,7 @@ const useCurrencyForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewCurrency(currencyId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewCurrency(currencyId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TCurrency): Promise<TCurrency> => storeCurrency(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useCurrencyForm = ({
   const onDelete = () => destroyCurrency(currencyId);
 
   return useFormHandling({
+    id: currencyId,
     isNew,
     mapData,
 

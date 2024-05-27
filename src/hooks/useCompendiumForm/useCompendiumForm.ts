@@ -41,6 +41,7 @@ const useCompendiumForm = ({
   const onDelete = () => destroyCompendium(compendiumId)
 
   return useFormHandling({
+    id:compendiumId,
     isNew,
     mapData,
 

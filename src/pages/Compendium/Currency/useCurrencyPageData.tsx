@@ -35,7 +35,7 @@ const useCurrencyPageData = () => {
     resetPersistedData: () => dispatch(setCurrencyData(undefined)),
     onCreated: (data: TCurrency) => {
       dispatch(addCompendiumChildData({ field: 'currencies', data: data }))
-      navigate(`${compendiumPath}/currencies/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/currencies/${data?.slug}`)
     },
     onUpdated: (data: TCurrency) => {
       dispatch(updateCompendiumChildData({ field: 'currencies', data: data }))

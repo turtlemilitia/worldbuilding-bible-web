@@ -35,7 +35,7 @@ const useDeityPageData = () => {
     resetPersistedData: () => dispatch(setDeityData(undefined)),
     onCreated: (data: TDeity) => {
       dispatch(addCompendiumChildData({ field: 'deitys', data: data }))
-      navigate(`${compendiumPath}/deitys/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/deitys/${data?.slug}`)
     },
     onUpdated: (data: TDeity) => {
       dispatch(updateCompendiumChildData({ field: 'deitys', data: data }))

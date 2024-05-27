@@ -34,7 +34,7 @@ const useDeityForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewDeity(deityId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewDeity(deityId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TDeity): Promise<TDeity> => storeDeity(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useDeityForm = ({
   const onDelete = () => destroyDeity(deityId);
 
   return useFormHandling({
+    id: deityId,
     isNew,
     mapData,
 

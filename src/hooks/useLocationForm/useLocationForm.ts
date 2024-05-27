@@ -27,7 +27,7 @@ const useLocationForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TLocation>): TUseForm<TLocation> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'parent;type;governmentType', [])
 
   const mapData = (data: any): TLocationRequest => ({
     name: data.name,
@@ -40,15 +40,16 @@ const useLocationForm = ({
     parentId: data.parent?.id,
   })
 
-  const onFetch = () => viewLocation(locationId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewLocation(locationId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TLocation): Promise<TLocation> => storeLocation(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
-  const onUpdate = (data: TLocationRequest) => updateLocation(locationId, mapData(data)).then(({data}) => data.data)
+  const onUpdate = (data: TLocationRequest) => updateLocation(locationId, mapData(data), { include }).then(({data}) => data.data)
 
   const onDelete = () => destroyLocation(locationId);
 
   return useFormHandling({
+    id: locationId,
     isNew,
     mapData,
 

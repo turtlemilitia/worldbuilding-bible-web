@@ -41,7 +41,7 @@ const useCharacterForm = ({
     speciesId: data.species?.id
   })
 
-  const onFetch = () => viewCharacter(characterId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewCharacter(characterId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TCharacter): Promise<TCharacter> => {
     return storeCharacter(compendiumId, mapData(data), { include })
@@ -125,6 +125,7 @@ const useCharacterForm = ({
   const onDelete = () => destroyCharacter(characterId)
 
   return useFormHandling({
+    id: characterId,
     isNew,
     mapData,
 

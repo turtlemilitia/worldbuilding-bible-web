@@ -35,7 +35,7 @@ const useItemPageData = () => {
     resetPersistedData: () => dispatch(setItemData(undefined)),
     onCreated: (data: TItem) => {
       dispatch(addCompendiumChildData({ field: 'items', data: data }))
-      navigate(`${compendiumPath}/items/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/items/${data?.slug}`)
     },
     onUpdated: (data: TItem) => {
       dispatch(updateCompendiumChildData({ field: 'items', data: data }))

@@ -34,7 +34,7 @@ const useSpeciesForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewSpecies(speciesId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewSpecies(speciesId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TSpecies): Promise<TSpecies> => storeSpecies(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useSpeciesForm = ({
   const onDelete = () => destroySpecies(speciesId);
 
   return useFormHandling({
+    id: speciesId,
     isNew,
     mapData,
 

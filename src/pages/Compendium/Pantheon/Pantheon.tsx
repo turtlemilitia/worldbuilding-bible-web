@@ -19,8 +19,8 @@ const Pantheon: FunctionComponent = (): JSX.Element => {
   const fields = usePantheonFields({
     compendium,
     pantheon: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TPantheon, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TPantheon, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TPantheon, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TPantheon, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

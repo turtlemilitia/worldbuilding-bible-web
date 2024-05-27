@@ -35,7 +35,7 @@ const useCharacterPageData = () => {
     resetPersistedData: () => dispatch(setCharacterData(undefined)),
     onCreated: (data: TCharacter) => {
       dispatch(addCompendiumChildData({ field: 'characters', data: data }))
-      navigate(`${compendiumPath}/characters/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/characters/${data?.slug}`)
     },
     onUpdated: (data: TCharacter) => {
       dispatch(updateCompendiumChildData({ field: 'characters', data: data }))

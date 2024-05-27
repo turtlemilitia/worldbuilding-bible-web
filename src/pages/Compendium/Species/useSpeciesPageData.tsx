@@ -35,7 +35,7 @@ const useSpeciesPageData = () => {
     resetPersistedData: () => dispatch(setSpeciesData(undefined)),
     onCreated: (data: TSpecies) => {
       dispatch(addCompendiumChildData({ field: 'species', data: data }))
-      navigate(`${compendiumPath}/species/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/species/${data?.slug}`)
     },
     onUpdated: (data: TSpecies) => {
       dispatch(updateCompendiumChildData({ field: 'species', data: data }))

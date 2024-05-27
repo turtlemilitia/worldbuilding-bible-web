@@ -34,7 +34,7 @@ const useSpellForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewSpell(spellId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewSpell(spellId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TSpell): Promise<TSpell> => storeSpell(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useSpellForm = ({
   const onDelete = () => destroySpell(spellId);
 
   return useFormHandling({
+    id: spellId,
     isNew,
     mapData,
 

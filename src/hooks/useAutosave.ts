@@ -6,10 +6,8 @@ import { isEmpty } from 'lodash'
 type TProps = {
   canAutosave?: boolean;
   delay: number;
-
   handleOnSave: (data: any) => any;
   mapData?: (data: any) => any;
-
   persistedData: any;
   newData: any;
 }
@@ -26,9 +24,8 @@ const useAutosave: TAutosave = ({
 
   const [autosave, setAutosave] = useState(false)
 
-  // set a timer to turn autosave on every {delay} milliseconds
+  // Set a timer to turn autosave on every {delay} milliseconds
   useEffect(() => {
-
     if (!canAutosave) {
       return;
     }
@@ -40,24 +37,26 @@ const useAutosave: TAutosave = ({
       setAutosave(false);
       clearInterval(timer)
     }
+  }, [canAutosave, delay])
 
-  }, [canAutosave])
-
-  // every time the autosave or data is changed
+  // Save data when autosave is triggered and newData is different from persistedData
   useEffect(() => {
     // check autosave is turned on by the timer
     if (!autosave) {
       return;
     }
-    // compare previous persisted data and changed data
-    persistedData = !isEmpty(persistedData) ? (mapData ? mapData(persistedData) : readyDataForRequest(persistedData)) : {}
-    newData = !isEmpty(newData) ? (mapData ? mapData(newData) : readyDataForRequest(newData)) : {}
-    if (!equal(persistedData, newData)) {
-      // save new data (will make it persisted
-      handleOnSave(newData)
-      // turn autosave off
-      setAutosave(false)
+
+    // Process the data for comparison and saving
+    const processedPersistedData = !isEmpty(persistedData) ? (mapData ? mapData(persistedData) : readyDataForRequest(persistedData)) : {}
+    const processedNewData = !isEmpty(newData) ? (mapData ? mapData(newData) : readyDataForRequest(newData)) : {}
+
+    // Compare the processed data and save if they are different
+    if (!equal(processedPersistedData, processedNewData)) {
+      handleOnSave(processedNewData)
     }
+
+    // Reset autosave flag
+    setAutosave(false);
 
   }, [autosave, newData, handleOnSave])
 

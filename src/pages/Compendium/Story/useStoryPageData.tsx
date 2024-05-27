@@ -35,7 +35,7 @@ const useStoryPageData = () => {
     resetPersistedData: () => dispatch(setStoryData(undefined)),
     onCreated: (data: TStory) => {
       dispatch(addCompendiumChildData({ field: 'stories', data: data }))
-      navigate(`${compendiumPath}/stories/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/stories/${data?.slug}`)
     },
     onUpdated: (data: TStory) => {
       dispatch(updateCompendiumChildData({ field: 'stories', data: data }))

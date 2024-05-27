@@ -61,7 +61,8 @@ const Post = <T,>({
                 />
               )}
               <Editor
-                initialValue={form.fetchedData?.content}
+                id={form.newData?.slug ?? 'new'}
+                initialValue={form.newData?.content}
                 onChange={(value) => form.onFieldChange('content', value)}
                 placeholder={contentPlaceholder}
                 canEdit={isNew || canEdit}

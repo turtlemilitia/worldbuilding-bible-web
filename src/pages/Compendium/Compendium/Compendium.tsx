@@ -30,7 +30,7 @@ const Compendium: FunctionComponent = (): JSX.Element => {
   return (
     <Post
       isNew={isNew}
-      pageTypeName={'Character'}
+      pageTypeName={'Compendium'}
       form={form}
       canEdit={canEdit}
       imageHandler={imageHandler}

@@ -35,7 +35,7 @@ const useSpellPageData = () => {
     resetPersistedData: () => dispatch(setSpellData(undefined)),
     onCreated: (data: TSpell) => {
       dispatch(addCompendiumChildData({ field: 'spells', data: data }))
-      navigate(`${compendiumPath}/spells/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/spells/${data?.slug}`)
     },
     onUpdated: (data: TSpell) => {
       dispatch(updateCompendiumChildData({ field: 'spells', data: data }))

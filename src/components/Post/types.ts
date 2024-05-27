@@ -27,11 +27,8 @@ export type TUseForm<T> = {
   saving: boolean;
 
   newData?: Partial<TPost<T>>;
-  fetchedData?: TPost<T>;
 
   errors: { [key: string]: string };
-
-  updateAllData: (payload: TPost<T>) => any;
 
   onFieldChange: (name: string, value: string) => any;
   onFetch: () => void;

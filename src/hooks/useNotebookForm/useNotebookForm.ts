@@ -32,7 +32,7 @@ const useNotebookForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewNotebook(notebookId, { include: `${include};images` }).then(({ data }) => data.data)
+  const onFetch = () => viewNotebook(notebookId, { include: `${include ? `${include};` : ''}images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TNotebook): Promise<TNotebook> => storeNotebook(mapData(data), { include }).then((response) => response.data.data)
 
@@ -41,6 +41,7 @@ const useNotebookForm = ({
   const onDelete = () => destroyNotebook(notebookId);
 
   return useFormHandling({
+    id: notebookId,
     isNew,
     mapData,
 

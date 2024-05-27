@@ -35,7 +35,7 @@ const useLanguagePageData = () => {
     resetPersistedData: () => dispatch(setLanguageData(undefined)),
     onCreated: (data: TLanguage) => {
       dispatch(addCompendiumChildData({ field: 'languages', data: data }))
-      navigate(`${compendiumPath}/languages/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/languages/${data?.slug}`)
     },
     onUpdated: (data: TLanguage) => {
       dispatch(updateCompendiumChildData({ field: 'languages', data: data }))

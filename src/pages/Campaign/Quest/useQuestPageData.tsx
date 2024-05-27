@@ -45,7 +45,7 @@ const useQuestPageData = () => {
     resetPersistedData: () => dispatch(setQuestData(undefined)),
     onCreated: (data: TQuest) => {
       dispatch(addCampaignChildData({ field: 'quests', data: data }))
-      navigate(`/campaigns/${campaignId}/quests/${persistedData?.slug}`)
+      navigate(`/campaigns/${campaignId}/quests/${data?.slug}`)
     },
     onUpdated: (data: TQuest) => {
       dispatch(updateCampaignChildData({ field: 'quests', data: data }))

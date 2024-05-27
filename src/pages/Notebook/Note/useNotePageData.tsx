@@ -33,7 +33,7 @@ const useNotePageData = () => {
     resetPersistedData: () => dispatch(setNoteData(undefined)),
     onCreated: (data: TNote) => {
       dispatch(addNotebooksNotebookNote({ slug: notebookId, note: data }))
-      navigate(`/notebooks/${notebookId}/notes/${persistedData?.slug}`)
+      navigate(`/notebooks/${notebookId}/notes/${data?.slug}`)
     },
     onUpdated: (data: TNote) => {
       dispatch(updateNotebooksNotebookNote({ slug: notebookId, note: data }))

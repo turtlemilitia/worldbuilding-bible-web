@@ -31,8 +31,8 @@ const useNotebookPageData = () => {
     updatePersistedData: (data: Partial<TNotebook>) => dispatch(updateNotebookData(data)),
     resetPersistedData: () => dispatch(setNotebookData(undefined)),
     onCreated: (data: TNotebook) => {
-      dispatch(addNotebook({ field: 'notebooks', data: data }))
-      navigate(`/notebooks/${persistedData?.slug}`)
+      dispatch(addNotebook(data))
+      navigate(`/notebooks/${data?.slug}`)
     },
     onUpdated: (data: TNotebook) => {
       dispatch(updateNotebooksNotebookData({ field: 'notebooks', data: data }))

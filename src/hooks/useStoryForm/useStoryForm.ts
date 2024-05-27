@@ -34,7 +34,7 @@ const useStoryForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewStory(storyId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewStory(storyId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TStory): Promise<TStory> => storeStory(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const useStoryForm = ({
   const onDelete = () => destroyStory(storyId);
 
   return useFormHandling({
+    id: storyId,
     isNew,
     mapData,
 

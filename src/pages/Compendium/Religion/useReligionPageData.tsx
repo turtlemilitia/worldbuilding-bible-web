@@ -35,7 +35,7 @@ const useReligionPageData = () => {
     resetPersistedData: () => dispatch(setReligionData(undefined)),
     onCreated: (data: TReligion) => {
       dispatch(addCompendiumChildData({ field: 'religions', data: data }))
-      navigate(`${compendiumPath}/religions/${persistedData?.slug}`)
+      navigate(`${compendiumPath}/religions/${data?.slug}`)
     },
     onUpdated: (data: TReligion) => {
       dispatch(updateCompendiumChildData({ field: 'religions', data: data }))

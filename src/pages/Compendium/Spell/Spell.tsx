@@ -18,8 +18,8 @@ const Spell: FunctionComponent = (): JSX.Element => {
   const fields = useSpellFields({
     compendium,
     spell: pageData.persistedData,
-    onNoteCreated: (note) => form.updateAllData({ ...form.newData as TSpell, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => form.updateAllData({ ...form.newData as TSpell, notes: [...(form.newData?.notes ?? []), note] })
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TSpell, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TSpell, notes: [...(form.newData?.notes ?? []), note] })
   });
 
   const imageHandler = useImageSelection({

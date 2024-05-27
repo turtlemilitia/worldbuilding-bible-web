@@ -34,7 +34,7 @@ const usePlaneForm = ({
     content: data.content,
   })
 
-  const onFetch = () => viewPlane(planeId, { include: `${include};notes;images` }).then(({ data }) => data.data)
+  const onFetch = () => viewPlane(planeId, { include: `${include ? `${include};` : ''}notes;images` }).then(({ data }) => data.data)
 
   const onCreate = (data: TPlane): Promise<TPlane> => storePlane(compendiumId, mapData(data), { include }).then((response) => response.data.data)
 
@@ -43,6 +43,7 @@ const usePlaneForm = ({
   const onDelete = () => destroyPlane(planeId);
 
   return useFormHandling({
+    id: planeId,
     isNew,
     mapData,
 
