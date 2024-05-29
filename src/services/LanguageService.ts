@@ -25,14 +25,14 @@ export const viewLanguage = (slug: string, query: TQueryParams = {}): Promise<Ax
 
 }
 
-export const storeLanguage = (compendiumId: TCompendium['slug'], data: TLanguageRequest): Promise<AxiosResponse<TLanguageResponse>> => {
+export const storeLanguage = (compendiumId: TCompendium['slug'], data: TLanguageRequest, query: TQueryParams = {}): Promise<AxiosResponse<TLanguageResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/languages`, data)
+  return api.post(`/api/compendia/${compendiumId}/languages?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateLanguage = (slug: string, data: Partial<TLanguageRequest>): Promise<AxiosResponse<TLanguageResponse>> => {
-  return api.put(`/api/languages/${slug}`, data)
+export const updateLanguage = (slug: string, data: Partial<TLanguageRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TLanguageResponse>> => {
+  return api.put(`/api/languages/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyLanguage = (slug: string): Promise<AxiosResponse<void>> => {

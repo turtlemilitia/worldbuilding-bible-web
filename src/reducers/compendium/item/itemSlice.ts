@@ -4,14 +4,10 @@ import { TItem } from '../../../types'
 
 
 interface TState {
-  item: Partial<TItem>;
+  item?: TItem;
 }
 
 const initialState: TState = {
-  item: {
-    name: '',
-    content: '',
-  }
 }
 
 const itemSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const itemSlice: Slice<TState> = createSlice({
       state.item = action.payload
     },
     updateItemData: (state, action: PayloadAction<Partial<TItem>>) => {
-      state.item = { ...state.item, ...action.payload }
+      state.item = { ...state.item as TItem, ...action.payload }
     },
     clearItemData: (state) => {
       state.item = initialState.item

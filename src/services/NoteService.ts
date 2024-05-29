@@ -25,14 +25,14 @@ export const viewNote = (slug: string, query: TQueryParams = {}): Promise<AxiosR
 
 }
 
-export const storeNote = (notebookId: TNotebook['slug'], data: TNoteRequest): Promise<AxiosResponse<TNoteResponse>> => {
+export const storeNote = (notebookId: TNotebook['slug'], data: TNoteRequest, query: TQueryParams = {}): Promise<AxiosResponse<TNoteResponse>> => {
 
-  return api.post(`/api/notebooks/${notebookId}/notes`, data)
+  return api.post(`/api/notebooks/${notebookId}/notes?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateNote = (slug: string, data: Partial<TNoteRequest>): Promise<AxiosResponse<TNoteResponse>> => {
-  return api.put(`/api/notes/${slug}`, data)
+export const updateNote = (slug: string, data: Partial<TNoteRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TNoteResponse>> => {
+  return api.put(`/api/notes/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyNote = (slug: string): Promise<AxiosResponse<void>> => {

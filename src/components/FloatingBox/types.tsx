@@ -1,3 +1,3 @@
 export type TProps = {
-  width?: string;
+  className?: string;
 }

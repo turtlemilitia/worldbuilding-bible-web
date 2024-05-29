@@ -1,107 +1,43 @@
-import React, { FunctionComponent, JSX, useContext, useEffect, useState } from 'react'
-import { destroyQuest, storeQuest, TQuestRequest, updateQuest, viewQuest } from '../../../services/QuestService'
-import { clearQuestData, setQuestData, updateQuestData } from '../../../reducers/campaign/quest/questSlice'
-import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { useLocation, useParams } from 'react-router-dom'
+import React, { FunctionComponent, JSX, useMemo } from 'react'
+import { useAppSelector } from '../../../hooks'
+import { useParams } from 'react-router-dom'
 import { RootState } from '../../../store'
-import {
-  addCampaignChildData,
-  removeCampaignChildData,
-  updateCampaignChildData
-} from '../../../reducers/campaign/campaignSlice'
-import { TQuest } from '../../../types'
 import Post from '../../../components/Post'
-import { QuestWrapperContext } from '../../../components/QuestWrapper/component'
-import { TFields } from '../../../components/InfoBar'
-
-const include = 'type;parent'
+import { TQuest } from '../../../types'
+import useQuestPageData from './useQuestPageData'
+import { useQuestFields, useQuestForm } from '../../../hooks/useQuestForm'
+import useImageSelection from '../../../hooks/useImageSelection'
 
 const Quest: FunctionComponent = (): JSX.Element => {
 
   const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
-  const { quest } = useAppSelector((state: RootState) => state.quest) // redux
 
-  const dispatch = useAppDispatch() // redux
+  const pageData = useQuestPageData();
 
-  const { state: locationState } = useLocation()
+  const form = useQuestForm(pageData);
 
-  const { campaignId, questId } = useParams() as { campaignId: string; questId: string } // router
+  const fields = useQuestFields({
+    campaign,
+    quest: pageData.persistedData,
+    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TQuest, notes: [...(form.newData?.notes ?? []), note] }),
+    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TQuest, notes: [...(form.newData?.notes ?? []), note] })
+  });
 
-  const [ready, setReady] = useState<boolean>(false)
-
-  const types = useContext(QuestWrapperContext)
-
-  useEffect(() => {
-
-    if (types !== undefined) {
-      setReady(true)
-    }
-
-  }, [types])
-
-  const readyDataForRequest = (data: any): TQuestRequest => ({
-    name: data.name,
-    content: data.content,
-    typeId: data.type.id,
-    parentId: data.parent?.id,
+  const imageHandler = useImageSelection({
+    entityType: 'quest',
+    entityId: pageData.persistedData?.slug,
+    persistedData: pageData.persistedData,
+    updatePersistedData: pageData.updatePersistedData
   })
-
-  const fields: TFields[] = [
-    {
-      name: 'type',
-      label: 'Type',
-      type: 'select',
-      options: types ?? [],
-    }
-  ]
-  if (campaign?.quests.length) {
-    fields.push(
-      {
-        name: 'parent',
-        label: 'Parent',
-        type: 'select',
-        options: campaign?.quests.filter(campaignQuest => campaignQuest.id !== quest.id) ?? []
-      }
-    )
-  }
 
   return (
     <Post
-      key={questId}
-      isNew={questId === 'new'}
+      isNew={pageData.isNew}
       pageTypeName={'Quest'}
-      pathToNew={(data) => `/campaigns/${campaignId}/quests/${data.slug}`}
-      pathAfterDelete={`/campaigns/${campaignId}`}
-      canEdit={quest.canUpdate}
-      canDelete={quest.canDelete}
-      ready={ready}
-      mapData={readyDataForRequest}
-
-      onFetch={() => viewQuest(questId, { include }).then(({ data }) => data.data)}
-      onCreate={(data: TQuestRequest) => storeQuest(campaignId, readyDataForRequest(data), { include }).then(({ data }) => data.data)}
-      onUpdate={(data: TQuestRequest) => updateQuest(questId, readyDataForRequest(data), { include }).then(({ data }) => data.data)}
-      onDelete={() => destroyQuest(questId)}
-      onCreated={(data) => {
-        dispatch(addCampaignChildData({ field: 'quests', data: data }))
-      }}
-      onUpdated={(data) => {
-        dispatch(updateCampaignChildData({ field: 'quests', data: data }))
-      }}
-      onDeleted={() => {
-        dispatch(removeCampaignChildData({ field: 'quests', id: questId }))
-      }}
-
+      form={form}
       fields={fields}
-
-      defaultData={{
-        type: locationState?.type ? types?.find(type => type.id === locationState.type) : undefined,
-        parent: locationState?.parent ? campaign?.quests?.find(campaignQuest => campaignQuest.id === locationState.parent) : undefined,
-      }}
-
-      persistedData={quest as TQuest}
-      setPersistedData={(data) => dispatch(setQuestData(data))}
-      updatePersistedData={(data) => dispatch(updateQuestData(data))}
-      resetPersistedData={() => dispatch(clearQuestData(undefined))}
+      canEdit={pageData.canEdit}
+      imageHandler={imageHandler}
     />
   )
 }

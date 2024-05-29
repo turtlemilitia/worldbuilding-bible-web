@@ -25,14 +25,14 @@ export const viewStory = (slug: string, query: TQueryParams = {}): Promise<Axios
 
 }
 
-export const storeStory = (compendiumId: TCompendium['slug'], data: TStoryRequest): Promise<AxiosResponse<TStoryResponse>> => {
+export const storeStory = (compendiumId: TCompendium['slug'], data: TStoryRequest, query: TQueryParams = {}): Promise<AxiosResponse<TStoryResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/stories`, data)
+  return api.post(`/api/compendia/${compendiumId}/stories?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateStory = (slug: string, data: Partial<TStoryRequest>): Promise<AxiosResponse<TStoryResponse>> => {
-  return api.put(`/api/stories/${slug}`, data)
+export const updateStory = (slug: string, data: Partial<TStoryRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TStoryResponse>> => {
+  return api.put(`/api/stories/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyStory = (slug: string): Promise<AxiosResponse<void>> => {

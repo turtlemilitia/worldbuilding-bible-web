@@ -44,6 +44,10 @@ export type TCanHaveImages = {
   images?: TImage[];
 }
 
+export type TCanHaveNotes = {
+  notes?: TNote[];
+}
+
 export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
   id: number;
   slug: string;
@@ -52,6 +56,7 @@ export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
 }
 
 export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
+  notebook?: TGenericPostList;
   characters?: TGenericPostList[];
   concepts?: TGenericPostList[];
   currencies?: TGenericPostList[];
@@ -69,9 +74,9 @@ export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
   stories?: TGenericPostList[];
 }
 
-export type TConcept = TGenericPost & TPlayerTools & TCanHaveImages
+export type TConcept = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   age: string;
   gender: string;
   species: TSpecies;
@@ -79,23 +84,23 @@ export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & {
   factions?: TFaction[];
 }
 
-export type TCurrency = TGenericPost & TPlayerTools & TCanHaveImages
+export type TCurrency = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TDeity = TGenericPost & TPlayerTools & TCanHaveImages
+export type TDeity = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
 export type TEncounterType = TOptionList
 
-export type TEncounter = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TEncounter = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   type: TEncounterType
 }
 
-export type TFaction = TGenericPost & TPlayerTools & TCanHaveImages
+export type TFaction = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TItem = TGenericPost & TPlayerTools & TCanHaveImages
+export type TItem = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TLanguage = TGenericPost & TPlayerTools & TCanHaveImages
+export type TLanguage = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TLocation = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TLocation = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   compendium: TCompendium;
   parent?: TLocation;
   type: TLocationType;
@@ -115,27 +120,27 @@ export type TLocationType = TOptionList
 
 export type TLocationGovernmentType = TOptionList
 
-export type TPantheon = TGenericPost & TPlayerTools & TCanHaveImages
+export type TPantheon = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
 export type TQuestType = TOptionList
 
-export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   type: TQuestType,
   parent?: TQuest,
   children?: TQuest[]
 }
 
-export type TReligion = TGenericPost & TPlayerTools & TCanHaveImages
+export type TReligion = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TSpecies = TGenericPost & TPlayerTools & TCanHaveImages
+export type TSpecies = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TSpell = TGenericPost & TPlayerTools & TCanHaveImages
+export type TSpell = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TStory = TGenericPost & TPlayerTools & TCanHaveImages
+export type TStory = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TNaturalResource = TGenericPost & TPlayerTools & TCanHaveImages
+export type TNaturalResource = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TPlane = TGenericPost & TPlayerTools & TCanHaveImages
+export type TPlane = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
 export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
   notes: TGenericPostList[]
@@ -151,9 +156,10 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   sessions: (TGenericPostList & { session_number: TSession['session_number'] })[];
   encounters: (TGenericPostList & { type: TEncounter['type'] })[];
   quests: (TGenericPostList & { type: TQuest['type'] })[];
+  notebook?: TNotebook
 }
 
-export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   session_number: number
   scheduled_at: string
   duration: number

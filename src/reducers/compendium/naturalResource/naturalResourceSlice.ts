@@ -4,14 +4,10 @@ import { TNaturalResource } from '../../../types'
 
 
 interface TState {
-  naturalResource: Partial<TNaturalResource>;
+  naturalResource?: TNaturalResource;
 }
 
 const initialState: TState = {
-  naturalResource: {
-    name: '',
-    content: '',
-  }
 }
 
 const naturalResourceSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const naturalResourceSlice: Slice<TState> = createSlice({
       state.naturalResource = action.payload
     },
     updateNaturalResourceData: (state, action: PayloadAction<Partial<TNaturalResource>>) => {
-      state.naturalResource = { ...state.naturalResource, ...action.payload }
+      state.naturalResource = { ...state.naturalResource as TNaturalResource, ...action.payload }
     },
     clearNaturalResourceData: (state) => {
       state.naturalResource = initialState.naturalResource

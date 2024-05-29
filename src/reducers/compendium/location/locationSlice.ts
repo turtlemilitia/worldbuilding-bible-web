@@ -4,15 +4,10 @@ import { TLocation } from '../../../types'
 
 
 interface TState {
-  location: Partial<TLocation>;
+  location?: TLocation;
 }
 
 const initialState: TState = {
-  location: {
-    name: '',
-    content: '',
-    hasSubLocations: false,
-  }
 }
 
 const locationSlice: Slice<TState> = createSlice({
@@ -23,7 +18,7 @@ const locationSlice: Slice<TState> = createSlice({
       state.location = action.payload
     },
     updateLocationData: (state, action: PayloadAction<Partial<TLocation>>) => {
-      state.location = { ...state.location, ...action.payload }
+      state.location = { ...state.location as TLocation, ...action.payload }
     },
     clearLocationData: (state) => {
       state.location = initialState.location

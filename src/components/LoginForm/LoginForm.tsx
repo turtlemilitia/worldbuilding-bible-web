@@ -5,7 +5,7 @@ import { setToken } from '../../reducers/auth/authSlice'
 import { useAppDispatch } from '../../hooks'
 import FieldMapper from '../Forms/Fields/FieldMapper'
 import { ErrorBanner } from '../Banners/ErrorBanner'
-import useErrorHandling from '../../utils/hooks/useErrorHandling'
+import useErrorHandling from '../../hooks/useErrorHandling'
 import CheckButton from '../CheckButton'
 
 const LoginForm = (): JSX.Element => {

@@ -26,14 +26,14 @@ export const viewEncounter = (slug: string, query: TQueryParams = {}): Promise<A
 
 }
 
-export const storeEncounter = (campaignId: TCampaign['slug'], data: TEncounterRequest): Promise<AxiosResponse<TEncounterResponse>> => {
+export const storeEncounter = (campaignId: TCampaign['slug'], data: TEncounterRequest, query: TQueryParams = {}): Promise<AxiosResponse<TEncounterResponse>> => {
 
-  return api.post(`/api/campaigns/${campaignId}/encounters`, data)
+  return api.post(`/api/campaigns/${campaignId}/encounters?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateEncounter = (slug: string, data: Partial<TEncounterRequest>): Promise<AxiosResponse<TEncounterResponse>> => {
-  return api.put(`/api/encounters/${slug}`, data)
+export const updateEncounter = (slug: string, data: Partial<TEncounterRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TEncounterResponse>> => {
+  return api.put(`/api/encounters/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyEncounter = (slug: string): Promise<AxiosResponse<void>> => {

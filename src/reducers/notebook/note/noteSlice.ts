@@ -4,14 +4,10 @@ import { TNote } from '../../../types'
 
 
 interface TState {
-  note: Partial<TNote>;
+  note?: TNote;
 }
 
 const initialState: TState = {
-  note: {
-    name: '',
-    content: '',
-  }
 }
 
 const noteSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const noteSlice: Slice<TState> = createSlice({
       state.note = action.payload
     },
     updateNoteData: (state, action: PayloadAction<Partial<TNote>>) => {
-      state.note = { ...state.note, ...action.payload }
+      state.note = { ...state.note as TNote, ...action.payload }
     },
     clearNoteData: (state) => {
       state.note = initialState.note

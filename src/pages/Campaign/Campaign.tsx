@@ -1,106 +1,37 @@
-import React, { FunctionComponent, JSX } from 'react'
-import Post from '../../components/Post/Post'
+import React, { FunctionComponent, JSX, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
-import { TCampaign } from '../../types'
-import {
-  addCampaignChildData,
-  clearCampaignData,
-  setCampaignData,
-  updateCampaignData
-} from '../../reducers/campaign/campaignSlice'
-import {
-  createCampaignInvitation,
-  destroyCampaign,
-  storeCampaign,
-  TCampaignRequest,
-  updateCampaign
-} from '../../services/CampaignService'
-import { viewCampaign } from '../../services/CampaignService'
-import { addCampaign, removeCampaign } from '../../reducers/campaign/campaignsIndexSlice'
-import { TFields } from '../../components/InfoBar'
-import ListAddUsers from './ListAddUsers/component'
-
-const include = 'users;invitations;compendium'
+import Post from '../../components/Post'
+import useCampaignPageData from './useCampaignPageData'
+import { useCampaignFields, useCampaignForm } from '../../hooks/useCampaignForm'
+import useImageSelection from '../../hooks/useImageSelection'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 
-  const { campaignId } = useParams() as { campaignId: string } // router
+  const pageData = useCampaignPageData();
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
-  const { compendia } = useAppSelector((state: RootState) => state.compendia) // redux
+  const form = useCampaignForm(pageData);
 
-  const dispatch = useAppDispatch() // redux
+  const fields = useCampaignFields({
+    campaign: pageData.persistedData,
+  });
 
-  const readyDataForRequest = (data: any): TCampaignRequest => ({
-    name: data.name,
-    content: data.content,
-    compendium_id: data.compendium?.id
+  const imageHandler = useImageSelection({
+    entityType: 'campaign',
+    entityId: pageData.persistedData?.slug,
+    persistedData: pageData.persistedData,
+    updatePersistedData: pageData.updatePersistedData
   })
-
-  const fields: TFields[] = (campaign) ? [
-    {
-      name: 'invitations',
-      label: 'Invite a new player',
-      type: 'callback',
-      Callback: () => <ListAddUsers
-        users={campaign.users || []}
-        invitations={campaign.invitations || []}
-        onSubmit={(email) => createCampaignInvitation(campaign.slug, { email })
-          .then((response) => {
-            const newInvitationData = response.data.data
-            dispatch(addCampaignChildData({ field: 'invitations', data: newInvitationData }))
-          })
-        }
-      />
-    }
-  ] : []
-
-  if (compendia.length > 0) {
-    fields.push(
-      {
-        name: 'compendium',
-        label: 'Compendium',
-        type: 'select',
-        options: compendia
-      }
-    )
-  }
 
   return (
     <Post
-      key={campaignId}
-      isNew={campaignId === 'new'}
+      isNew={pageData.isNew}
       pageTypeName={'Campaign'}
-      pathToNew={(data) => `/campaigns/${data.slug}`}
-      pathAfterDelete={`/`}
-      ready={true}
-
-      mapData={readyDataForRequest}
-      canEdit={campaign && campaign.canUpdate}
-      canDelete={campaign && campaign.canUpdate}
-
-      onFetch={() => viewCampaign(campaignId, { include }).then(({ data }) => data.data)}
-      onCreate={(data: TCampaignRequest) => storeCampaign(readyDataForRequest(data), { include }).then(({ data }) => data.data)}
-      onUpdate={(data: TCampaignRequest) => updateCampaign(campaignId, readyDataForRequest(data), { include }).then(({ data }) => data.data)}
-      onDelete={() => destroyCampaign(campaignId)}
-      onCreated={(data) => {
-        dispatch(addCampaign(data))
-      }}
-      onDeleted={() => {
-        dispatch(removeCampaign({ id: campaignId }))
-      }}
-
+      form={form}
       fields={fields}
-
-      persistedData={campaign as TCampaign}
-      setPersistedData={(data) => dispatch(setCampaignData(data))}
-      updatePersistedData={(data) => dispatch(updateCampaignData(data))}
-      resetPersistedData={() => dispatch(clearCampaignData(undefined))}
+      canEdit={pageData.canEdit}
+      imageHandler={imageHandler}
     />
   )
-
 }
 
 export default Campaign

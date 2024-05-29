@@ -25,14 +25,14 @@ export const viewCurrency = (slug: string, query: TQueryParams = {}): Promise<Ax
 
 }
 
-export const storeCurrency = (compendiumId: TCompendium['slug'], data: TCurrencyRequest): Promise<AxiosResponse<TCurrencyResponse>> => {
+export const storeCurrency = (compendiumId: TCompendium['slug'], data: TCurrencyRequest, query: TQueryParams = {}): Promise<AxiosResponse<TCurrencyResponse>> => {
 
-  return api.post(`/api/compendia/${compendiumId}/currencies`, data)
+  return api.post(`/api/compendia/${compendiumId}/currencies?${new URLSearchParams(query).toString()}`, data)
 
 }
 
-export const updateCurrency = (slug: string, data: Partial<TCurrencyRequest>): Promise<AxiosResponse<TCurrencyResponse>> => {
-  return api.put(`/api/currencies/${slug}`, data)
+export const updateCurrency = (slug: string, data: Partial<TCurrencyRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TCurrencyResponse>> => {
+  return api.put(`/api/currencies/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroyCurrency = (slug: string): Promise<AxiosResponse<void>> => {

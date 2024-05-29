@@ -5,7 +5,7 @@ import api from '../api'
 export interface TCampaignRequest {
   name: string;
   content: string;
-  compendium_id: number;
+  compendiumId?: number;
 }
 interface TCampaignResponse {
   data: TCampaign;

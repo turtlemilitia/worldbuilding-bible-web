@@ -1,5 +1,6 @@
 import Post from './Post'
 
-export {}
+export {
+}
 
 export default Post;

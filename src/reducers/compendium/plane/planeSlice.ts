@@ -4,14 +4,10 @@ import { TPlane } from '../../../types'
 
 
 interface TState {
-  plane: Partial<TPlane>;
+  plane?: TPlane;
 }
 
 const initialState: TState = {
-  plane: {
-    name: '',
-    content: '',
-  }
 }
 
 const planeSlice: Slice<TState> = createSlice({
@@ -22,7 +18,7 @@ const planeSlice: Slice<TState> = createSlice({
       state.plane = action.payload
     },
     updatePlaneData: (state, action: PayloadAction<Partial<TPlane>>) => {
-      state.plane = { ...state.plane, ...action.payload }
+      state.plane = { ...state.plane as TPlane, ...action.payload }
     },
     clearPlaneData: (state) => {
       state.plane = initialState.plane

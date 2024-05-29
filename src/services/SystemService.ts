@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TSystem } from '../types'
+import { TQueryParams, TSystem } from '../types'
 import api from '../api'
 
 export type TSystemRequest  = {
@@ -19,20 +19,20 @@ export const indexSystems = (): Promise<AxiosResponse<TSystemIndexResponse>> => 
 
 }
 
-export const viewSystem = (slug: string): Promise<AxiosResponse<TSystemResponse>> => {
+export const viewSystem = (slug: string, query: TQueryParams = {}): Promise<AxiosResponse<TSystemResponse>> => {
 
-  return api.get(`/api/systems/${slug}`)
-
-}
-
-export const storeSystem = (data: TSystemRequest): Promise<AxiosResponse<TSystemResponse>> => {
-
-  return api.post(`/api/systems`, data)
+  return api.get(`/api/systems/${slug}?${new URLSearchParams(query).toString()}`)
 
 }
 
-export const updateSystem = (slug: string, data: Partial<TSystemRequest>): Promise<AxiosResponse<TSystemResponse>> => {
-  return api.put(`/api/systems/${slug}`, data)
+export const storeSystem = (data: TSystemRequest, query: TQueryParams = {}): Promise<AxiosResponse<TSystemResponse>> => {
+
+  return api.post(`/api/systems?${new URLSearchParams(query).toString()}`, data)
+
+}
+
+export const updateSystem = (slug: string, data: Partial<TSystemRequest>, query: TQueryParams = {}): Promise<AxiosResponse<TSystemResponse>> => {
+  return api.put(`/api/systems/${slug}?${new URLSearchParams(query).toString()}`, data)
 }
 
 export const destroySystem = (slug: string): Promise<AxiosResponse<void>> => {

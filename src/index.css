@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 .remirror-theme .remirror-editor {
-    @apply min-h-screen focus:outline-none
+    @apply min-h-96 focus:outline-none
 }
 .remirror-theme h1,
 .remirror-theme h2,
