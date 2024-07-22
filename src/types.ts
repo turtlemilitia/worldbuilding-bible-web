@@ -1,5 +1,3 @@
-export type TQueryParams = string | string[][] | Record<string, string> | URLSearchParams
-
 export type TUser = {
   id: number;
   name: string;
@@ -20,7 +18,7 @@ export type TImage = {
   pivot?: TImageableImagePivot
 }
 
-export type TGenericPostList = {
+export type TGenericPostBasic = {
   id: number;
   slug: string;
   name: string;
@@ -56,22 +54,22 @@ export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
 }
 
 export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
-  notebook?: TGenericPostList;
-  characters?: TGenericPostList[];
-  concepts?: TGenericPostList[];
-  currencies?: TGenericPostList[];
-  deities?: TGenericPostList[];
-  factions?: TGenericPostList[];
-  items?: TGenericPostList[];
-  languages?: TGenericPostList[];
+  notebook?: TGenericPostBasic;
+  characters?: TGenericPostBasic[];
+  concepts?: TGenericPostBasic[];
+  currencies?: TGenericPostBasic[];
+  deities?: TGenericPostBasic[];
+  factions?: TGenericPostBasic[];
+  items?: TGenericPostBasic[];
+  languages?: TGenericPostBasic[];
   locations?: TLocationList[];
-  naturalResources?: TGenericPostList[];
-  pantheons?: TGenericPostList[];
-  planes?: TGenericPostList[];
-  religions?: TGenericPostList[];
-  species?: TGenericPostList[];
-  spells?: TGenericPostList[];
-  stories?: TGenericPostList[];
+  naturalResources?: TGenericPostBasic[];
+  pantheons?: TGenericPostBasic[];
+  planes?: TGenericPostBasic[];
+  religions?: TGenericPostBasic[];
+  species?: TGenericPostBasic[];
+  spells?: TGenericPostBasic[];
+  stories?: TGenericPostBasic[];
 }
 
 export type TConcept = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
@@ -112,7 +110,7 @@ export type TLocation = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveN
   children?: TLocation[];
 }
 
-export type TLocationList = TGenericPostList & {
+export type TLocationList = TGenericPostBasic & {
   parent?: TLocation;
 }
 
@@ -143,7 +141,7 @@ export type TNaturalResource = TGenericPost & TPlayerTools & TCanHaveImages & TC
 export type TPlane = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
 export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
-  notes: TGenericPostList[]
+  notes: TGenericPostBasic[]
 }
 
 export type TNote = TGenericPost & TPlayerTools & TCanHaveImages
@@ -153,9 +151,9 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   compendium?: TGenericPost;
   users: TUser[];
   invitations: TInvitation[];
-  sessions: (TGenericPostList & { session_number: TSession['session_number'] })[];
-  encounters: (TGenericPostList & { type: TEncounter['type'] })[];
-  quests: (TGenericPostList & { type: TQuest['type'] })[];
+  sessions: (TGenericPostBasic & { session_number: TSession['session_number'] })[];
+  encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
+  quests: (TGenericPostBasic & { type: TQuest['type'] })[];
   notebook?: TNotebook
 }
 
