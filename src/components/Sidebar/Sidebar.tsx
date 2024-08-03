@@ -3,6 +3,9 @@ import { LucideProps, PlusIcon } from 'lucide-react'
 import SidebarItem from './SidebarItem'
 import { FloatingBox } from '../FloatingBox'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from '../../hooks'
+import { RootState } from '../../store'
+import { useCampaignDataManager } from '../../hooks/DataManagers'
 
 export interface SidebarItemInterface {
   title: string;
@@ -20,12 +23,14 @@ export interface SidebarItemInterface {
 interface TOwnProps {
   title: string;
   items: SidebarItemInterface[],
-  addNew?: string
+  addNew?: string,
 }
 
 const Sidebar = ({ title, items, addNew }: TOwnProps): JSX.Element => {
 
   const [show, setShow] = useState<boolean>(false)
+
+  const { campaign } = useCampaignDataManager()
 
   useEffect(() => {
     setShow(true)
@@ -33,7 +38,7 @@ const Sidebar = ({ title, items, addNew }: TOwnProps): JSX.Element => {
 
   return (
     <div className="relative flex w-full">
-      <div className={`fixed z-50 top-14 left-0 pt-5 max-h-underScreen w-1/4`}>
+      <div className={`fixed z-50 ${campaign ? 'top-28' : 'top-14'} left-0 pt-5 max-h-underScreen w-1/4`}>
         <div
           className={`absolute transition-all duration-1000 ${show ? 'top-5 opacity-100' : '-top-14 opacity-0'} w-full px-6`}>
           <FloatingBox>

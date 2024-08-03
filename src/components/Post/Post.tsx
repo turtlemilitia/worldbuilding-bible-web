@@ -9,30 +9,46 @@ import { InfoBar } from '../InfoBar'
 import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import SavingDialog from '../SavingDialog'
+import { TGenericPost } from '../../types'
 
-const Post = <T,>({
+// todo
+//  <TopMenu>
+//  <CampaignMenu> -> in wrapper
+//  <WrapMenu> -> left sidebar -> in wrapper
+//    - Compendium -> all, Campaign -> Quests, Sessions, Encounters
+//  <Main Body>
+//    - [ ] <Title>
+//      - [ ] <Slug>
+//    - [ ] <Map>
+//    - [ ] <BackgroundImage> -> createContext
+//    - [ ] <Contents> // multiple
+//  <CampaignQuickLinks> -> right sidebar top (QuickLinks) -> in wrapper
+//    - [ ] <CurrentLocation>
+//    - [ ] <CurrentQuest>
+//    - [ ] <MyCharacter>
+//    - [ ] <SearchButton>
+//    - [ ] <FavouritesButton>
+//  <InfoBar>
+//    - [ ] <ProfileImage>
+//    - [ ] <Fields>
+const Post = <T extends TGenericPost>({
   pageTypeName,
-  contentPlaceholder,
-  form,
-  fields,
-  imageHandler,
-  isNew = true,
-  canEdit = false,
+  form
 }: TPostProps<T>): JSX.Element => {
 
   return (
-    <LoadingWrapper loading={form.loading || (!!fields && !fields.ready)} opacity={'100'}>
+    <LoadingWrapper loading={form.loading} opacity={'100'}>
       <SavingDialog saving={form.saving}/>
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper
           page={pageTypeName}
-          onCoverImageSelected={imageHandler ? (id) => imageHandler.handleOnImageSelected(id, 'cover') : undefined}
-          coverImage={imageHandler && imageHandler.getImage('cover')}
+          onCoverImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
+          coverImage={form.imageHandler && form.imageHandler.getImage('cover')}
         >
-          <PageTitleField value={form.newData?.name ?? ''}
+          <PageTitleField value={form.data?.name ?? ''}
                           onChange={(value) => form.onFieldChange('name', value)}
                           placeholder={'Name'}
-                          canEdit={canEdit}
+                          canEdit={form.canEdit}
           />
         </HeaderWrapper>
         <ContentWrapper>
@@ -41,31 +57,31 @@ const Post = <T,>({
               <InfoBar
                 loading={form.loading}
                 onChange={form.onFieldChange}
-                data={form.newData}
-                fields={fields?.fields}
-                profileImage={imageHandler && imageHandler.getImage('profile')}
-                onProfileImageSelected={imageHandler ? (id) => imageHandler.handleOnImageSelected(id, 'profile'): undefined}
-                disabled={!canEdit}
+                data={form.data}
+                fields={form.fields}
+                profileImage={form.imageHandler && form.imageHandler.getImage('profile')}
+                onProfileImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'profile'): undefined}
+                canHaveProfileImage={form.imageHandler?.canHaveProfileImage}
+                disabled={!form.canEdit}
               />
             </div>
             <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
               {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
-              {(canEdit) && (
+              {(form.canEdit) && (
                 <FormToolbar
                   canManuallySave={true}
-                  canRefresh={!isNew}
-                  canDelete={canEdit}
+                  canRefresh={!form.isNew}
+                  canDelete={form.canEdit}
                   onSave={form.onSave}
                   onRefresh={form.onFetch}
                   onDelete={form.onDelete}
                 />
               )}
               <Editor
-                id={form.newData?.slug ?? 'new'}
-                initialValue={form.newData?.content}
+                id={form.data?.slug ?? 'new'}
+                initialValue={form.data?.content}
                 onChange={(value) => form.onFieldChange('content', value)}
-                placeholder={contentPlaceholder}
-                canEdit={isNew || canEdit}
+                canEdit={form.canEdit}
                 className={'min-h-screen'}
               />
             </div>

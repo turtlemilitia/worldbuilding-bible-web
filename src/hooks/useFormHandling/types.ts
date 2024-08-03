@@ -1,10 +1,9 @@
-import { TPostProps } from '../../components/Post/types'
-import { TGenericPost } from '../../types'
+import { TDataManager } from '../DataManagers/createDataManager'
 
-export type useFormHandlingProps<T> = {
-  id: TGenericPost['slug']|'new'
+export type TUseFormHandlingProps<T, R> = {
+  id: string|number|'new'
   isNew: boolean,
-  mapData?: (data: any) => any;
+  mapData: (data: T) => R;
 
   // API
   onFetch: () => Promise<T>,
@@ -18,17 +17,14 @@ export type useFormHandlingProps<T> = {
 
   // persisted data
   persistedData?: T,
-  setPersistedData: (data?: T) => any,
-  updatePersistedData: (data: Partial<T>) => any,
-  resetPersistedData?: () => any
 }
 
-export type useFormHandlingType<T> = {
+export type TFormHandling<T> = {
   loading: boolean;
   saving: boolean;
 
-  newData?: Partial<T>;
-  setNewData: (payload: T) => any;
+  data?: T;
+  setData: (payload: T) => any;
 
   onFieldChange: (name: string, value: string) => any;
   onFetch: () => void;

@@ -1,9 +1,7 @@
 import { TLocationType } from '../../../types'
 import { createApiService } from '../createApiService'
 
-type TLocationTypeIndexResponse = {
-  data: TLocationType[];
-}
+type TLocationTypeIndexResponse = TLocationType[];
 
 const LocationTypeService = createApiService<{}, TLocationTypeIndexResponse, TLocationType>('location-types');
 

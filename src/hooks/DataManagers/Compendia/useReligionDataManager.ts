@@ -1,5 +1,5 @@
-import { createChildDataManager, TUseChildDataManager } from '../createChildDataManager'
-import { TCampaign, TReligion, TCompendium } from '../../../types'
+import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { TReligion, TCompendium } from '../../../types'
 import {
   createEncounterableDataManager,
   createNotableDataManager,
@@ -10,21 +10,21 @@ import {
 } from '../createAttachableDataManager'
 import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
 import { useMemo } from 'react'
-import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
+import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import ReligionService, { TReligionRequest } from '../../../services/ApiService/Compendia/ReligionService'
 import { religionSlice } from '../../../reducers/compendium/religion/religionSlice'
 
-type TUseReligionDataManager = TUseChildDataManager<TCampaign, TReligion, TReligionRequest> & {
+type TReligionDataManager = TChildDataManager<TCompendium, TReligion, TReligionRequest> & {
   compendium?: TCompendium,
   religion?: TReligion,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useReligionDataManager = (): TUseReligionDataManager => {
+const useReligionDataManager = (): TReligionDataManager => {
   const manager = useMemo(() => createChildDataManager(
     'religion',
-    'campaign',
+    'compendium',
     religionSlice,
-    campaignSlice,
+    compendiumSlice,
     ReligionService,
   ), [])
   return {

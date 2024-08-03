@@ -1,4 +1,4 @@
-import { createDataManager, TUseDataManager } from '../createDataManager'
+import { createDataManager, TDataManager } from '../createDataManager'
 import { TCampaign } from '../../../types'
 import CampaignService, { TCampaignRequest } from '../../../services/ApiService/Campaigns/CampaignService'
 import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
@@ -8,10 +8,11 @@ import { useMemo } from 'react'
 import campaignService from '../../../services/ApiService/Campaigns/CampaignService'
 import { createAttachableDataManager, hasNotesAttachableDataManager } from '../createAttachableDataManager'
 
-type TUseCampaignDataManager = TUseDataManager<TCampaign, TCampaignRequest> & {
+type TCampaignDataManager = TDataManager<TCampaign, TCampaignRequest> & {
   campaign?: TCampaign
 } & hasNotesAttachableDataManager & hasImageableDataManager
-const useCampaignDataManager = (): TUseCampaignDataManager => {
+
+const useCampaignDataManager = (): TCampaignDataManager => {
   const manager = createDataManager(
     'campaign',
     campaignSlice,

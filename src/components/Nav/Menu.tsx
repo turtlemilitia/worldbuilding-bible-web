@@ -4,7 +4,7 @@ const Menu: FunctionComponent<PropsWithChildren> = ({ children }): JSX.Element =
 
   return (
     <div className="w-full">
-      <ul className="flex space-x-3 justify-center gap-4 font-serif text-serif-md text-white">
+      <ul className="flex space-x-4 justify-center font-serif text-serif-md text-white">
         {children}
       </ul>
     </div>

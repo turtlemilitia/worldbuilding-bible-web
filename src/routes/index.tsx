@@ -35,7 +35,7 @@ import Story from '../pages/Compendium/Story'
 import Pantheon from '../pages/Compendium/Pantheon'
 import CompendiaWrapper from '../components/CompendiaWrapper/CompendiaWrapper'
 import CampaignInvitation from '../pages/CampaignInvitation'
-import { checkCampaignInvitation } from '../services/CampaignInvitationService'
+import CampaignInvitationService from '../services/ApiService/Campaigns/CampaignInvitationService'
 import Register from '../pages/Register'
 import NotFound from '../pages/NotFound'
 import CampaignInvitationInvalid from '../pages/CampaignInvitationInvalid'
@@ -65,7 +65,7 @@ const Routes = (): JSX.Element => {
     {
       path: '/campaigns/:campaignId/invitations/:token',
       element: <CampaignInvitation/>,
-      loader: ({ params }) => checkCampaignInvitation(params.campaignId as string, params.token as string)
+      loader: ({ params }) => CampaignInvitationService.check(params.campaignId as string, params.token as string)
         .then(({ data }) => data?.data),
       errorElement: <CampaignInvitationInvalid/>
     }

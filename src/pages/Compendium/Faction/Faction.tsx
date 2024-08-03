@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TFaction } from '../../../types'
-import useFactionPageData from './useFactionPageData'
-import { useFactionFields, useFactionForm } from '../../../hooks/useFactionForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useFactionForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Faction: FunctionComponent = (): JSX.Element => {
+const Faction: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useFactionPageData();
+  const { factionId } = useParams() as { factionId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useFactionForm(pageData);
-
-  const fields = useFactionFields({
-    compendium,
-    faction: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TFaction, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TFaction, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'factions',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useFactionForm({
+    factionId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/systems/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/systems`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Faction'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

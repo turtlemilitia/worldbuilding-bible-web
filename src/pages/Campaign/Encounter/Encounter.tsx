@@ -1,42 +1,28 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { RootState } from '../../../store'
+import React, { FunctionComponent, JSX } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TEncounter } from '../../../types'
-import useEncounterPageData from './useEncounterPageData'
-import { useEncounterFields, useEncounterForm } from '../../../hooks/useEncounterForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useEncounterForm } from '../../../hooks/Forms'
 
 const Encounter: FunctionComponent = (): JSX.Element => {
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const navigate = useNavigate()
 
-  const pageData = useEncounterPageData();
+  const { campaignId, encounterId } = useParams() as { campaignId: string, encounterId: string } // router
 
-  const form = useEncounterForm(pageData);
-
-  const fields = useEncounterFields({
-    campaign,
-    encounter: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TEncounter, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TEncounter, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'encounters',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useEncounterForm({
+    encounterId,
+    onCreated: (data) => {
+      navigate(`/campaign/${campaignId}/systems/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`/campaign/${campaignId}/systems`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Encounter'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

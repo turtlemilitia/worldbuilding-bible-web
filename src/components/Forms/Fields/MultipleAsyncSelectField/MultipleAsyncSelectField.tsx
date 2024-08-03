@@ -11,9 +11,9 @@ type TProp = {
   search: (term: string) => Promise<TSelectOption[]>;
   link?: (id: number | string) => string;
   disabled?: boolean;
-  OpenDialog?: FunctionComponent<{isOpen: boolean; setIsOpen: (open: boolean) => any, id: string}>
+  Dialog?: FunctionComponent<{isOpen: boolean; setIsOpen: (open: boolean) => any, id: string}>
 }
-const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled, OpenDialog }) => {
+const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled, Dialog }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([])
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
@@ -51,7 +51,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
                 {!disabled && (
                   <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
                 )}
-                {OpenDialog && (
+                {Dialog && (
                   <PlusIcon
                     className="text-stone-300 h-5 w-5 "
                     onClick={() => setDialogIsOpen(true)}
@@ -91,8 +91,8 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
           </>
         )}
       </Combobox>
-      {dialogIsOpen && OpenDialog && (
-        <OpenDialog isOpen={dialogIsOpen} setIsOpen={setDialogIsOpen} id={'new'}/>
+      {dialogIsOpen && Dialog && (
+        <Dialog isOpen={dialogIsOpen} setIsOpen={setDialogIsOpen} id={'new'}/>
       )}
     </div>
   )

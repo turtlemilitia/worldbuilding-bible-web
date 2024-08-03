@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from 'react'
 import BoxWithTitle from '../BoxWithTitle'
 import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks'
-import { confirmCampaignInvitation } from '../../services/CampaignInvitationService'
+import CampaignInvitationService from '../../services/ApiService/Campaigns/CampaignInvitationService'
 import LoadingSpinner from '../LoadingSpinner'
 import { RootState } from '../../store'
 import useErrorHandling from '../../hooks/useErrorHandling'
@@ -25,7 +25,7 @@ const ConfirmInvitationForm: FunctionComponent = () => {
     if (!isLoggedIn) {
       navigate('/register', { state: { redirectTo: location, email: invitation.email } })
     } else {
-      confirmCampaignInvitation(campaignId, token)
+      CampaignInvitationService.confirm(campaignId, token)
         .then(() => {
           navigate(`/campaigns/${campaignId}`)
         })

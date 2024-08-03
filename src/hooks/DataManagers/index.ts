@@ -5,7 +5,7 @@ import {
   hasQuestsAttachableDataManager
 } from './createAttachableDataManager'
 import { createChildDataManager } from './createChildDataManager'
-import { createDataManager } from './createDataManager'
+import { createDataManager, TDataManager } from './createDataManager'
 import { createImageableDataManager, hasImageableDataManager } from './createImageableDataManager'
 import useCampaignDataManager from './Campaigns/useCampaignDataManager'
 import useCompendiumDataManager from './Compendia/useCompendiumDataManager'
@@ -28,6 +28,15 @@ import useReligionDataManager from './Compendia/useReligionDataManager'
 import useSpeciesDataManager from './Compendia/useSpeciesDataManager'
 import useSpellDataManager from './Compendia/useSpellDataManager'
 import useStoryDataManager from './Compendia/useStoryDataManager'
+import useCampaignIndexDataManager from './Campaigns/useCampaignIndexDataManager'
+import useCompendiumIndexDataManager from './Compendia/useCompendiumIndexDataManager'
+import useImageTypeIndexDataManager from './Images/useImageTypeIndexDataManager'
+import useNotebookIndexDataManager from './Notebooks/useNotebookIndexDataManager'
+import useSystemIndexDataManager from './Systems/useSystemIndexDataManager'
+import useGovernmentTypeIndexDataManager from './Compendia/useGovernmentTypeIndexDataManager'
+import useLocationTypeIndexDataManager from './Compendia/useLocationTypeIndexDataManager'
+import useQuestTypeIndexDataManager from './Campaigns/useQuestTypeIndexDataManager'
+import useEncounterTypeIndexDataManager from './Campaigns/useEncounterTypeIndexDataManager'
 
 export {
   createDataManager,
@@ -54,10 +63,20 @@ export {
   useEncounterDataManager,
   useSessionDataManager,
   useQuestDataManager,
-  useNotebookDataManager
+  useNotebookDataManager,
+  useCampaignIndexDataManager,
+  useCompendiumIndexDataManager,
+  useImageTypeIndexDataManager,
+  useNotebookIndexDataManager,
+  useSystemIndexDataManager,
+  useGovernmentTypeIndexDataManager,
+  useLocationTypeIndexDataManager,
+  useQuestTypeIndexDataManager,
+  useEncounterTypeIndexDataManager,
 }
 
 export type {
+  TDataManager,
   hasImageableDataManager,
   hasNotesAttachableDataManager,
   hasEncountersAttachableDataManager,

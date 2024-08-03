@@ -1,34 +1,28 @@
-import React, { FunctionComponent, JSX } from 'react'
+import React, { FunctionComponent } from 'react'
 import Post from '../../components/Post'
-import useSystemPageData from './useSystemPageData'
-import { useSystemFields, useSystemForm } from '../../hooks/useSystemForm'
-import useImageSelection from '../../hooks/useImageSelection'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSystemForm } from '../../hooks/Forms'
 
-const System: FunctionComponent = (): JSX.Element => {
+const System: FunctionComponent = () => {
 
-  const pageData = useSystemPageData();
+  const navigate = useNavigate()
 
-  const form = useSystemForm(pageData);
+  const { systemId } = useParams() as { systemId: string }
 
-  const fields = useSystemFields({
-    system: pageData.persistedData,
+  const form = useSystemForm({
+    systemId,
+    onCreated: (data) => {
+      navigate(`/systems/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`/systems`)
+    },
   });
-
-  const imageHandler = useImageSelection({
-    entityType: 'system',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
-  })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'System'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

@@ -1,4 +1,4 @@
-import { createDataManager, TUseDataManager } from '../createDataManager'
+import { createDataManager, TDataManager } from '../createDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import { compendiaIndexSlice } from '../../../reducers/compendium/compendiaIndexSlice'
 import compendiumService, { TCompendiumRequest } from '../../../services/ApiService/Compendia/CompendiumService'
@@ -7,10 +7,10 @@ import { createAttachableDataManager, hasNotesAttachableDataManager } from '../c
 import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
 import { useMemo } from 'react'
 
-type TUseCompendiumDataManager = TUseDataManager<TCompendium, TCompendiumRequest> & {
+type TCompendiumDataManager = TDataManager<TCompendium, TCompendiumRequest> & {
   compendium?: TCompendium
 } & hasNotesAttachableDataManager & hasImageableDataManager
-const useCompendiumDataManager = (): TUseCompendiumDataManager => {
+const useCompendiumDataManager = (): TCompendiumDataManager => {
   const manager = createDataManager(
     'compendium',
     compendiumSlice,

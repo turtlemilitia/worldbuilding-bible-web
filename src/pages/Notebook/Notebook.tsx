@@ -1,34 +1,24 @@
 import React, { FunctionComponent, JSX } from 'react'
-import useNotebookPageData from './useNotebookPageData'
-import { useNotebookFields, useNotebookForm } from '../../hooks/useNotebookForm'
-import useImageSelection from '../../hooks/useImageSelection'
 import Post from '../../components/Post'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useNotebookForm } from '../../hooks/Forms'
 
 const Notebook: FunctionComponent = (): JSX.Element => {
 
-  const pageData = useNotebookPageData();
+  const { notebookId } = useParams() as { notebookId: string } // router
 
-  const form = useNotebookForm(pageData);
+  const navigate = useNavigate()
 
-  const fields = useNotebookFields({
-    notebook: pageData.persistedData,
+  const form = useNotebookForm({
+    notebookId,
+    onCreated: (data) => navigate(`/notebooks/${data.slug}`),
+    onDeleted: () => navigate(`/notebooks`)
   });
-
-  const imageHandler = useImageSelection({
-    entityType: 'notebook',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
-  })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Notebook'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TPantheon } from '../../../types'
-import usePantheonPageData from './usePantheonPageData'
-import { usePantheonFields, usePantheonForm } from '../../../hooks/usePantheonForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { usePantheonForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Pantheon: FunctionComponent = (): JSX.Element => {
+const Pantheon: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = usePantheonPageData();
+  const { pantheonId } = useParams() as { pantheonId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = usePantheonForm(pageData);
-
-  const fields = usePantheonFields({
-    compendium,
-    pantheon: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TPantheon, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TPantheon, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'pantheons',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = usePantheonForm({
+    pantheonId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/systems/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/systems`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Pantheon'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

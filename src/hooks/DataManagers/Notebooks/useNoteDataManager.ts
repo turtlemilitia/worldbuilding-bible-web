@@ -1,11 +1,17 @@
 import { useMemo } from 'react'
-import noteService from '../../../services/ApiService/Notebooks/NoteService'
+import noteService, { TNoteRequest } from '../../../services/ApiService/Notebooks/NoteService'
 import { noteSlice } from '../../../reducers/notebook/note/noteSlice'
 import { notebookSlice } from '../../../reducers/notebook/notebookSlice'
-import { createImageableDataManager } from '../createImageableDataManager'
-import { createChildDataManager } from '../createChildDataManager'
+import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
+import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { TNote, TNotebook } from '../../../types'
 
-const useNoteDataManager = () => {
+type TNoteDataManager = TChildDataManager<TNotebook, TNote, TNoteRequest> & {
+  notebook?: TNotebook,
+  note?: TNote,
+} & hasImageableDataManager
+
+const useNoteDataManager = (): TNoteDataManager => {
 
   const manager = useMemo(() => createChildDataManager(
     'note',

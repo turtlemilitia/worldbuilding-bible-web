@@ -1,39 +1,29 @@
-import React, {FunctionComponent, JSX, useMemo} from 'react'
-import {useParams} from 'react-router-dom'
+import React, {FunctionComponent} from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import {useCompendiumForm} from "../../../hooks/useCompendiumForm";
-import useImageSelection from "../../../hooks/useImageSelection";
-import useCompendiumPageData from './useCompendiumPageData'
+import { TCompendium } from '../../../types'
+import { useCompendiumForm } from '../../../hooks/Forms'
 
-const Compendium: FunctionComponent = (): JSX.Element => {
+const Compendium: FunctionComponent = () => {
+
+  const navigate = useNavigate()
 
   const {compendiumId} = useParams() as { compendiumId: string } // router
 
-  const isNew: boolean = useMemo(() => compendiumId === 'new', [compendiumId])
-
-  const pageData = useCompendiumPageData();
-
   const form = useCompendiumForm({
-    isNew,
-    ...pageData
+    compendiumId,
+    onCreated: (data: TCompendium) => {
+      navigate(`/compendia/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`/`)
+    },
   });
-
-  const canEdit: boolean = useMemo(() => isNew || pageData.persistedData?.canUpdate !== undefined, [isNew, pageData.persistedData?.canUpdate])
-
-  const imageHandler = useImageSelection({
-    entityType: 'compendia',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
-  })
 
   return (
     <Post
-      isNew={isNew}
       pageTypeName={'Compendium'}
       form={form}
-      canEdit={canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

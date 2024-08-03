@@ -4,6 +4,8 @@ import { createNotableService } from '../createNotableService'
 import { createImageableService } from '../createImageableService'
 import { createQuestableService } from '../createQuestableService'
 import { createEncounterableService } from '../createEncounterableService'
+import { createFactionableService } from '../createFactionableService'
+import { createLanguageableService } from '../createLanguageableService'
 
 export interface TCharacterRequest {
   name: string;
@@ -24,7 +26,9 @@ const CharacterService = {
   ...createNotableService(pluralName),
   ...createImageableService(pluralName),
   ...createQuestableService(pluralName),
-  ...createEncounterableService(pluralName)
+  ...createEncounterableService(pluralName),
+  ...createFactionableService(pluralName),
+  ...createLanguageableService(pluralName),
 }
 
 export default CharacterService

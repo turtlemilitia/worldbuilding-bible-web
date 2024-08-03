@@ -34,36 +34,50 @@ import {
   UserIcon,
   Wand2Icon
 } from 'lucide-react'
-import { destroyConcept } from '../../../services/ConceptService'
 import { TUseCompendiaMapping } from './types'
-import { removeCompendiumChildData } from '../../../reducers/compendium/compendiumSlice'
 import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
-import { destroyCharacter } from '../../../services/CharacterService'
-import { destroySpecies } from '../../../services/SpeciesService'
-import { destroyLocation } from '../../../services/LocationService'
-import { destroyItem } from '../../../services/ItemService'
-import { destroyFaction } from '../../../services/FactionService'
-import { destroyLanguage } from '../../../services/LanguageService'
-import { destroyReligion } from '../../../services/ReligionService'
-import { destroyPantheon } from '../../../services/PantheonService'
-import { destroyCurrency } from '../../../services/CurrencyService'
-import { destroyStory } from '../../../services/StoryService'
-import { destroyNaturalResource } from '../../../services/NaturalResourceService'
-import { destroyPlane } from '../../../services/PlaneService'
-import { destroyDeity } from '../../../services/DeityService'
-import { destroySpell } from '../../../services/SpellService'
-import { useAppDispatch } from '../../../hooks'
+import {
+  useCharacterDataManager,
+  useConceptDataManager,
+  useCurrencyDataManager,
+  useDeityDataManager,
+  useFactionDataManager,
+  useItemDataManager,
+  useLanguageDataManager,
+  useLocationDataManager,
+  useNaturalResourceDataManager,
+  usePantheonDataManager,
+  usePlaneDataManager,
+  useReligionDataManager,
+  useSpeciesDataManager,
+  useSpellDataManager,
+  useStoryDataManager
+} from '../../../hooks/DataManagers'
 
 const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
 
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const location = useLocation()
 
+  const { destroy: destroyConcept } = useConceptDataManager()
+  const { destroy: destroySpecies } = useSpeciesDataManager()
+  const { destroy: destroyCharacter } = useCharacterDataManager()
+  const { destroy: destroyLocation } = useLocationDataManager()
+  const { destroy: destroyItem } = useItemDataManager()
+  const { destroy: destroyFaction } = useFactionDataManager()
+  const { destroy: destroyLanguage } = useLanguageDataManager()
+  const { destroy: destroyReligion } = useReligionDataManager()
+  const { destroy: destroyPantheon } = usePantheonDataManager()
+  const { destroy: destroyCurrency } = useCurrencyDataManager()
+  const { destroy: destroyStory } = useStoryDataManager()
+  const { destroy: destroyNaturalResource } = useNaturalResourceDataManager()
+  const { destroy: destroyPlane } = usePlaneDataManager()
+  const { destroy: destroyDeity } = useDeityDataManager()
+  const { destroy: destroySpell } = useSpellDataManager()
+
   const onDeleted = (field: string, slug: TTypesAllowed['slug']) => {
-    dispatch(removeCompendiumChildData({ field, id: slug }))
     if (location.pathname.includes(`${prefix}/${field}/${slug}`)) {
       navigate(`${prefix}`)
     }

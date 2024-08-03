@@ -1,5 +1,5 @@
-import { createChildDataManager, TUseChildDataManager } from '../createChildDataManager'
-import { TCampaign, TCurrency, TCompendium } from '../../../types'
+import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { TCurrency, TCompendium } from '../../../types'
 import {
   createEncounterableDataManager,
   createNotableDataManager,
@@ -10,21 +10,21 @@ import {
 } from '../createAttachableDataManager'
 import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
 import { useMemo } from 'react'
-import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
 import CurrencyService, { TCurrencyRequest } from '../../../services/ApiService/Compendia/CurrencyService'
 import { currencySlice } from '../../../reducers/compendium/currency/currencySlice'
+import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 
-type TUseCurrencyDataManager = TUseChildDataManager<TCampaign, TCurrency, TCurrencyRequest> & {
+type TCurrencyDataManager = TChildDataManager<TCompendium, TCurrency, TCurrencyRequest> & {
   compendium?: TCompendium,
   currency?: TCurrency,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useCurrencyDataManager = (): TUseCurrencyDataManager => {
+const useCurrencyDataManager = (): TCurrencyDataManager => {
   const manager = useMemo(() => createChildDataManager(
     'currency',
-    'campaign',
+    'compendium',
     currencySlice,
-    campaignSlice,
+    compendiumSlice,
     CurrencyService,
   ), [])
   return {

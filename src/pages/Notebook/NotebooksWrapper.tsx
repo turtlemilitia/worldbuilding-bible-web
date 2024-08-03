@@ -4,8 +4,8 @@ import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import { BookIcon, StickyNoteIcon } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
-import { destroyNote } from '../../services/NoteService'
-import { TGenericPostList, TNotebook } from '../../types'
+import { destroyNote } from '../../services/ApiService/Notebooks/NoteService'
+import { TGenericPostBasic, TNotebook } from '../../types'
 import { removeNotebooksNotebookNote } from '../../reducers/notebook/notebooksIndexSlice'
 
 const NotebooksWrapper = (): JSX.Element => {
@@ -14,7 +14,7 @@ const NotebooksWrapper = (): JSX.Element => {
 
   const { notebooks } = useAppSelector((state: RootState) => state.notebooks) // redux
 
-  const mapNote = (notebook: TNotebook, note: TGenericPostList): SidebarItemInterface => ({
+  const mapNote = (notebook: TNotebook, note: TGenericPostBasic): SidebarItemInterface => ({
     title: note.name,
     to: `/notebooks/${notebook?.slug}/notes/${note.slug}`,
     onDelete: () => note.slug && destroyNote(note.slug)

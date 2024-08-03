@@ -1,42 +1,30 @@
-import React, { FunctionComponent, JSX } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TDeity } from '../../../types'
-import useDeityPageData from './useDeityPageData'
-import { useDeityFields, useDeityForm } from '../../../hooks/useDeityForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useDeityForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Deity: FunctionComponent = (): JSX.Element => {
+const Deity: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useDeityPageData();
+  const { deityId } = useParams() as { deityId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useDeityForm(pageData);
-
-  const fields = useDeityFields({
-    compendium,
-    deity: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TDeity, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TDeity, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'deities',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useDeityForm({
+    deityId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/systems/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/systems`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Deity'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

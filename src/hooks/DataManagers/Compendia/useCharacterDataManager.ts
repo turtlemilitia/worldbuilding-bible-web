@@ -1,30 +1,32 @@
-import { createChildDataManager, TUseChildDataManager } from '../createChildDataManager'
-import { TCampaign, TCharacter, TCompendium } from '../../../types'
+import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { TCharacter, TCompendium } from '../../../types'
 import {
   createEncounterableDataManager,
+  createFactionableDataManager,
+  createLanguageableDataManager,
   createNotableDataManager,
   createQuestableDataManager,
-  hasEncountersAttachableDataManager,
+  hasEncountersAttachableDataManager, hasFactionsAttachableDataManager, hasLanguagesAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../createAttachableDataManager'
 import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
 import { useMemo } from 'react'
-import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
+import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import CharacterService, { TCharacterRequest } from '../../../services/ApiService/Compendia/CharacterService'
 import { characterSlice } from '../../../reducers/compendium/character/characterSlice'
 
-type TUseCharacterDataManager = TUseChildDataManager<TCampaign, TCharacter, TCharacterRequest> & {
+type TCharacterDataManager = TChildDataManager<TCompendium, TCharacter, TCharacterRequest> & {
   compendium?: TCompendium,
   character?: TCharacter,
-} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
+} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager
 
-const useCharacterDataManager = (): TUseCharacterDataManager => {
+const useCharacterDataManager = (): TCharacterDataManager => {
   const manager = useMemo(() => createChildDataManager(
     'character',
-    'campaign',
+    'compendium',
     characterSlice,
-    campaignSlice,
+    compendiumSlice,
     CharacterService,
   ), [])
   return {
@@ -34,6 +36,8 @@ const useCharacterDataManager = (): TUseCharacterDataManager => {
     notes: useMemo(() => createNotableDataManager(characterSlice, CharacterService.notes), []),
     quests: useMemo(() => createQuestableDataManager(characterSlice, CharacterService.quests), []),
     encounters: useMemo(() => createEncounterableDataManager(characterSlice, CharacterService.encounters), []),
+    factions: useMemo(() => createFactionableDataManager(characterSlice, CharacterService.factions), []),
+    languages: useMemo(() => createLanguageableDataManager(characterSlice, CharacterService.languages), []),
     images: useMemo(() => createImageableDataManager(characterSlice, CharacterService.images), [])
   }
 }

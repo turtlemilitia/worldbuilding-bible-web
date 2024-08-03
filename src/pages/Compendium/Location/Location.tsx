@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TLocation } from '../../../types'
-import useLocationPageData from './useLocationPageData'
-import { useLocationFields, useLocationForm } from '../../../hooks/useLocationForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useLocationForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Location: FunctionComponent = (): JSX.Element => {
+const Location: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useLocationPageData();
+  const { locationId } = useParams() as { locationId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useLocationForm(pageData);
-
-  const fields = useLocationFields({
-    compendium,
-    location: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TLocation, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TLocation, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'locations',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useLocationForm({
+    locationId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/systems/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/systems`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Location'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

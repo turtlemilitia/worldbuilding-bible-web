@@ -1,9 +1,7 @@
 import { TQuestType } from '../../../types'
 import { createApiService } from '../createApiService'
 
-type TQuestTypeIndexResponse = {
-  data: TQuestType[];
-}
+type TQuestTypeIndexResponse = TQuestType[];
 
 const QuestTypeService = createApiService<{}, TQuestTypeIndexResponse, TQuestType>('quest-types');
 

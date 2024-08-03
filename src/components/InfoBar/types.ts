@@ -1,4 +1,4 @@
-import { TField } from '../../hooks/useFields'
+import { TField } from '../../hooks/fieldTools'
 
 export type TInfoBarProps<T> = {
   loading: boolean;
@@ -6,6 +6,7 @@ export type TInfoBarProps<T> = {
   data: T;
   fields?: TField[],
   profileImage?: string
+  canHaveProfileImage?: boolean;
   onProfileImageSelected?: (imageId: number) => Promise<any>;
   disabled?: boolean
 }

@@ -1,9 +1,7 @@
 import { TEncounterType } from '../../../types'
 import { createApiService } from '../createApiService'
 
-type TEncounterTypeIndexResponse = {
-  data: TEncounterType[];
-}
+type TEncounterTypeIndexResponse = TEncounterType[];
 
 const EncounterTypeService = createApiService<{}, TEncounterTypeIndexResponse, TEncounterType>('encounter-types');
 

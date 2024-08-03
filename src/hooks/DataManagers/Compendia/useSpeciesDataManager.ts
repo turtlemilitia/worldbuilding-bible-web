@@ -1,5 +1,5 @@
-import { createChildDataManager, TUseChildDataManager } from '../createChildDataManager'
-import { TCampaign, TSpecies, TCompendium } from '../../../types'
+import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { TSpecies, TCompendium } from '../../../types'
 import {
   createEncounterableDataManager,
   createNotableDataManager,
@@ -10,21 +10,21 @@ import {
 } from '../createAttachableDataManager'
 import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
 import { useMemo } from 'react'
-import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
+import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import SpeciesService, { TSpeciesRequest } from '../../../services/ApiService/Compendia/SpeciesService'
 import { speciesSlice } from '../../../reducers/compendium/species/speciesSlice'
 
-type TUseSpeciesDataManager = TUseChildDataManager<TCampaign, TSpecies, TSpeciesRequest> & {
+type TSpeciesDataManager = TChildDataManager<TCompendium, TSpecies, TSpeciesRequest> & {
   compendium?: TCompendium,
   species?: TSpecies,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useSpeciesDataManager = (): TUseSpeciesDataManager => {
+const useSpeciesDataManager = (): TSpeciesDataManager => {
   const manager = useMemo(() => createChildDataManager(
     'species',
-    'campaign',
+    'compendium',
     speciesSlice,
-    campaignSlice,
+    compendiumSlice,
     SpeciesService,
   ), [])
   return {

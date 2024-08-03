@@ -5,7 +5,8 @@ import AsyncSelectField from './AsyncSelectField'
 import ListField from './ListField'
 import MultipleAsyncSelectField from './MultipleAsyncSelectField'
 import ListAddName from './ListAddName'
-import { TField } from '../../../hooks/useFields'
+import { TField } from '../../../hooks/fieldTools'
+import MultipleSelectField from './MultipleSelectField'
 
 export type TSelectOption = {
   id: string | number,
@@ -69,13 +70,23 @@ const FieldMapper: FunctionComponent<TProps> = ({
             {type === 'asyncSelect' && search && (
               <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search} disabled={disabled}/>
             )}
+            {type === 'asyncMultiSelect' && options?.length && (
+              <MultipleSelectField
+                value={currentValue}
+                onChange={(value) => onChange(name, value)}
+                link={link}
+                options={options}
+                Dialog={Dialog}
+                disabled={disabled}
+              />
+            )}
             {type === 'asyncMultiSelect' && search && (
               <MultipleAsyncSelectField
                 value={currentValue}
                 onChange={(value) => onChange(name, value)}
                 link={link}
                 search={search}
-                OpenDialog={Dialog}
+                Dialog={Dialog}
                 disabled={disabled}
               />
             )}

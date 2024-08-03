@@ -4,14 +4,15 @@ import Sidebar from '../../components/Sidebar/Sidebar'
 import { SwordsIcon } from 'lucide-react'
 import { useAppSelector } from '../../hooks'
 import { RootState } from '../../store'
+import { useSystemIndexDataManager } from '../../hooks/DataManagers'
 
 const SystemsWrapper = (): JSX.Element => {
 
-  const { systems } = useAppSelector((state: RootState) => state.systems) // redux
+  const { systems } = useSystemIndexDataManager()
 
   return (
     <>
-      {systems.length > 1 && (
+      {systems && systems.length > 1 && (
         <Sidebar
           title={'Systems'}
           items={systems.map(({ slug, name }) => ({

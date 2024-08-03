@@ -2,8 +2,10 @@ import { AxiosResponse } from 'axios'
 
 export type TQueryParams = string | string[][] | Record<string, string> | URLSearchParams
 
-export type TApi<TRequest, TIndexResponse, TResponse> = {
+export type TIndexApi<TIndexResponse> = {
   index: (query?: TQueryParams) => Promise<AxiosResponse<{data: TIndexResponse}>>
+}
+export type TApi<TRequest, TIndexResponse, TResponse> = TIndexApi<TIndexResponse> & {
   view: (id: string | number, query?: TQueryParams) => Promise<AxiosResponse<{data: TResponse}>>
   store: (data: TRequest, query?: TQueryParams) => Promise<AxiosResponse<{data: TResponse}>>
   update: (id: string | number, data: Partial<TRequest>, query?: TQueryParams) => Promise<AxiosResponse<{data: TResponse}>>

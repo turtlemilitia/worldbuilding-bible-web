@@ -10,7 +10,7 @@ export type TCompendiumRequest = {
 
 export type TCompendiumResponse = TCompendium;
 
-export type TCompendiumIndexResponse = TGenericPostBasic[];
+export type TCompendiumIndexResponse = TCompendium[];
 
 const CompendiumService = {
   ...createApiService<TCompendiumRequest, TCompendiumIndexResponse, TCompendiumResponse>('compendia'),

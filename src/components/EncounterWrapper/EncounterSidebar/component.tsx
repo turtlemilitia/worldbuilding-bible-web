@@ -1,15 +1,15 @@
-import React, { FunctionComponent, useContext } from 'react'
+import React, { FunctionComponent } from 'react'
 import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import { TEncounterSidebarProps } from './types'
 import { SwordsIcon } from 'lucide-react'
 import useCampaignsMapping from '../../../hooks/useCampaignsMapping'
-import { EncounterWrapperContext } from '../component'
+import { useEncounterTypeIndexDataManager } from '../../../hooks/DataManagers'
 
 const EncounterSidebar: FunctionComponent<TEncounterSidebarProps> = ({ campaign }) => {
 
   const { mapEncounter } = useCampaignsMapping({ campaignId: campaign.slug })
 
-  const types = useContext(EncounterWrapperContext)
+  const { encounterTypes: types } = useEncounterTypeIndexDataManager();
 
   const items: SidebarItemInterface[] = types?.map(type => ({
     title: type.name,

@@ -1,15 +1,15 @@
 import React, { JSX, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
-import { clearCampaignData, updateCampaignData } from '../../reducers/campaign/campaignSlice'
-import { viewCampaign } from '../../services/CampaignService'
+import { useAppDispatch } from '../../hooks'
 import Menu from '../../components/Nav/Menu'
 import MenuItem from '../../components/Nav/MenuItem'
+import CampaignFavourites from '../../components/CampaignWrapper/CampaignFavourites'
+import SmallSansSerifText from '../../components/SmallSansSerifText'
+import { useCampaignDataManager } from '../../hooks/DataManagers'
 
 const CampaignsWrapper = (): JSX.Element => {
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { campaign, view, removeData } = useCampaignDataManager() // redux
 
   const { campaignId } = useParams() as { campaignId: string } // router
 
@@ -19,20 +19,17 @@ const CampaignsWrapper = (): JSX.Element => {
 
   useEffect(() => {
     if (!isNew()) {
-      viewCampaign(campaignId, { include: 'sessions;compendium;quests;quests.type;quests.parent;encounters;encounters.type;sessions' })
-        .then(({ data }) => {
-          dispatch(updateCampaignData(data.data))
-        })
+      view(campaignId)
     }
     return () => {
-      dispatch(clearCampaignData(undefined))
+      dispatch(removeData(campaignId))
     }
   }, [campaignId])
 
   return (
     <>
       {campaign && (
-        <div className="fixed top-16 w-full z-40">
+        <div className="fixed top-20 w-full z-40">
           <Menu>
             {[
               {
@@ -57,16 +54,19 @@ const CampaignsWrapper = (): JSX.Element => {
                 to: `/campaigns/${campaignId}/sessions/${campaign.sessions?.[0]?.slug ?? 'new'}`
               }
             ].map((menuItem, index) => (
-              <MenuItem
-                key={index}
-                menuItem={menuItem}
-                className="uppercase font-sans-serif tracking-widest text-sm hover:text-red-600"
-                activeClassName="text-red-600"
-              />
+              <SmallSansSerifText>
+                <MenuItem
+                  key={index}
+                  menuItem={menuItem}
+                  className="p-4"
+                  activeClassName="border border-yellow-500 rounded-full shadow-md shadow-stone-950 bg-stone-400 bg-opacity-10 backdrop-blur-sm"
+                />
+              </SmallSansSerifText>
             ))}
           </Menu>
         </div>
       )}
+      <CampaignFavourites/>
       <div className="relative w-full">
         <Outlet/>
       </div>

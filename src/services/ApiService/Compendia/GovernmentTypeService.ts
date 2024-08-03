@@ -1,9 +1,7 @@
 import { TLocationGovernmentType } from '../../../types'
 import { createApiService } from '../createApiService'
 
-type TGovernmentTypeIndexResponse = {
-  data: TLocationGovernmentType[];
-}
+type TGovernmentTypeIndexResponse = TLocationGovernmentType[];
 
 const GovernmentTypeService = createApiService<{}, TGovernmentTypeIndexResponse, TLocationGovernmentType>('government-types')
 

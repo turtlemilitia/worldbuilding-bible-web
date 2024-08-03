@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TLanguage } from '../../../types'
-import useLanguagePageData from './useLanguagePageData'
-import { useLanguageFields, useLanguageForm } from '../../../hooks/useLanguageForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useLanguageForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Language: FunctionComponent = (): JSX.Element => {
+const Language: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useLanguagePageData();
+  const { languageId } = useParams() as { languageId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useLanguageForm(pageData);
-
-  const fields = useLanguageFields({
-    compendium,
-    language: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TLanguage, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TLanguage, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'languages',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useLanguageForm({
+    languageId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/systems/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/systems`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Language'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }
