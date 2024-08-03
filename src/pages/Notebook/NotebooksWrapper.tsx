@@ -2,29 +2,25 @@ import { JSX } from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar, { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import { BookIcon, StickyNoteIcon } from 'lucide-react'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
-import { destroyNote } from '../../services/ApiService/Notebooks/NoteService'
 import { TGenericPostBasic, TNotebook } from '../../types'
-import { removeNotebooksNotebookNote } from '../../reducers/notebook/notebooksIndexSlice'
+import { useNotebookIndexDataManager } from '../../hooks/DataManagers'
+import useNoteDataManager from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
 
 const NotebooksWrapper = (): JSX.Element => {
 
-  const dispatch = useAppDispatch();
-
-  const { notebooks } = useAppSelector((state: RootState) => state.notebooks) // redux
+  const { notebooks } = useNotebookIndexDataManager() // redux
+  const { destroy: destroyNote } = useNoteDataManager() // redux
 
   const mapNote = (notebook: TNotebook, note: TGenericPostBasic): SidebarItemInterface => ({
     title: note.name,
     to: `/notebooks/${notebook?.slug}/notes/${note.slug}`,
-    onDelete: () => note.slug && destroyNote(note.slug)
-      .then(() => dispatch(removeNotebooksNotebookNote({ slug: notebook?.slug, noteId: note.id }))),
+    onDelete: () => note.slug && destroyNote(note.slug),
     icon: (props) => <StickyNoteIcon {...props}/>,
 })
 
   return (
     <>
-      {notebooks.length >= 1 && (
+      {notebooks && notebooks.length >= 1 && (
         <Sidebar
           title={'Notebooks'}
           items={notebooks.map((notebook) => ({

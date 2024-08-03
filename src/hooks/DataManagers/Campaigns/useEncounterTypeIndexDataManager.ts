@@ -1,5 +1,5 @@
 import { TEncounterType } from '../../../types'
-import { createIndexDataManager, TIndexDataManager } from '../createIndexDataManager'
+import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import { encounterTypesIndexSlice } from '../../../reducers/encounterType/encounterTypesIndexSlice'
 import EncounterTypeService from '../../../services/ApiService/Campaigns/EncounterTypeService'
 
@@ -8,7 +8,7 @@ type TEncounterTypeIndexDataManager = TIndexDataManager<TEncounterType> & {
 }
 
 const useEncounterTypeIndexDataManager = (): TEncounterTypeIndexDataManager => {
-  const manager = createIndexDataManager(
+  const manager = useIndexDataManager(
     'encounterTypes',
     encounterTypesIndexSlice,
     EncounterTypeService,

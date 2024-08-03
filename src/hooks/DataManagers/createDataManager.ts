@@ -41,7 +41,7 @@ export const createDataManager = <TEntity extends TGenericPostBasic, TRequest, T
   }, [])
 
   const removeData = useCallback((id: string | number) => {
-    dispatch(slice.actions.set(undefined))
+    dispatch(slice.actions.set(undefined)) // todo only if IDs match
     dispatch(indexSlice.actions.removeChildData({ field: name, id }))
   }, [])
 

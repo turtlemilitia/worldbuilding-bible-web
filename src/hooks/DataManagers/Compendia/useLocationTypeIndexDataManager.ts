@@ -1,5 +1,5 @@
 import { TLocationType } from '../../../types'
-import { createIndexDataManager, TIndexDataManager } from '../createIndexDataManager'
+import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import LocationTypeService from '../../../services/ApiService/Compendia/LocationTypeService'
 import { locationTypesIndexSlice } from '../../../reducers/locationType/locationTypesIndexSlice'
 
@@ -8,7 +8,7 @@ type TLocationTypeIndexDataManager = TIndexDataManager<TLocationType> & {
 }
 
 const useLocationTypeIndexDataManager = (): TLocationTypeIndexDataManager => {
-  const manager = createIndexDataManager(
+  const manager = useIndexDataManager(
     'locationTypes',
     locationTypesIndexSlice,
     LocationTypeService,

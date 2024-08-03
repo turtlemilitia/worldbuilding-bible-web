@@ -1,5 +1,5 @@
 import { TLocationGovernmentType } from '../../../types'
-import { createIndexDataManager, TIndexDataManager } from '../createIndexDataManager'
+import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import GovernmentTypeService from '../../../services/ApiService/Compendia/GovernmentTypeService'
 import { governmentTypesIndexSlice } from '../../../reducers/governmentType/governmentTypesIndexSlice'
 
@@ -8,7 +8,7 @@ type TGovernmentTypeIndexDataManager = TIndexDataManager<TLocationGovernmentType
 }
 
 const useGovernmentTypeIndexDataManager = (): TGovernmentTypeIndexDataManager => {
-  const manager = createIndexDataManager(
+  const manager = useIndexDataManager(
     'governmentTypes',
     governmentTypesIndexSlice,
     GovernmentTypeService,

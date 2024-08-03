@@ -19,7 +19,7 @@ type TProp = {
     onDeleted?: (id: string|number) => any,
   }>
 }
-const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, options, link, disabled, Dialog, onAddOption, onRemoveOption }) => {
+const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, options, link, disabled, Dialog }) => {
 
   const [query, setQuery] = useState('')
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)

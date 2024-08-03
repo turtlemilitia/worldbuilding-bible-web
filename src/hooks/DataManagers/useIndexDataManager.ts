@@ -1,7 +1,6 @@
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useCallback } from 'react'
-import { TApi, TIndexApi, TQueryParams } from '../../services/ApiService/types'
+import { TIndexApi, TQueryParams } from '../../services/ApiService/types'
 import { Slice } from '@reduxjs/toolkit'
 import { TIndexSliceState } from '../../reducers/createIndexSlice'
 import { TOptionList } from '../../types'
@@ -12,13 +11,13 @@ export type TIndexDataManager<TEntity> = {
   index: (query?: TQueryParams) => Promise<TEntity[]>,
 }
 
-export const createIndexDataManager = <TEntity extends TOptionList, TIndexResponse extends TEntity[]> (
+export const useIndexDataManager = <TEntity extends TOptionList, TIndexResponse extends TEntity[]> (
   name: 'campaigns' | 'compendia' | 'notebooks' | 'systems' | 'imageTypes' | 'governmentTypes' | 'locationTypes' | 'questTypes' | 'encounterTypes',
   slice: Slice<TIndexSliceState<TEntity>>,
   api: TIndexApi<TIndexResponse>,
 ): TIndexDataManager<TEntity> => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const { data: list } = useAppSelector(state => state[name]) as { data?: TEntity[] }
 

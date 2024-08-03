@@ -1,5 +1,5 @@
 import { TQuestType } from '../../../types'
-import { createIndexDataManager, TIndexDataManager } from '../createIndexDataManager'
+import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import { questTypesIndexSlice } from '../../../reducers/questType/questTypesIndexSlice'
 import QuestTypeService from '../../../services/ApiService/Campaigns/QuestTypeService'
 
@@ -8,7 +8,7 @@ type TQuestTypeIndexDataManager = TIndexDataManager<TQuestType> & {
 }
 
 const useQuestTypeIndexDataManager = (): TQuestTypeIndexDataManager => {
-  const manager = createIndexDataManager(
+  const manager = useIndexDataManager(
     'questTypes',
     questTypesIndexSlice,
     QuestTypeService,

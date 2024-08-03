@@ -1,14 +1,14 @@
 import { TCompendium } from '../../../types'
 import CompendiumService from '../../../services/ApiService/Compendia/CompendiumService'
 import { compendiaIndexSlice } from '../../../reducers/compendium/compendiaIndexSlice'
-import { createIndexDataManager, TIndexDataManager } from '../createIndexDataManager'
+import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
 type TCompendiumIndexDataManager = TIndexDataManager<TCompendium> & {
   compendia?: TCompendium[]
 }
 
 const useCompendiumIndexDataManager = (): TCompendiumIndexDataManager => {
-  const manager = createIndexDataManager(
+  const manager = useIndexDataManager(
     'compendia',
     compendiaIndexSlice,
     CompendiumService,

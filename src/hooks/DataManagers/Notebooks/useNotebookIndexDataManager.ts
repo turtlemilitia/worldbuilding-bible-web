@@ -1,14 +1,14 @@
-import { TNotebook, TOptionList } from '../../../types'
+import { TNotebook } from '../../../types'
 import NotebookService from '../../../services/ApiService/Notebooks/NotebookService'
 import { notebooksIndexSlice } from '../../../reducers/notebook/notebooksIndexSlice'
-import { createIndexDataManager, TIndexDataManager } from '../createIndexDataManager'
+import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
 type TNotebookIndexDataManager = TIndexDataManager<TNotebook> & {
   notebooks?: TNotebook[]
 }
 
 const useNotebookIndexDataManager = (): TNotebookIndexDataManager => {
-  const manager = createIndexDataManager(
+  const manager = useIndexDataManager(
     'notebooks',
     notebooksIndexSlice,
     NotebookService,

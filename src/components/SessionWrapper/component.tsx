@@ -1,12 +1,11 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
 import SessionSidebar from './SessionSidebar'
+import { useCampaignDataManager } from '../../hooks/DataManagers'
 
 const SessionWrapper: FunctionComponent = () => {
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { campaign } = useCampaignDataManager()
 
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const SessionWrapper: FunctionComponent = () => {
       navigate(`/campaigns/${campaign.slug}/sessions/new`)
     }
 
-  }, [campaign?.slug])
+  }, [sessionId, campaign?.sessions, campaign?.slug])
 
   return (
     <>

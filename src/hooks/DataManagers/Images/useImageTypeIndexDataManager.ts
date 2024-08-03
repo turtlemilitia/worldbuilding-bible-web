@@ -1,6 +1,6 @@
 import { TImageType } from '../../../types'
 import ImageTypeService from '../../../services/ApiService/Images/ImageService'
-import { createIndexDataManager, TIndexDataManager } from '../createIndexDataManager'
+import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import { imageTypesIndexSlice } from '../../../reducers/imageType/imageTypesIndexSlice'
 
 type TImageTypeIndexDataManager = TIndexDataManager<TImageType> & {
@@ -8,7 +8,7 @@ type TImageTypeIndexDataManager = TIndexDataManager<TImageType> & {
 }
 
 const useImageTypeIndexDataManager = (): TImageTypeIndexDataManager => {
-  const manager = createIndexDataManager(
+  const manager = useIndexDataManager(
     'imageTypes',
     imageTypesIndexSlice,
     ImageTypeService,
