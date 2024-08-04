@@ -1,9 +1,13 @@
-import React, { JSX, PropsWithChildren, useEffect } from 'react'
-import { THeaderWrapperProps } from './types'
+import React, { JSX, PropsWithChildren } from 'react'
 import { CoverImagePicker } from '../CoverImagePicker'
 import bgImage from '../../assets/images/darkAlley1.png'
 
-const HeaderWrapper: React.FunctionComponent<THeaderWrapperProps & PropsWithChildren> = ({
+export type TProps = {
+  page?: string,
+  coverImage?: string,
+  onCoverImageSelected?: (imageId: number) => Promise<any>;
+}
+const HeaderWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({
   page,
   children,
   coverImage,

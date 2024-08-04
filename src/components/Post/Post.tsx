@@ -1,7 +1,6 @@
-import React, {JSX} from 'react'
-import { HeaderWrapper } from '../HeaderWrapper'
+import React, { JSX } from 'react'
 import PageTitleField from '../Forms/Fields/PageTitleField'
-import ContentWrapper from '../ContentWrapper'
+import EditorsWrapper from './EditorsWrapper'
 import FormToolbar from '../Forms/FormToolbar'
 import { Editor } from '../Forms/Fields/Editor'
 import LoadingWrapper from '../LoadingWrapper'
@@ -10,6 +9,10 @@ import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import SavingDialog from '../SavingDialog'
 import { TGenericPost } from '../../types'
+import HeaderWrapper from './HeaderWrapper'
+import { FloatingBox } from '../FloatingBox'
+import CampaignQuickLinks from '../CampaignWrapper/CampaignFavourites'
+import RightBar from './RightBar'
 
 // todo
 //  <TopMenu>
@@ -31,7 +34,7 @@ import { TGenericPost } from '../../types'
 //  <InfoBar>
 //    - [ ] <ProfileImage>
 //    - [ ] <Fields>
-const Post = <T extends TGenericPost>({
+const Post = <T extends TGenericPost> ({
   pageTypeName,
   form
 }: TPostProps<T>): JSX.Element => {
@@ -51,43 +54,40 @@ const Post = <T extends TGenericPost>({
                           canEdit={form.canEdit}
           />
         </HeaderWrapper>
-        <ContentWrapper>
-          <div className="flex flex-wrap lg:flex-row-reverse lg:justify-between -mx-3">
-            <div className="w-full lg:w-1/4 px-6">
-              <InfoBar
-                loading={form.loading}
-                onChange={form.onFieldChange}
-                data={form.data}
-                fields={form.fields}
-                profileImage={form.imageHandler && form.imageHandler.getImage('profile')}
-                onProfileImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'profile'): undefined}
-                canHaveProfileImage={form.imageHandler?.canHaveProfileImage}
-                disabled={!form.canEdit}
-              />
-            </div>
-            <div className="w-full md:w-2/4 max-w-2xl px-3 lg:flex-1">
-              {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
-              {(form.canEdit) && (
-                <FormToolbar
-                  canManuallySave={true}
-                  canRefresh={!form.isNew}
-                  canDelete={form.canEdit}
-                  onSave={form.onSave}
-                  onRefresh={form.onFetch}
-                  onDelete={form.onDelete}
-                />
-              )}
-              <Editor
-                id={form.data?.slug ?? 'new'}
-                initialValue={form.data?.content}
-                onChange={(value) => form.onFieldChange('content', value)}
-                canEdit={form.canEdit}
-                className={'min-h-screen'}
-              />
-            </div>
-            <div className="flex lg:w-1/4 lg:px-6"></div>
-          </div>
-        </ContentWrapper>
+        <RightBar loading={form.loading || !form.fields.length}>
+          <CampaignQuickLinks/>
+          <InfoBar
+            onChange={form.onFieldChange}
+            data={form.data}
+            fields={form.fields}
+            profileImage={form.imageHandler && form.imageHandler.getImage('profile')}
+            onProfileImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'profile') : undefined}
+            canHaveProfileImage={form.imageHandler?.canHaveProfileImage}
+            disabled={!form.canEdit}
+          />
+        </RightBar>
+        <EditorsWrapper>
+          {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
+          {(form.canEdit) && (
+            <FormToolbar
+              canManuallySave={true}
+              canRefresh={!form.isNew}
+              canDelete={form.canEdit}
+              onSave={form.onSave}
+              onRefresh={form.onFetch}
+              onDelete={form.onDelete}
+            />
+          )}
+          <FloatingBox>
+            <Editor
+              id={form.data?.slug ?? 'new'}
+              initialValue={form.data?.content}
+              onChange={(value) => form.onFieldChange('content', value)}
+              canEdit={form.canEdit}
+              className={'min-h-screen'}
+            />
+          </FloatingBox>
+        </EditorsWrapper>
       </form>
     </LoadingWrapper>
   )

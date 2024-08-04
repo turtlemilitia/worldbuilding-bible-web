@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import { TUseFields } from "../../../components/Post/types"
-import { TSpecies } from '../../../types'
 import useUrlFormatter from '../../useUrlFormatter'
 import { useCharacterDataManager, useNotebookDataManager } from '../../DataManagers'
 import { factionField, languageField, noteField, numberField, selectField, textField, TField } from '../../fieldTools'
@@ -10,19 +8,20 @@ const useCharacterFields = (): TUseFields => {
   const manager = useCharacterDataManager()
   const { notebook } = useNotebookDataManager()
 
-  const [ready, setReady] = useState<boolean>(false)
-  const [species, setSpecies] = useState<TSpecies[]>([])
-
   const { compendiumPath } = useUrlFormatter()
 
   const fields: TField[] = [
     numberField({ name: 'age', label: 'Age' }),
     textField({ name: 'gender', label: 'Gender' }),
-    selectField({ name: 'species', label: 'Species', options: species }),
   ]
 
   if (manager.compendium) {
     fields.push(
+      selectField({
+        name: 'species',
+        label: 'Species',
+        options: manager.compendium.species || []
+      }),
       languageField({
         options: manager.compendium.languages || [],
         link: (id: string | number) => `${compendiumPath}/languages/${id}`,
@@ -43,7 +42,7 @@ const useCharacterFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready }
+  return { fields, ready: true }
 }
 
 export default useCharacterFields
