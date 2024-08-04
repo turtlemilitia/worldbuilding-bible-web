@@ -14,10 +14,10 @@ const Concept: FunctionComponent = () => {
   const form = useConceptForm({
     conceptId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/concepts/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/concepts`)
     },
   })
 

@@ -14,10 +14,10 @@ const NaturalResource: FunctionComponent = () => {
   const form = useNaturalResourceForm({
     naturalResourceId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/natural-resources/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/natural-resources`)
     },
   })
 

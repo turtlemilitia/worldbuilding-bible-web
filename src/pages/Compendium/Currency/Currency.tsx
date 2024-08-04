@@ -14,10 +14,10 @@ const Currency: FunctionComponent = () => {
   const form = useCurrencyForm({
     currencyId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/currencies/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/currencies`)
     },
   })
 

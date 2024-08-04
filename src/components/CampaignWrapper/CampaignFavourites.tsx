@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { RoundedTextBox } from '../RoundedTextBox'
+import { SmallFloatingBox } from '../FloatingBox'
 import SmallSansSerifText from '../SmallSansSerifText'
 import { useCampaignDataManager } from '../../hooks/DataManagers'
 
@@ -10,14 +10,14 @@ const CampaignFavourites: FunctionComponent = () => {
   return (
     <div className="flex-1 items-end space-y-4 mb-4 text-right">
       <div>
-        <RoundedTextBox>
+        <SmallFloatingBox>
           <SmallSansSerifText>Cheilidhin</SmallSansSerifText>
-        </RoundedTextBox>
+        </SmallFloatingBox>
       </div>
       <div>
-        <RoundedTextBox>
+        <SmallFloatingBox>
           <SmallSansSerifText>Find the Mayor's Daughter</SmallSansSerifText>
-        </RoundedTextBox>
+        </SmallFloatingBox>
       </div>
     </div>
   )

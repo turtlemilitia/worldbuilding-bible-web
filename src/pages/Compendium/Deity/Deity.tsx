@@ -14,10 +14,10 @@ const Deity: FunctionComponent = () => {
   const form = useDeityForm({
     deityId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/deities/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/deities`)
     },
   })
 

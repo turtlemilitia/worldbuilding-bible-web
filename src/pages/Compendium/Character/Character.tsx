@@ -14,10 +14,10 @@ const Character: FunctionComponent = () => {
   const form = useCharacterForm({
     characterId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/characters/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/characters`)
     },
   })
 

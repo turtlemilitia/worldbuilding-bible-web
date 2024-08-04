@@ -14,10 +14,10 @@ const Item: FunctionComponent = () => {
   const form = useItemForm({
     itemId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/items/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/items`)
     },
   })
 

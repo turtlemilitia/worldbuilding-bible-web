@@ -9,7 +9,7 @@ const CoverImagePicker: FunctionComponent<TCoverImagePickerProps> = ({
 }) => {
 
   return (
-    <Popover className="z-40 absolute -bottom-7 right-10">
+    <Popover>
 
       <Popover.Button className="outline-none">
         <SelectImageButton/>

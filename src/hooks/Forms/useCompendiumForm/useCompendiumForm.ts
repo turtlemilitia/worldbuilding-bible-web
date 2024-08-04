@@ -20,7 +20,7 @@ const useCompendiumForm = ({
 
   const { fields } = useCompendiumFields()
 
-  const include = useMemo(() => 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories', [])
+  const include = useMemo(() => 'characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories', [])
 
   const mapData = useCallback((data: TCompendium) => ({
     name: data.name,

@@ -1,9 +1,7 @@
 import { TImageType } from '../../../types'
 import { createApiService } from '../createApiService'
 
-type TImageTypeIndexResponse = {
-  data: TImageType;
-}
+type TImageTypeIndexResponse = TImageType[];
 
 const ImageTypeService = createApiService<{}, TImageTypeIndexResponse, TImageType>('image-types');
 

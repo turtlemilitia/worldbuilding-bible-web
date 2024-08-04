@@ -1,13 +1,11 @@
 import React, { JSX, PropsWithChildren } from 'react'
-import { CoverImagePicker } from '../CoverImagePicker'
 
 export type TProps = {
   page?: string,
-  onCoverImageSelected?: (imageId: number) => Promise<any>;
 }
 const HeaderWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({
   page,
-  children, onCoverImageSelected
+  children
 }): JSX.Element => {
   return (
     <>
@@ -19,10 +17,6 @@ const HeaderWrapper: React.FunctionComponent<TProps & PropsWithChildren> = ({
               {children}
             </div>
           </div>
-
-          {onCoverImageSelected && (
-            <CoverImagePicker onCoverImageSelected={onCoverImageSelected}/>
-          )}
         </div>
       </header>
     </>

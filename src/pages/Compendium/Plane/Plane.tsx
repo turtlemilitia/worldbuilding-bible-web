@@ -14,10 +14,10 @@ const Plane: FunctionComponent = () => {
   const form = usePlaneForm({
     planeId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/planes/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/planes`)
     },
   })
 

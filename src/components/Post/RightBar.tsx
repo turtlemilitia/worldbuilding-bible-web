@@ -6,7 +6,7 @@ type TProps = {
 }
 const RightBar: FunctionComponent<TProps & PropsWithChildren> = ({loading, children}) => {
   return (
-    <div className={`fixed z-50 top-28 right-0 pt-5 w-1/4`}>
+    <div className={`fixed z-50 top-28 right-6 pt-5 w-1/4`}>
       <Transition
         show={!loading}
         enter={'transition-all duration-1000'}

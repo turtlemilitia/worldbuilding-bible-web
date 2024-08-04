@@ -12,7 +12,7 @@ const ProfileImagePicker: FunctionComponent<TProfileImagePickerProps> = ({
     <Popover className="z-40 absolute -bottom-3 right-0">
 
       <Popover.Button className="outline-none">
-        <SelectImageButton size={'sm'}/>
+        <SelectImageButton/>
       </Popover.Button>
 
       <Popover.Panel className="absolute bottom-full mb-4 right-0 z-10">

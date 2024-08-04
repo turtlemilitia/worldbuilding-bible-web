@@ -13,7 +13,7 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
 
   useEffect(() => {
     if (!isNew) {
-      view(compendiumId, { include: 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories' })
+      view(compendiumId, { include: 'characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories' })
     }
     return () => {
       clearData(compendiumId)

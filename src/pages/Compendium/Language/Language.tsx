@@ -14,10 +14,10 @@ const Language: FunctionComponent = () => {
   const form = useLanguageForm({
     languageId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/languages/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/languages`)
     },
   })
 

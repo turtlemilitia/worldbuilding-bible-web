@@ -14,10 +14,10 @@ const Spell: FunctionComponent = () => {
   const form = useSpellForm({
     spellId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/spells/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/spells`)
     },
   })
 

@@ -1,13 +1,16 @@
 import React, { FunctionComponent, JSX, SyntheticEvent } from 'react'
 import { RefreshCwIcon, SaveIcon, TrashIcon } from 'lucide-react'
+import { CoverImagePicker } from '../CoverImagePicker'
+import { SmallFloatingBox } from '../FloatingBox'
 
-interface TProps {
+type TProps = {
   onSave?: (event: SyntheticEvent) => void,
   onDelete?: () => void,
   onRefresh?: () => any,
   canManuallySave?: boolean,
   canDelete?: boolean,
   canRefresh?: boolean
+  onCoverImageSelected?: (imageId: number) => Promise<any>;
 }
 
 const FormToolbar: FunctionComponent<TProps> = ({
@@ -16,8 +19,10 @@ const FormToolbar: FunctionComponent<TProps> = ({
   onSave,
   canDelete,
   onDelete,
-  canRefresh
+  canRefresh,
+  onCoverImageSelected
 }: TProps): JSX.Element => {
+
   const handleOnRefresh = (event: React.SyntheticEvent) => {
     event.preventDefault()
     onRefresh && onRefresh()
@@ -30,21 +35,31 @@ const FormToolbar: FunctionComponent<TProps> = ({
     event.preventDefault()
     onDelete && onDelete()
   }
+
   return (
-    <div className="flex justify-end px-3 py-2 gap-3">
+    <div className="flex justify-end mb-3 gap-3">
+      {onCoverImageSelected && (
+        <CoverImagePicker onCoverImageSelected={onCoverImageSelected}/>
+      )}
       {canRefresh && onRefresh && (
         <button type="button" onClick={handleOnRefresh}>
-          <RefreshCwIcon className="stroke-stone-400 h-5 w-5"/>
+          <SmallFloatingBox>
+            <RefreshCwIcon className="stroke-stone-400 h-5 w-5"/>
+          </SmallFloatingBox>
         </button>
       )}
       {canManuallySave && handleOnSave && (
         <button type="submit" onClick={handleOnSave}>
-          <SaveIcon className="stroke-stone-400 h-5 w-5"/>
+          <SmallFloatingBox>
+            <SaveIcon className="stroke-stone-400 h-5 w-5"/>
+          </SmallFloatingBox>
         </button>
       )}
       {canDelete && handleOnDelete && (
         <button type="button" onClick={handleOnDelete}>
-          <TrashIcon className="stroke-stone-400 h-5 w-5"/>
+          <SmallFloatingBox>
+            <TrashIcon className="stroke-stone-400 h-5 w-5"/>
+          </SmallFloatingBox>
         </button>
       )}
     </div>

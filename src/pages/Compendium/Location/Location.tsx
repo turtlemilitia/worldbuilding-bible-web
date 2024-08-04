@@ -14,10 +14,10 @@ const Location: FunctionComponent = () => {
   const form = useLocationForm({
     locationId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/locations/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/locations`)
     },
   })
 

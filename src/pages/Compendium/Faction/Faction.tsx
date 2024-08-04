@@ -14,10 +14,10 @@ const Faction: FunctionComponent = () => {
   const form = useFactionForm({
     factionId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/factions/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/factions`)
     },
   })
 

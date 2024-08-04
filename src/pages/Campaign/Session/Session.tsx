@@ -12,10 +12,10 @@ const Session: FunctionComponent = () => {
   const form = useSessionForm({
     sessionId,
     onCreated: (data) => {
-      navigate(`/campaign/${campaignId}/systems/${data.slug}`)
+      navigate(`/campaign/${campaignId}/sessions/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/campaign/${campaignId}/systems`)
+      navigate(`/campaign/${campaignId}/sessions`)
     },
   })
 

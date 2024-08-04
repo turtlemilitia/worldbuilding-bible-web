@@ -14,10 +14,10 @@ const Story: FunctionComponent = () => {
   const form = useStoryForm({
     storyId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/stories/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/stories`)
     },
   })
 

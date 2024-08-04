@@ -14,10 +14,10 @@ const Religion: FunctionComponent = () => {
   const form = useReligionForm({
     religionId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/religions/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/religions`)
     },
   })
 

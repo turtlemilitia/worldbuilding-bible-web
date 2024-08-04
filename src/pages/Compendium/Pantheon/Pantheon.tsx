@@ -14,10 +14,10 @@ const Pantheon: FunctionComponent = () => {
   const form = usePantheonForm({
     pantheonId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/pantheons/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/pantheons`)
     },
   })
 

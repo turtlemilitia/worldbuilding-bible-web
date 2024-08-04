@@ -12,10 +12,10 @@ const Note: FunctionComponent = () => {
   const form = useNoteForm({
     noteId,
     onCreated: (data) => {
-      navigate(`/notebooks/${notebookId}/systems/${data.slug}`)
+      navigate(`/notebooks/${notebookId}/notes/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/notebooks/${notebookId}/systems`)
+      navigate(`/notebooks/${notebookId}/notes`)
     },
   })
 

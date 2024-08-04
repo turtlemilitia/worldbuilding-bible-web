@@ -1,6 +1,8 @@
 import { FunctionComponent, PropsWithChildren } from 'react'
-import { TProps } from './types'
 
+export type TProps = {
+  className?: string;
+}
 const FloatingBox: FunctionComponent<TProps & PropsWithChildren> = ({ children, className = '' }) => {
   return (
     <div

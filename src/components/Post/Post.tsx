@@ -53,10 +53,7 @@ const Post = <T extends TGenericPost> ({
     <LoadingWrapper loading={form.loading} opacity={'100'}>
       <SavingDialog saving={form.saving}/>
       <form onSubmit={(e => e.preventDefault())}>
-        <HeaderWrapper
-          page={pageTypeName}
-          onCoverImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
-        >
+        <HeaderWrapper page={pageTypeName}>
           <PageTitleField value={form.data?.name ?? ''}
                           onChange={(value) => form.onFieldChange('name', value)}
                           placeholder={'Name'}
@@ -85,6 +82,7 @@ const Post = <T extends TGenericPost> ({
               onSave={form.onSave}
               onRefresh={form.onFetch}
               onDelete={form.onDelete}
+              onCoverImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
             />
           )}
           <FloatingBox>
@@ -93,7 +91,7 @@ const Post = <T extends TGenericPost> ({
               initialValue={form.data?.content}
               onChange={(value) => form.onFieldChange('content', value)}
               canEdit={form.canEdit}
-              className={'min-h-screen'}
+              className={'min-h-40'}
             />
           </FloatingBox>
         </EditorsWrapper>

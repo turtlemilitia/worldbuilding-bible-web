@@ -1,5 +1,7 @@
-import FloatingBox from './component'
+import FloatingBox from './FloatingBox'
+import SmallFloatingBox from './SmallFloatingBox'
 
 export {
-  FloatingBox
+  FloatingBox,
+  SmallFloatingBox
 }

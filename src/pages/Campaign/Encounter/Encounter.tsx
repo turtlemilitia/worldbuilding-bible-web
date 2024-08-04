@@ -12,10 +12,10 @@ const Encounter: FunctionComponent = (): JSX.Element => {
   const form = useEncounterForm({
     encounterId,
     onCreated: (data) => {
-      navigate(`/campaign/${campaignId}/systems/${data.slug}`)
+      navigate(`/campaign/${campaignId}/encounters/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/campaign/${campaignId}/systems`)
+      navigate(`/campaign/${campaignId}/encounters`)
     },
   })
 
