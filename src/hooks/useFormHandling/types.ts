@@ -1,5 +1,3 @@
-import { TDataManager } from '../DataManagers/createDataManager'
-
 export type TUseFormHandlingProps<T, R> = {
   id: string|number|'new'
   isNew: boolean,

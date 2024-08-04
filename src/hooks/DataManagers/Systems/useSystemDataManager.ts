@@ -1,16 +1,15 @@
-import { createDataManager, TDataManager } from '../createDataManager'
+import { useDataManager, TDataManager } from '../useDataManager'
 import { systemSlice } from '../../../reducers/system/systemSlice'
 import { systemsIndexSlice } from '../../../reducers/system/systemsIndexSlice'
 import systemService, { TSystemRequest } from '../../../services/ApiService/Systems/SystemService'
 import { TSystem } from '../../../types'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { useMemo } from 'react'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 
 type TSystemDataManager = TDataManager<TSystem, TSystemRequest> & {
   system?: TSystem
 } & hasImageableDataManager
 const useSystemDataManager = (): TSystemDataManager => {
-  const manager = createDataManager(
+  const manager = useDataManager(
     'system',
     systemSlice,
     systemsIndexSlice,
@@ -19,7 +18,7 @@ const useSystemDataManager = (): TSystemDataManager => {
   return {
     system: manager.entity,
     ...manager,
-    images: useMemo(() => createImageableDataManager(systemSlice, systemService.images), [])
+    images: useImageableDataManager(systemSlice, systemService.images)
   }
 }
 

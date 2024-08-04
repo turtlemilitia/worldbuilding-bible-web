@@ -1,11 +1,6 @@
 import { TSelectOption } from '../../components/Forms/Fields/FieldMapper'
 import { FunctionComponent } from 'react'
-import { TCompendium, TGenericPost, TGenericPostBasic, TNotebook } from '../../types'
-import { hasNotesAttachableDataManager, TDataManager } from '../DataManagers'
-import {
-  hasFactionsAttachableDataManager,
-  hasLanguagesAttachableDataManager
-} from '../DataManagers/createAttachableDataManager'
+import { TGenericPost, TGenericPostBasic } from '../../types'
 
 type TGenericFieldParams = {
   name: string,

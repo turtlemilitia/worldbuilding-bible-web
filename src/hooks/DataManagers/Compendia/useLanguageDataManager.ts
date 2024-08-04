@@ -1,15 +1,14 @@
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { TLanguage, TCompendium } from '../../../types'
 import {
-  createEncounterableDataManager,
-  createNotableDataManager,
-  createQuestableDataManager,
+  useEncounterableDataManager,
+  useNotableDataManager,
+  useQuestableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
-} from '../createAttachableDataManager'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { useMemo } from 'react'
+} from '../useAttachableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import LanguageService, { TLanguageRequest } from '../../../services/ApiService/Compendia/LanguageService'
 import { languageSlice } from '../../../reducers/compendium/language/languageSlice'
@@ -20,21 +19,21 @@ type TLanguageDataManager = TChildDataManager<TCompendium, TLanguage, TLanguageR
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
 const useLanguageDataManager = (): TLanguageDataManager => {
-  const manager = useMemo(() => createChildDataManager(
+  const manager = useChildDataManager(
     'language',
     'compendium',
     languageSlice,
     compendiumSlice,
     LanguageService,
-  ), [])
+  )
   return {
     ...manager,
     compendium: manager.parent,
     language: manager.entity,
-    notes: useMemo(() => createNotableDataManager(languageSlice, LanguageService.notes), []),
-    quests: useMemo(() => createQuestableDataManager(languageSlice, LanguageService.quests), []),
-    encounters: useMemo(() => createEncounterableDataManager(languageSlice, LanguageService.encounters), []),
-    images: useMemo(() => createImageableDataManager(languageSlice, LanguageService.images), [])
+    notes: useNotableDataManager(languageSlice, LanguageService.notes),
+    quests: useQuestableDataManager(languageSlice, LanguageService.quests),
+    encounters: useEncounterableDataManager(languageSlice, LanguageService.encounters),
+    images: useImageableDataManager(languageSlice, LanguageService.images)
   }
 }
 

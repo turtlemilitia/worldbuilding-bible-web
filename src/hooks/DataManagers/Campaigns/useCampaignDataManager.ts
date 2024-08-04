@@ -1,19 +1,18 @@
-import { createDataManager, TDataManager } from '../createDataManager'
+import { useDataManager, TDataManager } from '../useDataManager'
 import { TCampaign } from '../../../types'
 import CampaignService, { TCampaignRequest } from '../../../services/ApiService/Campaigns/CampaignService'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
 import { campaignsIndexSlice } from '../../../reducers/campaign/campaignsIndexSlice'
-import { useMemo } from 'react'
 import campaignService from '../../../services/ApiService/Campaigns/CampaignService'
-import { createAttachableDataManager, hasNotesAttachableDataManager } from '../createAttachableDataManager'
+import { useAttachableDataManager, hasNotesAttachableDataManager } from '../useAttachableDataManager'
 
 type TCampaignDataManager = TDataManager<TCampaign, TCampaignRequest> & {
   campaign?: TCampaign
 } & hasNotesAttachableDataManager & hasImageableDataManager
 
 const useCampaignDataManager = (): TCampaignDataManager => {
-  const manager = createDataManager(
+  const manager = useDataManager(
     'campaign',
     campaignSlice,
     campaignsIndexSlice,
@@ -22,8 +21,9 @@ const useCampaignDataManager = (): TCampaignDataManager => {
   return {
     ...manager,
     campaign: manager.entity,
-    notes: useMemo(() => createAttachableDataManager('notes', campaignSlice, campaignService.notes), []),
-    images: useMemo(() => createImageableDataManager(campaignSlice, campaignService.images), [])
+    isPermanent: true,
+    notes: useAttachableDataManager('notes', campaignSlice, campaignService.notes),
+    images: useImageableDataManager(campaignSlice, campaignService.images)
 
   }
 }

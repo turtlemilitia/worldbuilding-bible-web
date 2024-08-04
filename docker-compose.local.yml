@@ -1,0 +1,15 @@
+services:
+  react-app:
+    container_name: react-app
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "${PORT:-3000}:3000"
+    networks:
+      - nginx_network      # proxy and app must be in same network
+networks:
+  nginx_network:
+    external: true

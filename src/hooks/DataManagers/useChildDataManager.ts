@@ -2,10 +2,9 @@ import { TChildApi, TQueryParams } from '../../services/ApiService/types'
 import { TGenericPostBasic } from '../../types'
 import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { Slice } from '@reduxjs/toolkit'
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useCallback } from 'react'
-import { TDataManager } from './createDataManager'
+import { TDataManager } from './useDataManager'
 
 export type TChildDataManager<TParentEntity, TEntity, TRequest> = TDataManager<TEntity, TRequest> & {
   parent?: TParentEntity,
@@ -14,7 +13,7 @@ export type TChildDataManager<TParentEntity, TEntity, TRequest> = TDataManager<T
   removeChildData: (field: string, id: string | number) => any,
 }
 
-export const createChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
+export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
   name: 'quest' | 'encounter' | 'session' | 'note' | 'character' | 'concept' | 'currency' | 'deity' | 'faction' | 'item' | 'language' | 'location' | 'naturalResource' | 'pantheon' | 'plane' | 'religion' | 'species' | 'spell' | 'story',
   parentName: 'campaign' | 'notebook' | 'compendium',
   slice: Slice<TEntitySliceState<TEntity>>,
@@ -22,7 +21,7 @@ export const createChildDataManager = <TParentEntity, TEntity, TRequest, TIndexR
   api: TChildApi<TRequest, TIndexResponse, TResponse>,
 ): TChildDataManager<TParentEntity, TEntity, TRequest> => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const { data: parent } = useAppSelector(state => state[parentName]) as { data?: TParentEntity & TGenericPostBasic }
   const { data: entity } = useAppSelector(state => state[name]) as { data?: TEntity & TGenericPostBasic }
@@ -30,17 +29,21 @@ export const createChildDataManager = <TParentEntity, TEntity, TRequest, TIndexR
   // REDUX MANAGEMENT
   const setData = useCallback((data: TEntity) => {
     dispatch(slice.actions.set(data))
-    dispatch(parentSlice.actions.setChildData(data))
+    dispatch(parentSlice.actions.setChildData({ field: name, data }))
   }, [])
 
   const updateData = useCallback((data: Partial<TEntity>) => {
     dispatch(slice.actions.update(data))
-    dispatch(parentSlice.actions.updateChildData(data))
+    dispatch(parentSlice.actions.updateChildData({ field: name, data }))
   }, [])
 
   const removeData = useCallback((id: string | number) => {
-    dispatch(slice.actions.set(null))
+    clearData(id)
     dispatch(parentSlice.actions.removeChildData({ field: name, id }))
+  }, [])
+
+  const clearData = useCallback((id: string | number) => {
+    dispatch(slice.actions.clear(id))
   }, [])
 
   const setChildData = useCallback((field: string, data: TGenericPostBasic) => {
@@ -84,6 +87,7 @@ export const createChildDataManager = <TParentEntity, TEntity, TRequest, TIndexR
     setData,
     updateData,
     removeData,
+    clearData,
     setChildData,
     updateChildData,
     removeChildData,

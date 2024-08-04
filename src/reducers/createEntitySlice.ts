@@ -1,5 +1,5 @@
 import { createSlice, Draft, PayloadAction, Slice } from '@reduxjs/toolkit'
-import { TGenericPost, TGenericPostBasic, TImage } from '../types'
+import { TGenericPostBasic, TImage } from '../types'
 
 export type TEntitySliceState<T> = {
   data?: T
@@ -32,30 +32,36 @@ export const createEntitySlice = <TEntity extends {[key: string]: any, images?: 
       update: (state, action: PayloadAction<Partial<TEntity>>) => {
         state.data = { ...state.data as Draft<TEntity>, ...action.payload as Partial<Draft<TEntity>> }
       },
-      clear: (state) => {
-        state.data = undefined
+      clear: (state, action: PayloadAction<string|number>) => {
+        if (state.data?.slug === action.payload) {
+          state.data = undefined
+        }
       },
       setFetching: (state, action: PayloadAction<boolean>) => {
         state.fetching = action.payload
       },
       setChildData: (state, action: PayloadAction<TChildActionProps>) => {
         const field = action.payload.field
-        const prevData = state.data as Draft<TEntity> || {};
-        state.data = {
-          ... prevData,
-          [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.data.id)
-            ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.data.id ? action.payload.data : child)
-            : [...(prevData[field] || []), action.payload.data]
+        if (state.data) {
+          const prevData = state.data as Draft<TEntity> || {};
+          state.data = {
+            ...prevData,
+            [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.data.id)
+              ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.data.id ? action.payload.data : child)
+              : [...(prevData[field] || []), action.payload.data]
+          }
         }
       },
       updateChildData: (state, action: PayloadAction<TChildActionProps>) => {
         const field = action.payload.field
-        const prevData = state.data as Draft<TEntity> || {};
-        state.data = {
-          ...state.data as Draft<TEntity>,
-          [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.data.id)
-            ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
-            : [...(prevData[field] || []), action.payload.data]
+        if (state.data) {
+          const prevData = state.data as Draft<TEntity> || {};
+          state.data = {
+            ...state.data as Draft<TEntity>,
+            [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.data.id)
+              ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
+              : [...(prevData[field] || []), action.payload.data]
+          }
         }
       },
       removeChildData: (state, action: PayloadAction<TRemoveChildActionProps>) => {
@@ -68,17 +74,19 @@ export const createEntitySlice = <TEntity extends {[key: string]: any, images?: 
         }
       },
       setImage: (state, action: PayloadAction<TSetImageActionProps>) => {
-        const imageType = action.payload.imageType
-        const prevData = state.data as Draft<TEntity> || {};
-        if (prevData?.images && imageType && ['cover','profile'].includes(imageType) && prevData.images?.find((child: TImage) => child.pivot?.image?.name === action.payload.imageType)) {
-          state.data = {
-            ...state.data as Draft<TEntity>,
-            images: prevData.images?.map((child: TImage) => child.pivot?.image?.name.toLowerCase() === imageType.toLowerCase() ? action.payload.data : child)
-          }
-        } else {
-          state.data = {
-            ...state.data as Draft<TEntity>,
-            images: [...(prevData.images || []), action.payload.data]
+        if (state.data) {
+          const imageType = action.payload.imageType
+          const prevData = state.data as Draft<TEntity> || {};
+          if (prevData?.images && imageType && ['cover', 'profile'].includes(imageType) && prevData.images?.find((child: TImage) => child.pivot?.image?.name === action.payload.imageType)) {
+            state.data = {
+              ...state.data as Draft<TEntity>,
+              images: prevData.images?.map((child: TImage) => child.pivot?.image?.name.toLowerCase() === imageType.toLowerCase() ? action.payload.data : child)
+            }
+          } else {
+            state.data = {
+              ...state.data as Draft<TEntity>,
+              images: [...(prevData.images || []), action.payload.data]
+            }
           }
         }
       },

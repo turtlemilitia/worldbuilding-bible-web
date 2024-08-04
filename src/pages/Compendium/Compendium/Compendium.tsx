@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react'
+import React, { FunctionComponent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { TCompendium } from '../../../types'

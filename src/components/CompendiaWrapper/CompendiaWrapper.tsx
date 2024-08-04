@@ -1,27 +1,24 @@
-import React, { FunctionComponent, JSX, useEffect } from 'react'
+import React, { FunctionComponent, JSX, useEffect, useMemo } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks'
 import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
 import { useCompendiumDataManager } from '../../hooks/DataManagers'
 
 const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
-  const { compendium, view, removeData } = useCompendiumDataManager()
+  const { compendium, view, clearData } = useCompendiumDataManager()
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
-  const dispatch = useAppDispatch()
-
-  const isNew = (): boolean => compendiumId === 'new'
+  const isNew: boolean = useMemo(() => compendiumId === 'new', [compendiumId])
 
   useEffect(() => {
-    if (!isNew()) {
-      view(compendiumId)
+    if (!isNew) {
+      view(compendiumId, { include: 'characters;concepts;currencies;deities;factions;items;languages;locations;naturalResources;pantheons;planes;religions;species;spells;stories' })
     }
     return () => {
-      dispatch(removeData(compendiumId))
+      clearData(compendiumId)
     }
-  }, [])
+  }, [compendiumId])
 
   return (
     <>

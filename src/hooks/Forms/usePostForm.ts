@@ -2,7 +2,7 @@ import { TForm } from '../../components/Post/types'
 import useFormHandling from '../useFormHandling'
 import { TGenericPost } from '../../types'
 import { TField } from '../fieldTools'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import useImageSelection from '../useImageSelection'
 import { hasImageableDataManager, TDataManager } from '../DataManagers'
 
@@ -31,10 +31,18 @@ const usePostForm = <T extends TGenericPost, R> ({
 
   const { entity, store, update, destroy, view } = manager
 
-  const isNew = useMemo(() => id !== 'new', [id])
+  const isNew = useMemo(() => id === 'new', [id])
   const canEdit = useMemo(() => isNew || entity?.canUpdate !== undefined, [isNew, entity?.canUpdate])
 
   const imageHandler = useImageSelection<T>({ manager })
+
+  useEffect(() => {
+    return () => {
+      if (!manager.isPermanent) {
+        manager.clearData(id)
+      }
+    }
+  }, [id])
 
   const {
     loading,

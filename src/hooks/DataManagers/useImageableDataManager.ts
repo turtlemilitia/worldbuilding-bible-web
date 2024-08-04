@@ -1,22 +1,22 @@
 import { Slice } from '@reduxjs/toolkit'
 import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { TImageableApi, TImageAttachRequest } from '../../services/ApiService/createImageableService'
-import { useDispatch } from 'react-redux'
 import { useCallback } from 'react'
+import { useAppDispatch } from '../../hooks'
 import { TImage } from '../../types'
 
-type useImageableDataManager = {
+type TUseImageableDataManager = {
   attach: (entityId: string | number, payload: TImageAttachRequest, imageType: string) => void,
   detach: (imageableId: number | string, id: number | string) => void,
 }
-export type hasImageableDataManager = { images: useImageableDataManager }
+export type hasImageableDataManager = { images: TUseImageableDataManager }
 
-export const createImageableDataManager = <TEntity> (
+export const useImageableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TImageableApi['images']
-): useImageableDataManager => {
+): TUseImageableDataManager => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const attachData = useCallback((data: TImage, imageType: string) => {
     dispatch(slice.actions.setImage({ data, imageType }))

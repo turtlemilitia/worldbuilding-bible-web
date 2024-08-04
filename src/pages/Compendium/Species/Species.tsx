@@ -14,10 +14,10 @@ const Species: FunctionComponent = () => {
   const form = useSpeciesForm({
     speciesId,
     onCreated: (data) => {
-      navigate(`${compendiumPath}/systems/${data.slug}`)
+      navigate(`${compendiumPath}/species/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`${compendiumPath}/systems`)
+      navigate(`${compendiumPath}/species`)
     },
   })
 

@@ -1,10 +1,9 @@
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
-import { useMemo } from 'react'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { sessionSlice } from '../../../reducers/campaign/session/sessionSlice'
 import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
 import sessionService from '../../../services/ApiService/Campaigns/SessionService'
-import { createAttachableDataManager, hasNotesAttachableDataManager } from '../createAttachableDataManager'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
+import { useAttachableDataManager, hasNotesAttachableDataManager } from '../useAttachableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { TCampaign, TSession } from '../../../types'
 import { TSessionRequest } from '../../../services/ApiService/Campaigns/SessionService'
 
@@ -13,20 +12,20 @@ type TSessionDataManager = TChildDataManager<TCampaign, TSession, TSessionReques
   session?: TSession,
 } & hasNotesAttachableDataManager & hasImageableDataManager
 
-const useSessionDataManager = () => {
-  const manager = useMemo(() => createChildDataManager(
+const useSessionDataManager = (): TSessionDataManager => {
+  const manager = useChildDataManager(
     'session',
     'campaign',
     sessionSlice,
     campaignSlice,
     sessionService,
-  ), [])
+  )
   return {
     ...manager,
     session: manager.entity,
     campaign: manager.parent,
-    notes: useMemo(() => createAttachableDataManager('notes', sessionSlice, sessionService.notes), []),
-    images: useMemo(() => createImageableDataManager(sessionSlice, sessionService.images), [])
+    notes: useAttachableDataManager('notes', sessionSlice, sessionService.notes),
+    images: useImageableDataManager(sessionSlice, sessionService.images)
   }
 }
 

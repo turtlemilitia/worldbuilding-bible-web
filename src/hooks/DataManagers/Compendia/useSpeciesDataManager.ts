@@ -1,15 +1,14 @@
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { TSpecies, TCompendium } from '../../../types'
 import {
-  createEncounterableDataManager,
-  createNotableDataManager,
-  createQuestableDataManager,
+  useEncounterableDataManager,
+  useNotableDataManager,
+  useQuestableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
-} from '../createAttachableDataManager'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { useMemo } from 'react'
+} from '../useAttachableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import SpeciesService, { TSpeciesRequest } from '../../../services/ApiService/Compendia/SpeciesService'
 import { speciesSlice } from '../../../reducers/compendium/species/speciesSlice'
@@ -20,21 +19,21 @@ type TSpeciesDataManager = TChildDataManager<TCompendium, TSpecies, TSpeciesRequ
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
 const useSpeciesDataManager = (): TSpeciesDataManager => {
-  const manager = useMemo(() => createChildDataManager(
+  const manager = useChildDataManager(
     'species',
     'compendium',
     speciesSlice,
     compendiumSlice,
     SpeciesService,
-  ), [])
+  )
   return {
     ...manager,
     compendium: manager.parent,
     species: manager.entity,
-    notes: useMemo(() => createNotableDataManager(speciesSlice, SpeciesService.notes), []),
-    quests: useMemo(() => createQuestableDataManager(speciesSlice, SpeciesService.quests), []),
-    encounters: useMemo(() => createEncounterableDataManager(speciesSlice, SpeciesService.encounters), []),
-    images: useMemo(() => createImageableDataManager(speciesSlice, SpeciesService.images), [])
+    notes: useNotableDataManager(speciesSlice, SpeciesService.notes),
+    quests: useQuestableDataManager(speciesSlice, SpeciesService.quests),
+    encounters: useEncounterableDataManager(speciesSlice, SpeciesService.encounters),
+    images: useImageableDataManager(speciesSlice, SpeciesService.images)
   }
 }
 

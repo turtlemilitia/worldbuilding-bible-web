@@ -9,7 +9,11 @@ const useQuestFields = (): TUseFields => {
   const { notebook } = useNotebookDataManager()
 
   const fields: TField[] = [
-    selectField({ name: 'type', label: 'Type', options: types ?? [] })
+    selectField({
+      name: 'type',
+      label: 'Type',
+      options: types ?? []
+    })
   ]
 
   if (manager.campaign?.quests.length) {

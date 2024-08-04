@@ -1,15 +1,14 @@
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { TConcept, TCompendium } from '../../../types'
 import {
-  createEncounterableDataManager,
-  createNotableDataManager,
-  createQuestableDataManager,
+  useEncounterableDataManager,
+  useNotableDataManager,
+  useQuestableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
-} from '../createAttachableDataManager'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { useMemo } from 'react'
+} from '../useAttachableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import ConceptService, { TConceptRequest } from '../../../services/ApiService/Compendia/ConceptService'
 import { conceptSlice } from '../../../reducers/compendium/concept/conceptSlice'
@@ -20,21 +19,21 @@ type TConceptDataManager = TChildDataManager<TCompendium, TConcept, TConceptRequ
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
 const useConceptDataManager = (): TConceptDataManager => {
-  const manager = useMemo(() => createChildDataManager(
+  const manager = useChildDataManager(
     'concept',
     'compendium',
     conceptSlice,
     compendiumSlice,
     ConceptService,
-  ), [])
+  )
   return {
     ...manager,
     compendium: manager.parent,
     concept: manager.entity,
-    notes: useMemo(() => createNotableDataManager(conceptSlice, ConceptService.notes), []),
-    quests: useMemo(() => createQuestableDataManager(conceptSlice, ConceptService.quests), []),
-    encounters: useMemo(() => createEncounterableDataManager(conceptSlice, ConceptService.encounters), []),
-    images: useMemo(() => createImageableDataManager(conceptSlice, ConceptService.images), [])
+    notes: useNotableDataManager(conceptSlice, ConceptService.notes),
+    quests: useQuestableDataManager(conceptSlice, ConceptService.quests),
+    encounters: useEncounterableDataManager(conceptSlice, ConceptService.encounters),
+    images: useImageableDataManager(conceptSlice, ConceptService.images)
   }
 }
 

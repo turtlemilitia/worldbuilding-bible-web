@@ -1,15 +1,14 @@
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { TLocation, TCompendium } from '../../../types'
 import {
-  createEncounterableDataManager,
-  createNotableDataManager,
-  createQuestableDataManager,
+  useEncounterableDataManager,
+  useNotableDataManager,
+  useQuestableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
-} from '../createAttachableDataManager'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { useMemo } from 'react'
+} from '../useAttachableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import LocationService, { TLocationRequest } from '../../../services/ApiService/Compendia/LocationService'
 import { locationSlice } from '../../../reducers/compendium/location/locationSlice'
@@ -20,21 +19,21 @@ type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationR
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
 const useLocationDataManager = (): TLocationDataManager => {
-  const manager = useMemo(() => createChildDataManager(
+  const manager = useChildDataManager(
     'location',
     'compendium',
     locationSlice,
     compendiumSlice,
     LocationService,
-  ), [])
+  )
   return {
     ...manager,
     compendium: manager.parent,
     location: manager.entity,
-    notes: useMemo(() => createNotableDataManager(locationSlice, LocationService.notes), []),
-    quests: useMemo(() => createQuestableDataManager(locationSlice, LocationService.quests), []),
-    encounters: useMemo(() => createEncounterableDataManager(locationSlice, LocationService.encounters), []),
-    images: useMemo(() => createImageableDataManager(locationSlice, LocationService.images), [])
+    notes: useNotableDataManager(locationSlice, LocationService.notes),
+    quests: useQuestableDataManager(locationSlice, LocationService.quests),
+    encounters: useEncounterableDataManager(locationSlice, LocationService.encounters),
+    images: useImageableDataManager(locationSlice, LocationService.images)
   }
 }
 

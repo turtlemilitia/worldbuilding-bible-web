@@ -1,15 +1,14 @@
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { TPlane, TCompendium } from '../../../types'
 import {
-  createEncounterableDataManager,
-  createNotableDataManager,
-  createQuestableDataManager,
+  useEncounterableDataManager,
+  useNotableDataManager,
+  useQuestableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
-} from '../createAttachableDataManager'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { useMemo } from 'react'
+} from '../useAttachableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import PlaneService, { TPlaneRequest } from '../../../services/ApiService/Compendia/PlaneService'
 import { planeSlice } from '../../../reducers/compendium/plane/planeSlice'
@@ -20,21 +19,21 @@ type TPlaneDataManager = TChildDataManager<TCompendium, TPlane, TPlaneRequest> &
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
 const usePlaneDataManager = (): TPlaneDataManager => {
-  const manager = useMemo(() => createChildDataManager(
+  const manager = useChildDataManager(
     'plane',
     'compendium',
     planeSlice,
     compendiumSlice,
     PlaneService,
-  ), [])
+  )
   return {
     ...manager,
     compendium: manager.parent,
     plane: manager.entity,
-    notes: useMemo(() => createNotableDataManager(planeSlice, PlaneService.notes), []),
-    quests: useMemo(() => createQuestableDataManager(planeSlice, PlaneService.quests), []),
-    encounters: useMemo(() => createEncounterableDataManager(planeSlice, PlaneService.encounters), []),
-    images: useMemo(() => createImageableDataManager(planeSlice, PlaneService.images), [])
+    notes: useNotableDataManager(planeSlice, PlaneService.notes),
+    quests: useQuestableDataManager(planeSlice, PlaneService.quests),
+    encounters: useEncounterableDataManager(planeSlice, PlaneService.encounters),
+    images: useImageableDataManager(planeSlice, PlaneService.images)
   }
 }
 

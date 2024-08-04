@@ -1,8 +1,8 @@
+import { useCallback } from 'react'
 import { Slice } from '@reduxjs/toolkit'
 import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { TAttachableApi } from '../../services/ApiService/createAttachableService'
-import { useDispatch } from 'react-redux'
-import { useCallback } from 'react'
+import { useAppDispatch } from '../../hooks'
 import { TEncounter, TFaction, TLanguage, TNote, TQuest } from '../../types'
 import { TNotableApi, TNoteAttachRequest, TNoteAttachResponse } from '../../services/ApiService/createNotableService'
 import { TQuestableApi, TQuestAttachRequest, TQuestAttachResponse } from '../../services/ApiService/createQuestableService'
@@ -26,13 +26,13 @@ export type TAttachableDataManager<TAttached, TRequest> = {
   detach: (parentId: number | string, id: number | string) => void,
 }
 
-export const createAttachableDataManager = <TEntity, TAttached extends { id: number | string }, TAttachRequest, TAttachResponse extends TAttached> (
+export const useAttachableDataManager = <TEntity, TAttached extends { id: number | string }, TAttachRequest, TAttachResponse extends TAttached> (
   attachedName: 'notes' | 'quests' | 'encounters' | 'factions' | 'languages',
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TAttachableApi<TAttachRequest, TAttachResponse>,
 ): TAttachableDataManager<TAttached, TAttachRequest> => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const attachData = useCallback((data: TAttached) => {
     dispatch(slice.actions.setChildData({ field: attachedName, data }))
@@ -68,35 +68,35 @@ export const createAttachableDataManager = <TEntity, TAttached extends { id: num
 
 export type TNotableDataManager = TAttachableDataManager<TNote, TNoteAttachRequest>
 export type hasNotesAttachableDataManager = { notes: TNotableDataManager }
-export const createNotableDataManager = <TEntity> (
+export const useNotableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TNotableApi['notes'],
-): TNotableDataManager => createAttachableDataManager<TEntity, TNote, TNoteAttachRequest, TNoteAttachResponse>('notes', slice, api)
+): TNotableDataManager => useAttachableDataManager<TEntity, TNote, TNoteAttachRequest, TNoteAttachResponse>('notes', slice, api)
 
 export type TEncounterableDataManager = TAttachableDataManager<TEncounter, TEncounterAttachRequest>
 export type hasEncountersAttachableDataManager = { encounters: TEncounterableDataManager }
-export const createEncounterableDataManager = <TEntity> (
+export const useEncounterableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TEncounterableApi['encounters'],
-): TEncounterableDataManager => createAttachableDataManager<TEntity, TEncounter, TEncounterAttachRequest, TEncounterAttachResponse>('encounters', slice, api)
+): TEncounterableDataManager => useAttachableDataManager<TEntity, TEncounter, TEncounterAttachRequest, TEncounterAttachResponse>('encounters', slice, api)
 
 export type TQuestableDataManager = TAttachableDataManager<TQuest, TQuestAttachRequest>
 export type hasQuestsAttachableDataManager = { quests: TQuestableDataManager }
-export const createQuestableDataManager = <TEntity> (
+export const useQuestableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TQuestableApi['quests'],
-): TQuestableDataManager => createAttachableDataManager<TEntity, TQuest, TQuestAttachRequest, TQuestAttachResponse>('quests', slice, api)
+): TQuestableDataManager => useAttachableDataManager<TEntity, TQuest, TQuestAttachRequest, TQuestAttachResponse>('quests', slice, api)
 
 export type TFactionableDataManager = TAttachableDataManager<TFaction, TFactionAttachRequest>
 export type hasFactionsAttachableDataManager = { factions: TFactionableDataManager }
-export const createFactionableDataManager = <TEntity> (
+export const useFactionableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TFactionableApi['factions'],
-): TFactionableDataManager => createAttachableDataManager<TEntity, TFaction, TFactionAttachRequest, TFactionAttachResponse>('factions', slice, api)
+): TFactionableDataManager => useAttachableDataManager<TEntity, TFaction, TFactionAttachRequest, TFactionAttachResponse>('factions', slice, api)
 
 export type TLanguageableDataManager = TAttachableDataManager<TLanguage, TLanguageAttachRequest>
 export type hasLanguagesAttachableDataManager = { languages: TLanguageableDataManager }
-export const createLanguageableDataManager = <TEntity> (
+export const useLanguageableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TLanguageableApi['languages'],
-): TLanguageableDataManager => createAttachableDataManager<TEntity, TLanguage, TLanguageAttachRequest, TLanguageAttachResponse>('languages', slice, api)
+): TLanguageableDataManager => useAttachableDataManager<TEntity, TLanguage, TLanguageAttachRequest, TLanguageAttachResponse>('languages', slice, api)

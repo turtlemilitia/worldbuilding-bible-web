@@ -1,9 +1,8 @@
-import { useMemo } from 'react'
 import noteService, { TNoteRequest } from '../../../services/ApiService/Notebooks/NoteService'
 import { noteSlice } from '../../../reducers/notebook/note/noteSlice'
 import { notebookSlice } from '../../../reducers/notebook/notebookSlice'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { TNote, TNotebook } from '../../../types'
 
 type TNoteDataManager = TChildDataManager<TNotebook, TNote, TNoteRequest> & {
@@ -13,17 +12,17 @@ type TNoteDataManager = TChildDataManager<TNotebook, TNote, TNoteRequest> & {
 
 const useNoteDataManager = (): TNoteDataManager => {
 
-  const manager = useMemo(() => createChildDataManager(
+  const manager = useChildDataManager(
     'note',
     'notebook',
     noteSlice,
     notebookSlice,
     noteService,
-  ), [])
+  )
   return {
     ...manager,
     note: manager.entity,
-    images: useMemo(() => createImageableDataManager(noteSlice, noteService.images), [])
+    images: useImageableDataManager(noteSlice, noteService.images)
   }
 
 }

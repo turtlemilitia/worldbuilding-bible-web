@@ -9,7 +9,7 @@ import {
     useSystemIndexDataManager,
     useImageTypeIndexDataManager,
     useGovernmentTypeIndexDataManager,
-    useLocationTypeIndexDataManager
+    useLocationTypeIndexDataManager, useQuestTypeIndexDataManager, useEncounterTypeIndexDataManager
 } from '../hooks/DataManagers'
 
 export const ProtectedRoute = (): JSX.Element => {
@@ -22,6 +22,8 @@ export const ProtectedRoute = (): JSX.Element => {
     const imageTypeIndexDataManager = useImageTypeIndexDataManager()
     const governmentTypeIndexDataManager = useGovernmentTypeIndexDataManager()
     const locationTypeIndexDataManager = useLocationTypeIndexDataManager()
+    const questTypeIndexDataManager = useQuestTypeIndexDataManager()
+    const encounterTypeIndexDataManager = useEncounterTypeIndexDataManager()
 
 
     // Here we will be adding the missing items where needed
@@ -35,6 +37,8 @@ export const ProtectedRoute = (): JSX.Element => {
             imageTypeIndexDataManager.index()
             governmentTypeIndexDataManager.index()
             locationTypeIndexDataManager.index()
+            questTypeIndexDataManager.index()
+            encounterTypeIndexDataManager.index()
 
             // todo get user data
         }

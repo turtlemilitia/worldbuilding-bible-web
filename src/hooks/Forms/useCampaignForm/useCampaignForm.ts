@@ -2,7 +2,7 @@ import { TCampaign } from '../../../types'
 import { TCampaignRequest } from '../../../services/ApiService/Campaigns/CampaignService'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { useCampaignDataManager } from '../../DataManagers'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import usePostForm from '../usePostForm'
 import useCampaignFields from './useCampaignFields'
 
@@ -19,6 +19,8 @@ const useCampaignForm = ({
 
   const manager = useCampaignDataManager()
 
+  const include = useMemo(() => 'compendium;quests;quests.type;quests.parent;encounters;encounters.type;sessions', [])
+
   const { fields } = useCampaignFields();
 
   const mapData = useCallback((data: TCampaign): TCampaignRequest => ({
@@ -30,7 +32,7 @@ const useCampaignForm = ({
   return usePostForm({
     id: campaignId,
     mapData,
-    include: '',
+    include,
     manager,
     fields,
 

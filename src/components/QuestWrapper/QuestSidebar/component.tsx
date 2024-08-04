@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useMemo } from 'react'
+import React, { FunctionComponent, useMemo } from 'react'
 import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import { TQuestSidebarProps } from './types'
 import { StarIcon } from 'lucide-react'
@@ -10,9 +10,9 @@ const QuestSidebar: FunctionComponent<TQuestSidebarProps> = React.memo(({ campai
 
   const { questTypes: types } = useQuestTypeIndexDataManager()
 
-  const {mapQuest} = useCampaignsMapping({ campaignId: campaign.slug });
+  const { mapQuest } = useCampaignsMapping({ campaignId: campaign.slug })
 
-  const items: SidebarItemInterface[] = useMemo( () => types?.map(type => {
+  const items: SidebarItemInterface[] = useMemo(() => types?.map(type => {
 
     const nestedQuests = createNestedArray(campaign.quests?.filter(quest => quest.type.id === type.id) || [])
 

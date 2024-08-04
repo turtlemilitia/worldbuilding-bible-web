@@ -1,15 +1,14 @@
-import { createChildDataManager, TChildDataManager } from '../createChildDataManager'
+import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
 import { TReligion, TCompendium } from '../../../types'
 import {
-  createEncounterableDataManager,
-  createNotableDataManager,
-  createQuestableDataManager,
+  useEncounterableDataManager,
+  useNotableDataManager,
+  useQuestableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
-} from '../createAttachableDataManager'
-import { createImageableDataManager, hasImageableDataManager } from '../createImageableDataManager'
-import { useMemo } from 'react'
+} from '../useAttachableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import ReligionService, { TReligionRequest } from '../../../services/ApiService/Compendia/ReligionService'
 import { religionSlice } from '../../../reducers/compendium/religion/religionSlice'
@@ -20,21 +19,21 @@ type TReligionDataManager = TChildDataManager<TCompendium, TReligion, TReligionR
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
 const useReligionDataManager = (): TReligionDataManager => {
-  const manager = useMemo(() => createChildDataManager(
+  const manager = useChildDataManager(
     'religion',
     'compendium',
     religionSlice,
     compendiumSlice,
     ReligionService,
-  ), [])
+  )
   return {
     ...manager,
     compendium: manager.parent,
     religion: manager.entity,
-    notes: useMemo(() => createNotableDataManager(religionSlice, ReligionService.notes), []),
-    quests: useMemo(() => createQuestableDataManager(religionSlice, ReligionService.quests), []),
-    encounters: useMemo(() => createEncounterableDataManager(religionSlice, ReligionService.encounters), []),
-    images: useMemo(() => createImageableDataManager(religionSlice, ReligionService.images), [])
+    notes: useNotableDataManager(religionSlice, ReligionService.notes),
+    quests: useQuestableDataManager(religionSlice, ReligionService.quests),
+    encounters: useEncounterableDataManager(religionSlice, ReligionService.encounters),
+    images: useImageableDataManager(religionSlice, ReligionService.images)
   }
 }
 

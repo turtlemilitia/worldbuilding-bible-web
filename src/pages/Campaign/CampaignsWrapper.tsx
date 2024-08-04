@@ -1,6 +1,5 @@
 import React, { JSX, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { useAppDispatch } from '../../hooks'
 import Menu from '../../components/Nav/Menu'
 import MenuItem from '../../components/Nav/MenuItem'
 import CampaignFavourites from '../../components/CampaignWrapper/CampaignFavourites'
@@ -9,20 +8,18 @@ import { useCampaignDataManager } from '../../hooks/DataManagers'
 
 const CampaignsWrapper = (): JSX.Element => {
 
-  const { campaign, view, removeData } = useCampaignDataManager() // redux
+  const { campaign, view, clearData } = useCampaignDataManager() // redux
 
   const { campaignId } = useParams() as { campaignId: string } // router
-
-  const dispatch = useAppDispatch()
 
   const isNew = (): boolean => campaignId === 'new'
 
   useEffect(() => {
     if (!isNew()) {
-      view(campaignId)
+      view(campaignId, {include: 'compendium;quests;quests.type;quests.parent;encounters;encounters.type;sessions'})
     }
     return () => {
-      dispatch(removeData(campaignId))
+      clearData(campaignId)
     }
   }, [campaignId])
 
@@ -54,9 +51,8 @@ const CampaignsWrapper = (): JSX.Element => {
                 to: `/campaigns/${campaignId}/sessions/${campaign.sessions?.[0]?.slug ?? 'new'}`
               }
             ].map((menuItem, index) => (
-              <SmallSansSerifText>
+              <SmallSansSerifText key={index}>
                 <MenuItem
-                  key={index}
                   menuItem={menuItem}
                   className="p-4"
                   activeClassName="border border-yellow-500 rounded-full shadow-md shadow-stone-950 bg-stone-400 bg-opacity-10 backdrop-blur-sm"

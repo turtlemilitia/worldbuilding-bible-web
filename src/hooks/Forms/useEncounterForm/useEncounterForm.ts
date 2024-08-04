@@ -11,7 +11,7 @@ type TOwnProps = {
 }
 const useEncounterForm = ({ encounterId, onFetched, onCreated, onUpdated, onDeleted }: TOwnProps & TUseFormProps<TEncounter>): TForm<TEncounter> => {
 
-  const include = useMemo(() => 'type;parent', [])
+  const include = useMemo(() => 'type', [])
 
   const manager = useEncounterDataManager();
 
@@ -20,7 +20,7 @@ const useEncounterForm = ({ encounterId, onFetched, onCreated, onUpdated, onDele
   const mapData = useCallback((data: any): TEncounterRequest => ({
     name: data.name,
     content: data.content,
-    typeId: data.type.id,
+    typeId: data.type?.id,
   }), [])
 
   return usePostForm<TEncounter, TEncounterRequest>({

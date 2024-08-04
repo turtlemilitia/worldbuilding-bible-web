@@ -1,12 +1,12 @@
 import {
-  createAttachableDataManager,
+  useAttachableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
-} from './createAttachableDataManager'
-import { createChildDataManager } from './createChildDataManager'
-import { createDataManager, TDataManager } from './createDataManager'
-import { createImageableDataManager, hasImageableDataManager } from './createImageableDataManager'
+} from './useAttachableDataManager'
+import { useChildDataManager } from './useChildDataManager'
+import { useDataManager, TDataManager } from './useDataManager'
+import { useImageableDataManager, hasImageableDataManager } from './useImageableDataManager'
 import useCampaignDataManager from './Campaigns/useCampaignDataManager'
 import useCompendiumDataManager from './Compendia/useCompendiumDataManager'
 import useNotebookDataManager from './Notebooks/useNotebookDataManager'
@@ -39,10 +39,10 @@ import useQuestTypeIndexDataManager from './Campaigns/useQuestTypeIndexDataManag
 import useEncounterTypeIndexDataManager from './Campaigns/useEncounterTypeIndexDataManager'
 
 export {
-  createDataManager,
-  createChildDataManager,
-  createAttachableDataManager,
-  createImageableDataManager,
+  useDataManager,
+  useChildDataManager,
+  useAttachableDataManager,
+  useImageableDataManager,
   useCompendiumDataManager,
   useCharacterDataManager,
   useConceptDataManager,
