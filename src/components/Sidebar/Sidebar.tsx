@@ -3,11 +3,10 @@ import { LucideProps, PlusIcon } from 'lucide-react'
 import SidebarItem from './SidebarItem'
 import { FloatingBox } from '../FloatingBox'
 import { Link } from 'react-router-dom'
-import { useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
 import { useCampaignDataManager } from '../../hooks/DataManagers'
 
 export interface SidebarItemInterface {
+  id?: string;
   title: string;
   to?: string;
   icon?: (props: LucideProps) => JSX.Element,
