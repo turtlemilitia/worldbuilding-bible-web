@@ -70,7 +70,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
             {type === 'asyncSelect' && search && (
               <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search} disabled={disabled}/>
             )}
-            {type === 'asyncMultiSelect' && options?.length && (
+            {type === 'multiSelect' && options?.length && (
               <MultipleSelectField
                 value={currentValue}
                 onChange={(value) => onChange(name, value)}

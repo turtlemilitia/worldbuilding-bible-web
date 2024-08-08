@@ -16,6 +16,7 @@ type TProps<T, R> = {
   onCreated?: (data: T) => any
   onUpdated?: (data: T) => any
   onDeleted?: () => any
+  canHaveProfileImage?: boolean
 }
 const usePostForm = <T extends TGenericPost, R> ({
   id,
@@ -27,6 +28,7 @@ const usePostForm = <T extends TGenericPost, R> ({
   onCreated,
   onUpdated,
   onDeleted,
+  canHaveProfileImage
 }: TProps<T, R>): TForm<T> => {
 
   const { entity, store, update, destroy, view } = manager
@@ -34,7 +36,7 @@ const usePostForm = <T extends TGenericPost, R> ({
   const isNew = useMemo(() => id === 'new', [id])
   const canEdit = useMemo(() => isNew || entity?.canUpdate !== undefined, [isNew, entity?.canUpdate])
 
-  const imageHandler = useImageSelection<T>({ manager })
+  const imageHandler = useImageSelection<T>({ manager, canHaveProfileImage })
 
   useEffect(() => {
     return () => {

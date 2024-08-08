@@ -16,8 +16,9 @@ const useNotebookDataManager = (): TNotebookDataManager => {
     notebookService
   )
   return {
-    notebook: manager.entity,
+    isPermanent: true,
     ...manager,
+    notebook: manager.entity,
     images: useImageableDataManager(notebookSlice, notebookService.images)
   }
 }

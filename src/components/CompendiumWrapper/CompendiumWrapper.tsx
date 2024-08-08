@@ -1,18 +1,16 @@
-import React, { FunctionComponent, JSX, useEffect, useMemo } from 'react'
+import React, { FunctionComponent, JSX, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
 import { useCompendiumDataManager } from '../../hooks/DataManagers'
 
-const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
+const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
   const { compendium, view, clearData } = useCompendiumDataManager()
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
-  const isNew: boolean = useMemo(() => compendiumId === 'new', [compendiumId])
-
   useEffect(() => {
-    if (!isNew) {
+    if (compendiumId !== 'new') {
       view(compendiumId, { include: 'characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories' })
     }
     return () => {
@@ -32,4 +30,4 @@ const CompendiaWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Elem
   )
 }
 
-export default CompendiaWrapper
+export default CompendiumWrapper

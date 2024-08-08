@@ -155,6 +155,8 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
   quests: (TGenericPostBasic & { type: TQuest['type'] })[];
   notebook?: TNotebook
+  currentLocation?: TLocation
+  currentQuest?: TQuest
 }
 
 export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {

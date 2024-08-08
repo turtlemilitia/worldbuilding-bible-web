@@ -37,3 +37,20 @@ export const filterDataByKeys = (baseData: object, dataToFilter: object): any =>
       acc[key as keyof object] = dataToFilter[key as keyof object]
       return acc
     }, {})
+
+export const mapPlural = (singular: string) => {
+  switch (singular) {
+    case 'currency':
+      return 'currencies'
+    case 'deity':
+      return 'deities'
+    case 'species':
+      return 'species'
+    case 'story':
+      return 'stories'
+    case 'compendium':
+      return 'compendia'
+    default:
+      return `${singular}s`
+  }
+}

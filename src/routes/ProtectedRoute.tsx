@@ -33,7 +33,7 @@ export const ProtectedRoute = (): JSX.Element => {
             systemIndexDataManager.index()
             compendiumIndexDataManager.index()
             campaignIndexDataManager.index()
-            notebookIndexDataManager.index()
+            notebookIndexDataManager.index({include: 'notes'})
             imageTypeIndexDataManager.index()
             governmentTypeIndexDataManager.index()
             locationTypeIndexDataManager.index()

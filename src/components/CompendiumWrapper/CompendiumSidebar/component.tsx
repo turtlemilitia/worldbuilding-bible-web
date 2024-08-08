@@ -17,20 +17,17 @@ import {
   WandIcon
 } from 'lucide-react'
 import useCompendiaMapping from '../useCompendiaMapping'
-import { FunctionComponent, useCallback, useMemo } from 'react'
+import { FunctionComponent, useMemo } from 'react'
 import { TCompendiumSidebarProps } from './types'
 import { createNestedArray } from '../../../utils/treeUtils'
-import { useAppDispatch } from '../../../hooks'
-import { useParams } from 'react-router-dom'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
 const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compendium }) => {
 
   const nestedLocations = useMemo(() => createNestedArray(compendium.locations || []), [compendium.locations])
 
-  const { campaignId, compendiumId } = useParams()
-
   // pages can be under the campaign or the compendium itself
-  const prefix = useMemo(() => `${campaignId ? `/campaigns/${campaignId}` : ''}/compendia/${compendiumId}`, [])
+  const { compendiumPath: prefix } = useUrlFormatter()
 
   const {
     mapCharacter,

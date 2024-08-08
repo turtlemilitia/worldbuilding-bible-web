@@ -1,4 +1,4 @@
-import ProfileImagePicker from './component'
+import ProfileImagePicker from './ProfileImagePicker'
 
 export {}
 

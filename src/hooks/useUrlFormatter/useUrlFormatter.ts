@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useCampaignDataManager, useCompendiumDataManager } from '../DataManagers'
 
 const useUrlFormatter = () => {
 
-  const { campaignId, compendiumId } = useParams()
+  const { campaign} = useCampaignDataManager() // redux
+  const { compendium} = useCompendiumDataManager() // redux
 
   // pages can be under the campaign or the compendium itself
-  const compendiumPath = useMemo(() => `${ campaignId ? `/campaigns/${campaignId}` : '' }/compendia/${compendiumId}`, [campaignId, compendiumId])
+  const compendiumPath = useMemo(() => `${ campaign ? `/campaigns/${campaign.slug}` : '' }/compendia/${compendium?.slug}`, [campaign?.slug, compendium?.slug])
 
   return {
     compendiumPath

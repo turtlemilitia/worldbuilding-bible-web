@@ -1,7 +1,7 @@
 import { noteField, selectField, textField, TField } from '../../fieldTools'
 import { TLocation } from '../../../types'
 import { TUseFields } from '../../../components/Post/types'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import {
   useGovernmentTypeIndexDataManager,
   useLocationDataManager,
@@ -9,6 +9,7 @@ import {
   useNotebookDataManager
 } from '../../DataManagers'
 import { multiSelectField } from '../../fieldTools/fieldTools'
+import useUrlFormatter from '../../useUrlFormatter'
 
 const useLocationFields = (): TUseFields => {
 
@@ -16,8 +17,7 @@ const useLocationFields = (): TUseFields => {
   const { notebook } = useNotebookDataManager()
   const { locationTypes } = useLocationTypeIndexDataManager()
   const { governmentTypes } = useGovernmentTypeIndexDataManager()
-
-  const [ready, setReady] = useState<boolean>(false)
+  const { compendiumPath } = useUrlFormatter()
 
   const fields = useMemo(() => {
     const fields: TField[] = [
@@ -59,7 +59,7 @@ const useLocationFields = (): TUseFields => {
             name: 'children',
             label: 'Child Locations',
             options: manager.compendium.locations || [],
-            link: (id: string | number) => `/compendia/${manager.compendium?.slug}/locations/${manager.location?.children?.find((child: TLocation) => child.id === id)?.slug || ''}`,
+            link: (id: string | number) => `${compendiumPath}/locations/${manager.location?.children?.find((child: TLocation) => child.slug === id)?.slug || ''}`,
           })
         )
       }
@@ -76,7 +76,7 @@ const useLocationFields = (): TUseFields => {
     return fields
   }, [manager.compendium, manager.location, locationTypes, governmentTypes])
 
-  return { fields, ready }
+  return { fields, ready: true }
 }
 
 export default useLocationFields

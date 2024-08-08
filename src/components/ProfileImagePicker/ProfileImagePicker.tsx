@@ -2,9 +2,11 @@ import React, { FunctionComponent } from 'react'
 import { Popover } from '@headlessui/react'
 import { SelectImageButton } from '../SelectImageButton'
 import { ImagePicker } from '../ImagePicker'
-import { TProfileImagePickerProps } from './types'
 
-const ProfileImagePicker: FunctionComponent<TProfileImagePickerProps> = ({
+export type TProps = {
+  onProfileImageSelected: (imageId: number) => Promise<number>
+}
+const ProfileImagePicker: FunctionComponent<TProps> = ({
   onProfileImageSelected
 }) => {
 
@@ -15,7 +17,7 @@ const ProfileImagePicker: FunctionComponent<TProfileImagePickerProps> = ({
         <SelectImageButton/>
       </Popover.Button>
 
-      <Popover.Panel className="absolute bottom-full mb-4 right-0 z-10">
+      <Popover.Panel className="fixed top-1/2 mb-4 right-20 z-10">
         <ImagePicker multiple={false} onSelected={(ids) => onProfileImageSelected(ids[0])}/>
       </Popover.Panel>
 

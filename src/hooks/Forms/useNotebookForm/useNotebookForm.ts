@@ -17,7 +17,7 @@ const useNotebookForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TNotebook>): TForm<TNotebook> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useNotebookDataManager()
 

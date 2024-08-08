@@ -42,6 +42,7 @@ const PostDialog = <T extends TGenericPost,>({
                 {!isEmpty(form.fields) && (
                   <div className="w-full lg:w-1/4 px-6">
                     <InfoBar
+                      loading={false}
                       onChange={form.onFieldChange}
                       data={form.data}
                       fields={form.fields}

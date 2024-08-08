@@ -33,6 +33,7 @@ const useCharacterForm = ({
 
   return usePostForm({
     id: characterId,
+    canHaveProfileImage: true,
     mapData,
     include,
     manager,

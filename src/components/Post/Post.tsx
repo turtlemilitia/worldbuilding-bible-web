@@ -60,9 +60,10 @@ const Post = <T extends TGenericPost> ({
                           canEdit={form.canEdit}
           />
         </HeaderWrapper>
-        <RightBar loading={form.loading || !form.fields.length}>
+        <RightBar>
           <CampaignQuickLinks/>
           <InfoBar
+            loading={form.loading || !form.fields.length}
             onChange={form.onFieldChange}
             data={form.data}
             fields={form.fields}
