@@ -1,10 +1,13 @@
-import { Combobox, Transition } from '@headlessui/react'
+import { Combobox, Field, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon, DotIcon, PlusIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TSelectOption } from './FieldMapper'
+import Label from './Label'
 
 type TProp = {
+  label: string;
+  required?: boolean;
   value?: TSelectOption[];
   onChange: (value: TSelectOption[]) => any;
   options: (TSelectOption)[];
@@ -19,7 +22,7 @@ type TProp = {
     onDeleted?: (id: string|number) => any,
   }>
 }
-const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, options, link, disabled, Dialog }) => {
+const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, options, link, disabled, Dialog, required, label }) => {
 
   const [query, setQuery] = useState('')
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
@@ -33,7 +36,8 @@ const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, o
       })
 
   return (
-    <div className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
+    <Field className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
+      <Label required={required}>{label}</Label>
       <Combobox value={value} by="id" onChange={onChange} multiple disabled={disabled}>
         {({ open }) => (
           <>
@@ -114,7 +118,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, o
           }}
         />
       )}
-    </div>
+    </Field>
   )
 }
 

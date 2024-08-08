@@ -28,6 +28,7 @@ const useLocationFields = (): TUseFields => {
       selectField({
         name: 'type',
         label: 'Type',
+        required: true,
         options: locationTypes ?? []
       }),
       textField({

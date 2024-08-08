@@ -20,7 +20,8 @@ const useCharacterFields = (): TUseFields => {
       selectField({
         name: 'species',
         label: 'Species',
-        options: manager.compendium.species || []
+        options: manager.compendium.species || [],
+        required: true
       }),
       languageField({
         options: manager.compendium.languages || [],

@@ -1,11 +1,14 @@
-import { Combobox, Transition } from '@headlessui/react'
+import { Combobox, Field, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon, DotIcon, PlusIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
 import { TSelectOption } from '../FieldMapper'
+import Label from '../Label'
 
 type TProp = {
+  label: string;
+  required?: boolean;
   value?: TSelectOption[];
   onChange: (value: TSelectOption[]) => any;
   search: (term: string) => Promise<TSelectOption[]>;
@@ -13,7 +16,7 @@ type TProp = {
   disabled?: boolean;
   Dialog?: FunctionComponent<{isOpen: boolean; setIsOpen: (open: boolean) => any, id: string}>
 }
-const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled, Dialog }) => {
+const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled, Dialog, label, required }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([])
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
@@ -27,7 +30,8 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
   }, 500)
 
   return (
-    <div className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
+    <Field className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
+      <Label required={required}>{label}</Label>
       <Combobox value={value} by="id" onChange={onChange} multiple disabled={disabled}>
         {({ open }) => (
           <>
@@ -94,7 +98,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
       {dialogIsOpen && Dialog && (
         <Dialog isOpen={dialogIsOpen} setIsOpen={setDialogIsOpen} id={'new'}/>
       )}
-    </div>
+    </Field>
   )
 }
 

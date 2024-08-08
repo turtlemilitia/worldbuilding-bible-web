@@ -7,6 +7,7 @@ import MultipleAsyncSelectField from './MultipleAsyncSelectField'
 import ListAddName from './ListAddName'
 import { TField } from '../../../hooks/fieldTools'
 import MultipleSelectField from './MultipleSelectField'
+import { Fieldset } from '@headlessui/react'
 
 export type TSelectOption = {
   id: string | number,
@@ -50,67 +51,84 @@ const FieldMapper: FunctionComponent<TProps> = ({
   Dialog,
   link,
   Callback,
-  disabled
+  disabled,
+  required
 }) => {
   return (
     <li>
-      <div className="antialiased relative my-6">
-        <div
-          className="font-sans-serif z-10 absolute -top-5 left-3 w-full overflow-ellipsis py-2 text-stone-300 uppercase tracking-widest text-sm">{label}:</div>
-        {type === 'list' ? (
-          <div
-            className="font-light w-full flex justify-between py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
-            <ListField value={currentValue} link={link}/>
-          </div>
-        ) : (
-          <div className="font-light">
-            {type === 'select' && options?.length && (
-              <SelectField value={currentValue} onChange={(value) => onChange(name, value)} options={options} disabled={disabled}/>
-            )}
-            {type === 'asyncSelect' && search && (
-              <AsyncSelectField value={currentValue} onChange={(value) => onChange(name, value)} search={search} disabled={disabled}/>
-            )}
-            {type === 'multiSelect' && options?.length && (
-              <MultipleSelectField
-                value={currentValue}
-                onChange={(value) => onChange(name, value)}
-                link={link}
-                options={options}
-                Dialog={Dialog}
-                disabled={disabled}
-              />
-            )}
-            {type === 'asyncMultiSelect' && search && (
-              <MultipleAsyncSelectField
-                value={currentValue}
-                onChange={(value) => onChange(name, value)}
-                link={link}
-                search={search}
-                Dialog={Dialog}
-                disabled={disabled}
-              />
-            )}
-            {['text', 'number', 'email', 'password'].includes(type) && (
-              <TextField
-                value={currentValue}
-                onChange={(value) => onChange(name, value)}
-                type={type}
-                disabled={disabled}
-              />
-            )}
-            {type === 'listAdd' && (
-              <ListAddName
-                value={currentValue}
-                onSubmit={(value) => onChange(name, [...currentValue, value])}
-                disabled={!disabled}
-              />
-            )}
-            {type === 'callback' && Callback && (
-              <Callback/>
-            )}
-          </div>
-        )}
-      </div>
+      <Fieldset className="antialiased relative my-6">
+        <div className="font-light">
+          {type === 'list' && (
+            <ListField value={currentValue} link={link} label={label} required={required}/>
+          )}
+          {type === 'select' && (options?.length ?? 0) > 0 && (
+            <SelectField
+              label={label}
+              required={required}
+              value={currentValue}
+              onChange={(value) => onChange(name, value)}
+              options={options || []}
+              disabled={disabled}
+            />
+          )}
+          {type === 'asyncSelect' && search && (
+            <AsyncSelectField
+              label={label}
+              required={required}
+              value={currentValue}
+              onChange={(value) => onChange(name, value)}
+              search={search}
+              disabled={disabled}
+            />
+          )}
+          {type === 'multiSelect' && (options?.length ?? 0) > 0 && (
+            <MultipleSelectField
+              label={label}
+              required={required}
+              value={currentValue}
+              onChange={(value) => onChange(name, value)}
+              link={link}
+              options={options || []}
+              Dialog={Dialog}
+              disabled={disabled}
+            />
+          )}
+          {type === 'asyncMultiSelect' && search && (
+            <MultipleAsyncSelectField
+              label={label}
+              required={required}
+              value={currentValue}
+              onChange={(value) => onChange(name, value)}
+              link={link}
+              search={search}
+              Dialog={Dialog}
+              disabled={disabled}
+            />
+          )}
+          {['text', 'number', 'email', 'password'].includes(type) && (
+            <TextField
+              label={label}
+              required={required}
+              value={currentValue}
+              onChange={(value) => onChange(name, value)}
+              type={type}
+              disabled={disabled}
+            />
+          )}
+          {type === 'listAdd' && (
+            <ListAddName
+              label={label}
+              required={required}
+              value={currentValue}
+              onSubmit={(value) => onChange(name, [...currentValue, value])}
+              disabled={!disabled}
+            />
+          )}
+          {type === 'callback' && Callback && (
+            <Callback/>
+          )}
+        </div>
+      </Fieldset>
     </li>
   )
 }
