@@ -48,6 +48,58 @@ export const noteField: TNoteFieldFn = ({
     />
 })
 
+export const sessionField: TNoteFieldFn = ({
+  required,
+  options,
+  link,
+}) => multiSelectField({
+  name: 'sessions',
+  label: 'Sessions',
+  required,
+  options,
+  link,
+  // Dialog: (props) =>
+  //   <SessionDialog
+  //     {...props}
+  //     sessionId={props.id}
+  //   />
+})
+
+export const questField: TNoteFieldFn = ({
+  required,
+  options,
+  link,
+}) => multiSelectField({
+  name: 'quests',
+  label: 'Quests',
+  required,
+  options,
+  link,
+  // Dialog: (props) =>
+  //   <EncounterDialog
+  //     {...props}
+  //     encounterId={props.id}
+  //   />
+})
+
+export const encounterField: TNoteFieldFn = ({
+  required,
+  options,
+  link,
+}) => multiSelectField({
+  name: 'encounters',
+  label: 'Encounters',
+  required,
+  options,
+  link,
+  // Dialog: (props) =>
+  //   <EncounterDialog
+  //     {...props}
+  //     encounterId={props.id}
+  //   />
+})
+
+// other generic fields
 export const factionField: TFactionFieldFn = ({
   required,
   options,

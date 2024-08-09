@@ -12,7 +12,7 @@ export const createAttachableService = <TRequest, TResponse> (name: string, atta
     return api.post(`/api/${attachablePluralName}/${attachableId}/${pluralName}?include=${name}`, data)
   },
   dettach: (attachableId, id) => {
-    return api.post(`/api/${attachablePluralName}/${attachableId}/${pluralName}/${id}`)
+    return api.delete(`/api/${attachablePluralName}/${attachableId}/${pluralName}/${id}`)
   }
 
 })

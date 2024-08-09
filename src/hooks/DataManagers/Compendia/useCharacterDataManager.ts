@@ -6,7 +6,9 @@ import {
   useLanguageableDataManager,
   useNotableDataManager,
   useQuestableDataManager,
-  hasEncountersAttachableDataManager, hasFactionsAttachableDataManager, hasLanguagesAttachableDataManager,
+  hasEncountersAttachableDataManager,
+  hasFactionsAttachableDataManager,
+  hasLanguagesAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
