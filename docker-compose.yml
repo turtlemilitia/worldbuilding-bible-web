@@ -12,5 +12,7 @@ services:
     networks:
       - nginx_network      # proxy and app must be in same network
 networks:
+  worldbuildingbible-network:
+    driver: bridge
   nginx_network:
     external: true

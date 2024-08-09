@@ -3,24 +3,23 @@ import equal from 'fast-deep-equal/react'
 import { readyDataForRequest } from '../utils/dataUtils'
 import { isEmpty } from 'lodash'
 
-type TProps = {
+type TProps<T> = {
   canAutosave?: boolean;
   delay: number;
-  handleOnSave: (data: any) => any;
-  mapData?: (data: any) => any;
-  persistedData: any;
-  newData: any;
+  handleOnSave: () => any;
+  mapData?: (data: T) => any;
+  persistedData?: T;
+  newData?: T;
 }
-type TAutosave = (props: TProps) => void;
 
-const useAutosave: TAutosave = ({
+const useAutosave = <T extends object> ({
   canAutosave,
   handleOnSave,
   delay = 5000,
   persistedData,
   newData,
   mapData,
-}) => {
+}: TProps<T>) => {
 
   const [autosave, setAutosave] = useState(false)
 
@@ -52,7 +51,7 @@ const useAutosave: TAutosave = ({
 
     // Compare the processed data and save if they are different
     if (!equal(processedPersistedData, processedNewData)) {
-      handleOnSave(processedNewData)
+      handleOnSave()
     }
 
     // Reset autosave flag

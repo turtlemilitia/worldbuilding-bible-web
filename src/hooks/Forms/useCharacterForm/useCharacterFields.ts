@@ -1,11 +1,13 @@
 import { TUseFields } from "../../../components/Post/types"
 import useUrlFormatter from '../../useUrlFormatter'
-import { useCharacterDataManager, useNotebookDataManager } from '../../DataManagers'
+import { useCampaignDataManager, useCharacterDataManager, useNotebookDataManager } from '../../DataManagers'
 import { factionField, languageField, noteField, numberField, selectField, textField, TField } from '../../fieldTools'
+import { encounterField, questField } from '../../fieldTools/fieldTools'
 
 const useCharacterFields = (): TUseFields => {
 
   const manager = useCharacterDataManager()
+  const { campaign } = useCampaignDataManager()
   const { notebook } = useNotebookDataManager()
 
   const { compendiumPath } = useUrlFormatter()
@@ -40,6 +42,23 @@ const useCharacterFields = (): TUseFields => {
         options: notebook?.notes || [],
         link: (id: string | number) => `/notebooks/${notebook?.slug}/notes/${id}`,
       })
+    )
+  }
+
+  if (manager.character && campaign) {
+    fields.push(
+      questField({
+        options: campaign?.quests || [],
+        link: (id: string | number) => `/campaigns/${campaign?.slug}/quests/${id}`,
+      }),
+      encounterField({
+        options: campaign?.encounters || [],
+        link: (id: string | number) => `/campaigns/${campaign?.slug}/encounters/${id}`,
+      }),
+      // sessionField({
+      //   options: campaign?.sessions || [],
+      //   link: (id: string | number) => `/campaigns/${campaign?.slug}/sessions/${id}`,
+      // })
     )
   }
 

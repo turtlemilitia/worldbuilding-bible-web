@@ -22,12 +22,14 @@ export type TAttachableDataManager<TAttached, TRequest> = {
   attachData: (entity: TAttached) => any,
   updateData: (entity: Partial<TAttached>) => any,
   dettachData: (id: string | number) => any,
-  attach: (id: string | number, payload: TRequest) => void,
-  detach: (parentId: number | string, id: number | string) => void,
+  attach: (id: string | number, payload: TRequest) => Promise<void>,
+  detach: (parentId: number | string, id: number | string) => Promise<void>,
 }
 
+export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages';
+
 export const useAttachableDataManager = <TEntity, TAttached extends { id: number | string }, TAttachRequest, TAttachResponse extends TAttached> (
-  attachedName: 'notes' | 'quests' | 'encounters' | 'factions' | 'languages',
+  attachedName: TOneOfAttachableNames,
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TAttachableApi<TAttachRequest, TAttachResponse>,
 ): TAttachableDataManager<TAttached, TAttachRequest> => {

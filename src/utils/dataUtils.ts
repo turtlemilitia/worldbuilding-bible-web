@@ -16,7 +16,7 @@ export const filterOnlyArrays = (data: object): { [key: string]: object[] } => {
   }, {})
 }
 
-export const readyDataForRequest = (data: object): { [key: string]: number | string | string[] } => {
+export const readyDataForRequest = <T extends object> (data: T): { [key: string]: number | string | string[] } => {
   return Object.fromEntries(Object.entries(data).map(([key, item]) => {
     if (item && typeof item === 'object' && !Array.isArray(item)) {
       return [key, item.id]

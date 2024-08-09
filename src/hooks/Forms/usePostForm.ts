@@ -4,13 +4,25 @@ import { TGenericPost } from '../../types'
 import { TField } from '../fieldTools'
 import { useEffect, useMemo } from 'react'
 import useImageSelection from '../useImageSelection'
-import { hasImageableDataManager, TDataManager } from '../DataManagers'
+import {
+  hasEncountersAttachableDataManager,
+  hasImageableDataManager,
+  hasNotesAttachableDataManager,
+  hasQuestsAttachableDataManager,
+  TDataManager
+} from '../DataManagers'
+import {
+  hasFactionsAttachableDataManager,
+  hasLanguagesAttachableDataManager,
+  TOneOfAttachableNames
+} from '../DataManagers/useAttachableDataManager'
 
 type TProps<T, R> = {
   id: string | number,
   mapData: (payload: T) => R,
   include?: string,
-  manager: TDataManager<T, R> & hasImageableDataManager,
+  manager: TDataManager<T, R> & hasImageableDataManager
+    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager>
   fields?: TField[],
   onFetched?: (data: T) => any
   onCreated?: (data: T) => any
@@ -68,6 +80,31 @@ const usePostForm = <T extends TGenericPost, R> ({
     onCreate: (data: T) => store(mapData(data), { include }),
     onUpdate: (data: T) => update(id, mapData(data), { include }),
     onDelete: () => destroy(id),
+    manyToManyFields: fields?.filter(({ type }) => ['multiSelect', 'asyncMultiSelect'].includes(type))
+      .map(({ name }) => name as keyof T) || [],
+    onAttach: async (name: keyof T, attachedId) => {
+      debugger;
+      switch (name as TOneOfAttachableNames) {
+        case 'quests':
+          return manager.quests?.attach(id, { questId: attachedId })
+        case 'languages':
+          return manager.languages?.attach(id, { languageId: attachedId })
+
+        case 'notes':
+          return manager.notes?.attach(id, { noteId: attachedId })
+
+        case 'encounters':
+          return manager.encounters?.attach(id, { encounterId: attachedId })
+
+        case 'factions':
+          return manager.factions?.attach(id, { factionId: attachedId })
+
+      }
+    },
+    onDetach: async (name: keyof T, attachedId) => {
+      debugger;
+      return manager[name as TOneOfAttachableNames]?.detach(id, attachedId)
+    },
 
     onFetched,
     onCreated,

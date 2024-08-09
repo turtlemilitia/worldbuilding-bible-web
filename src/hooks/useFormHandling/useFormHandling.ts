@@ -1,10 +1,33 @@
-import { useEffect, useMemo, useState } from 'react'
-import { TUseFormHandlingProps, TFormHandling } from './types'
+import { useCallback, useEffect, useState } from 'react'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import equal from 'fast-deep-equal/react'
-import { TGenericPost } from '../../types'
+import { TGenericPostBasic } from '../../types'
+import { TFormHandling } from './types'
+import { isEmpty } from 'lodash'
+import { readyDataForRequest } from '../../utils/dataUtils'
 
+type TProps<T, R> = {
+  id: string | number | 'new'
+  isNew: boolean,
+  mapData: (data: T) => R;
+
+  // API
+  onFetch: () => Promise<T>,
+  onCreate: (data: any) => Promise<T>;
+  onUpdate: (data: any) => Promise<T>;
+  onDelete: () => Promise<any>
+  onFetched?: (data: T) => any
+  onCreated?: (data: T) => any
+  onUpdated?: (data: T) => any
+  onDeleted?: () => any
+  manyToManyFields?: (keyof T)[]
+  onAttach?: (name: keyof T, id: number | string) => Promise<any>
+  onDetach?: (name: keyof T, id: number | string) => Promise<any>
+
+  // persisted data
+  persistedData?: T,
+}
 const useFormHandling = <T, R> ({
   id,
   isNew,
@@ -18,11 +41,14 @@ const useFormHandling = <T, R> ({
   onCreated,
   onUpdated,
   onDeleted,
+  manyToManyFields,
+  onAttach,
+  onDetach,
 
   // data which has been saved/persisted, used to compare against new data for the autosave
   // also possibly used in other child components, eg Campaign and Compendium
   persistedData,
-}: TUseFormHandlingProps<T, R>): TFormHandling<T> => {
+}: TProps<T, R>): TFormHandling<T> => {
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
 
@@ -80,29 +106,71 @@ const useFormHandling = <T, R> ({
       })
   }
 
+  const processedData = useCallback((data: T | undefined) => {
+    return (data && !isEmpty(data))
+      ? (mapData ? mapData(data) : readyDataForRequest(data))
+      : {}
+  }, [mapData])
+
   // Save data function
-  // todo need to handle when many-to-many or one-to-many relations change
-  const handleOnSave = () => {
+  const handleOnSave = async () => {
     if (!data) {
       console.error('cannot save empty data')
       return
     }
     setSaving(true)
-    if (isNew) {
-      onCreate(data)
-        .then((data) => {
-          onCreated && onCreated(data)
-          setSaving(false)
-        })
-        .catch(handleOnSaveError)
-    } else {
-      onUpdate(data)
-        .then((data) => {
-          onUpdated && onUpdated(data)
-          setSaving(false)
-        })
-        .catch(handleOnSaveError)
+
+    debugger;
+    // Process the data for comparison and saving
+    const processedPersistedData = processedData(persistedData)
+    const processedNewData = processedData(data)
+
+    // Compare the processed data and save if they are different
+    try {
+      debugger;
+      if (isNew) {
+        if (!equal(processedPersistedData, processedNewData)) {
+          const result = await onCreate(data)
+          onCreated && onCreated(result)
+        }
+        await handleManyToMany()
+      } else {
+        if (!equal(processedPersistedData, processedNewData)) {
+          const result = await onUpdate(data)
+          onUpdated && onUpdated(result)
+        }
+        await handleManyToMany()
+      }
+    } catch (err) {
+      handleOnSaveError(err)
     }
+    setSaving(false)
+  }
+
+  const handleManyToMany = async () => {
+    debugger
+    if (!persistedData || !data || !manyToManyFields || !(onAttach || onDetach)) {
+      return
+    }
+    const attachEntityPromises: Promise<void>[] = []
+    const detachEntityPromises: Promise<void>[] = []
+    manyToManyFields.forEach((key) => {
+      const entitiesToAttach = (data[key] as TGenericPostBasic[])
+        ?.filter(entity => !(persistedData[key] as TGenericPostBasic[])?.some(prevEntity => prevEntity.id === entity.id))
+      const entitiesToDetach = (persistedData[key] as TGenericPostBasic[])
+        ?.filter(entity => !(data[key] as TGenericPostBasic[])?.some(newEntity => newEntity.id === entity.id))
+
+      if (entitiesToAttach && onAttach) {
+        attachEntityPromises.push(...entitiesToAttach.map(entity => onAttach(key, entity.id)) || [])
+      }
+      if (entitiesToDetach && onDetach) {
+        detachEntityPromises.push(...entitiesToDetach.map(entity => onDetach(key, entity.slug)) || [])
+      }
+    })
+    return Promise.all([
+      ...attachEntityPromises,
+      ...detachEntityPromises,
+    ])
   }
 
   // Delete data function
@@ -116,14 +184,23 @@ const useFormHandling = <T, R> ({
       .catch(handleResponseErrors)
   }
 
+  const mapDataWithManyToMany = (data: T) => {
+    const mappedData: any = mapData(data)
+    if (manyToManyFields) {
+      manyToManyFields.forEach((key) => {
+        mappedData[key] = data[key]
+      })
+    }
+    return mappedData
+  }
+
   // Set up autosave
   useAutosave({
     canAutosave: !isNew,
     delay: 5000,
     handleOnSave,
-    persistedData,
-    newData: data,
-    mapData
+    persistedData: persistedData && mapDataWithManyToMany(persistedData),
+    newData: data && mapDataWithManyToMany(data),
   })
 
   return {
