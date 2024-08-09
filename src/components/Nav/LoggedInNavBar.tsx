@@ -4,10 +4,15 @@ import Menu from './Menu'
 import { AlignLeftIcon, LogOutIcon, User2Icon } from 'lucide-react'
 import { logout } from '../../services/AuthService'
 import { setToken } from '../../reducers/auth/authSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
+import { useAppDispatch } from '../../hooks'
 import MenuItem from './MenuItem'
 import { MenuItemInterface } from './MenuItemInterface'
+import {
+  useCampaignIndexDataManager,
+  useCompendiumIndexDataManager,
+  useNotebookIndexDataManager,
+  useSystemIndexDataManager
+} from '../../hooks/DataManagers'
 
 interface NavBarParams {
   setSideBarOpen: (open: boolean) => any;
@@ -27,10 +32,10 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
       })
   }
 
-  const { systems } = useAppSelector((state: RootState) => state.systems) // redux
-  const { compendia } = useAppSelector((state: RootState) => state.compendia) // redux
-  const { campaigns } = useAppSelector((state: RootState) => state.campaigns) // redux
-  const { notebooks } = useAppSelector((state: RootState) => state.notebooks) // redux
+  const { systems } = useSystemIndexDataManager()
+  const { compendia } = useCompendiumIndexDataManager()
+  const { campaigns } = useCampaignIndexDataManager()
+  const { notebooks } = useNotebookIndexDataManager()
 
   const menuItems: MenuItemInterface[] = [
     {

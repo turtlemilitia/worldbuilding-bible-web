@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
-import { useCharacterFields, useCharacterForm } from '../../../hooks/useCharacterForm'
-import { TCharacter } from '../../../types'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import useImageSelection from '../../../hooks/useImageSelection'
-import useCharacterPageData from './useCharacterPageData'
+import { useCharacterForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Character: FunctionComponent = (): JSX.Element => {
+const Character: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useCharacterPageData();
+  const { characterId } = useParams() as { characterId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useCharacterForm(pageData);
-
-  const fields = useCharacterFields({
-    compendium,
-    character: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TCharacter, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TCharacter, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'characters',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useCharacterForm({
+    characterId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/characters/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/characters`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Character'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

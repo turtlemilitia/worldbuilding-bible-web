@@ -1,15 +1,18 @@
-import { Combobox, Listbox, Transition } from '@headlessui/react'
+import { Combobox, Field, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { TSelectOption } from './FieldMapper'
+import Label from './Label'
 
 type TProp = {
+  label: string
+  required?: boolean
   value: TSelectOption|null;
   onChange: (value: TSelectOption|null) => any;
   options: (TSelectOption|null)[];
   disabled?: boolean
 }
-const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disabled }) => {
+const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disabled, label, required }) => {
   const [query, setQuery] = useState('')
 
   const filteredOptions =
@@ -20,8 +23,9 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
       })
 
   return (
-    <div className="relative">
-      <Combobox value={value} onChange={onChange} nullable disabled={disabled}>
+    <Field className="relative">
+      <Label required={required}>{label}</Label>
+      <Combobox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
           <>
             <Combobox.Button
@@ -49,7 +53,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
                     value={option}
                     as={Fragment}
                   >
-                    {({ active, selected }) => (
+                    {({ focus, selected }) => (
                       <li className="py-1 flex justify-between hover:cursor-pointer">
                         {option?.name}
                         {selected && <CheckIcon className="text-stone-700 h-5 w-5"/>}
@@ -62,7 +66,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
           </>
         )}
       </Combobox>
-    </div>
+    </Field>
   )
 }
 

@@ -1,4 +1,4 @@
-import SelectImageButton from './component'
+import SelectImageButton from './SelectImageButton'
 
 export {
   SelectImageButton

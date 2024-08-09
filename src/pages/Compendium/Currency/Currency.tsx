@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TCurrency } from '../../../types'
-import useCurrencyPageData from './useCurrencyPageData'
-import { useCurrencyFields, useCurrencyForm } from '../../../hooks/useCurrencyForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useCurrencyForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Currency: FunctionComponent = (): JSX.Element => {
+const Currency: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useCurrencyPageData();
+  const { currencyId } = useParams() as { currencyId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useCurrencyForm(pageData);
-
-  const fields = useCurrencyFields({
-    compendium,
-    currency: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TCurrency, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TCurrency, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'currencies',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useCurrencyForm({
+    currencyId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/currencies/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/currencies`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Currency'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

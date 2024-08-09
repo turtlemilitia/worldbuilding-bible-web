@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TItem } from '../../../types'
-import useItemPageData from './useItemPageData'
-import { useItemFields, useItemForm } from '../../../hooks/useItemForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useItemForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Item: FunctionComponent = (): JSX.Element => {
+const Item: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useItemPageData();
+  const { itemId } = useParams() as { itemId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useItemForm(pageData);
-
-  const fields = useItemFields({
-    compendium,
-    item: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TItem, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TItem, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'items',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useItemForm({
+    itemId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/items/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/items`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Item'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

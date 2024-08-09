@@ -2,24 +2,29 @@ import { TUseCampaignsMapping } from './types'
 import { useAppDispatch } from '../../hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { TEncounter, TQuest, TSession, TTypesAllowed } from '../../types'
-import { removeCampaignChildData } from '../../reducers/campaign/campaignSlice'
 import { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
 import { StarIcon, StickyNoteIcon, SwordsIcon } from 'lucide-react'
-import { destroyEncounter } from '../../services/EncounterService'
 import React from 'react'
-import { destroyQuest } from '../../services/QuestService'
+import {
+  useCampaignDataManager,
+  useEncounterDataManager,
+  useQuestDataManager,
+  useSessionDataManager
+} from '../DataManagers'
 
 const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
 
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const location = useLocation()
 
+  const { destroy: destroyEncounter } = useEncounterDataManager()
+  const { destroy: destroyQuest } = useQuestDataManager()
+  const { destroy: destroySession } = useSessionDataManager()
+
   const prefix = `/campaigns/${campaignId}`
 
   const onDeleted = (field: string, slug: TTypesAllowed['slug']) => {
-    dispatch(removeCampaignChildData({ field, id: slug }))
     if (location.pathname.includes(`${prefix}/${field}/${slug}`)) {
       navigate(`${prefix}`)
     }
@@ -48,8 +53,8 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
     title: session.name,
     to: `${prefix}/sessions/${session.slug}`,
     icon: (props) => <StickyNoteIcon {...props}/>,
-    onDelete: () => destroyQuest(session.slug)
-      .then(() => onDeleted('quests', session.slug))
+    onDelete: () => destroySession(session.slug)
+      .then(() => onDeleted('sessions', session.slug))
   })
 
   return {

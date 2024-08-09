@@ -1,3 +1,3 @@
-import ListAddUsers from './component'
+import ListAddUsers from './ListAddUsers'
 
 export default ListAddUsers;

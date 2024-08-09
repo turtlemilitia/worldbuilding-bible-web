@@ -4,7 +4,7 @@ import { Button } from '../Forms/Fields/Button'
 import { FileInput } from '../Forms/Fields/FileInput'
 import { readURL } from '../../utils/fileManager'
 import { PlusIcon, XIcon } from 'lucide-react'
-import { destroyImage, indexImages, storeImage, updateImage } from '../../services/ImageService'
+import ImageService from '../../services/ApiService/Images/ImageService'
 import { TImage, TImagePickerProps } from './types'
 import LoadingWrapper from '../LoadingWrapper'
 import useErrorHandling from '../../hooks/useErrorHandling'
@@ -38,7 +38,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
 
   useEffect(() => {
     setLoading(true)
-    indexImages()
+    ImageService.index()
       .then(({ data }) => {
         setImages(data.data.map(image => ({
           uniqueId: Math.random().toString().slice(2),
@@ -95,7 +95,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
     setImageData(data.uniqueId, { saving: true })
 
     if (data.id) {
-      updateImage(data.id, { name: data.name, alt: data.alt })
+      ImageService.update(data.id, { name: data.name, alt: data.alt })
         .then((response) => {
           setImageData(data.uniqueId, { ...response.data.data, saving: false })
         })
@@ -112,7 +112,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
       formData.append('name', data.name);
       formData.append('alt', data.name);
 
-      storeImage(formData)
+      ImageService.store(formData)
         .then((response) => {
           setImageData(data.uniqueId, { ...response.data.data, saving: false })
         })
@@ -131,7 +131,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
     }
     resetErrors()
     setImageData(uniqueId, { saving: true })
-    destroyImage(id)
+    ImageService.destroy(id)
       .then(() => {
         removeImage(uniqueId)
       })

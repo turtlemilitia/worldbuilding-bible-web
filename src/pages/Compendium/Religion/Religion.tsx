@@ -1,43 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TReligion } from '../../../types'
-import useReligionPageData from './useReligionPageData'
-import { useReligionFields, useReligionForm } from '../../../hooks/useReligionForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useReligionForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Religion: FunctionComponent = (): JSX.Element => {
+const Religion: FunctionComponent = () => {
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const navigate = useNavigate()
 
-  const pageData = useReligionPageData();
+  const { religionId } = useParams() as { religionId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const form = useReligionForm(pageData);
-
-  const fields = useReligionFields({
-    compendium,
-    religion: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TReligion, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TReligion, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'religions',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useReligionForm({
+    religionId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/religions/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/religions`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Religion'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

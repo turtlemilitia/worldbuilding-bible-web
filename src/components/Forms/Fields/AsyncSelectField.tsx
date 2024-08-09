@@ -3,14 +3,17 @@ import { CheckIcon, ChevronDownIcon, DotIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { TSelectOption } from './FieldMapper'
 import { debounce } from 'lodash';
+import Label from './Label'
 
 type TProp = {
+  label: string
+  required?: boolean
   value: TSelectOption|null;
   onChange: (value: TSelectOption|null) => any;
   search: (term: string) => Promise<TSelectOption[]>;
   disabled?: boolean
 }
-const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, disabled }) => {
+const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, disabled, label, required }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([]);
 
@@ -23,8 +26,9 @@ const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, d
   }, 500)
 
   return (
-    <div className="relative">
-      <Combobox value={value} onChange={onChange} nullable disabled={disabled}>
+    <Label className="relative">
+      <Label required={required}>{label}</Label>
+      <Combobox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
           <>
             <Combobox.Button
@@ -69,7 +73,7 @@ const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, d
           </>
         )}
       </Combobox>
-    </div>
+    </Label>
   )
 }
 

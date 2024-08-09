@@ -1,45 +1,30 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TStory } from '../../../types'
-import useStoryPageData from './useStoryPageData'
-import { useStoryFields, useStoryForm } from '../../../hooks/useStoryForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useStoryForm } from '../../../hooks/Forms'
+import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
-const Story: FunctionComponent = (): JSX.Element => {
+const Story: FunctionComponent = () => {
 
-  const { storyId } = useParams() as { compendiumId: string; storyId: string } // router
+  const navigate = useNavigate()
 
-  const { compendium } = useAppSelector((state: RootState) => state.compendium) // redux
+  const { storyId } = useParams() as { storyId: string } // router
+  const { compendiumPath } = useUrlFormatter()
 
-  const pageData = useStoryPageData();
-
-  const form = useStoryForm(pageData);
-
-  const fields = useStoryFields({
-    compendium,
-    story: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TStory, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TStory, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'stories',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useStoryForm({
+    storyId,
+    onCreated: (data) => {
+      navigate(`${compendiumPath}/stories/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`${compendiumPath}/stories`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Story'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

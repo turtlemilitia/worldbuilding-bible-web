@@ -1,35 +1,29 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { FunctionComponent, JSX } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../components/Post'
-import useCampaignPageData from './useCampaignPageData'
-import { useCampaignFields, useCampaignForm } from '../../hooks/useCampaignForm'
-import useImageSelection from '../../hooks/useImageSelection'
+import { TCampaign } from '../../types'
+import { useCampaignForm } from '../../hooks/Forms'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 
-  const pageData = useCampaignPageData();
+  const navigate = useNavigate()
 
-  const form = useCampaignForm(pageData);
+  const { campaignId } = useParams() as { campaignId: string }
 
-  const fields = useCampaignFields({
-    campaign: pageData.persistedData,
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'campaign',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useCampaignForm({
+    campaignId,
+    onCreated: (data: TCampaign) => {
+      navigate(`/campaigns/${data?.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`/campaigns`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Campaign'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

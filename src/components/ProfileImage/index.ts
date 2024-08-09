@@ -1,3 +1,3 @@
-import ProfileImage from './component'
+import ProfileImage from './ProfileImage'
 
 export default ProfileImage

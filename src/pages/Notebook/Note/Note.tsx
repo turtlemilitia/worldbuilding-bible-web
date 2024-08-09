@@ -1,39 +1,28 @@
-import React, { FunctionComponent, JSX } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import useNotePageData from './useNotePageData'
-import { useNoteFields, useNoteForm } from '../../../hooks/useNoteForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useNoteForm } from '../../../hooks/Forms'
 
-const Note: FunctionComponent = (): JSX.Element => {
+const Note: FunctionComponent = () => {
 
-  const { notebook } = useAppSelector((state: RootState) => state.notebook) // redux
+  const navigate = useNavigate()
 
-  const pageData = useNotePageData();
+  const { notebookId, noteId } = useParams() as { notebookId: string, noteId: string } // router
 
-  const form = useNoteForm(pageData);
-
-  const fields = useNoteFields({
-    notebook,
-    note: pageData.persistedData,
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'note',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useNoteForm({
+    noteId,
+    onCreated: (data) => {
+      navigate(`/notebooks/${notebookId}/notes/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`/notebooks/${notebookId}/notes`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Note'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

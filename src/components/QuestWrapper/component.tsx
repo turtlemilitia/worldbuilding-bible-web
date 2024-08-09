@@ -1,26 +1,21 @@
-import React, { createContext, FunctionComponent, useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
 import QuestSidebar from './QuestSidebar'
-import { TQuestType } from '../../types'
-import { indexQuestTypes } from '../../services/QuestTypeService'
-
-export const QuestWrapperContext = createContext<TQuestType[]|undefined>(undefined)
+import { useCampaignDataManager } from '../../hooks/DataManagers'
+import useQuestTypeIndexDataManager from '../../hooks/DataManagers/Campaigns/useQuestTypeIndexDataManager'
 
 const QuestWrapper: FunctionComponent = () => {
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { campaign } = useCampaignDataManager()
+  const { questTypes } = useQuestTypeIndexDataManager()
 
-  const { questId } = useParams();
-  const navigate = useNavigate();
-
-  const [types, setTypes] = useState<TQuestType[]>()
+  const { questId } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
 
     if (!campaign?.slug || questId) {
-      return;
+      return
     }
     if (campaign.quests?.length > 1) {
       navigate(`/campaigns/${campaign.slug}/quests/${campaign.quests[0]?.slug}`)
@@ -30,21 +25,15 @@ const QuestWrapper: FunctionComponent = () => {
 
   }, [campaign?.quests])
 
-  useEffect(() => {
-
-    indexQuestTypes().then(response => setTypes(response.data.data))
-
-  }, [])
-
   return (
-    <QuestWrapperContext.Provider value={types}>
-      {campaign && types && (
+    <>
+      {campaign && questTypes && (
         <QuestSidebar campaign={campaign}/>
       )}
       <div className="relative w-full">
         <Outlet/>
       </div>
-    </QuestWrapperContext.Provider>
+    </>
   )
 }
 

@@ -2,10 +2,11 @@ import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit'
 
 type TState = {
   loading: boolean;
+  backgroundImage?: string;
 }
 
 const initialState: TState = {
-  loading: true
+  loading: true,
 }
 
 const postSlice: Slice<TState> = createSlice({
@@ -14,12 +15,20 @@ const postSlice: Slice<TState> = createSlice({
   reducers: {
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload
+    },
+    setBackgroundImage: (state, action: PayloadAction<string>) => {
+      state.backgroundImage = action.payload
+    },
+    clearBackgroundImage: (state) => {
+      state.backgroundImage = undefined
     }
   }
 })
 
 export const {
-  setLoading
+  setLoading,
+  setBackgroundImage,
+  clearBackgroundImage
 } = postSlice.actions
 
 export default postSlice.reducer

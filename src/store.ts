@@ -29,6 +29,10 @@ import planeSlice from './reducers/compendium/plane/planeSlice'
 import pantheonSlice from './reducers/compendium/pantheon/pantheonSlice'
 import imageTypesIndexSlice from './reducers/imageType/imageTypesIndexSlice'
 import postSlice from './reducers/post/postSlice'
+import governmentTypesIndexSlice from './reducers/governmentType/governmentTypesIndexSlice'
+import locationTypesIndexSlice from './reducers/locationType/locationTypesIndexSlice'
+import questTypesIndexSlice from './reducers/questType/questTypesIndexSlice'
+import encounterTypesIndexSlice from './reducers/encounterType/encounterTypesIndexSlice'
 
 export const store = configureStore({
   reducer: {
@@ -41,6 +45,10 @@ export const store = configureStore({
     campaigns: campaignsIndexSlice,
     notebooks: notebooksIndexSlice,
     imageTypes: imageTypesIndexSlice,
+    governmentTypes: governmentTypesIndexSlice,
+    locationTypes: locationTypesIndexSlice,
+    questTypes: questTypesIndexSlice,
+    encounterTypes: encounterTypesIndexSlice,
     // individual
     system: systemSlice,
     compendium: compendiumSlice,

@@ -1,20 +1,15 @@
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
 import EncounterSidebar from './EncounterSidebar'
 import { TEncounterType } from '../../types'
-import { indexEncounterTypes } from '../../services/EncounterTypeService'
+import { useCampaignDataManager } from '../../hooks/DataManagers'
 
-export const EncounterWrapperContext = createContext<TEncounterType[]|undefined>(undefined)
 const EncounterWrapper: FunctionComponent = () => {
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const { campaign } = useCampaignDataManager()
 
   const { encounterId } = useParams();
   const navigate = useNavigate();
-
-  const [types, setTypes] = useState<TEncounterType[]>()
 
   useEffect(() => {
 
@@ -29,19 +24,15 @@ const EncounterWrapper: FunctionComponent = () => {
 
   }, [campaign?.slug])
 
-  useEffect(() => {
-    indexEncounterTypes().then(response => setTypes(response.data.data))
-  }, [])
-
   return (
-    <EncounterWrapperContext.Provider value={types}>
-      {campaign && types && (
+    <>
+      {campaign && (
         <EncounterSidebar campaign={campaign}/>
       )}
       <div className="relative w-full">
         <Outlet/>
       </div>
-    </EncounterWrapperContext.Provider>
+    </>
   )
 }
 

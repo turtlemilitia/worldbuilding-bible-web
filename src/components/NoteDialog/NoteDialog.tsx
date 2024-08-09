@@ -1,54 +1,44 @@
-import { TNote, TNotebook } from '../../types'
+import { TGenericPostBasic, TNote } from '../../types'
 import React, { FunctionComponent, useMemo } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
-import { useNoteForm } from '../../hooks/useNoteForm'
-import useNoteDialogData from "./useNoteDialogData";
+import useNoteDataManager from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
+import { useNoteForm } from '../../hooks/Forms'
 
-type TProps = {
+type TProps<TEntity extends TGenericPostBasic> = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  notebookId: TNotebook['slug'];
   noteId: TNote['slug'];
-  onCreated?: (data: TNote) => any;
-  onUpdated?: (data: Partial<TNote>) => any;
-  onDeleted?: (id: TNote['slug']) => any;
+  onCreated?: (data: any) => any
+  onUpdated?: (data: any) => any
+  onDeleted?: (id: string|number) => any
 }
-const NoteDialog: FunctionComponent<TProps> = ({
+const NoteDialog: FunctionComponent<TProps<any & TGenericPostBasic>> = ({
   isOpen,
   setIsOpen,
-  notebookId,
   noteId,
   onCreated,
   onUpdated,
   onDeleted
 }) => {
 
-  const isNew: boolean = useMemo(() => noteId === 'new', [noteId])
-
-  const pageData = useNoteDialogData({
-    notebookId,
-    noteId,
-    setIsOpen,
-    onCreated,
-    onUpdated,
-    onDeleted
-  })
+  const { note } = useNoteDataManager();
 
   const form = useNoteForm({
-    isNew,
-    ...pageData
+    noteId,
+    onCreated,
+    onUpdated,
+    onDeleted: () => {
+      setIsOpen(false)
+      onDeleted && onDeleted((note as TNote).slug)
+    },
   });
-
-  const canEdit: boolean = useMemo(() => isNew || pageData.persistedData?.canUpdate !== undefined, [isNew, pageData.persistedData?.canUpdate])
 
   return (
     <PostDialog
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      isNew={isNew}
-      pageTypeName={'Character'}
+      pageTypeName={'Note'}
       form={form}
-      canEdit={canEdit}
     />
   )
 }

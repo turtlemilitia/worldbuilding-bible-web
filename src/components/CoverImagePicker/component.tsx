@@ -3,16 +3,13 @@ import { Popover } from '@headlessui/react'
 import { SelectImageButton } from '../SelectImageButton'
 import { ImagePicker } from '../ImagePicker'
 import { TCoverImagePickerProps } from './types'
-import { attachImageToEntity } from '../../services/ImageableService'
-import { useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
 
 const CoverImagePicker: FunctionComponent<TCoverImagePickerProps> = ({
   onCoverImageSelected
 }) => {
 
   return (
-    <Popover className="z-40 absolute -bottom-7 right-10">
+    <Popover>
 
       <Popover.Button className="outline-none">
         <SelectImageButton/>

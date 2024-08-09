@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useFormHandlingProps, useFormHandlingType } from './types'
+import { useEffect, useMemo, useState } from 'react'
+import { TUseFormHandlingProps, TFormHandling } from './types'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import equal from 'fast-deep-equal/react'
+import { TGenericPost } from '../../types'
 
-const useFormHandling = <T> ({
+const useFormHandling = <T, R> ({
   id,
   isNew,
   mapData,
@@ -21,10 +22,7 @@ const useFormHandling = <T> ({
   // data which has been saved/persisted, used to compare against new data for the autosave
   // also possibly used in other child components, eg Campaign and Compendium
   persistedData,
-  setPersistedData,
-  updatePersistedData,
-  resetPersistedData,
-}: useFormHandlingProps<T>): useFormHandlingType<T> => {
+}: TUseFormHandlingProps<T, R>): TFormHandling<T> => {
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
 
@@ -32,14 +30,13 @@ const useFormHandling = <T> ({
   const [loading, setLoading] = useState(true)
   // when we are saving (autosave)
   const [saving, setSaving] = useState(false)
-  const [newData, setNewData] = useState<Partial<T>>()
+  const [data, setData] = useState<T>()
 
   // Fetch data on mount
   useEffect(() => {
     if (!isNew) {
       handleOnFetch()
     } else {
-      resetPersistedData && resetPersistedData()
       setLoading(false)
     }
 
@@ -52,14 +49,14 @@ const useFormHandling = <T> ({
 
   // Sync newData with persistedData
   useEffect(() => {
-    if (!equal(persistedData, newData)) {
-      setNewData(persistedData)
+    if (!equal(persistedData, data)) {
+      setData(persistedData)
     }
   }, [persistedData])
 
   // Handle field changes
-  const handleOnFieldChange = (name: string, value: string) => setNewData((prevState) => ({
-    ...prevState,
+  const handleOnFieldChange = (name: string, value: string) => setData((prevState) => ({
+    ...prevState as T,
     [name]: value
   }))
 
@@ -76,7 +73,6 @@ const useFormHandling = <T> ({
     onFetch()
       .then((apiData) => {
         onFetched && onFetched(apiData)
-        setPersistedData(apiData)
       })
       .catch(handleResponseErrors)
       .finally(() => {
@@ -85,20 +81,23 @@ const useFormHandling = <T> ({
   }
 
   // Save data function
+  // todo need to handle when many-to-many or one-to-many relations change
   const handleOnSave = () => {
+    if (!data) {
+      console.error('cannot save empty data')
+      return
+    }
     setSaving(true)
     if (isNew) {
-      onCreate(newData)
+      onCreate(data)
         .then((data) => {
-          setPersistedData(data)
           onCreated && onCreated(data)
           setSaving(false)
         })
         .catch(handleOnSaveError)
     } else {
-      onUpdate(newData)
+      onUpdate(data)
         .then((data) => {
-          updatePersistedData(data)
           onUpdated && onUpdated(data)
           setSaving(false)
         })
@@ -123,7 +122,7 @@ const useFormHandling = <T> ({
     delay: 5000,
     handleOnSave,
     persistedData,
-    newData,
+    newData: data,
     mapData
   })
 
@@ -131,8 +130,8 @@ const useFormHandling = <T> ({
     errors,
     loading,
     saving,
-    newData,
-    setNewData,
+    data,
+    setData,
     onFieldChange: handleOnFieldChange,
     onFetch: handleOnFetch,
     onSave: handleOnSave,

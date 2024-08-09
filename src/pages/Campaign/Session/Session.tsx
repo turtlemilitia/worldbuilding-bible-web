@@ -1,43 +1,28 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
-import { useAppSelector } from '../../../hooks'
-import { useParams } from 'react-router-dom'
-import { RootState } from '../../../store'
+import React, { FunctionComponent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
-import { TSession } from '../../../types'
-import useSessionPageData from './useSessionPageData'
-import { useSessionFields, useSessionForm } from '../../../hooks/useSessionForm'
-import useImageSelection from '../../../hooks/useImageSelection'
+import { useSessionForm } from '../../../hooks/Forms'
 
-const Session: FunctionComponent = (): JSX.Element => {
+const Session: FunctionComponent = () => {
 
-  const { campaign } = useAppSelector((state: RootState) => state.campaign) // redux
+  const navigate = useNavigate()
 
-  const pageData = useSessionPageData();
+  const { campaignId, sessionId } = useParams() as { campaignId: string, sessionId: string } // router
 
-  const form = useSessionForm(pageData);
-
-  const fields = useSessionFields({
-    campaign,
-    session: pageData.persistedData,
-    onNoteCreated: (note) => pageData.setPersistedData({ ...form.newData as TSession, notes: [...(form.newData?.notes ?? []), note] }),
-    onNoteUpdated: (note) => pageData.setPersistedData({ ...form.newData as TSession, notes: [...(form.newData?.notes ?? []), note] })
-  });
-
-  const imageHandler = useImageSelection({
-    entityType: 'sessions',
-    entityId: pageData.persistedData?.slug,
-    persistedData: pageData.persistedData,
-    updatePersistedData: pageData.updatePersistedData
+  const form = useSessionForm({
+    sessionId,
+    onCreated: (data) => {
+      navigate(`/campaign/${campaignId}/sessions/${data.slug}`)
+    },
+    onDeleted: () => {
+      navigate(`/campaign/${campaignId}/sessions`)
+    },
   })
 
   return (
     <Post
-      isNew={pageData.isNew}
       pageTypeName={'Session'}
       form={form}
-      fields={fields}
-      canEdit={pageData.canEdit}
-      imageHandler={imageHandler}
     />
   )
 }

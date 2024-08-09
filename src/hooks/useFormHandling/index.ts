@@ -1,10 +1,10 @@
 import useFormHandling from './useFormHandling'
-import { useFormHandlingProps } from './types'
+import { TUseFormHandlingProps } from './types'
 
 export {}
 
 export type {
-  useFormHandlingProps
+  TUseFormHandlingProps
 }
 
 export default useFormHandling;
