@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { SidebarItemInterface } from './Sidebar'
 import { ChevronDownIcon, PlusIcon, Trash2Icon } from 'lucide-react'
 import LoadingSpinner from '../LoadingSpinner'
+import { Button } from '@headlessui/react'
 
 interface TProps {
   item: SidebarItemInterface;
@@ -33,7 +34,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
   const handleOpenChildren = () => {
     if (!open) {
       if (!children?.length && loadChildren) {
-        setLoadingChildren(true);
+        setLoadingChildren(true)
         loadChildren()
       }
     }
@@ -42,17 +43,17 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
 
   const handleOnDelete = () => {
     if (canDelete && onDelete) {
-      setDeleting(true);
+      setDeleting(true)
       onDelete()
         .then(() => {
-          setDeleting(false);
+          setDeleting(false)
         })
     }
   }
 
   useEffect(() => {
     if (children?.length) {
-      setLoadingChildren(false);
+      setLoadingChildren(false)
     }
   }, [children?.length])
 
@@ -60,36 +61,43 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     <li className="my-3">
       <div className="flex justify-between">
         {to ? (
-          <NavLink to={to} className={({ isActive }) => `${isActive ? 'text-amber-500' : ''} hover:text-amber-500 flex items-center`}>
-            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}<span>{title}</span>
+          <NavLink to={to}
+                   className={({ isActive }) => `${isActive ? 'text-amber-500' : ''} hover:text-amber-500 flex items-center`}>
+            {icon && <span className="w-6">{icon({ color: 'white', size: 14, className: 'inline-block mr-3' })} </span>}<span>{title}</span>
           </NavLink>
         ) : (
           <div className="flex items-center">
-            {icon && icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}<span>{title}</span>
+            {icon && <span className="w-6">{icon({
+              color: 'white',
+              size: 14,
+              className: 'inline-block mr-3'
+            })}</span>}<span>{title}</span>
           </div>
         )}
         {(canAddNew || collapsable || onDelete) && (
           <div className="flex">
             {collapsable && (
-              <button
+              <Button
                 className={`${!open && '-scale-y-100'} transition-transform duration-1000`}
                 onClick={handleOpenChildren}
               >
                 <ChevronDownIcon className="h-5"/>
-              </button>
+              </Button>
             )}
             {canAddNew && addNewLink && (
-              <Link
-                to={addNewLink}
-                state={addNewLinkState}
-              >
-                <PlusIcon className="h-5"/>
-              </Link>
+              <Button>
+                <Link
+                  to={addNewLink}
+                  state={addNewLinkState}
+                >
+                  <PlusIcon className="h-5"/>
+                </Link>
+              </Button>
             )}
             {canDelete && !deleting && (
-              <button onClick={handleOnDelete}>
+              <Button onClick={handleOnDelete}>
                 <Trash2Icon className="h-4 text-stone-400"/>
-              </button>
+              </Button>
             )}
             {deleting && (
               <LoadingSpinner size={20}/>
@@ -102,8 +110,8 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
           {children
             .sort((a, b) => a.title.localeCompare(b.title))
             .map((item, index) => {
-            return <SidebarItem item={item} key={index}/>
-          })}
+              return <SidebarItem item={item} key={index}/>
+            })}
         </ul>
       )}
       {loadingChildren && (

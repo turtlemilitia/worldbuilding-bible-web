@@ -8,6 +8,7 @@ const api = axios.create({
 });
 
 api.defaults.withCredentials = true
+api.defaults.withXSRFToken = true
 api.interceptors.response.use(
   response => response,
   error => {
