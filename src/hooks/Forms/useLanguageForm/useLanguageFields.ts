@@ -9,10 +9,10 @@ const useLanguageFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  if (manager.language && manager.compendium?.notebook) {
+  if (manager.language && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

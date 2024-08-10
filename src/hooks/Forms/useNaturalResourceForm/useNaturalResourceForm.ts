@@ -17,7 +17,7 @@ const useNaturalResourceForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TNaturalResource>): TForm<TNaturalResource> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes;quests', [])
 
   const manager = useNaturalResourceDataManager()
 

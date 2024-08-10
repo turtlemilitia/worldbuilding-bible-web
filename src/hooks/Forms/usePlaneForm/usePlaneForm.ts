@@ -17,7 +17,7 @@ const usePlaneForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TPlane>): TForm<TPlane> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = usePlaneDataManager()
 

@@ -9,10 +9,10 @@ const usePantheonFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  if (manager.pantheon && manager.compendium?.notebook) {
+  if (manager.pantheon && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

@@ -26,10 +26,10 @@ const useQuestFields = (): TUseFields => {
     )
   }
 
-  if (manager.quest && manager.campaign?.notebook) {
+  if (manager.quest && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

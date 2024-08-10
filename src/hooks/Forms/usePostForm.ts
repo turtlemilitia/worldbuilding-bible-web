@@ -83,7 +83,6 @@ const usePostForm = <T extends TGenericPost, R> ({
     manyToManyFields: fields?.filter(({ type }) => ['multiSelect', 'asyncMultiSelect'].includes(type))
       .map(({ name }) => name as keyof T) || [],
     onAttach: async (name: keyof T, attachedId) => {
-      debugger;
       switch (name as TOneOfAttachableNames) {
         case 'quests':
           return manager.quests?.attach(id, { questId: attachedId })
@@ -102,7 +101,6 @@ const usePostForm = <T extends TGenericPost, R> ({
       }
     },
     onDetach: async (name: keyof T, attachedId) => {
-      debugger;
       return manager[name as TOneOfAttachableNames]?.detach(id, attachedId)
     },
 

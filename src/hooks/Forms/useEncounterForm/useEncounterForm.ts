@@ -11,7 +11,7 @@ type TOwnProps = {
 }
 const useEncounterForm = ({ encounterId, onFetched, onCreated, onUpdated, onDeleted }: TOwnProps & TUseFormProps<TEncounter>): TForm<TEncounter> => {
 
-  const include = useMemo(() => 'type', [])
+  const include = useMemo(() => 'type;notes;quests', [])
 
   const manager = useEncounterDataManager();
 

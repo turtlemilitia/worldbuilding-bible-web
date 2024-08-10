@@ -120,14 +120,12 @@ const useFormHandling = <T, R> ({
     }
     setSaving(true)
 
-    debugger;
     // Process the data for comparison and saving
     const processedPersistedData = processedData(persistedData)
     const processedNewData = processedData(data)
 
     // Compare the processed data and save if they are different
     try {
-      debugger;
       if (isNew) {
         if (!equal(processedPersistedData, processedNewData)) {
           const result = await onCreate(data)

@@ -17,7 +17,7 @@ const useFactionForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TFaction>): TForm<TFaction> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useFactionDataManager()
 

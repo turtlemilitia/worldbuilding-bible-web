@@ -17,10 +17,10 @@ const useFactionFields = (): TUseFields => {
       options: manager.compendium?.characters || []
     })
   }
-  if (manager.faction && manager.compendium?.notebook) {
+  if (manager.faction && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

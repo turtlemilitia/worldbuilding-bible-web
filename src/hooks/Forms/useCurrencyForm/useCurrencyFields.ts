@@ -9,10 +9,10 @@ const useCurrencyFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  if (manager.currency && manager.compendium?.notebook) {
+  if (manager.currency && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

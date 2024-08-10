@@ -12,7 +12,7 @@ const useSpeciesFields = (): TUseFields => {
   if (manager.species && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

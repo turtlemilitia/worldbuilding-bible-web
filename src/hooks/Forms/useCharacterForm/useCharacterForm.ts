@@ -17,7 +17,7 @@ const useCharacterForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TCharacter>): TForm<TCharacter> => {
 
-  const include = useMemo(() => 'species;languages;factions;encounters;quests', [])
+  const include = useMemo(() => 'species;languages;factions;notes;encounters;quests', [])
 
   const manager = useCharacterDataManager()
 

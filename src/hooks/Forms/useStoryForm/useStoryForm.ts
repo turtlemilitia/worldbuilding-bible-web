@@ -17,7 +17,7 @@ const useStoryForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TStory>): TForm<TStory> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes;encounters;quests', [])
 
   const manager = useStoryDataManager()
 

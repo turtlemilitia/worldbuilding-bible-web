@@ -9,10 +9,10 @@ const useStoryFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  if (manager.story && manager.compendium?.notebook) {
+  if (manager.story && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

@@ -9,10 +9,10 @@ const useNaturalResourceFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  if (manager.naturalResource && manager.compendium?.notebook) {
+  if (manager.naturalResource && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

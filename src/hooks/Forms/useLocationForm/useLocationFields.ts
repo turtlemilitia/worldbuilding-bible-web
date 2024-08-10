@@ -66,10 +66,10 @@ const useLocationFields = (): TUseFields => {
       }
     }
 
-    if (manager.location && manager.compendium?.notebook) {
+    if (manager.location && notebook?.notes) {
       fields.push(
         noteField({
-          options: notebook?.notes || [],
+          options: notebook.notes,
         })
       )
     }
