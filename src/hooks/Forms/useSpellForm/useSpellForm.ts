@@ -17,7 +17,7 @@ const useSpellForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TSpell>): TForm<TSpell> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useSpellDataManager()
 

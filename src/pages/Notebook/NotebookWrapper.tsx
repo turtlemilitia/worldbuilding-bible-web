@@ -4,6 +4,7 @@ import { useNotebookDataManager } from '../../hooks/DataManagers'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import { StickyNoteIcon } from 'lucide-react'
 import useNoteDataManager from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
+import { notebookIncludes } from '../../hooks/Forms/useNotebookForm/useNotebookForm'
 
 const NotebookWrapper = (): JSX.Element => {
 
@@ -15,7 +16,7 @@ const NotebookWrapper = (): JSX.Element => {
   useEffect(() => {
     const isNew: boolean = notebookId === 'new'
     if (!isNew) {
-      view(notebookId, {include: 'notes'})
+      view(notebookId, {include: notebookIncludes})
     }
     return () => {
       clearData(notebookId)

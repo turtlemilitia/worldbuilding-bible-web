@@ -1,19 +1,29 @@
 import { selectField, TField } from '../../fieldTools'
 import {TUseFields} from "../../../components/Post/types";
-import { useAppSelector } from '../../../hooks'
-import { RootState } from '../../../store'
+import { useCompendiumIndexDataManager, useNotebookIndexDataManager } from '../../DataManagers'
 
 const useCampaignFields = (): TUseFields => {
 
-  const { data: compendia } = useAppSelector((state: RootState) => state.compendia) // redux
+  const { compendia } = useCompendiumIndexDataManager()
+  const {notebooks} = useNotebookIndexDataManager()
 
   const fields: TField[] = [
     selectField({
       name: 'compendium',
       label: 'Compendium',
-      options: compendia
+      options: compendia ?? []
     })
   ]
+
+  if (notebooks && notebooks.length > 0) {
+    fields.push(
+      selectField({
+        name: 'notebook',
+        label: 'Notebook',
+        options: notebooks,
+      })
+    )
+  }
 
   return { fields, ready: true }
 }

@@ -17,7 +17,7 @@ const useDeityForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TDeity>): TForm<TDeity> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useDeityDataManager()
 

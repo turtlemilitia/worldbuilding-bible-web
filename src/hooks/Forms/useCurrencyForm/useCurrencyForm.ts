@@ -17,7 +17,7 @@ const useCurrencyForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TCurrency>): TForm<TCurrency> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useCurrencyDataManager()
 

@@ -17,7 +17,7 @@ const useReligionForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TReligion>): TForm<TReligion> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useReligionDataManager()
 

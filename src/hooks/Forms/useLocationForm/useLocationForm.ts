@@ -17,7 +17,7 @@ const useLocationForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TLocation>): TForm<TLocation> => {
 
-  const include = useMemo(() => 'parent;type;governmentType;children', [])
+  const include = useMemo(() => 'parent;type;governmentType;children;notes;encounters;quests', [])
 
   const manager = useLocationDataManager()
 
@@ -26,7 +26,7 @@ const useLocationForm = ({
   const mapData = (data: any): TLocationRequest => ({
     name: data.name,
     content: data.content,
-    typeId: data.type.id,
+    typeId: data.type?.id,
     aliases: data.aliases,
     demonym: data.demonym,
     population: data.population,

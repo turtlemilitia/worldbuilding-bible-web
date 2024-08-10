@@ -17,7 +17,7 @@ const useLanguageForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TLanguage>): TForm<TLanguage> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useLanguageDataManager()
 

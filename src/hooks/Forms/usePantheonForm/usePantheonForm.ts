@@ -17,7 +17,7 @@ const usePantheonForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TPantheon>): TForm<TPantheon> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = usePantheonDataManager()
 

@@ -9,7 +9,7 @@ const useSpellFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  if (manager.spell && manager.compendium?.notebook) {
+  if (manager.spell && notebook?.notes) {
     fields.push(
       noteField({
         options: notebook?.notes || [],

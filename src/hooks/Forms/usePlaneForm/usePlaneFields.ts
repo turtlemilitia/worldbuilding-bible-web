@@ -9,10 +9,10 @@ const usePlaneFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  if (manager.plane && manager.compendium?.notebook) {
+  if (manager.plane && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

@@ -17,7 +17,7 @@ const useItemForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TItem>): TForm<TItem> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes;encounters;quests', [])
 
   const manager = useConceptDataManager()
 

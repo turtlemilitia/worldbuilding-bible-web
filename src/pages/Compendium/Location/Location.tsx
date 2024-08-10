@@ -8,7 +8,6 @@ const Location: FunctionComponent = () => {
 
   const navigate = useNavigate()
   const { state } = useLocation()
-  console.log({ state })
 
   const { locationId } = useParams() as { locationId: string } // router
   const { compendiumPath } = useUrlFormatter()

@@ -29,7 +29,6 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
   loading
 }): JSX.Element => {
 
-  console.log({loading})
   return (
     <Transition show={!loading}>
       <div className={clsx([

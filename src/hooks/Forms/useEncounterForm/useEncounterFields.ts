@@ -17,10 +17,10 @@ const useEncounterFields = (): TUseFields => {
     })
   ]
 
-  if (manager.encounter && manager.campaign?.notebook) {
+  if (manager.encounter && notebook?.notes) {
     fields.push(
       noteField({
-        options: notebook?.notes || [],
+        options: notebook.notes,
       })
     )
   }

@@ -17,7 +17,7 @@ const useQuestForm = ({
   onDeleted
 }: TOwnProps & TUseFormProps<TQuest>): TForm<TQuest> => {
 
-  const include = useMemo(() => 'type;parent', [])
+  const include = useMemo(() => 'type;parent;notes', [])
 
   const manager = useQuestDataManager()
 
@@ -26,7 +26,7 @@ const useQuestForm = ({
   const mapData = useCallback((data: TQuest): TQuestRequest => ({
     name: data.name,
     content: data.content,
-    typeId: data.type.id,
+    typeId: data.type?.id,
     parentId: data.parent?.id,
   }), []);
 
