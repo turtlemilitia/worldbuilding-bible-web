@@ -26,7 +26,7 @@ const useQuestForm = ({
   const mapData = useCallback((data: TQuest): TQuestRequest => ({
     name: data.name,
     content: data.content,
-    typeId: data.type.id,
+    typeId: data.type?.id,
     parentId: data.parent?.id,
   }), []);
 

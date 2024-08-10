@@ -9,6 +9,7 @@ export interface TCampaignRequest {
   name: string;
   content: string;
   compendiumId?: number;
+  notebookId?: number;
 }
 
 export type TCampaignResponse = TCampaign;

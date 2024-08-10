@@ -3,7 +3,7 @@ import { Outlet, useParams } from 'react-router-dom'
 import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
 import { useCompendiumDataManager, useNotebookDataManager } from '../../hooks/DataManagers'
-import { compendiumInclude } from '../../hooks/Forms/useCompendiumForm/useCompendiumForm'
+import { compendiumIncludes } from '../../hooks/Forms/useCompendiumForm/useCompendiumForm'
 import { notebookIncludes } from '../../hooks/Forms/useNotebookForm/useNotebookForm'
 
 const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
@@ -14,7 +14,7 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
 
   useEffect(() => {
     if (compendiumId !== 'new') {
-      view(compendiumId, { include: compendiumInclude })
+      view(compendiumId, { include: compendiumIncludes })
     }
     return () => {
       clearData(compendiumId)

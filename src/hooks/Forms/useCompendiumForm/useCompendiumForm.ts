@@ -5,7 +5,7 @@ import { usePostForm } from '../index'
 import { useCallback, useMemo } from 'react'
 import useCompendiumFields from './useCompendiumFields'
 
-export const compendiumInclude = 'notebook;characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories';
+export const compendiumIncludes = 'notebook;characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories';
 
 type TOwnProps = {
   compendiumId: TCompendium['slug'];
@@ -22,7 +22,7 @@ const useCompendiumForm = ({
 
   const { fields } = useCompendiumFields()
 
-  const include = useMemo(() => compendiumInclude, [])
+  const include = useMemo(() => compendiumIncludes, [])
 
   const mapData = useCallback((data: TCompendium) => ({
     name: data.name,

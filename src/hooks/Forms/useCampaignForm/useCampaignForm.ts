@@ -2,9 +2,11 @@ import { TCampaign } from '../../../types'
 import { TCampaignRequest } from '../../../services/ApiService/Campaigns/CampaignService'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { useCampaignDataManager } from '../../DataManagers'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import usePostForm from '../usePostForm'
 import useCampaignFields from './useCampaignFields'
+
+export const campaignIncludes = 'compendium;notebook;quests;quests.type;quests.parent;encounters;encounters.type;sessions';
 
 type TOwnProps = {
   campaignId: TCampaign['slug'];
@@ -19,20 +21,20 @@ const useCampaignForm = ({
 
   const manager = useCampaignDataManager()
 
-  const include = useMemo(() => 'compendium;quests;quests.type;quests.parent;encounters;encounters.type;sessions', [])
 
   const { fields } = useCampaignFields();
 
   const mapData = useCallback((data: TCampaign): TCampaignRequest => ({
     name: data.name,
     content: data.content,
-    compendiumId: data.compendium?.id
+    compendiumId: data.compendium?.id,
+    notebookId: data.notebook?.id
   }), [])
 
   return usePostForm({
     id: campaignId,
     mapData,
-    include,
+    include: campaignIncludes,
     manager,
     fields,
 
