@@ -1,10 +1,13 @@
 import { TNotebook} from '../../../types'
 import { TNotebookRequest } from '../../../services/ApiService/Notebooks/NotebookService'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
 import usePostForm from '../usePostForm'
 import { useNotebookDataManager } from '../../DataManagers'
 import useNotebookFields from './useNotebookFields'
+
+
+export const notebookIncludes = 'notes'
 
 type TOwnProps = {
   notebookId: TNotebook['slug'];
@@ -16,8 +19,6 @@ const useNotebookForm = ({
   onUpdated,
   onDeleted,
 }: TOwnProps & TUseFormProps<TNotebook>): TForm<TNotebook> => {
-
-  const include = useMemo(() => 'notes', [])
 
   const manager = useNotebookDataManager()
 
@@ -31,7 +32,7 @@ const useNotebookForm = ({
   return usePostForm<TNotebook, TNotebookRequest>({
     id: notebookId,
     mapData,
-    include,
+    include: notebookIncludes,
     manager,
     fields,
 

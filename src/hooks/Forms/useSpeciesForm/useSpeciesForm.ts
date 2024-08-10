@@ -17,7 +17,7 @@ const useSpeciesForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TSpecies>): TForm<TSpecies> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notes', [])
 
   const manager = useSpeciesDataManager()
 

@@ -106,7 +106,7 @@ const useFormHandling = <T, R> ({
       })
   }
 
-  const processedData = useCallback((data: T | undefined) => {
+  const processedData = useCallback((data: T | undefined): R|{} => {
     return (data && !isEmpty(data))
       ? (mapData ? mapData(data) : readyDataForRequest(data))
       : {}
@@ -185,8 +185,8 @@ const useFormHandling = <T, R> ({
   }
 
   const mapDataWithManyToMany = (data: T) => {
-    const mappedData: any = mapData(data)
-    if (manyToManyFields) {
+    const mappedData: any = processedData(data)
+    if (mappedData && manyToManyFields) {
       manyToManyFields.forEach((key) => {
         mappedData[key] = data[key]
       })
