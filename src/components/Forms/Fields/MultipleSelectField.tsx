@@ -1,4 +1,4 @@
-import { Combobox, Field, Transition } from '@headlessui/react'
+import { Button, Combobox, Field, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon, DotIcon, PlusIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -19,13 +19,22 @@ type TProp = {
     id: string,
     onCreated?: (data: any) => any,
     onUpdated?: (data: any) => any,
-    onDeleted?: (id: string|number) => any,
+    onDeleted?: (id: string | number) => any,
   }>
 }
-const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, options, link, disabled, Dialog, required, label }) => {
+const MultipleSelectField: FunctionComponent<TProp> = ({
+  value = [],
+  onChange,
+  options,
+  link,
+  disabled,
+  Dialog,
+  required,
+  label
+}) => {
 
   const [query, setQuery] = useState('')
-  const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<string|false>(false)
 
   const filteredOptions =
     query === ''
@@ -45,31 +54,32 @@ const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, o
               <ul>
                 {value.map((item) => (
                   <li key={item.id} className="py-1">
-                    {link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link> : item.name}
+                    {(Dialog && item.slug) ? <Button onClick={() => setDialogIsOpen(item.slug as string)}>{item.name}</Button>
+                      : (link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link>
+                        : item.name)}
                   </li>
                 ))}
               </ul>
             ) : (
               <div className="text-stone-500 italic">Nothing here</div>
             )}
-            <Combobox.Button
-              className="w-full flex justify-between py-2 rounded-lg focus:bg-stone-800">
-              <Combobox.Input
-                className="w-full bg-transparent outline-none"
-                onChange={(event) => setQuery(event.target.value)}
-                displayValue={(option: TSelectOption) => option?.name}/>
-              <div className="flex">
+            <div className="w-full flex justify-between py-2 rounded-lg focus:bg-stone-800">
+              <Combobox.Button className="w-full flex justify-between">
+                <Combobox.Input
+                  className="w-full bg-transparent outline-none"
+                  onChange={(event) => setQuery(event.target.value)}
+                  displayValue={(option: TSelectOption) => option?.name}/>
                 {!disabled && (
                   <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
                 )}
-                {Dialog && (
-                  <PlusIcon
-                    className="text-stone-300 h-5 w-5 "
-                    onClick={() => setDialogIsOpen(true)}
-                  />
-                )}
-              </div>
-            </Combobox.Button>
+              </Combobox.Button>
+              {Dialog && (
+                <PlusIcon
+                  className="text-stone-300 h-5 w-5 cursor-pointer"
+                  onClick={() => setDialogIsOpen('new')}
+                />
+              )}
+            </div>
             <Transition
               show={open}
               as={Fragment}
@@ -104,11 +114,11 @@ const MultipleSelectField: FunctionComponent<TProp> = ({ value = [], onChange, o
       </Combobox>
       {dialogIsOpen && Dialog && (
         <Dialog
-          isOpen={dialogIsOpen}
-          setIsOpen={setDialogIsOpen}
-          id={'new'}
+          isOpen={!!dialogIsOpen}
+          setIsOpen={(isOpen) => setDialogIsOpen(isOpen === true ? 'new' : false)}
+          id={dialogIsOpen || 'new'}
           onCreated={(data) => {
-            onChange([value, ...data])
+            onChange([...value, data])
           }}
           onUpdated={(data) => {
             onChange(value.map(single => single.id === data.id ? data : single))

@@ -34,7 +34,7 @@ const PostDialog = <T extends TGenericPost,>({
               <PageTitleField value={form.data?.name || ''}
                               onChange={(value) => form.onFieldChange('name', value)}
                               placeholder={'Name'}
-                              canEdit={form.isNew || form.canEdit}
+                              canEdit={form.canEdit}
               />
             </Dialog.Title>
             <Dialog.Description>
@@ -42,17 +42,17 @@ const PostDialog = <T extends TGenericPost,>({
                 {!isEmpty(form.fields) && (
                   <div className="w-full lg:w-1/4 px-6">
                     <InfoBar
-                      loading={false}
+                      loading={form.loading || !form.fields.length}
                       onChange={form.onFieldChange}
                       data={form.data}
                       fields={form.fields}
-                      disabled={!form.canEdit && !form.isNew}
+                      disabled={!form.canEdit}
                     />
                   </div>
                 )}
                 <div className={`w-full md:w-3/4 max-w-2xl px-3 lg:flex-1`}>
                   {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
-                  {(form.isNew || form.canEdit) && (
+                  {(form.canEdit) && (
                     <FormToolbar
                       canManuallySave={true}
                       canRefresh={!form.isNew}
@@ -67,7 +67,7 @@ const PostDialog = <T extends TGenericPost,>({
                     initialValue={form.data?.content}
                     onChange={(value) => form.onFieldChange('content', value)}
                     placeholder={contentPlaceholder}
-                    canEdit={form.isNew || form.canEdit}
+                    canEdit={form.canEdit}
                   />
                 </div>
               </div>
