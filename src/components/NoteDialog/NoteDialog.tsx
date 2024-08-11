@@ -1,5 +1,5 @@
 import { TGenericPostBasic, TNote } from '../../types'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
 import useNoteDataManager from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
 import { useNoteForm } from '../../hooks/Forms'
@@ -21,9 +21,9 @@ const NoteDialog: FunctionComponent<TProps<TNote & TGenericPostBasic>> = ({
   onDeleted
 }) => {
 
-  // todo currently its being rerendered loads of times AND fetching all the time
-
-  const { note } = useNoteDataManager();
+  // todo add other Dialogs
+  // todo fix "delete" doesnt work
+  // todo test sidebars
 
   const form = useNoteForm({
     noteId,
@@ -31,7 +31,7 @@ const NoteDialog: FunctionComponent<TProps<TNote & TGenericPostBasic>> = ({
     onUpdated,
     onDeleted: () => {
       setIsOpen(false)
-      onDeleted && onDeleted((note as TNote).slug)
+      onDeleted && onDeleted(noteId)
     },
   });
 

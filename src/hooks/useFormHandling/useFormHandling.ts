@@ -146,7 +146,6 @@ const useFormHandling = <T, R> ({
   }
 
   const handleManyToMany = async () => {
-    debugger
     if (!persistedData || !data || !manyToManyFields || !(onAttach || onDetach)) {
       return
     }
@@ -182,7 +181,7 @@ const useFormHandling = <T, R> ({
       .catch(handleResponseErrors)
   }
 
-  const mapDataWithManyToMany = (data: T) => {
+  const mapDataWithManyToMany = useCallback((data: T) => {
     const mappedData: any = processedData(data)
     if (mappedData && manyToManyFields) {
       manyToManyFields.forEach((key) => {
@@ -190,7 +189,7 @@ const useFormHandling = <T, R> ({
       })
     }
     return mappedData
-  }
+  }, [processedData, manyToManyFields])
 
   // Set up autosave
   useAutosave({

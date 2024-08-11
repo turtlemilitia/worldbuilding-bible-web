@@ -48,7 +48,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
   options,
   onChange,
   search,
-  Dialog,
+  dialogType,
   link,
   Callback,
   disabled,
@@ -89,7 +89,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
               onChange={(value) => onChange(name, value)}
               link={link}
               options={options || []}
-              Dialog={Dialog}
+              dialogType={dialogType}
               disabled={disabled}
             />
           )}
@@ -101,7 +101,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
               onChange={(value) => onChange(name, value)}
               link={link}
               search={search}
-              Dialog={Dialog}
+              dialogType={dialogType}
               disabled={disabled}
             />
           )}

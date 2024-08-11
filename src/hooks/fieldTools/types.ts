@@ -43,13 +43,15 @@ export type TAsyncMultiSelectFieldFn = (props: {
   search: TAsyncMultiSelectField['search'],
   required?: TAsyncMultiSelectField['required']
   link?: TAsyncMultiSelectField['link'],
-  Dialog?: FunctionComponent<{ isOpen: boolean, setIsOpen: (open: boolean) => any, id: TGenericPost['slug'] }>,
+  dialogType?: TDialogTypes
 }) => TAsyncMultiSelectField
 
-type TSelectDialogProps = {
+export type TDialogTypes = 'note';
+export type TSelectDialogProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any,
   id: TGenericPostBasic['slug'],
+  type: TDialogTypes
   onCreated?: (data: any) => any,
   onUpdated?: (data: any) => any,
   onDeleted?: (id: string|number) => any,
@@ -60,7 +62,7 @@ export type TMultiSelectFieldFn = (props: {
   options: TSelectField['options']
   required?: TSelectField['required']
   link?: TAsyncMultiSelectField['link'],
-  Dialog?: FunctionComponent<TSelectDialogProps>,
+  dialogType?: TDialogTypes
 }) => TMultiSelectField
 
 export type TNoteFieldFn = <TEntity> (props: {
@@ -89,6 +91,6 @@ export type TField = {
   search?: (term: string) => Promise<TSelectOption[]>
   link?: (id: number | string) => string,
   Callback?: FunctionComponent,
-  Dialog?: FunctionComponent<TSelectDialogProps>,
+  dialogType?: TDialogTypes
   required?: boolean,
 }

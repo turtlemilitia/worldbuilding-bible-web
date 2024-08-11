@@ -12,7 +12,6 @@ const useImageSelection = <TEntity extends TGenericPostBasic & TCanHaveImages> (
   const { imageTypes } = useImageTypeIndexDataManager() // redux
 
   const handleOnImageSelected = useCallback(async (id: number, imageType: string) => {
-    debugger;
     if (!manager.entity?.slug) {
       return null
     }

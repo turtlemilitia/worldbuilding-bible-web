@@ -41,11 +41,7 @@ export const noteField: TNoteFieldFn = ({
   required,
   options,
   link,
-  Dialog: (props) =>
-    <NoteDialog
-      {...props}
-      noteId={props.id}
-    />
+  dialogType: 'note'
 })
 
 export const sessionField: TNoteFieldFn = ({

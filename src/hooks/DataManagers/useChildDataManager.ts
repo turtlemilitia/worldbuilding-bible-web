@@ -30,6 +30,10 @@ export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResp
   // REDUX MANAGEMENT
   const setData = useCallback((data: TEntity) => {
     dispatch(slice.actions.set(data))
+  }, [slice])
+
+  const addData = useCallback((data: TEntity) => {
+    dispatch(slice.actions.set(data))
     dispatch(parentSlice.actions.setChildData({ field: mapPlural(name), data }))
   }, [slice, parentSlice, name])
 
@@ -67,7 +71,7 @@ export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResp
 
   const store = useCallback(async (payload: TRequest, query: TQueryParams = {}) => {
     const { data } = await api.store((parent as TGenericPostBasic).slug, payload, query)
-    setData(data.data)
+    addData(data.data)
     return data.data
   }, [api, parent])
 
