@@ -15,7 +15,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401 || error.response?.status === 419) {
       store.dispatch(setToken(null)) // dispatch action to then handle the redirection if logged in
       window.location.href = '/login'
-    } else if (error.response?.status === 404) {
+    } else if (error.response?.status === 404 && error.response.config.method !== 'delete') {
       window.location.href = '/404'
     } else {
       return Promise.reject(error)

@@ -4,6 +4,8 @@ import React, { Fragment, FunctionComponent, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TSelectOption } from './FieldMapper'
 import Label from './Label'
+import Dialog from '../../Dialogs'
+import { TDialogTypes } from '../../../hooks/fieldTools/types'
 
 type TProp = {
   label: string;
@@ -13,14 +15,7 @@ type TProp = {
   options: (TSelectOption)[];
   link?: (id: number | string) => string;
   disabled?: boolean;
-  Dialog?: FunctionComponent<{
-    isOpen: boolean;
-    setIsOpen: (open: boolean) => any,
-    id: string,
-    onCreated?: (data: any) => any,
-    onUpdated?: (data: any) => any,
-    onDeleted?: (id: string | number) => any,
-  }>
+  dialogType?: TDialogTypes;
 }
 const MultipleSelectField: FunctionComponent<TProp> = ({
   value = [],
@@ -28,13 +23,13 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
   options,
   link,
   disabled,
-  Dialog,
+  dialogType,
   required,
   label
 }) => {
 
   const [query, setQuery] = useState('')
-  const [dialogIsOpen, setDialogIsOpen] = useState<string|false>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<string | false>(false)
 
   const filteredOptions =
     query === ''
@@ -54,7 +49,8 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
               <ul>
                 {value.map((item) => (
                   <li key={item.id} className="py-1">
-                    {(Dialog && item.slug) ? <Button onClick={() => setDialogIsOpen(item.slug as string)}>{item.name}</Button>
+                    {(dialogType && item.slug) ? <Button
+                        onClick={() => setDialogIsOpen(item.slug as string)}>{item.name}</Button>
                       : (link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link>
                         : item.name)}
                   </li>
@@ -73,7 +69,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
                   <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
                 )}
               </Combobox.Button>
-              {Dialog && (
+              {dialogType && (
                 <PlusIcon
                   className="text-stone-300 h-5 w-5 cursor-pointer"
                   onClick={() => setDialogIsOpen('new')}
@@ -112,19 +108,21 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           </>
         )}
       </Combobox>
-      {dialogIsOpen && Dialog && (
+      {dialogType && (
         <Dialog
+          type={dialogType}
           isOpen={!!dialogIsOpen}
-          setIsOpen={(isOpen) => setDialogIsOpen(isOpen === true ? 'new' : false)}
+          setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
           id={dialogIsOpen || 'new'}
           onCreated={(data) => {
+            setDialogIsOpen(data.slug)
             onChange([...value, data])
           }}
           onUpdated={(data) => {
-            onChange(value.map(single => single.id === data.id ? data : single))
+            onChange(value.map(single => single.slug === data.slug ? data : single))
           }}
           onDeleted={(id) => {
-            onChange(value.filter(single => single.id !== id))
+            onChange(value.filter(single => single.slug !== id))
           }}
         />
       )}

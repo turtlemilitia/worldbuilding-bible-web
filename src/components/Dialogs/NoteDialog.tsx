@@ -1,18 +1,17 @@
-import { TGenericPostBasic, TNote } from '../../types'
+import { TNote } from '../../types'
 import React, { FunctionComponent } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
-import useNoteDataManager from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
 import { useNoteForm } from '../../hooks/Forms'
 
-type TProps<TEntity extends TGenericPostBasic> = {
+type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  noteId: TEntity['slug'];
-  onCreated?: (data: TEntity) => any
-  onUpdated?: (data: TEntity) => any
+  noteId: TNote['slug'];
+  onCreated?: (data: TNote) => any
+  onUpdated?: (data: TNote) => any
   onDeleted?: (id: string|number) => any
 }
-const NoteDialog: FunctionComponent<TProps<TNote & TGenericPostBasic>> = ({
+const NoteDialog: FunctionComponent<TProps> = ({
   isOpen,
   setIsOpen,
   noteId,
@@ -21,17 +20,13 @@ const NoteDialog: FunctionComponent<TProps<TNote & TGenericPostBasic>> = ({
   onDeleted
 }) => {
 
-  // todo currently its being rerendered loads of times AND fetching all the time
-
-  const { note } = useNoteDataManager();
-
   const form = useNoteForm({
     noteId,
     onCreated,
     onUpdated,
     onDeleted: () => {
       setIsOpen(false)
-      onDeleted && onDeleted((note as TNote).slug)
+      onDeleted && onDeleted(noteId)
     },
   });
 

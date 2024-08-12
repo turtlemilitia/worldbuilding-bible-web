@@ -1,13 +1,11 @@
-import React from 'react'
 import {
-  TAsyncMultiSelectFieldFn, TFactionFieldFn, TLanguageFieldFn,
+  TAsyncMultiSelectFieldFn,
   TMultiSelectFieldFn,
-  TNoteFieldFn,
   TNumberFieldFn,
   TSelectFieldFn,
+  TSelectFieldProps,
   TTextFieldFn
 } from './types'
-import NoteDialog from '../../components/NoteDialog'
 
 export const textField: TTextFieldFn = (props) => ({
   ...props,
@@ -31,107 +29,81 @@ export const asyncMultiSelectField: TAsyncMultiSelectFieldFn = (props) => ({
 })
 
 // other generic fields
-export const noteField: TNoteFieldFn = ({
+export const noteField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'notes',
   label: 'Notes',
   required,
   options,
   link,
-  Dialog: (props) =>
-    <NoteDialog
-      {...props}
-      noteId={props.id}
-    />
+  dialogType: 'note'
 })
 
-export const sessionField: TNoteFieldFn = ({
+export const sessionField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'sessions',
   label: 'Sessions',
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <SessionDialog
-  //     {...props}
-  //     sessionId={props.id}
-  //   />
+  dialogType: 'session'
 })
 
-export const questField: TNoteFieldFn = ({
+export const questField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'quests',
   label: 'Quests',
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <EncounterDialog
-  //     {...props}
-  //     encounterId={props.id}
-  //   />
+  dialogType: 'quest'
 })
 
-export const encounterField: TNoteFieldFn = ({
+export const encounterField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'encounters',
   label: 'Encounters',
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <EncounterDialog
-  //     {...props}
-  //     encounterId={props.id}
-  //   />
+  dialogType: 'encounter'
 })
 
 // other generic fields
-export const factionField: TFactionFieldFn = ({
+export const factionField = ({
   required,
   options,
   link
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'factions',
   label: 'Factions',
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <FactionDialog
-  //     {...props}
-  //     factionId={props.id}
-  //     notableDataManager={notableDataManager}
-  //   />
+  dialogType: 'faction'
 })
 
-export const languageField: TLanguageFieldFn = ({
+export const languageField = ({
   required,
   options,
   link
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'languages',
   label: 'Languages',
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <LanguageDialog
-  //     {...props}
-  //     languageId={props.id}
-  //     notableDataManager={notableDataManager}
-  //   />
+  dialogType: 'language'
 })

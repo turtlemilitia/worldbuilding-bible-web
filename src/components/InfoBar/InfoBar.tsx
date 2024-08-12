@@ -35,11 +35,11 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
         `transition-all duration-1000`,
         'data-[closed]:-top-10 data-[closed]:opacity-0',
       ])}>
-        <FloatingBox className={canHaveProfileImage && onProfileImageSelected ? 'mt-32' : ''}>
+        <FloatingBox className={`${canHaveProfileImage && onProfileImageSelected ? 'mt-32' : ''}`}>
           {canHaveProfileImage && onProfileImageSelected && (
             <ProfileImage image={profileImage} onSelected={onProfileImageSelected}/>
           )}
-          <ul className="font-serif text-serif-md leading-tight ">
+          <ul className="font-serif text-serif-md leading-tight max-h-[50vh] overflow-y-scroll">
             {fields.map((props, index) => {
               const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
               return <FieldMapper

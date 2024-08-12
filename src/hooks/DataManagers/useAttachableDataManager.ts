@@ -54,7 +54,11 @@ export const useAttachableDataManager = <TEntity, TAttached extends { id: number
   }, [])
 
   const detach = useCallback(async (attachableId: number | string, id: number | string) => {
-    await api.dettach(attachableId, id)
+    try { // we should find a way to not send this if already deleted
+      await api.dettach(attachableId, id)
+    } catch (error) {
+      console.error(error)
+    }
     dettachData(id)
   }, [])
 
