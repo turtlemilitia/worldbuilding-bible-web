@@ -48,6 +48,10 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
         .then(() => {
           setDeleting(false)
         })
+        .catch(() => {
+          setDeleting(false)
+          // todo need to handle dependencies
+        })
     }
   }
 
