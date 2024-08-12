@@ -4,7 +4,7 @@ import React, { Fragment, FunctionComponent, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TSelectOption } from './FieldMapper'
 import Label from './Label'
-import DialogFactory from '../../DialogFactory'
+import Dialog from '../../Dialogs'
 import { TDialogTypes } from '../../../hooks/fieldTools/types'
 
 type TProp = {
@@ -109,7 +109,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
         )}
       </Combobox>
       {dialogType && (
-        <DialogFactory
+        <Dialog
           type={dialogType}
           isOpen={!!dialogIsOpen}
           setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}

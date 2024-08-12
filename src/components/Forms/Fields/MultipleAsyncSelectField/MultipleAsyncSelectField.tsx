@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { TSelectOption } from '../FieldMapper'
 import Label from '../Label'
 import { TDialogTypes } from '../../../../hooks/fieldTools/types'
-import DialogFactory from '../../../DialogFactory'
+import Dialog from '../../../Dialogs'
 
 type TProp = {
   label: string;
@@ -110,7 +110,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({
         )}
       </Combobox>
       {dialogIsOpen && dialogType && (
-        <DialogFactory
+        <Dialog
           type={dialogType}
           isOpen={!!dialogIsOpen}
           setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}

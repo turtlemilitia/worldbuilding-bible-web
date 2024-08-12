@@ -52,11 +52,7 @@ export const sessionField = ({
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <SessionDialog
-  //     {...props}
-  //     sessionId={props.id}
-  //   />
+  dialogType: 'session'
 })
 
 export const questField = ({
@@ -69,11 +65,7 @@ export const questField = ({
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <EncounterDialog
-  //     {...props}
-  //     encounterId={props.id}
-  //   />
+  dialogType: 'quest'
 })
 
 export const encounterField = ({
@@ -86,11 +78,7 @@ export const encounterField = ({
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <EncounterDialog
-  //     {...props}
-  //     encounterId={props.id}
-  //   />
+  dialogType: 'encounter'
 })
 
 // other generic fields
@@ -104,12 +92,7 @@ export const factionField = ({
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <FactionDialog
-  //     {...props}
-  //     factionId={props.id}
-  //     notableDataManager={notableDataManager}
-  //   />
+  dialogType: 'faction'
 })
 
 export const languageField = ({
@@ -122,10 +105,5 @@ export const languageField = ({
   required,
   options,
   link,
-  // Dialog: (props) =>
-  //   <LanguageDialog
-  //     {...props}
-  //     languageId={props.id}
-  //     notableDataManager={notableDataManager}
-  //   />
+  dialogType: 'language'
 })

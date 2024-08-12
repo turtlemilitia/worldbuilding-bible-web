@@ -28,7 +28,7 @@ const PostDialog = <T extends TGenericPost,>({
       className="relative z-50"
     >
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <FloatingBox className={'w-1/2'}>
+        <FloatingBox className={'w-2/3'}>
           <Dialog.Panel>
             <Dialog.Title className={'mb-10'}>
               <PageTitleField value={form.data?.name || ''}
@@ -62,13 +62,15 @@ const PostDialog = <T extends TGenericPost,>({
                       onDelete={form.onDelete}
                     />
                   )}
-                  <Editor
-                    id={form.data?.slug ?? 'new'}
-                    initialValue={form.data?.content}
-                    onChange={(value) => form.onFieldChange('content', value)}
-                    placeholder={contentPlaceholder}
-                    canEdit={form.canEdit}
-                  />
+                  <div className="mt-6 border border-dashed border-gray-200 rounded-lg">
+                    <Editor
+                      id={form.data?.slug ?? 'new'}
+                      initialValue={form.data?.content}
+                      onChange={(value) => form.onFieldChange('content', value)}
+                      placeholder={contentPlaceholder}
+                      canEdit={form.canEdit}
+                    />
+                  </div>
                 </div>
               </div>
               <button onClick={() => setIsOpen(false)}>Cancel</button>
