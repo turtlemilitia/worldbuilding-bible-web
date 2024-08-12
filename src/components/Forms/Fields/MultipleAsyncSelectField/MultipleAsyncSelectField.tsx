@@ -1,10 +1,12 @@
-import { Combobox, Field, Transition } from '@headlessui/react'
+import { Button, Combobox, Field, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon, DotIcon, PlusIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
 import { TSelectOption } from '../FieldMapper'
 import Label from '../Label'
+import { TDialogTypes } from '../../../../hooks/fieldTools/types'
+import DialogFactory from '../../../DialogFactory'
 
 type TProp = {
   label: string;
@@ -14,12 +16,21 @@ type TProp = {
   search: (term: string) => Promise<TSelectOption[]>;
   link?: (id: number | string) => string;
   disabled?: boolean;
-  Dialog?: FunctionComponent<{isOpen: boolean; setIsOpen: (open: boolean) => any, id: string}>
+  dialogType?: TDialogTypes;
 }
-const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, link, disabled, Dialog, label, required }) => {
+const MultipleAsyncSelectField: FunctionComponent<TProp> = ({
+  value = [],
+  onChange,
+  search,
+  link,
+  disabled,
+  dialogType,
+  label,
+  required
+}) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([])
-  const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<string | false>(false)
 
   const handleSearch = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 3) {
@@ -39,7 +50,10 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
               <ul>
                 {value.map((item) => (
                   <li key={item.id} className="py-1">
-                    {link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link> : item.name}
+                    {(dialogType && item.slug) ? <Button
+                        onClick={() => setDialogIsOpen(item.slug as string)}>{item.name}</Button>
+                      : (link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link>
+                        : item.name)}
                   </li>
                 ))}
               </ul>
@@ -55,10 +69,10 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
                 {!disabled && (
                   <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
                 )}
-                {Dialog && (
+                {dialogType && (
                   <PlusIcon
                     className="text-stone-300 h-5 w-5 "
-                    onClick={() => setDialogIsOpen(true)}
+                    onClick={() => setDialogIsOpen('new')}
                   />
                 )}
               </div>
@@ -95,8 +109,22 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, s
           </>
         )}
       </Combobox>
-      {dialogIsOpen && Dialog && (
-        <Dialog isOpen={dialogIsOpen} setIsOpen={setDialogIsOpen} id={'new'}/>
+      {dialogIsOpen && dialogType && (
+        <DialogFactory
+          type={dialogType}
+          isOpen={!!dialogIsOpen}
+          setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
+          id={dialogIsOpen || 'new'}
+          onCreated={(data) => {
+            onChange([...value, data])
+          }}
+          onUpdated={(data) => {
+            onChange(value.map(single => single.id === data.id ? data : single))
+          }}
+          onDeleted={(id) => {
+            onChange(value.filter(single => single.id !== id))
+          }}
+        />
       )}
     </Field>
   )

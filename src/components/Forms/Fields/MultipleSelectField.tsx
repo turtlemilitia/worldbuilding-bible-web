@@ -29,7 +29,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
 }) => {
 
   const [query, setQuery] = useState('')
-  const [dialogIsOpen, setDialogIsOpen] = useState<string|false>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<string | false>(false)
 
   const filteredOptions =
     query === ''
@@ -49,7 +49,8 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
               <ul>
                 {value.map((item) => (
                   <li key={item.id} className="py-1">
-                    {(dialogType && item.slug) ? <Button onClick={() => setDialogIsOpen(item.slug as string)}>{item.name}</Button>
+                    {(dialogType && item.slug) ? <Button
+                        onClick={() => setDialogIsOpen(item.slug as string)}>{item.name}</Button>
                       : (link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link>
                         : item.name)}
                   </li>
@@ -107,23 +108,23 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           </>
         )}
       </Combobox>
-        {dialogIsOpen && dialogType && (
-          <DialogFactory
-            type={dialogType}
-            isOpen={!!dialogIsOpen}
-            setIsOpen={(isOpen) => setDialogIsOpen(isOpen === true ? 'new' : false)}
-            id={dialogIsOpen || 'new'}
-            onCreated={(data) => {
-              onChange([...value, data])
-            }}
-            onUpdated={(data) => {
-              onChange(value.map(single => single.id === data.id ? data : single))
-            }}
-            onDeleted={(id) => {
-              onChange(value.filter(single => single.id !== id))
-            }}
-          />
-        )}
+      {dialogType && (
+        <DialogFactory
+          type={dialogType}
+          isOpen={!!dialogIsOpen}
+          setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
+          id={dialogIsOpen || 'new'}
+          onCreated={(data) => {
+            onChange([...value, data])
+          }}
+          onUpdated={(data) => {
+            onChange(value.map(single => single.slug === data.slug ? data : single))
+          }}
+          onDeleted={(id) => {
+            onChange(value.filter(single => single.slug !== id))
+          }}
+        />
+      )}
     </Field>
   )
 }

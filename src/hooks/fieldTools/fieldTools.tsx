@@ -1,13 +1,11 @@
-import React from 'react'
 import {
-  TAsyncMultiSelectFieldFn, TFactionFieldFn, TLanguageFieldFn,
+  TAsyncMultiSelectFieldFn,
   TMultiSelectFieldFn,
-  TNoteFieldFn,
   TNumberFieldFn,
   TSelectFieldFn,
+  TSelectFieldProps,
   TTextFieldFn
 } from './types'
-import NoteDialog from '../../components/NoteDialog'
 
 export const textField: TTextFieldFn = (props) => ({
   ...props,
@@ -31,11 +29,11 @@ export const asyncMultiSelectField: TAsyncMultiSelectFieldFn = (props) => ({
 })
 
 // other generic fields
-export const noteField: TNoteFieldFn = ({
+export const noteField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'notes',
   label: 'Notes',
   required,
@@ -44,11 +42,11 @@ export const noteField: TNoteFieldFn = ({
   dialogType: 'note'
 })
 
-export const sessionField: TNoteFieldFn = ({
+export const sessionField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'sessions',
   label: 'Sessions',
   required,
@@ -61,11 +59,11 @@ export const sessionField: TNoteFieldFn = ({
   //   />
 })
 
-export const questField: TNoteFieldFn = ({
+export const questField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'quests',
   label: 'Quests',
   required,
@@ -78,11 +76,11 @@ export const questField: TNoteFieldFn = ({
   //   />
 })
 
-export const encounterField: TNoteFieldFn = ({
+export const encounterField = ({
   required,
   options,
   link,
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'encounters',
   label: 'Encounters',
   required,
@@ -96,11 +94,11 @@ export const encounterField: TNoteFieldFn = ({
 })
 
 // other generic fields
-export const factionField: TFactionFieldFn = ({
+export const factionField = ({
   required,
   options,
   link
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'factions',
   label: 'Factions',
   required,
@@ -114,11 +112,11 @@ export const factionField: TFactionFieldFn = ({
   //   />
 })
 
-export const languageField: TLanguageFieldFn = ({
+export const languageField = ({
   required,
   options,
   link
-}) => multiSelectField({
+}: TSelectFieldProps) => multiSelectField({
   name: 'languages',
   label: 'Languages',
   required,

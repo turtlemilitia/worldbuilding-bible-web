@@ -1,6 +1,6 @@
 import { TSelectOption } from '../../components/Forms/Fields/FieldMapper'
 import { FunctionComponent } from 'react'
-import { TGenericPost, TGenericPostBasic } from '../../types'
+import { TGenericPostBasic } from '../../types'
 
 type TGenericFieldParams = {
   name: string,
@@ -65,11 +65,11 @@ export type TMultiSelectFieldFn = (props: {
   dialogType?: TDialogTypes
 }) => TMultiSelectField
 
-export type TNoteFieldFn = <TEntity> (props: {
+export type TSelectFieldProps = {
   required?: TMultiSelectField['required'],
   options: TMultiSelectField['options']
   link?: TAsyncMultiSelectField['link']
-}) => TMultiSelectField
+}
 
 export type TFactionFieldFn = <TEntity> (props: {
   required?: TMultiSelectField['required'],
