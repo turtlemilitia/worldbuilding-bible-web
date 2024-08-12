@@ -1,7 +1,6 @@
 import { TGenericPostBasic, TNote } from '../../types'
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FunctionComponent } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
-import useNoteDataManager from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
 import { useNoteForm } from '../../hooks/Forms'
 
 type TProps<TEntity extends TGenericPostBasic> = {
@@ -22,7 +21,6 @@ const NoteDialog: FunctionComponent<TProps<TNote & TGenericPostBasic>> = ({
 }) => {
 
   // todo add other Dialogs
-  // todo fix "delete" doesnt work
   // todo test sidebars
 
   const form = useNoteForm({

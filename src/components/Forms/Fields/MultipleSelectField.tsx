@@ -115,6 +115,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
           id={dialogIsOpen || 'new'}
           onCreated={(data) => {
+            setDialogIsOpen(data.slug)
             onChange([...value, data])
           }}
           onUpdated={(data) => {
