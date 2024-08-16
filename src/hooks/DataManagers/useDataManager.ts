@@ -4,10 +4,9 @@ import { TApi, TQueryParams } from '../../services/ApiService/types'
 import { Slice } from '@reduxjs/toolkit'
 import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { TIndexSliceState } from '../../reducers/createIndexSlice'
-import { TGenericPostBasic } from '../../types'
 
 export type TDataManager<TEntity, TRequest> = {
-  entity?: TEntity & TGenericPostBasic,
+  entity?: TEntity,
   isPermanent?: boolean,
   setData: (data: TEntity) => any,
   updateData: (data: Partial<TEntity>) => any,
@@ -19,8 +18,8 @@ export type TDataManager<TEntity, TRequest> = {
   destroy: (id: string | number) => Promise<any>,
 }
 
-export const useDataManager = <TEntity extends TGenericPostBasic, TRequest, TIndexResponse, TResponse extends TEntity> (
-  name: 'campaign' | 'compendium' | 'notebook' | 'system',
+export const useDataManager = <TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
+  name: 'campaign' | 'compendium' | 'notebook' | 'system' | 'authUser',
   slice: Slice<TEntitySliceState<TEntity>>,
   indexSlice: Slice<TIndexSliceState<TEntity>>,
   api: TApi<TRequest, TIndexResponse, TResponse>,

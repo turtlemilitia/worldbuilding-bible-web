@@ -4,6 +4,7 @@ import api from '../../../api'
 import { createApiService } from '../createApiService'
 import { createImageableService } from '../createImageableService'
 import { createNotableService } from '../createNotableService'
+import { createPinnableService } from '../createPinnableService'
 
 export interface TCampaignRequest {
   name: string;
@@ -26,6 +27,7 @@ const CampaignService = {
   ...createApiService<TCampaignRequest, TCampaignIndexResponse, TCampaignResponse>('campaigns'),
   ...createImageableService('campaigns'),
   ...createNotableService('campaigns'),
+  ...createPinnableService('campaigns'),
   createInvitation: (slug: TCampaign['slug'], data: TCampaignInvitationStoreRequest): Promise<AxiosResponse<{ data: TInvitationResponse }>> => {
 
     return api.post(`/api/campaigns/${slug}/invitations`, data)

@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import usePostForm from '../usePostForm'
 import useCampaignFields from './useCampaignFields'
 
-export const campaignIncludes = 'compendium;notebook;quests;quests.type;quests.parent;encounters;encounters.type;sessions';
+export const campaignIncludes = 'compendium;notebook;quests;quests.type;quests.parent;encounters;encounters.type;sessions;pins;pins.pinnable';
 
 type TOwnProps = {
   campaignId: TCampaign['slug'];

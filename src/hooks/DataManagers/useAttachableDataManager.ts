@@ -3,7 +3,7 @@ import { Slice } from '@reduxjs/toolkit'
 import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { TAttachableApi } from '../../services/ApiService/createAttachableService'
 import { useAppDispatch } from '../../hooks'
-import { TEncounter, TFaction, TLanguage, TNote, TQuest } from '../../types'
+import { TCharacter, TEncounter, TFaction, TFavourite, TLanguage, TNote, TPin, TQuest } from '../../types'
 import { TNotableApi, TNoteAttachRequest, TNoteAttachResponse } from '../../services/ApiService/createNotableService'
 import { TQuestableApi, TQuestAttachRequest, TQuestAttachResponse } from '../../services/ApiService/createQuestableService'
 import { TEncounterableApi, TEncounterAttachRequest, TEncounterAttachResponse } from '../../services/ApiService/createEncounterableService'
@@ -17,6 +17,17 @@ import {
   TLanguageAttachRequest,
   TLanguageAttachResponse
 } from '../../services/ApiService/createLanguageableService'
+import {
+  TCharacterableApi,
+  TCharacterAttachRequest,
+  TCharacterAttachResponse
+} from '../../services/ApiService/createCharacterableService'
+import {
+  TFavouritableApi,
+  TFavouriteAttachRequest,
+  TFavouriteAttachResponse
+} from '../../services/ApiService/createFavouritableService'
+import { TPinAttachRequest, TPinAttachResponse, TPinnableApi } from '../../services/ApiService/createPinnableService'
 
 export type TAttachableDataManager<TAttached, TRequest> = {
   attachData: (entity: TAttached) => any,
@@ -26,7 +37,7 @@ export type TAttachableDataManager<TAttached, TRequest> = {
   detach: (parentId: number | string, id: number | string) => Promise<void>,
 }
 
-export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages';
+export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages' | 'characters' | 'favourites' | 'pins';
 
 export const useAttachableDataManager = <TEntity, TAttached extends { id: number | string }, TAttachRequest, TAttachResponse extends TAttached> (
   attachedName: TOneOfAttachableNames,
@@ -106,3 +117,24 @@ export const useLanguageableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TLanguageableApi['languages'],
 ): TLanguageableDataManager => useAttachableDataManager<TEntity, TLanguage, TLanguageAttachRequest, TLanguageAttachResponse>('languages', slice, api)
+
+export type TCharacterableDataManager = TAttachableDataManager<TCharacter, TCharacterAttachRequest>
+export type hasCharactersAttachableDataManager = { characters: TCharacterableDataManager }
+export const useCharacterableDataManager = <TEntity> (
+  slice: Slice<TEntitySliceState<TEntity>>,
+  api: TCharacterableApi['characters'],
+): TCharacterableDataManager => useAttachableDataManager<TEntity, TCharacter, TCharacterAttachRequest, TCharacterAttachResponse>('characters', slice, api)
+
+export type TFavouritableDataManager = TAttachableDataManager<TFavourite, TFavouriteAttachRequest>
+export type hasFavouritesAttachableDataManager = { favourites: TFavouritableDataManager }
+export const useFavouritableDataManager = <TEntity> (
+  slice: Slice<TEntitySliceState<TEntity>>,
+  api: TFavouritableApi['favourites'],
+): TFavouritableDataManager => useAttachableDataManager<TEntity, TFavourite, TFavouriteAttachRequest, TFavouriteAttachResponse>('favourites', slice, api)
+
+export type TPinnableDataManager = TAttachableDataManager<TPin, TPinAttachRequest>
+export type hasPinsAttachableDataManager = { pins: TPinnableDataManager }
+export const usePinnableDataManager = <TEntity> (
+  slice: Slice<TEntitySliceState<TEntity>>,
+  api: TPinnableApi['pins'],
+): TPinnableDataManager => useAttachableDataManager<TEntity, TPin, TPinAttachRequest, TPinAttachResponse>('pins', slice, api)

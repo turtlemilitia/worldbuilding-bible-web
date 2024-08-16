@@ -12,8 +12,9 @@ import {
   TDataManager
 } from '../DataManagers'
 import {
-  hasFactionsAttachableDataManager,
-  hasLanguagesAttachableDataManager,
+  hasCharactersAttachableDataManager,
+  hasFactionsAttachableDataManager, hasFavouritesAttachableDataManager,
+  hasLanguagesAttachableDataManager, hasPinsAttachableDataManager,
   TOneOfAttachableNames
 } from '../DataManagers/useAttachableDataManager'
 
@@ -22,7 +23,7 @@ type TProps<T, R> = {
   mapData: (payload: T) => R,
   include?: string,
   manager: TDataManager<T, R> & hasImageableDataManager
-    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager>
+    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager>
   fields?: TField[],
   onFetched?: (data: T) => any
   onCreated?: (data: T) => any
@@ -84,8 +85,10 @@ const usePostForm = <T extends TGenericPost, R> ({
       .map(({ name }) => name as keyof T) || [],
     onAttach: async (name: keyof T, attachedId) => {
       switch (name as TOneOfAttachableNames) {
+
         case 'quests':
           return manager.quests?.attach(id, { questId: attachedId })
+
         case 'languages':
           return manager.languages?.attach(id, { languageId: attachedId })
 
