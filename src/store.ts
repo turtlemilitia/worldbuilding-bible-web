@@ -33,10 +33,14 @@ import governmentTypesIndexSlice from './reducers/governmentType/governmentTypes
 import locationTypesIndexSlice from './reducers/locationType/locationTypesIndexSlice'
 import questTypesIndexSlice from './reducers/questType/questTypesIndexSlice'
 import encounterTypesIndexSlice from './reducers/encounterType/encounterTypesIndexSlice'
+import authUserSlice from './reducers/auth/authUserSlice'
+import userSlice from './reducers/auth/userSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
+    authUser: authUserSlice,
+    user: userSlice,
     // system
     post: postSlice,
     // indexes

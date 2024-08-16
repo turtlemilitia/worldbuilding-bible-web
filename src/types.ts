@@ -2,6 +2,9 @@ export type TUser = {
   id: number;
   name: string;
   email: string;
+  pins?: TPin[];
+  favourites?: TFavourite[];
+  characters?: TCharacter[];
 }
 
 export type TInvitation = {
@@ -146,6 +149,122 @@ export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
 
 export type TNote = TGenericPost & TPlayerTools & TCanHaveImages
 
+export type TPin = {
+  id: number
+} & ({
+  pinnableType: 'character'
+  pinnable: TCharacter
+} | {
+  pinnableType: 'concepts'
+  pinnable: TConcept
+} | {
+  pinnableType: 'currencies'
+  pinnable: TCurrency
+} | {
+  pinnableType: 'deities'
+  pinnable: TDeity
+} | {
+  pinnableType: 'factions'
+  pinnable: TFaction
+} | {
+  pinnableType: 'items'
+  pinnable: TItem
+} | {
+  pinnableType: 'languages'
+  pinnable: TLanguage
+} | {
+  pinnableType: 'location'
+  pinnable: TLocation
+} | {
+  pinnableType: 'naturalResources'
+  pinnable: TNaturalResource
+} | {
+  pinnableType: 'pantheons'
+  pinnable: TPantheon
+} | {
+  pinnableType: 'plane'
+  pinnable: TPlane
+} | {
+  pinnableType: 'religion'
+  pinnable: TReligion
+} | {
+  pinnableType: 'species'
+  pinnable: TSpecies
+} | {
+  pinnableType: 'spell'
+  pinnable: TLocation
+} | {
+  pinnableType: 'story'
+  pinnable: TStory
+} | {
+  pinnableType: 'encounter',
+  pinnable: TEncounter
+} | {
+  pinnableType: 'session',
+  pinnable: TSession
+} | {
+  pinnableType: 'quest',
+  pinnable: TQuest
+})
+
+export type TFavourite = {
+  id: number;
+} & ({
+  favouritableType: 'character'
+  favouritable: TCharacter
+} | {
+  favouritableType: 'concepts'
+  favouritable: TConcept
+} | {
+  favouritableType: 'currencies'
+  favouritable: TCurrency
+} | {
+  favouritableType: 'deities'
+  favouritable: TDeity
+} | {
+  favouritableType: 'factions'
+  favouritable: TFaction
+} | {
+  favouritableType: 'items'
+  favouritable: TItem
+} | {
+  favouritableType: 'languages'
+  favouritable: TLanguage
+} | {
+  favouritableType: 'location'
+  favouritable: TLocation
+} | {
+  favouritableType: 'naturalResources'
+  favouritable: TNaturalResource
+} | {
+  favouritableType: 'pantheons'
+  favouritable: TPantheon
+} | {
+  favouritableType: 'plane'
+  favouritable: TPlane
+} | {
+  favouritableType: 'religion'
+  favouritable: TReligion
+} | {
+  favouritableType: 'species'
+  favouritable: TSpecies
+} | {
+  favouritableType: 'spell'
+  favouritable: TLocation
+} | {
+  favouritableType: 'story'
+  favouritable: TStory
+} | {
+  favouritableType: 'encounter',
+  favouritable: TEncounter
+} | {
+  favouritableType: 'session',
+  favouritable: TSession
+} | {
+  favouritableType: 'quest',
+  favouritable: TQuest
+})
+
 export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   gameMaster?: TUser;
   compendium?: TGenericPost;
@@ -155,8 +274,7 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
   quests: (TGenericPostBasic & { type: TQuest['type'] })[];
   notebook?: TNotebook
-  currentLocation?: TLocation
-  currentQuest?: TQuest
+  pins?: TPin[]
 }
 
 export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {

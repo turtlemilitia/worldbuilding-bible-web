@@ -39,7 +39,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
           {canHaveProfileImage && onProfileImageSelected && (
             <ProfileImage image={profileImage} onSelected={onProfileImageSelected}/>
           )}
-          <ul className="font-serif text-serif-md leading-tight max-h-[50vh] overflow-y-scroll">
+          <ul className="font-serif text-serif-md leading-tight max-h-[50vh] overflow-y-scroll overflow-x-clip">
             {fields.map((props, index) => {
               const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
               return <FieldMapper
