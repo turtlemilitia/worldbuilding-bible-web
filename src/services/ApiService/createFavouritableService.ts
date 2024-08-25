@@ -1,15 +1,25 @@
 import { TFavourite } from '../../types'
-import { createAttachableService, TAttachableApi } from './createAttachableService'
+import { TAttachableApi } from './createAttachableService'
+import api from '../../api'
 
 export interface TFavouriteAttachRequest {
-  favouriteableTyoe: string,
-  favouriteableId: number,
+  favouritableType: string,
+  favouritableId: number,
 }
 
 export type TFavouriteAttachResponse = TFavourite
 
 export type TFavouritableApi = { favourites: TAttachableApi<TFavouriteAttachRequest, TFavouriteAttachResponse> }
 
-export const createFavouritableService = (parentPluralName: 'users'): TFavouritableApi => ({
-  favourites: createAttachableService<TFavouriteAttachRequest, TFavouriteAttachResponse>('favourite', parentPluralName, 'favourites')
+export const createFavouritableService = (): TFavouritableApi => ({
+  favourites: {
+
+    attach: (attachableId, data) => {
+      return api.post(`/api/favourites?include=favouritable`, data)
+    },
+    dettach: (attachableId, id) => {
+      return api.delete(`/api/favourites/${id}`)
+    }
+
+  }
 })

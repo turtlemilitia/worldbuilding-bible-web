@@ -1,7 +1,6 @@
 import { TUser } from '../../../types'
 import { createChildApiService } from '../createApiService'
 import { createCharacterableService } from '../createCharacterableService'
-import { createFavouritableService } from '../createFavouritableService'
 import { createPinnableService } from '../createPinnableService'
 import api from '../../../api'
 
@@ -20,7 +19,6 @@ const UserService = {
   },
   ...createChildApiService<TUserRequest, TUserIndexResponse, TUserResponse>('campaigns', 'users'),
   ...createCharacterableService('users'),
-  ...createFavouritableService('users'),
   ...createPinnableService('users')
 }
 

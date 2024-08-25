@@ -20,7 +20,7 @@ const UserService = {
   },
   ...createApiService<TUserRequest, TUserIndexResponse, TUserResponse>('users'),
   ...createCharacterableService('users'),
-  ...createFavouritableService('users'),
+  ...createFavouritableService(),
   ...createPinnableService('users')
 }
 
