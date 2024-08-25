@@ -53,7 +53,7 @@ const FormToolbar: FunctionComponent<TProps> = ({
       {favouriteHandler && (
         <Button onClick={favouriteHandler.toggleFavourite}>
           <SmallFloatingBox hover className={favouriteHandler.isFavourited ? 'bg-opacity-100' : ''}>
-            <StarIcon className={`${favouriteHandler.isFavourited ? 'text-stone-800' : 'stroke-stone-400'} h-5 w-5`}/>
+            <StarIcon className={`${favouriteHandler.isFavourited ? 'stroke-stone-800 hover:stroke-stone-400' : 'stroke-stone-400'} h-5 w-5`}/>
           </SmallFloatingBox>
         </Button>
       )}
