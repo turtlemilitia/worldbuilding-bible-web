@@ -4,7 +4,8 @@ import { CoverImagePicker } from '../CoverImagePicker'
 import { SmallFloatingBox } from '../FloatingBox'
 import { Button } from '@headlessui/react'
 import { PinForSelector } from '../PinPicker'
-import { TFavouriteHandler, TPinHandler } from '../Post/types'
+import { TFavouriteHandler, TPinHandler, TPlayerCharacterHandler } from '../Post/types'
+import PlayerCharacterSelector from '../PlayerCharacterSelector'
 
 type TProps = {
   canEdit?: boolean
@@ -16,6 +17,7 @@ type TProps = {
   onRefresh?: () => any,
   pinHandler?: TPinHandler;
   favouriteHandler?: TFavouriteHandler,
+  playerCharacterHandler?: TPlayerCharacterHandler,
   onCoverImageSelected?: (imageId: number) => Promise<any>;
 }
 
@@ -29,6 +31,7 @@ const FormToolbar: FunctionComponent<TProps> = ({
   onDelete,
   pinHandler,
   favouriteHandler,
+  playerCharacterHandler,
   onCoverImageSelected
 }: TProps): JSX.Element => {
 
@@ -56,6 +59,9 @@ const FormToolbar: FunctionComponent<TProps> = ({
             <StarIcon className={`${favouriteHandler.isFavourited ? 'stroke-stone-800 hover:stroke-stone-400' : 'stroke-stone-400'} h-5 w-5`}/>
           </SmallFloatingBox>
         </Button>
+      )}
+      {playerCharacterHandler && (
+        <PlayerCharacterSelector handler={playerCharacterHandler}/>
       )}
       {canEdit && (
         <>

@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { useCharacterDataManager } from '../../DataManagers'
 import useCharacterFields from '../useCharacterForm/useCharacterFields'
 import { usePostForm } from '../index'
+import usePlayerCharacterHandler from '../../usePlayerCharacterHandler'
 
 type TOwnProps = {
   characterId: TCharacter['slug'];
@@ -31,18 +32,21 @@ const useCharacterForm = ({
     speciesId: data.species?.id
   })
 
-  return usePostForm({
-    id: characterId,
-    canHaveProfileImage: true,
-    mapData,
-    include,
-    manager,
-    fields,
-    onFetched,
-    onCreated,
-    onUpdated,
-    onDeleted,
-  })
+  return {
+    ...usePostForm({
+      id: characterId,
+      canHaveProfileImage: true,
+      mapData,
+      include,
+      manager,
+      fields,
+      onFetched,
+      onCreated,
+      onUpdated,
+      onDeleted,
+    }),
+    playerCharacterHandler: usePlayerCharacterHandler({ manager })
+  }
 }
 
 export default useCharacterForm

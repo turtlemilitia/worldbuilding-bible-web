@@ -75,6 +75,7 @@ const Post = <T extends TGenericPost> ({
             onDelete={form.onDelete}
             pinHandler={form.pinHandler}
             favouriteHandler={form.favouriteHandler}
+            playerCharacterHandler={form.playerCharacterHandler}
             onCoverImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'cover')}
           />
           <FloatingBox>
