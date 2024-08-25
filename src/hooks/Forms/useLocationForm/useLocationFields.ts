@@ -3,17 +3,19 @@ import { TLocation } from '../../../types'
 import { TUseFields } from '../../../components/Post/types'
 import { useMemo } from 'react'
 import {
+  useCampaignDataManager,
   useGovernmentTypeIndexDataManager,
   useLocationDataManager,
   useLocationTypeIndexDataManager,
   useNotebookDataManager
 } from '../../DataManagers'
-import { multiSelectField } from '../../fieldTools/fieldTools'
+import { encounterField, multiSelectField, questField } from '../../fieldTools/fieldTools'
 import useUrlFormatter from '../../useUrlFormatter'
 
 const useLocationFields = (): TUseFields => {
 
   const manager = useLocationDataManager()
+  const { campaign } = useCampaignDataManager()
   const { notebook } = useNotebookDataManager()
   const { locationTypes } = useLocationTypeIndexDataManager()
   const { governmentTypes } = useGovernmentTypeIndexDataManager()
@@ -66,6 +68,19 @@ const useLocationFields = (): TUseFields => {
       }
     }
 
+    if (manager.location && campaign) {
+      fields.push(
+        questField({
+          options: campaign?.quests || [],
+          link: (id: string | number) => `/campaigns/${campaign?.slug}/quests/${id}`,
+        }),
+        encounterField({
+          options: campaign?.encounters || [],
+          link: (id: string | number) => `/campaigns/${campaign?.slug}/encounters/${id}`,
+        }),
+      )
+    }
+
     if (manager.location && notebook?.notes) {
       fields.push(
         noteField({
@@ -75,7 +90,7 @@ const useLocationFields = (): TUseFields => {
     }
 
     return fields
-  }, [manager.compendium, manager.location, locationTypes, governmentTypes])
+  }, [manager.compendium, manager.location, campaign?.quests, campaign?.encounters, locationTypes, governmentTypes])
 
   return { fields, ready: true }
 }

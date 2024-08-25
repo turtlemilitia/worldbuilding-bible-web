@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from 'react'
+import React, { JSX } from 'react'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import EditorsWrapper from './EditorsWrapper'
 import FormToolbar from '../Forms/FormToolbar'
@@ -13,8 +13,6 @@ import HeaderWrapper from './HeaderWrapper'
 import { FloatingBox } from '../FloatingBox'
 import CampaignQuickLinks from '../CampaignWrapper/CampaignFavourites'
 import RightBar from './RightBar'
-import { setBackgroundImage } from '../../reducers/post/postSlice'
-import { useAppDispatch } from '../../hooks'
 
 // todo
 //  <TopMenu>
@@ -41,14 +39,6 @@ const Post = <T extends TGenericPost> ({
   form
 }: TPostProps<T>): JSX.Element => {
 
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-
-    dispatch(setBackgroundImage(form.imageHandler.getImage('cover')))
-
-  }, [form.imageHandler && form.imageHandler.getImage('cover')])
-
   return (
     <LoadingWrapper loading={form.loading} opacity={'100'}>
       <SavingDialog saving={form.saving}/>
@@ -68,24 +58,25 @@ const Post = <T extends TGenericPost> ({
             data={form.data}
             fields={form.fields}
             profileImage={form.imageHandler && form.imageHandler.getImage('profile')}
-            onProfileImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'profile') : undefined}
-            canHaveProfileImage={form.imageHandler?.canHaveProfileImage}
+            onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}
+            canHaveProfileImage={form.imageHandler.canHaveProfileImage}
             disabled={!form.canEdit}
           />
         </RightBar>
         <EditorsWrapper>
           {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
-          {(form.canEdit) && (
-            <FormToolbar
-              canManuallySave={true}
-              canRefresh={!form.isNew}
-              canDelete={form.canEdit}
-              onSave={form.onSave}
-              onRefresh={form.onFetch}
-              onDelete={form.onDelete}
-              onCoverImageSelected={form.imageHandler ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
-            />
-          )}
+          <FormToolbar
+            canEdit={form.canEdit}
+            canManuallySave={true}
+            canRefresh={!form.isNew}
+            canDelete={form.canEdit}
+            onSave={form.onSave}
+            onRefresh={form.onFetch}
+            onDelete={form.onDelete}
+            pinHandler={form.pinHandler}
+            favouriteHandler={form.favouriteHandler}
+            onCoverImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'cover')}
+          />
           <FloatingBox>
             <Editor
               id={form.data?.slug ?? 'new'}

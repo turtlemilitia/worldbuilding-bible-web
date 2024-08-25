@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import usePostForm from '../usePostForm'
 import useCampaignFields from './useCampaignFields'
 
-export const campaignIncludes = 'compendium;notebook;quests;quests.type;quests.parent;encounters;encounters.type;sessions;pins;pins.pinnable';
+export const campaignIncludes = 'compendium;notebook;quests;quests.type;quests.parent;encounters;encounters.type;sessions;pins;pins.pinnable;users;users.pins;users.pins.pinnable;gameMaster';
 
 type TOwnProps = {
   campaignId: TCampaign['slug'];
@@ -20,7 +20,6 @@ const useCampaignForm = ({
 }: TOwnProps & TUseFormProps<TCampaign>): TForm<TCampaign> => {
 
   const manager = useCampaignDataManager()
-
 
   const { fields } = useCampaignFields();
 

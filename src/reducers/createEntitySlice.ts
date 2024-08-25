@@ -69,7 +69,7 @@ export const createEntitySlice = <TEntity extends {[key: string]: any, images?: 
         if (state.data) {
           state.data = {
             ...state.data,
-            [field]: state.data[field]?.filter((child: TGenericPostBasic) => child.slug !== action.payload.id)
+            [field]: state.data[field]?.filter((child: TGenericPostBasic) => ![child.id, child.slug].includes(action.payload.id))
           }
         }
       },

@@ -4,7 +4,7 @@ import { SmallFloatingBox } from '../FloatingBox'
 
 const SelectImageButton: FunctionComponent = () => {
   return (
-    <SmallFloatingBox>
+    <SmallFloatingBox hover>
       <ImageIcon className="stroke-stone-400 h-5 w-5"/>
     </SmallFloatingBox>
   )

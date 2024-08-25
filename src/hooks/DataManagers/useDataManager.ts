@@ -4,14 +4,19 @@ import { TApi, TQueryParams } from '../../services/ApiService/types'
 import { Slice } from '@reduxjs/toolkit'
 import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { TIndexSliceState } from '../../reducers/createIndexSlice'
+import { TGenericPostBasic } from '../../types'
 
 export type TDataManager<TEntity, TRequest> = {
+  entityName: string;
   entity?: TEntity,
   isPermanent?: boolean,
   setData: (data: TEntity) => any,
   updateData: (data: Partial<TEntity>) => any,
   removeData: (id: string | number) => any,
   clearData: (id: string | number) => any,
+  setChildData: (field: string, data: TGenericPostBasic) => any,
+  updateChildData: (field: string, data: TGenericPostBasic) => any,
+  removeChildData: (field: string, id: string | number) => any,
   view: (id: string | number, query?: TQueryParams) => Promise<TEntity>,
   store: (payload: TRequest, query?: TQueryParams) => Promise<TEntity>,
   update: (id: string | number, payload: Partial<TRequest>, query?: TQueryParams) => Promise<TEntity>,
@@ -48,6 +53,18 @@ export const useDataManager = <TEntity, TRequest, TIndexResponse, TResponse exte
   const clearData = useCallback((id: string | number) => {
     dispatch(slice.actions.clear(id))
   }, [])
+
+  const setChildData = useCallback((field: string, data: TGenericPostBasic) => {
+    dispatch(slice.actions.setChildData({ field, data }))
+  }, [slice])
+
+  const updateChildData = useCallback((field: string, data: TGenericPostBasic) => {
+    dispatch(slice.actions.updateChildData({ field, data }))
+  }, [slice])
+
+  const removeChildData = useCallback((field: string, id: string | number) => {
+    dispatch(slice.actions.removeChildData({ field, id }))
+  }, [slice])
 
   const view = useCallback(async (id: string | number, query: TQueryParams = {}): Promise<TEntity> => {
     if (fetching) {
@@ -89,11 +106,15 @@ export const useDataManager = <TEntity, TRequest, TIndexResponse, TResponse exte
   }, [])
 
   return {
+    entityName: name,
     entity,
     setData,
     updateData,
     removeData,
     clearData,
+    setChildData,
+    updateChildData,
+    removeChildData,
     view,
     store,
     update,

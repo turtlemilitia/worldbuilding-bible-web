@@ -17,6 +17,10 @@ import {
   hasLanguagesAttachableDataManager, hasPinsAttachableDataManager,
   TOneOfAttachableNames
 } from '../DataManagers/useAttachableDataManager'
+import { setBackgroundImage } from '../../reducers/post/postSlice'
+import { useAppDispatch } from '../../hooks'
+import usePinHandler from '../usePinHandler'
+import useFavouriteHandler from '../useFavouriteHandler'
 
 type TProps<T, R> = {
   id: string | number,
@@ -44,12 +48,16 @@ const usePostForm = <T extends TGenericPost, R> ({
   canHaveProfileImage
 }: TProps<T, R>): TForm<T> => {
 
+  const dispatch = useAppDispatch();
+
   const { entity, store, update, destroy, view } = manager
 
   const isNew = useMemo(() => id === 'new', [id])
   const canEdit = useMemo(() => isNew || entity?.canUpdate !== undefined, [isNew, entity?.canUpdate])
 
   const imageHandler = useImageSelection<T>({ manager, canHaveProfileImage })
+  const pinHandler = usePinHandler<T>({ manager })
+  const favouriteHandler = useFavouriteHandler<T>({ manager })
 
   useEffect(() => {
     return () => {
@@ -58,6 +66,12 @@ const usePostForm = <T extends TGenericPost, R> ({
       }
     }
   }, [id])
+
+  useEffect(() => {
+
+    dispatch(setBackgroundImage(imageHandler.getImage('cover')))
+
+  }, [imageHandler && imageHandler.getImage('cover')])
 
   const {
     loading,
@@ -128,7 +142,9 @@ const usePostForm = <T extends TGenericPost, R> ({
     onDelete,
     errors,
     fields,
-    imageHandler
+    imageHandler,
+    pinHandler,
+    favouriteHandler
   }
 }
 

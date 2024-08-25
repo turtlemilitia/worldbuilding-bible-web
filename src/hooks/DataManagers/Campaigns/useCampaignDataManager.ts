@@ -5,11 +5,16 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
 import { campaignsIndexSlice } from '../../../reducers/campaign/campaignsIndexSlice'
 import campaignService from '../../../services/ApiService/Campaigns/CampaignService'
-import { useAttachableDataManager, hasNotesAttachableDataManager } from '../useAttachableDataManager'
+import {
+  useAttachableDataManager,
+  hasNotesAttachableDataManager,
+  hasPinsAttachableDataManager,
+  usePinnableDataManager
+} from '../useAttachableDataManager'
 
 type TCampaignDataManager = TDataManager<TCampaign, TCampaignRequest> & {
   campaign?: TCampaign
-} & hasNotesAttachableDataManager & hasImageableDataManager
+} & hasNotesAttachableDataManager & hasImageableDataManager & hasPinsAttachableDataManager
 
 const useCampaignDataManager = (): TCampaignDataManager => {
   const manager = useDataManager(
@@ -23,8 +28,8 @@ const useCampaignDataManager = (): TCampaignDataManager => {
     campaign: manager.entity,
     isPermanent: true,
     notes: useAttachableDataManager('notes', campaignSlice, campaignService.notes),
-    images: useImageableDataManager(campaignSlice, campaignService.images)
-
+    images: useImageableDataManager(campaignSlice, campaignService.images),
+    pins: usePinnableDataManager(campaignSlice, campaignService.pins)
   }
 }
 
