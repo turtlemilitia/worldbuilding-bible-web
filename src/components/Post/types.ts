@@ -1,6 +1,7 @@
 import {TField} from "../../hooks/fieldTools";
 import {TGenericPost} from "../../types";
 import { TFormHandling } from '../../hooks/useFormHandling/types'
+import { TSelectOption } from '../Forms/Fields/FieldMapper'
 
 export type TUseFields = {
   fields: TField[];
@@ -22,13 +23,31 @@ export type TForm<T> =  TFormHandling<T> & {
   // canRefresh?: boolean;
   canEdit: boolean;
   // canDelete?: boolean;
-  imageHandler: TUseImageHandler;
+  imageHandler: TImageHandler;
+  pinHandler: TPinHandler;
+  favouriteHandler: TFavouriteHandler;
+  playerCharacterHandler?: TPlayerCharacterHandler;
 }
 
-export type TUseImageHandler = {
+export type TPinForOption = TSelectOption & { type: 'user' | 'campaign', disabled?: boolean }
+export type TImageHandler = {
   handleOnImageSelected: (id: number, imageType: string) => Promise<any>
   canHaveProfileImage?: boolean
   getImage: (type: ('cover'|'profile')) => string|undefined
+}
+export type TPinHandler = {
+  canPin: boolean
+  handleOnPinSelected: (values: (TSelectOption & {type: 'campaign' | 'user'})[]) => Promise<any>,
+  values: TPinForOption[]
+}
+export type TFavouriteHandler = {
+  toggleFavourite: () => Promise<void>
+  isFavourited: boolean
+}
+export type TPlayerCharacterHandler = {
+  handleOnSelectUser: (values: TSelectOption[]) => Promise<any>
+  values: TSelectOption[],
+  canAssign: boolean
 }
 
 export type TPostProps<T> = {

@@ -46,10 +46,6 @@ const useCharacterFields = (): TUseFields => {
         options: campaign?.encounters || [],
         link: (id: string | number) => `/campaigns/${campaign?.slug}/encounters/${id}`,
       }),
-      // sessionField({
-      //   options: campaign?.sessions || [],
-      //   link: (id: string | number) => `/campaigns/${campaign?.slug}/sessions/${id}`,
-      // })
     )
   }
 

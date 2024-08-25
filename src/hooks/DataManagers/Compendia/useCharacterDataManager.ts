@@ -17,7 +17,7 @@ import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import CharacterService, { TCharacterRequest } from '../../../services/ApiService/Compendia/CharacterService'
 import { characterSlice } from '../../../reducers/compendium/character/characterSlice'
 
-type TCharacterDataManager = TChildDataManager<TCompendium, TCharacter, TCharacterRequest> & {
+export type TCharacterDataManager = TChildDataManager<TCompendium, TCharacter, TCharacterRequest> & {
   compendium?: TCompendium,
   character?: TCharacter,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager

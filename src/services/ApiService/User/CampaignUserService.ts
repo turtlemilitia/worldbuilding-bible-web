@@ -1,7 +1,6 @@
 import { TUser } from '../../../types'
-import { createApiService } from '../createApiService'
+import { createChildApiService } from '../createApiService'
 import { createCharacterableService } from '../createCharacterableService'
-import { createFavouritableService } from '../createFavouritableService'
 import { createPinnableService } from '../createPinnableService'
 import api from '../../../api'
 
@@ -18,9 +17,8 @@ const UserService = {
   viewOwn: (query = {}) => {
     return api.get(`/api/user?${new URLSearchParams(query).toString()}`)
   },
-  ...createApiService<TUserRequest, TUserIndexResponse, TUserResponse>('users'),
+  ...createChildApiService<TUserRequest, TUserIndexResponse, TUserResponse>('campaigns', 'users'),
   ...createCharacterableService('users'),
-  ...createFavouritableService(),
   ...createPinnableService('users')
 }
 

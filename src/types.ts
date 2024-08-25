@@ -274,7 +274,7 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
   quests: (TGenericPostBasic & { type: TQuest['type'] })[];
   notebook?: TNotebook
-  pins?: TPin[]
+  pins: TPin[]
 }
 
 export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {

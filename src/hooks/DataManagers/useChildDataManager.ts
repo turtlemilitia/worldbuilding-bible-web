@@ -8,14 +8,11 @@ import { TDataManager } from './useDataManager'
 import { mapPlural } from '../../utils/dataUtils'
 
 export type TChildDataManager<TParentEntity, TEntity, TRequest> = TDataManager<TEntity, TRequest> & {
-  parent?: TParentEntity,
-  setChildData: (field: string, data: TGenericPostBasic) => any,
-  updateChildData: (field: string, data: TGenericPostBasic) => any,
-  removeChildData: (field: string, id: string | number) => any,
+  parent?: TParentEntity
 }
 
 export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
-  name: 'quest' | 'encounter' | 'session' | 'note' | 'character' | 'concept' | 'currency' | 'deity' | 'faction' | 'item' | 'language' | 'location' | 'naturalResource' | 'pantheon' | 'plane' | 'religion' | 'species' | 'spell' | 'story',
+  name: 'quest' | 'encounter' | 'session' | 'note' | 'character' | 'concept' | 'currency' | 'deity' | 'faction' | 'item' | 'language' | 'location' | 'naturalResource' | 'pantheon' | 'plane' | 'religion' | 'species' | 'spell' | 'story' | 'user',
   parentName: 'campaign' | 'notebook' | 'compendium',
   slice: Slice<TEntitySliceState<TEntity>>,
   parentSlice: Slice<TEntitySliceState<TParentEntity>>,
@@ -87,6 +84,7 @@ export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResp
   }, [api])
 
   return {
+    entityName: name,
     parent,
     entity,
     setData,
