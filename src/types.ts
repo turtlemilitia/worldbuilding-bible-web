@@ -57,6 +57,7 @@ export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
 }
 
 export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
+  creator: TUser;
   notebook?: TGenericPostBasic;
   characters?: TGenericPostBasic[];
   concepts?: TGenericPostBasic[];
@@ -94,6 +95,8 @@ export type TEncounterType = TOptionList
 export type TEncounter = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   type: TEncounterType
 }
+
+export type TScene = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
 export type TFaction = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
@@ -272,6 +275,7 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   invitations: TInvitation[];
   sessions: (TGenericPostBasic & { session_number: TSession['session_number'] })[];
   encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
+  scenes: (TGenericPostBasic)[];
   quests: (TGenericPostBasic & { type: TQuest['type'] })[];
   notebook?: TNotebook
   pins: TPin[]

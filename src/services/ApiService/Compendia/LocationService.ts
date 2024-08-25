@@ -6,6 +6,7 @@ import { createImageableService } from '../createImageableService'
 import { createNotableService } from '../createNotableService'
 import { createQuestableService } from '../createQuestableService'
 import { createEncounterableService } from '../createEncounterableService'
+import { createSceneableService } from '../createSceneableService'
 
 export interface TLocationRequest {
   parentId: TLocation['id'];
@@ -30,6 +31,7 @@ const LocationService = {
   ...createImageableService(pluralName),
   ...createQuestableService(pluralName),
   ...createEncounterableService(pluralName),
+  ...createSceneableService(pluralName),
   attachToCharacter: (slug: string, locationId: number): Promise<AxiosResponse<TLocationResponse>> => {
     return api.post(`/api/characters/${slug}/locations`, { locationId })
   },

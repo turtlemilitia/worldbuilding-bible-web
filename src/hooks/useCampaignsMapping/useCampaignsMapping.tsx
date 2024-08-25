@@ -1,14 +1,12 @@
 import { TUseCampaignsMapping } from './types'
-import { useAppDispatch } from '../../hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { TEncounter, TQuest, TSession, TTypesAllowed } from '../../types'
+import { TEncounter, TQuest, TScene, TSession, TTypesAllowed } from '../../types'
 import { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
-import { StarIcon, StickyNoteIcon, SwordsIcon } from 'lucide-react'
-import React from 'react'
+import { StarIcon, StickyNoteIcon, SwordsIcon, VenetianMaskIcon } from 'lucide-react'
+import React, { useCallback, useMemo } from 'react'
 import {
-  useCampaignDataManager,
   useEncounterDataManager,
-  useQuestDataManager,
+  useQuestDataManager, useSceneDataManager,
   useSessionDataManager
 } from '../DataManagers'
 
@@ -21,24 +19,25 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
   const { destroy: destroyEncounter } = useEncounterDataManager()
   const { destroy: destroyQuest } = useQuestDataManager()
   const { destroy: destroySession } = useSessionDataManager()
+  const { destroy: destroyScene } = useSceneDataManager()
 
-  const prefix = `/campaigns/${campaignId}`
+  const prefix = useMemo(() => `/campaigns/${campaignId}`, [campaignId])
 
-  const onDeleted = (field: string, slug: TTypesAllowed['slug']) => {
+  const onDeleted = useCallback((field: string, slug: TTypesAllowed['slug']) => {
     if (location.pathname.includes(`${prefix}/${field}/${slug}`)) {
       navigate(`${prefix}`)
     }
-  }
+  }, [location.pathname, prefix, navigate])
 
-  const mapEncounter = (encounter: TEncounter): SidebarItemInterface => ({
+  const mapEncounter = useCallback((encounter: TEncounter): SidebarItemInterface => ({
     title: encounter.name,
     to: `${prefix}/encounters/${encounter.slug}`,
     icon: (props) => <SwordsIcon {...props}/>,
     onDelete: () => destroyEncounter(encounter.slug)
       .then(() => onDeleted('encounters', encounter.slug))
-  })
+  }), [prefix, destroyEncounter, onDeleted])
 
-  const mapQuest = (quest: TQuest): SidebarItemInterface => ({
+  const mapQuest = useCallback((quest: TQuest): SidebarItemInterface => ({
     title: quest.name,
     to: `${prefix}/quests/${quest.slug}`,
     icon: (props) => <StarIcon {...props}/>,
@@ -47,20 +46,29 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
     onDelete: () => destroyQuest(quest.slug)
       .then(() => onDeleted('quests', quest.slug)),
     children: quest.children?.map(subQuest => mapQuest(subQuest))
-  })
+  }), [prefix, destroyQuest, onDeleted])
 
-  const mapSession = (session: TSession): SidebarItemInterface => ({
+  const mapSession = useCallback((session: TSession): SidebarItemInterface => ({
     title: session.name,
     to: `${prefix}/sessions/${session.slug}`,
     icon: (props) => <StickyNoteIcon {...props}/>,
     onDelete: () => destroySession(session.slug)
       .then(() => onDeleted('sessions', session.slug))
-  })
+  }), [prefix, destroySession, onDeleted])
+
+  const mapScene = useCallback((scene: TScene): SidebarItemInterface => ({
+    title: scene.name,
+    to: `${prefix}/scenes/${scene.slug}`,
+    icon: (props) => <VenetianMaskIcon {...props}/>,
+    onDelete: () => destroyScene(scene.slug)
+      .then(() => onDeleted('scenes', scene.slug))
+  }), [prefix, destroyScene, onDeleted])
 
   return {
     mapQuest,
     mapEncounter,
-    mapSession
+    mapSession,
+    mapScene
   }
 }
 

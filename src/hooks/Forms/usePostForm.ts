@@ -14,7 +14,7 @@ import {
 import {
   hasCharactersAttachableDataManager,
   hasFactionsAttachableDataManager, hasFavouritesAttachableDataManager,
-  hasLanguagesAttachableDataManager, hasPinsAttachableDataManager,
+  hasLanguagesAttachableDataManager, hasPinsAttachableDataManager, hasScenesAttachableDataManager,
   TOneOfAttachableNames
 } from '../DataManagers/useAttachableDataManager'
 import { setBackgroundImage } from '../../reducers/post/postSlice'
@@ -27,7 +27,7 @@ type TProps<T, R> = {
   mapData: (payload: T) => R,
   include?: string,
   manager: TDataManager<T, R> & hasImageableDataManager
-    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager>
+    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager & hasScenesAttachableDataManager>
   fields?: TField[],
   onFetched?: (data: T) => any
   onCreated?: (data: T) => any
@@ -71,7 +71,7 @@ const usePostForm = <T extends TGenericPost, R> ({
 
     dispatch(setBackgroundImage(imageHandler.getImage('cover')))
 
-  }, [imageHandler && imageHandler.getImage('cover')])
+  }, [imageHandler.getImage('cover')])
 
   const {
     loading,

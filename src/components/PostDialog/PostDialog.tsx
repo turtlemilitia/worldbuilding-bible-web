@@ -54,6 +54,7 @@ const PostDialog = <T extends TGenericPost,>({
                   {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
                   {(form.canEdit) && (
                     <FormToolbar
+                      canEdit={form.canEdit}
                       canManuallySave={true}
                       canRefresh={!form.isNew}
                       canDelete={form.canEdit}

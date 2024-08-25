@@ -44,6 +44,8 @@ import QuestWrapper from '../components/QuestWrapper'
 import EncounterWrapper from '../components/EncounterWrapper'
 import SessionWrapper from '../components/SessionWrapper'
 import NotebookWrapper from '../pages/Notebook/NotebookWrapper'
+import Scene from '../pages/Campaign/Scene'
+import SceneWrapper from '../components/SceneWrapper'
 
 const Routes = (): JSX.Element => {
 
@@ -203,6 +205,18 @@ const Routes = (): JSX.Element => {
                   loader: loadPost,
                 },
                 compendiumRoutes,
+                {
+                  path: 'scenes',
+                  element: <SceneWrapper/>,
+                  loader: loadPost,
+                  children: [
+                    {
+                      path: ':sceneId',
+                      element: <Scene/>,
+                      loader: loadPost
+                    }
+                  ]
+                },
                 {
                   path: 'quests',
                   element: <QuestWrapper/>,
