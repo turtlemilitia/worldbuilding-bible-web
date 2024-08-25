@@ -11,6 +11,7 @@ import useCampaignDataManager from './Campaigns/useCampaignDataManager'
 import useCompendiumDataManager from './Compendia/useCompendiumDataManager'
 import useNotebookDataManager from './Notebooks/useNotebookDataManager'
 import useEncounterDataManager from './Campaigns/useEncounterDataManager'
+import useSceneDataManager from './Campaigns/useSceneDataManager'
 import useSessionDataManager from './Campaigns/useSessionDataManager'
 import useQuestDataManager from './Campaigns/useQuestDataManager'
 import useCharacterDataManager from './Compendia/useCharacterDataManager'
@@ -61,6 +62,7 @@ export {
   useStoryDataManager,
   useCampaignDataManager,
   useEncounterDataManager,
+  useSceneDataManager,
   useSessionDataManager,
   useQuestDataManager,
   useNotebookDataManager,

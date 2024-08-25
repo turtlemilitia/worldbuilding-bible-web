@@ -12,7 +12,7 @@ export type TChildDataManager<TParentEntity, TEntity, TRequest> = TDataManager<T
 }
 
 export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
-  name: 'quest' | 'encounter' | 'session' | 'note' | 'character' | 'concept' | 'currency' | 'deity' | 'faction' | 'item' | 'language' | 'location' | 'naturalResource' | 'pantheon' | 'plane' | 'religion' | 'species' | 'spell' | 'story' | 'user',
+  name: 'quest' | 'encounter' | 'session' | 'note' | 'character' | 'concept' | 'currency' | 'deity' | 'faction' | 'item' | 'language' | 'location' | 'naturalResource' | 'pantheon' | 'plane' | 'religion' | 'species' | 'spell' | 'story' | 'user' | 'scene',
   parentName: 'campaign' | 'notebook' | 'compendium',
   slice: Slice<TEntitySliceState<TEntity>>,
   parentSlice: Slice<TEntitySliceState<TParentEntity>>,

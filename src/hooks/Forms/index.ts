@@ -17,6 +17,7 @@ import usePlaneForm from "./usePlaneForm/usePlaneForm";
 import usePostForm from "./usePostForm";
 import useQuestForm from "./useQuestForm/useQuestForm";
 import useReligionForm from "./useReligionForm/useReligionForm";
+import useSceneForm from "./useSceneForm/useSceneForm";
 import useSessionForm from "./useSessionForm/useSessionForm";
 import useSpeciesForm from "./useSpeciesForm/useSpeciesForm";
 import useSpellForm from "./useSpellForm/useSpellForm";
@@ -43,6 +44,7 @@ export {
   usePlaneForm,
   useQuestForm,
   useReligionForm,
+  useSceneForm,
   useSessionForm,
   useSpeciesForm,
   useSpellForm,

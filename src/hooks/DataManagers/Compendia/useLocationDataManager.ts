@@ -4,9 +4,11 @@ import {
   useEncounterableDataManager,
   useNotableDataManager,
   useQuestableDataManager,
+  useSceneableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
-  hasQuestsAttachableDataManager
+  hasQuestsAttachableDataManager,
+  hasScenesAttachableDataManager
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
@@ -16,7 +18,7 @@ import { locationSlice } from '../../../reducers/compendium/location/locationSli
 type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationRequest> & {
   compendium?: TCompendium,
   location?: TLocation,
-} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
+} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasScenesAttachableDataManager
 
 const useLocationDataManager = (): TLocationDataManager => {
   const manager = useChildDataManager(
@@ -33,6 +35,7 @@ const useLocationDataManager = (): TLocationDataManager => {
     notes: useNotableDataManager(locationSlice, LocationService.notes),
     quests: useQuestableDataManager(locationSlice, LocationService.quests),
     encounters: useEncounterableDataManager(locationSlice, LocationService.encounters),
+    scenes: useSceneableDataManager(locationSlice, LocationService.scenes),
     images: useImageableDataManager(locationSlice, LocationService.images)
   }
 }

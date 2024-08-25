@@ -2,8 +2,8 @@ import { AxiosResponse } from 'axios'
 import api from '../../api'
 
 export type TAttachableApi<TRequest, TResponse> = {
-  attach: (notableId: string | number, data: TRequest) => Promise<AxiosResponse<{ data: TResponse }>>
-  dettach: (notableId: string | number, id: number | string) => Promise<AxiosResponse<void>>
+  attach: (attachableId: string | number, data: TRequest) => Promise<AxiosResponse<{ data: TResponse }>>
+  dettach: (attachableId: string | number, id: number | string) => Promise<AxiosResponse<void>>
 }
 
 export const createAttachableService = <TRequest, TResponse> (name: string, attachablePluralName: string, pluralName: string): TAttachableApi<TRequest, TResponse> => ({

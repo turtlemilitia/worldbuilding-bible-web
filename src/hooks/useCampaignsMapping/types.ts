@@ -8,4 +8,5 @@ export type TUseCampaignsMapping = (props: TUseCampaignsMappingProps) => {
   mapQuest: (data: any) => SidebarItemInterface;
   mapEncounter: (data: any) => SidebarItemInterface;
   mapSession: (data: any) => SidebarItemInterface;
+  mapScene: (data: any) => SidebarItemInterface;
 }

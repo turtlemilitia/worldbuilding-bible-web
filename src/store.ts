@@ -23,6 +23,7 @@ import storySlice from './reducers/compendium/story/storySlice'
 import deitySlice from './reducers/compendium/deity/deitySlice'
 import encounterSlice from './reducers/campaign/encounter/encounterSlice'
 import questSlice from './reducers/campaign/quest/questSlice'
+import sceneSlice from './reducers/campaign/scene/sceneSlice'
 import spellSlice from './reducers/compendium/spell/spellSlice'
 import naturalResourceSlice from './reducers/compendium/naturalResource/naturalResourceSlice'
 import planeSlice from './reducers/compendium/plane/planeSlice'
@@ -78,6 +79,7 @@ export const store = configureStore({
     // campaign
     campaign: campaignSlice,
     session: sessionSlice,
+    scene: sceneSlice,
   }
 })
 

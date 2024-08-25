@@ -108,7 +108,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           </>
         )}
       </Combobox>
-      {dialogType && (
+      {dialogIsOpen && dialogType && (
         <Dialog
           type={dialogType}
           isOpen={!!dialogIsOpen}
