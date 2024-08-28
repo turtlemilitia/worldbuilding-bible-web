@@ -10,7 +10,8 @@ import {
   hasFactionsAttachableDataManager,
   hasLanguagesAttachableDataManager,
   hasNotesAttachableDataManager,
-  hasQuestsAttachableDataManager
+  hasQuestsAttachableDataManager,
+  useSceneableDataManager, hasScenesAttachableDataManager
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
@@ -20,7 +21,7 @@ import { characterSlice } from '../../../reducers/compendium/character/character
 export type TCharacterDataManager = TChildDataManager<TCompendium, TCharacter, TCharacterRequest> & {
   compendium?: TCompendium,
   character?: TCharacter,
-} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager
+} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasScenesAttachableDataManager
 
 const useCharacterDataManager = (): TCharacterDataManager => {
   const manager = useChildDataManager(
@@ -39,6 +40,7 @@ const useCharacterDataManager = (): TCharacterDataManager => {
     encounters: useEncounterableDataManager(characterSlice, CharacterService.encounters),
     factions: useFactionableDataManager(characterSlice, CharacterService.factions),
     languages: useLanguageableDataManager(characterSlice, CharacterService.languages),
+    scenes: useSceneableDataManager(characterSlice, CharacterService.scenes),
     images: useImageableDataManager(characterSlice, CharacterService.images)
   }
 }
