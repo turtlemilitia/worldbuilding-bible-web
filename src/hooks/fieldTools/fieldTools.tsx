@@ -55,6 +55,19 @@ export const sessionField = ({
   dialogType: 'session'
 })
 
+export const sceneField = ({
+  required,
+  options,
+  link,
+}: TSelectFieldProps) => multiSelectField({
+  name: 'scenes',
+  label: 'Scenes',
+  required,
+  options,
+  link,
+  dialogType: 'scene'
+})
+
 export const questField = ({
   required,
   options,

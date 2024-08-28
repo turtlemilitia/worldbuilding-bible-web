@@ -9,7 +9,7 @@ import {
   useLocationTypeIndexDataManager,
   useNotebookDataManager
 } from '../../DataManagers'
-import { encounterField, multiSelectField, questField } from '../../fieldTools/fieldTools'
+import { encounterField, multiSelectField, questField, sceneField } from '../../fieldTools/fieldTools'
 import useUrlFormatter from '../../useUrlFormatter'
 
 const useLocationFields = (): TUseFields => {
@@ -70,6 +70,10 @@ const useLocationFields = (): TUseFields => {
 
     if (manager.location && campaign) {
       fields.push(
+        sceneField({
+          options: campaign?.scenes || [],
+          link: (id: string | number) => `/campaigns/${campaign?.slug}/scenes/${id}`,
+        }),
         questField({
           options: campaign?.quests || [],
           link: (id: string | number) => `/campaigns/${campaign?.slug}/quests/${id}`,
@@ -90,7 +94,7 @@ const useLocationFields = (): TUseFields => {
     }
 
     return fields
-  }, [manager.compendium, manager.location, campaign?.quests, campaign?.encounters, locationTypes, governmentTypes])
+  }, [manager.compendium, manager.location, campaign?.quests, campaign?.encounters, campaign?.scenes, locationTypes, governmentTypes])
 
   return { fields, ready: true }
 }

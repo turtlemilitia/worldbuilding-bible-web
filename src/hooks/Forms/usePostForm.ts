@@ -121,6 +121,9 @@ const usePostForm = <T extends TGenericPost, R> ({
         case 'factions':
           return manager.factions?.attach(id, { factionId: attachedId })
 
+        case 'scenes':
+          return manager.scenes?.attach(id, { sceneId: attachedId })
+
       }
     },
     onDetach: async (name: keyof T, attachedId) => {

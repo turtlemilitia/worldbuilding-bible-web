@@ -6,6 +6,7 @@ import { createQuestableService } from '../createQuestableService'
 import { createEncounterableService } from '../createEncounterableService'
 import { createFactionableService } from '../createFactionableService'
 import { createLanguageableService } from '../createLanguageableService'
+import { createSceneableService } from '../createSceneableService'
 
 export interface TCharacterRequest {
   name: string;
@@ -27,6 +28,7 @@ const CharacterService = {
   ...createImageableService(pluralName),
   ...createQuestableService(pluralName),
   ...createEncounterableService(pluralName),
+  ...createSceneableService(pluralName),
   ...createFactionableService(pluralName),
   ...createLanguageableService(pluralName),
 }

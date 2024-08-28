@@ -46,7 +46,7 @@ export type TAsyncMultiSelectFieldFn = (props: {
   dialogType?: TDialogTypes
 }) => TAsyncMultiSelectField
 
-export type TDialogTypes = 'note'|'session'|'quest'|'encounter'|'faction'|'language';
+export type TDialogTypes = 'note'|'session'|'quest'|'encounter'|'faction'|'language'|'scene';
 export type TSelectDialogProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any,
