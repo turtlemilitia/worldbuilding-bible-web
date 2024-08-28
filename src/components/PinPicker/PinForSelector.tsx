@@ -1,19 +1,19 @@
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
-import React, { Fragment, useMemo, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { SmallFloatingBox } from '../FloatingBox'
 import { CheckIcon, DotIcon, PinIcon } from 'lucide-react'
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
 import { useCampaignDataManager } from '../../hooks/DataManagers'
 import clsx from 'clsx'
-import { TPinForOption, TPinHandler } from '../Post/types'
+import { TPinHandler } from '../Post/types'
 import LoadingWrapper from '../LoadingWrapper'
 import { campaignIncludes } from '../../hooks/Forms/useCampaignForm/useCampaignForm'
 import { TCampaign } from '../../types'
 
 type TProps = {
-  pinHandler: TPinHandler
+  handler: TPinHandler
 }
-const PinForSelector = ({ pinHandler }: TProps) => {
+const PinForSelector = ({ handler }: TProps) => {
 
   const { campaign, view: refreshCampaign } = useCampaignDataManager()
 
@@ -21,36 +21,16 @@ const PinForSelector = ({ pinHandler }: TProps) => {
 
   const handleOnChange = (options: (TSelectOption & { type: 'user' | 'campaign' })[]) => {
     setLoading(true)
-    pinHandler.handleOnPinSelected(options)
+    handler.handleOnPinSelected(options)
      .then(async () => {
        await refreshCampaign((campaign as TCampaign).slug, {include: campaignIncludes}) // only until broadcasting is implemented
        setLoading(false)
      })
   }
 
-  const options: TPinForOption[] = useMemo(() => {
-    if (!campaign) {
-      return []
-    }
-    const users: TPinForOption[] = campaign.users.map((user) => ({
-      id: user.id,
-      name: user.name,
-      type: 'user',
-      disabled: pinHandler.values.some(value => value.type === 'campaign')
-    })) ?? []
-    return [
-      {
-        id: campaign.id,
-        name: campaign.name,
-        type: 'campaign'
-      },
-      ...users
-    ]
-  }, [campaign, pinHandler.values])
-
   return (
 
-    <Listbox value={pinHandler.values} by="id" onChange={handleOnChange} multiple>
+    <Listbox value={handler.values} by="id" onChange={handleOnChange} multiple>
       <div className={'relative'}>
         <ListboxButton className="outline-none">
           <SmallFloatingBox hover>
@@ -67,7 +47,7 @@ const PinForSelector = ({ pinHandler }: TProps) => {
           'font-serif text-serif-md antialiased'
         ])}>
           <LoadingWrapper loading={loading} positioning={'absolute'}>
-            {options.map((option) => (
+            {handler.options.map((option) => (
               <ListboxOption
                 key={option.id}
                 value={option}

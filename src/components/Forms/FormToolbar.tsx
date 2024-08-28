@@ -4,8 +4,9 @@ import { CoverImagePicker } from '../CoverImagePicker'
 import { SmallFloatingBox } from '../FloatingBox'
 import { Button } from '@headlessui/react'
 import { PinForSelector } from '../PinPicker'
-import { TFavouriteHandler, TPinHandler, TPlayerCharacterHandler } from '../Post/types'
+import { TFavouriteHandler, TPermissionHandler, TPinHandler, TPlayerCharacterHandler } from '../Post/types'
 import PlayerCharacterSelector from '../PlayerCharacterSelector'
+import UserPermissionsSelector from '../UserPermissionsSelector'
 
 type TProps = {
   canEdit?: boolean
@@ -18,6 +19,7 @@ type TProps = {
   pinHandler?: TPinHandler;
   favouriteHandler?: TFavouriteHandler,
   playerCharacterHandler?: TPlayerCharacterHandler,
+  permissionHandler?: TPermissionHandler,
   onCoverImageSelected?: (imageId: number) => Promise<any>;
 }
 
@@ -32,6 +34,7 @@ const FormToolbar: FunctionComponent<TProps> = ({
   pinHandler,
   favouriteHandler,
   playerCharacterHandler,
+  permissionHandler,
   onCoverImageSelected
 }: TProps): JSX.Element => {
 
@@ -50,8 +53,14 @@ const FormToolbar: FunctionComponent<TProps> = ({
 
   return (
     <div className="flex justify-end mb-3 gap-3">
+      {permissionHandler?.canAssign && (
+        <UserPermissionsSelector handler={permissionHandler}/>
+      )}
       {pinHandler?.canPin && (
-        <PinForSelector pinHandler={pinHandler}/>
+        <PinForSelector handler={pinHandler}/>
+      )}
+      {playerCharacterHandler && playerCharacterHandler.canAssign && (
+        <PlayerCharacterSelector handler={playerCharacterHandler}/>
       )}
       {favouriteHandler && (
         <Button onClick={favouriteHandler.toggleFavourite}>
@@ -59,9 +68,6 @@ const FormToolbar: FunctionComponent<TProps> = ({
             <StarIcon className={`${favouriteHandler.isFavourited ? 'stroke-stone-800 hover:stroke-stone-400' : 'stroke-stone-400'} h-5 w-5`}/>
           </SmallFloatingBox>
         </Button>
-      )}
-      {playerCharacterHandler && (
-        <PlayerCharacterSelector handler={playerCharacterHandler}/>
       )}
       {canEdit && (
         <>

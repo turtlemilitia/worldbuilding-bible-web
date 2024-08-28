@@ -4,6 +4,7 @@ import { createCharacterableService } from '../createCharacterableService'
 import { createFavouritableService } from '../createFavouritableService'
 import { createPinnableService } from '../createPinnableService'
 import api from '../../../api'
+import { createPermissionableService } from '../createPermissionableService'
 
 export type TUserRequest = {
   name: TUser['name'];
@@ -21,7 +22,8 @@ const UserService = {
   ...createApiService<TUserRequest, TUserIndexResponse, TUserResponse>('users'),
   ...createCharacterableService('users'),
   ...createFavouritableService(),
-  ...createPinnableService('users')
+  ...createPinnableService('users'),
+  ...createPermissionableService('users')
 }
 
 export default UserService

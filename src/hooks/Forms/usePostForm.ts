@@ -13,21 +13,26 @@ import {
 } from '../DataManagers'
 import {
   hasCharactersAttachableDataManager,
-  hasFactionsAttachableDataManager, hasFavouritesAttachableDataManager,
-  hasLanguagesAttachableDataManager, hasPinsAttachableDataManager, hasScenesAttachableDataManager,
+  hasFactionsAttachableDataManager,
+  hasFavouritesAttachableDataManager,
+  hasLanguagesAttachableDataManager,
+  hasPermissionsAttachableDataManager,
+  hasPinsAttachableDataManager,
+  hasScenesAttachableDataManager,
   TOneOfAttachableNames
 } from '../DataManagers/useAttachableDataManager'
 import { setBackgroundImage } from '../../reducers/post/postSlice'
 import { useAppDispatch } from '../../hooks'
 import usePinHandler from '../usePinHandler'
 import useFavouriteHandler from '../useFavouriteHandler'
+import useUserPermissionHandler from '../useUserPermissionHandler'
 
 type TProps<T, R> = {
   id: string | number,
   mapData: (payload: T) => R,
   include?: string,
   manager: TDataManager<T, R> & hasImageableDataManager
-    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager & hasScenesAttachableDataManager>
+    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager & hasScenesAttachableDataManager & hasPermissionsAttachableDataManager>
   fields?: TField[],
   onFetched?: (data: T) => any
   onCreated?: (data: T) => any
@@ -58,6 +63,7 @@ const usePostForm = <T extends TGenericPost, R> ({
   const imageHandler = useImageSelection<T>({ manager, canHaveProfileImage })
   const pinHandler = usePinHandler<T>({ manager })
   const favouriteHandler = useFavouriteHandler<T>({ manager })
+  const permissionHandler = useUserPermissionHandler<T>({ manager })
 
   useEffect(() => {
     return () => {
@@ -144,7 +150,8 @@ const usePostForm = <T extends TGenericPost, R> ({
     fields,
     imageHandler,
     pinHandler,
-    favouriteHandler
+    favouriteHandler,
+    permissionHandler
   }
 }
 

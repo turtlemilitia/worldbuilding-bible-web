@@ -53,13 +53,22 @@ const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler
     return values
   }, [campaign?.users, manager.character])
 
+  const permittedUsers = useMemo(() => {
+    return campaign?.users.filter((user) => {
+      return user.permissions?.some(permission => {
+        return permission.permissionableId === manager.entity?.id
+      })
+    }) ?? []
+  }, [campaign])
+
   const canAssign = useMemo(() => {
-    return authUser?.id === campaign?.gameMaster?.id
+    return permittedUsers.length > 0 && authUser?.id === campaign?.gameMaster?.id
   }, [authUser, campaign])
 
   return {
     handleOnSelectUser,
     values,
+    options: permittedUsers,
     canAssign
   }
 }

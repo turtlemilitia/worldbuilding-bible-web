@@ -33,7 +33,7 @@ export const useImageableDataManager = <TEntity> (
   }, [])
 
   const detach = useCallback(async (imageableId: number | string, id: number | string) => {
-    await api.dettach(imageableId, id)
+    await api.detach(imageableId, id)
     dettachData(id)
   }, [])
 
