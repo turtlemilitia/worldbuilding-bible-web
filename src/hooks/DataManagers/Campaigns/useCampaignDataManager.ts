@@ -9,12 +9,12 @@ import {
   useAttachableDataManager,
   hasNotesAttachableDataManager,
   hasPinsAttachableDataManager,
-  usePinnableDataManager
+  usePinnableDataManager, hasPermissionsAttachableDataManager, usePermissionableDataManager
 } from '../useAttachableDataManager'
 
 type TCampaignDataManager = TDataManager<TCampaign, TCampaignRequest> & {
   campaign?: TCampaign
-} & hasNotesAttachableDataManager & hasImageableDataManager & hasPinsAttachableDataManager
+} & hasNotesAttachableDataManager & hasImageableDataManager & hasPinsAttachableDataManager & hasPermissionsAttachableDataManager
 
 const useCampaignDataManager = (): TCampaignDataManager => {
   const manager = useDataManager(
@@ -29,7 +29,8 @@ const useCampaignDataManager = (): TCampaignDataManager => {
     isPermanent: true,
     notes: useAttachableDataManager('notes', campaignSlice, campaignService.notes),
     images: useImageableDataManager(campaignSlice, campaignService.images),
-    pins: usePinnableDataManager(campaignSlice, campaignService.pins)
+    pins: usePinnableDataManager(campaignSlice, campaignService.pins),
+    permissions: usePermissionableDataManager(campaignSlice, campaignService.permissions)
   }
 }
 

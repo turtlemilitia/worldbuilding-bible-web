@@ -3,7 +3,18 @@ import { Slice } from '@reduxjs/toolkit'
 import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { TAttachableApi } from '../../services/ApiService/createAttachableService'
 import { useAppDispatch } from '../../hooks'
-import { TCharacter, TEncounter, TFaction, TFavourite, TLanguage, TNote, TPin, TQuest, TScene } from '../../types'
+import {
+  TCharacter,
+  TEncounter,
+  TFaction,
+  TFavourite,
+  TLanguage,
+  TNote,
+  TPermission,
+  TPin,
+  TQuest,
+  TScene
+} from '../../types'
 import { TNotableApi, TNoteAttachRequest, TNoteAttachResponse } from '../../services/ApiService/createNotableService'
 import { TQuestableApi, TQuestAttachRequest, TQuestAttachResponse } from '../../services/ApiService/createQuestableService'
 import { TEncounterableApi, TEncounterAttachRequest, TEncounterAttachResponse } from '../../services/ApiService/createEncounterableService'
@@ -33,6 +44,11 @@ import {
   TSceneAttachRequest,
   TSceneAttachResponse
 } from '../../services/ApiService/createSceneableService'
+import {
+  TPermissionableApi,
+  TPermissionAttachRequest,
+  TPermissionAttachResponse
+} from '../../services/ApiService/createPermissionableService'
 
 export type TAttachableDataManager<TAttached, TRequest> = {
   attachData: (entity: TAttached) => any,
@@ -42,7 +58,7 @@ export type TAttachableDataManager<TAttached, TRequest> = {
   detach: (parentId: number | string, id: number | string) => Promise<void>,
 }
 
-export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages' | 'characters' | 'favourites' | 'pins' | 'scenes';
+export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages' | 'characters' | 'favourites' | 'pins' | 'scenes' | 'permissions';
 
 export const useAttachableDataManager = <TEntity, TAttached extends { id: number | string }, TAttachRequest, TAttachResponse extends TAttached> (
   attachedName: TOneOfAttachableNames,
@@ -71,7 +87,7 @@ export const useAttachableDataManager = <TEntity, TAttached extends { id: number
 
   const detach = useCallback(async (attachableId: number | string, id: number | string) => {
     try { // we should find a way to not send this if already deleted
-      await api.dettach(attachableId, id)
+      await api.detach(attachableId, id)
     } catch (error) {
       console.error(error)
     }
@@ -150,3 +166,10 @@ export const usePinnableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TPinnableApi['pins'],
 ): TPinnableDataManager => useAttachableDataManager<TEntity, TPin, TPinAttachRequest, TPinAttachResponse>('pins', slice, api)
+
+export type TPermissionableDataManager = TAttachableDataManager<TPermission, TPermissionAttachRequest>
+export type hasPermissionsAttachableDataManager = { permissions: TPermissionableDataManager }
+export const usePermissionableDataManager = <TEntity> (
+  slice: Slice<TEntitySliceState<TEntity>>,
+  api: TPermissionableApi['permissions'],
+): TPermissionableDataManager => useAttachableDataManager<TEntity, TPermission, TPermissionAttachRequest, TPermissionAttachResponse>('permissions', slice, api)

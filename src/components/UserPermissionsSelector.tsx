@@ -1,27 +1,26 @@
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import React, { Fragment, useState } from 'react'
-import { CheckIcon, DotIcon, UserIcon, UserPlus2Icon, UserPlusIcon } from 'lucide-react'
+import { CheckIcon, DotIcon, KeyIcon } from 'lucide-react'
 import clsx from 'clsx'
-import { TPlayerCharacterHandler } from './Post/types'
+import { TPermissionForOption, TPermissionHandler } from './Post/types'
 import { useCampaignDataManager } from '../hooks/DataManagers'
-import { TSelectOption } from './Forms/Fields/FieldMapper'
 import { TCampaign } from '../types'
 import { campaignIncludes } from '../hooks/Forms/useCampaignForm/useCampaignForm'
 import { SmallFloatingBox } from './FloatingBox'
 import LoadingWrapper from './LoadingWrapper'
 
 type TProps = {
-  handler: TPlayerCharacterHandler
+  handler: TPermissionHandler
 }
-const PinForSelector = ({ handler }: TProps) => {
+const UserPermissionsSelector = ({ handler }: TProps) => {
 
   const { campaign, view: refreshCampaign } = useCampaignDataManager()
 
   const [loading, setLoading] = useState(false)
 
-  const handleOnChange = (options: TSelectOption[]) => {
+  const handleOnChange = (options: TPermissionForOption[]) => {
     setLoading(true)
-    handler.handleOnSelectUser(options)
+    handler.handleOnPermissionSelected(options)
       .then(async () => {
         await refreshCampaign((campaign as TCampaign).slug, { include: campaignIncludes }) // only until broadcasting is implemented
         setLoading(false)
@@ -34,7 +33,7 @@ const PinForSelector = ({ handler }: TProps) => {
       <div className={'relative'}>
         <ListboxButton className="outline-none">
           <SmallFloatingBox hover>
-            <UserPlus2Icon className="stroke-stone-400 h-5 w-5"/>
+            <KeyIcon className="stroke-stone-400 h-5 w-5"/>
           </SmallFloatingBox>
         </ListboxButton>
 
@@ -53,6 +52,7 @@ const PinForSelector = ({ handler }: TProps) => {
                   key={option.id}
                   value={option}
                   as={Fragment}
+                  disabled={option.disabled}
                 >
                   {({ focus, selected, disabled }) => (
                     <li className={`py-1 flex justify-between ${disabled ? 'text-stone-500' : 'cursor-pointer'}`}>
@@ -72,4 +72,4 @@ const PinForSelector = ({ handler }: TProps) => {
   )
 }
 
-export default PinForSelector
+export default UserPermissionsSelector

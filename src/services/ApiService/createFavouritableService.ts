@@ -17,7 +17,7 @@ export const createFavouritableService = (): TFavouritableApi => ({
     attach: (attachableId, data) => {
       return api.post(`/api/favourites?include=favouritable`, data)
     },
-    dettach: (attachableId, id) => {
+    detach: (attachableId, id) => {
       return api.delete(`/api/favourites/${id}`)
     }
 

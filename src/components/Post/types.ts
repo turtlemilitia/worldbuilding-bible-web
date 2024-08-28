@@ -27,6 +27,7 @@ export type TForm<T> =  TFormHandling<T> & {
   pinHandler: TPinHandler;
   favouriteHandler: TFavouriteHandler;
   playerCharacterHandler?: TPlayerCharacterHandler;
+  permissionHandler?: TPermissionHandler;
 }
 
 export type TPinForOption = TSelectOption & { type: 'user' | 'campaign', disabled?: boolean }
@@ -38,6 +39,7 @@ export type TImageHandler = {
 export type TPinHandler = {
   canPin: boolean
   handleOnPinSelected: (values: (TSelectOption & {type: 'campaign' | 'user'})[]) => Promise<any>,
+  options: TPinForOption[]
   values: TPinForOption[]
 }
 export type TFavouriteHandler = {
@@ -47,6 +49,15 @@ export type TFavouriteHandler = {
 export type TPlayerCharacterHandler = {
   handleOnSelectUser: (values: TSelectOption[]) => Promise<any>
   values: TSelectOption[],
+  options: TSelectOption[],
+  canAssign: boolean
+}
+
+export type TPermissionForOption = TSelectOption & { type: 'user' | 'campaign', disabled?: boolean }
+export type TPermissionHandler = {
+  handleOnPermissionSelected: (values: TPermissionForOption[]) => Promise<any>
+  options: TPermissionForOption[],
+  values: TPermissionForOption[],
   canAssign: boolean
 }
 

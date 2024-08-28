@@ -5,6 +5,7 @@ export type TUser = {
   pins?: TPin[];
   favourites?: TFavourite[];
   characters?: TCharacter[];
+  permissions?: TPermission[];
 }
 
 export type TInvitation = {
@@ -152,6 +153,13 @@ export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
 
 export type TNote = TGenericPost & TPlayerTools & TCanHaveImages
 
+export type TPermission = {
+  id: number;
+  permissionableId: number;
+  permission: 'view',
+  permissionableType: string
+}
+
 export type TPin = {
   id: number
 } & ({
@@ -279,6 +287,7 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   quests: (TGenericPostBasic & { type: TQuest['type'] })[];
   notebook?: TNotebook
   pins: TPin[]
+  permissions: TPermission[]
 }
 
 export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {

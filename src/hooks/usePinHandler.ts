@@ -76,14 +76,43 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
     return values
   }, [campaign, manager.entity, manager.entityName])
 
+  const permittedUsers = useMemo(() => {
+    return campaign?.users.filter((user) => {
+      return user.permissions?.some(permission => {
+        return permission.permissionableId === manager.entity?.id
+      })
+    }) ?? []
+  }, [campaign])
+
+  const options: TPinForOption[] = useMemo(() => {
+    if (!campaign) {
+      return []
+    }
+    const users: TPinForOption[] = permittedUsers.map((user) => ({
+      id: user.id,
+      name: user.name,
+      type: 'user',
+      disabled: values.some(value => value.type === 'campaign')
+    })) ?? []
+    return [
+      {
+        id: campaign.id,
+        name: campaign.name,
+        type: 'campaign'
+      },
+      ...users
+    ]
+  }, [campaign, values, permittedUsers])
+
   const canPin = useMemo(() => {
-    return authUser?.id === campaign?.gameMaster?.id
+    return permittedUsers.length > 0 && authUser?.id === campaign?.gameMaster?.id
   }, [authUser, campaign])
 
   return {
     canPin,
     handleOnPinSelected,
-    values
+    options,
+    values,
   }
 }
 
