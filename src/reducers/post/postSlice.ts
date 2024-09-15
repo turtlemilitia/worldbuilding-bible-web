@@ -9,7 +9,7 @@ const initialState: TState = {
   loading: true,
 }
 
-const postSlice: Slice<TState> = createSlice({
+export const postSlice: Slice<TState> = createSlice({
   name: 'post',
   initialState,
   reducers: {
@@ -21,7 +21,7 @@ const postSlice: Slice<TState> = createSlice({
     },
     clearBackgroundImage: (state) => {
       state.backgroundImage = undefined
-    }
+    },
   }
 })
 

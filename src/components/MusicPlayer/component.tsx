@@ -7,7 +7,7 @@ const MusicPlayer: FunctionComponent = () => {
 
   return (
     <div
-      className={`fixed bottom-4 right-4 rounded-full shadow-md shadow-stone-950 border border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 text-stone-200 px-3 py-3 backdrop-blur-sm cursor-pointer flex flex-row`}
+      className={`fixed bottom-4 right-4 rounded-full shadow-md shadow-stone-950 border border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 text-stone-200 px-3 py-3 backdrop-blur-sm cursor-pointer flex flex-row z-40`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >

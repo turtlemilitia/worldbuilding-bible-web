@@ -21,7 +21,6 @@ import {
   hasScenesAttachableDataManager,
   TOneOfAttachableNames
 } from '../DataManagers/useAttachableDataManager'
-import { setBackgroundImage } from '../../reducers/post/postSlice'
 import { useAppDispatch } from '../../hooks'
 import usePinHandler from '../usePinHandler'
 import useFavouriteHandler from '../useFavouriteHandler'
@@ -53,8 +52,6 @@ const usePostForm = <T extends TGenericPost, R> ({
   canHaveProfileImage
 }: TProps<T, R>): TForm<T> => {
 
-  const dispatch = useAppDispatch();
-
   const { entity, store, update, destroy, view } = manager
 
   const isNew = useMemo(() => id === 'new', [id])
@@ -72,12 +69,6 @@ const usePostForm = <T extends TGenericPost, R> ({
       }
     }
   }, [id])
-
-  useEffect(() => {
-
-    dispatch(setBackgroundImage(imageHandler.getImage('cover')))
-
-  }, [imageHandler.getImage('cover')])
 
   const {
     loading,

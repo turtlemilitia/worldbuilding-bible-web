@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useEffect, useMemo, useRef } from 'react'
 import { SmallFloatingBox } from '../FloatingBox'
 import SmallSansSerifText from '../SmallSansSerifText'
 import { useCampaignDataManager } from '../../hooks/DataManagers'
@@ -7,6 +7,7 @@ import useUrlFormatter from '../../hooks/useUrlFormatter'
 import { Link } from 'react-router-dom'
 import { mapPlural } from '../../utils/dataUtils'
 import useAuthUserDataManager from '../../hooks/DataManagers/useAuthUserDataManager'
+import usePostDataManager from '../../hooks/DataManagers/usePostDataManager'
 
 const CampaignFavourites: FunctionComponent = () => {
 
@@ -14,9 +15,38 @@ const CampaignFavourites: FunctionComponent = () => {
   const { campaign } = useCampaignDataManager()
   const { compendiumPath } = useUrlFormatter()
 
+  const links = useMemo(() => {
+    const list: {link: string, name: string}[] = [];
+    if (user?.characters) {
+      list.push(...user.characters.map((item, index) => ({
+        link: `${compendiumPath}/characters/${item.slug}`,
+        name: item.name
+      })))
+    }
+    if (campaign?.pins) {
+      list.push(...campaign.pins.map((item, index) => ({
+        link: `${compendiumPath}/${mapPlural(item.pinnableType)}/${item.pinnable.slug}`,
+        name: item.pinnable.name
+      })))
+    }
+    if (user?.pins) {
+      list.push(...user.pins.map((item, index) => ({
+        link: `${compendiumPath}/${mapPlural(item.pinnableType)}/${item.pinnable.slug}`,
+        name: item.pinnable.name
+      })))
+    }
+    if (user?.favourites) {
+      list.push(...user?.favourites.map((item, index) => ({
+        link: `${compendiumPath}/${mapPlural(item.favouritableType)}/${item.favouritable.slug}`,
+        name: item.favouritable.name
+      })))
+    }
+    return list;
+  }, [user?.characters, compendiumPath, campaign?.pins, user?.pins, user?.favourites]);
+
   return (
     <Transition
-      show={Boolean(campaign?.pins || user?.pins || user?.favourites || user?.characters)}
+      show={Boolean(links)}
       enter={'transition-all duration-1000'}
       enterFrom={'-top-10 opacity-0'}
       enterTo={'top-0 opacity-100'}
@@ -25,45 +55,12 @@ const CampaignFavourites: FunctionComponent = () => {
       leaveTo={'-top-10 opacity-0'}
     >
       <div className="flex-1 items-end space-y-4 mb-4 text-right">
-        {user?.characters?.map((item, index) => {
+        {links?.map(({ link, name }, index) => {
           return (
             <div key={index}>
-              <Link to={`${compendiumPath}/characters/${item.slug}`}>
+              <Link to={link}>
                 <SmallFloatingBox className={'bg-stone-900 bg-opacity-100 transition-all duration-1000 hover:bg-yellow-600 px-4'}>
-                  <SmallSansSerifText>{item.name}</SmallSansSerifText>
-                </SmallFloatingBox>
-              </Link>
-            </div>
-          )
-        })}
-        {campaign?.pins?.map((item, index) => {
-          return (
-            <div key={index}>
-              <Link to={`${compendiumPath}/${mapPlural(item.pinnableType)}/${item.pinnable.slug}`}>
-                <SmallFloatingBox className={'px-4'}>
-                  <SmallSansSerifText>{item.pinnable.name}</SmallSansSerifText>
-                </SmallFloatingBox>
-              </Link>
-            </div>
-          )
-        })}
-        {user?.pins?.map((item, index) => {
-          return (
-            <div key={index}>
-              <Link to={`${compendiumPath}/${mapPlural(item.pinnableType)}/${item.pinnable.slug}`}>
-                <SmallFloatingBox className={'px-4'}>
-                  <SmallSansSerifText>{item.pinnable.name}</SmallSansSerifText>
-                </SmallFloatingBox>
-              </Link>
-            </div>
-          )
-        })}
-        {user?.favourites?.map((item, index) => {
-          return (
-            <div key={index}>
-              <Link to={`${compendiumPath}/${mapPlural(item.favouritableType)}/${item.favouritable.slug}`}>
-                <SmallFloatingBox className={'px-4'}>
-                  <SmallSansSerifText>{item.favouritable.name}</SmallSansSerifText>
+                  <SmallSansSerifText>{name}</SmallSansSerifText>
                 </SmallFloatingBox>
               </Link>
             </div>
