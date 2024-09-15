@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import { Dialog } from '@headlessui/react'
+import { Button, Dialog } from '@headlessui/react'
 import { FloatingBox } from '../FloatingBox'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import FormToolbar from '../Forms/FormToolbar'
@@ -9,12 +9,14 @@ import InfoBar from '../InfoBar'
 import { TPostProps } from '../Post/types'
 import { isEmpty } from 'lodash'
 import { TGenericPost } from '../../types'
+import { XIcon } from 'lucide-react'
+import LoadingWrapper from '../LoadingWrapper'
 
 type TProps<T> = TPostProps<T> & {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any
 }
-const PostDialog = <T extends TGenericPost,>({
+const PostDialog = <T extends TGenericPost, > ({
   isOpen,
   setIsOpen,
   contentPlaceholder,
@@ -28,55 +30,59 @@ const PostDialog = <T extends TGenericPost,>({
       className="relative z-50"
     >
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <FloatingBox className={'w-2/3'}>
-          <Dialog.Panel>
-            <Dialog.Title className={'mb-10'}>
-              <PageTitleField value={form.data?.name || ''}
-                              onChange={(value) => form.onFieldChange('name', value)}
-                              placeholder={'Name'}
-                              canEdit={form.canEdit}
-              />
-            </Dialog.Title>
-            <Dialog.Description>
-              <div className="flex flex-wrap lg:flex-row-reverse justify-center -mx-3">
-                {!isEmpty(form.fields) && (
-                  <div className="w-full lg:w-1/4 px-6">
-                    <InfoBar
-                      loading={form.loading || !form.fields.length}
-                      onChange={form.onFieldChange}
-                      data={form.data}
-                      fields={form.fields}
-                      disabled={!form.canEdit}
-                    />
+        <FloatingBox className={'w-full lg:w-2/3 min-h-64 max-h-full overflow-y-scroll'}>
+          <Button className={'absolute top-5 right-5'} onClick={() => setIsOpen(false)}><XIcon/></Button>
+          <LoadingWrapper loading={form.loading} opacity={'100'} colour={'transparent'} positioning={'absolute'}>
+            {!form.loading && (
+              <Dialog.Panel>
+                <Dialog.Title className={'mb-10 mx-4'}>
+                  <PageTitleField value={form.data?.name || ''}
+                                  onChange={(value) => form.onFieldChange('name', value)}
+                                  placeholder={'Name'}
+                                  canEdit={form.canEdit}
+                  />
+                </Dialog.Title>
+                <Dialog.Description>
+                  <div className="flex flex-wrap lg:flex-row-reverse justify-center -mx-3">
+                    {!isEmpty(form.fields) && (
+                      <div className="w-full lg:w-1/4 px-6">
+                        <InfoBar
+                          loading={form.loading || !form.fields.length}
+                          onChange={form.onFieldChange}
+                          data={form.data}
+                          fields={form.fields}
+                          disabled={!form.canEdit}
+                        />
+                      </div>
+                    )}
+                    <div className={`w-full md:w-3/4 max-w-2xl px-3 lg:flex-1`}>
+                      {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
+                      {(form.canEdit) && (
+                        <FormToolbar
+                          canEdit={form.canEdit}
+                          canManuallySave={true}
+                          canRefresh={!form.isNew}
+                          canDelete={form.canEdit}
+                          onSave={form.onSave}
+                          onRefresh={form.onFetch}
+                          onDelete={form.onDelete}
+                        />
+                      )}
+                      <div className="mt-6 border border-dashed border-gray-200 rounded-lg">
+                        <Editor
+                          id={form.data?.slug ?? 'new'}
+                          initialValue={form.data?.content}
+                          onChange={(value) => form.onFieldChange('content', value)}
+                          placeholder={contentPlaceholder}
+                          canEdit={form.canEdit}
+                        />
+                      </div>
+                    </div>
                   </div>
-                )}
-                <div className={`w-full md:w-3/4 max-w-2xl px-3 lg:flex-1`}>
-                  {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
-                  {(form.canEdit) && (
-                    <FormToolbar
-                      canEdit={form.canEdit}
-                      canManuallySave={true}
-                      canRefresh={!form.isNew}
-                      canDelete={form.canEdit}
-                      onSave={form.onSave}
-                      onRefresh={form.onFetch}
-                      onDelete={form.onDelete}
-                    />
-                  )}
-                  <div className="mt-6 border border-dashed border-gray-200 rounded-lg">
-                    <Editor
-                      id={form.data?.slug ?? 'new'}
-                      initialValue={form.data?.content}
-                      onChange={(value) => form.onFieldChange('content', value)}
-                      placeholder={contentPlaceholder}
-                      canEdit={form.canEdit}
-                    />
-                  </div>
-                </div>
-              </div>
-              <button onClick={() => setIsOpen(false)}>Cancel</button>
-            </Dialog.Description>
-          </Dialog.Panel>
+                </Dialog.Description>
+              </Dialog.Panel>
+            )}
+          </LoadingWrapper>
         </FloatingBox>
       </div>
     </Dialog>

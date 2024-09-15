@@ -193,7 +193,7 @@ const useFormHandling = <T, R> ({
 
   // Set up autosave
   useAutosave({
-    canAutosave: !isNew,
+    canAutosave: false, // todo: reinstate `!isNew`,
     delay: 5000,
     handleOnSave,
     persistedData: persistedData && mapDataWithManyToMany(persistedData),

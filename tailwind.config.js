@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const plugin = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -37,6 +38,24 @@ module.exports = {
       'serif': ['EB Garamond', 'Merriweather', ...defaultTheme.fontFamily.serif]
     }
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+          '.no-scrollbar': {
+            /* IE and Edge */
+            '-ms-overflow-style': 'none',
+
+            /* Firefox */
+            'scrollbar-width': 'none',
+
+            /* Safari and Chrome */
+            '&::-webkit-scrollbar': {
+              display: 'none'
+            }
+          }
+        }
+      )
+    })
+  ],
 }
 

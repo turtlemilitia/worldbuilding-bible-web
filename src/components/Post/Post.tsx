@@ -1,4 +1,4 @@
-import React, { JSX } from 'react'
+import React, { JSX, useEffect } from 'react'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import EditorsWrapper from './EditorsWrapper'
 import FormToolbar from '../Forms/FormToolbar'
@@ -13,6 +13,7 @@ import HeaderWrapper from './HeaderWrapper'
 import { FloatingBox } from '../FloatingBox'
 import CampaignQuickLinks from '../CampaignWrapper/CampaignFavourites'
 import RightBar from './RightBar'
+import usePostDataManager from '../../hooks/DataManagers/usePostDataManager'
 
 // todo
 //  <TopMenu>
@@ -38,6 +39,14 @@ const Post = <T extends TGenericPost> ({
   pageTypeName,
   form
 }: TPostProps<T>): JSX.Element => {
+
+  const { setBackgroundImage } = usePostDataManager();
+
+  useEffect(() => {
+
+    setBackgroundImage(form.imageHandler.getImage('cover'))
+
+  }, [form.imageHandler.getImage('cover')])
 
   return (
     <LoadingWrapper loading={form.loading} opacity={'100'}>

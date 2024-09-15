@@ -38,7 +38,6 @@ import CampaignInvitationService from '../services/ApiService/Campaigns/Campaign
 import Register from '../pages/Register'
 import NotFound from '../pages/NotFound'
 import CampaignInvitationInvalid from '../pages/CampaignInvitationInvalid'
-import { setLoading } from '../reducers/post/postSlice'
 import { wait } from '@testing-library/user-event/dist/utils'
 import QuestWrapper from '../components/QuestWrapper'
 import EncounterWrapper from '../components/EncounterWrapper'
@@ -46,17 +45,18 @@ import SessionWrapper from '../components/SessionWrapper'
 import NotebookWrapper from '../pages/Notebook/NotebookWrapper'
 import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
+import usePostDataManager from '../hooks/DataManagers/usePostDataManager'
 
 const Routes = (): JSX.Element => {
 
   const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
-  const dispatch = useAppDispatch()
+  const { setLoading } = usePostDataManager();
 
   const loadPost = useCallback(() => {
-    dispatch(setLoading(true))
+    setLoading(true)
     return wait(250).then(() => true)
-  }, [dispatch])
+  }, [])
 
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
