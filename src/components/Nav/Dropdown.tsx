@@ -1,7 +1,8 @@
-import React, { Fragment, JSX } from 'react'
+import React, { JSX } from 'react'
 import DropdownItem from './DropdownItem'
 import { Transition } from '@headlessui/react'
 import { MenuItemInterface } from './MenuItemInterface'
+import clsx from "clsx";
 
 interface DropdownParams {
   menuItems: MenuItemInterface[],
@@ -13,18 +14,14 @@ const Dropdown = ({ menuItems, show }: DropdownParams): JSX.Element => {
   const rounded = menuItems.length > 1 ? 'rounded-xl' : 'rounded-full'
 
   return (
-    <Transition
-      as={Fragment}
-      show={show}
-      enter={'transition-all duration-1000'}
-      enterFrom={'top-0 -z-10 opacity-0'}
-      enterTo={'top-12 z-10 opacity-100'}
-      leave={'transition-all duration-1000'}
-      leaveFrom={'top-12 z-10 opacity-100'}
-      leaveTo={'top-0 -z-10 opacity-0'}
-    >
+    <Transition show={show}>
       <div
-        className={`absolute left-1/2 -translate-x-1/2`}>
+        className={clsx([
+            `absolute left-1/2 -translate-x-1/2 transition duration-1000 z-10 top-12`,
+            `data-[closed]:opacity-0`,
+            `data-[enter]:data-[closed]:-translate-y-full`,
+            `data-[leave]:data-[closed]:-translate-y-full`
+        ])}>
         <ul
           className={`bg-stone-800 divide-y divide-stone-300 ${rounded} overflow-hidden shadow text-sm text-stone-700`}>
           {menuItems.map((menuItem, index) => {

@@ -21,7 +21,7 @@ const useCampaignForm = ({
 
   const manager = useCampaignDataManager()
 
-  const { fields } = useCampaignFields();
+  const { fields } = useCampaignFields(campaignId);
 
   const mapData = useCallback((data: TCampaign): TCampaignRequest => ({
     name: data.name,

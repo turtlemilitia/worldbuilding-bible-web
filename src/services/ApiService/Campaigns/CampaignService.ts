@@ -34,6 +34,22 @@ const CampaignService = {
 
     return api.post(`/api/campaigns/${slug}/invitations`, data)
 
+  },
+  downloadSummary: async (id: string) => {
+    try {
+      const response = await api.get(`/api/campaigns/${id}/download`, {
+        responseType: 'blob',
+      });
+
+      // Create a URL for the blob object and directly open it
+      const blob = new Blob([response.data], {type: 'text/plain'});
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      // Use `window.open` to trigger the download
+      window.open(blobUrl);
+    } catch (error) {
+      console.error('Error downloading the file', error);
+    }
   }
 }
 
