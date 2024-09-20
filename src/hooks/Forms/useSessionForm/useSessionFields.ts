@@ -1,7 +1,7 @@
 import { noteField, numberField, textField, TField } from '../../fieldTools'
-import { TSession, TCampaign, TNote } from '../../../types'
 import {TUseFields} from "../../../components/Post/types";
 import { useNotebookDataManager, useSessionDataManager } from '../../DataManagers'
+import {sceneField} from "../../fieldTools/fieldTools";
 
 const useSessionFields = (): TUseFields => {
 
@@ -33,6 +33,14 @@ const useSessionFields = (): TUseFields => {
     fields.push(
       noteField({
         options: notebook?.notes || [],
+      })
+    )
+  }
+
+  if (manager.session && manager.campaign) {
+    fields.push(
+      sceneField({
+        options: manager.campaign.scenes || [],
       })
     )
   }

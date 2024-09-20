@@ -1,8 +1,8 @@
 import { selectField, TField } from '../../fieldTools'
 import {TUseFields} from "../../../components/Post/types";
 import { useCompendiumIndexDataManager, useNotebookIndexDataManager } from '../../DataManagers'
-import {Button} from "@headlessui/react";
 import CampaignService from "../../../services/ApiService/Campaigns/CampaignService";
+import {Button} from "../../../components/Forms/Fields/Button";
 
 const useCampaignFields = (campaignId: string): TUseFields => {
 
@@ -33,8 +33,8 @@ const useCampaignFields = (campaignId: string): TUseFields => {
       name: "",
       type: 'callback',
       Callback: () => {
-        return <Button onClick={() => CampaignService.downloadSummary(campaignId)}>
-          Download Model Data
+        return <Button onClick={() => CampaignService.downloadSummary(campaignId)} className={'w-full'}>
+          Download Campaign Data
         </Button>
       }
     })
