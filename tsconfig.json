@@ -1,4 +1,5 @@
 {
+  "lib": ["WebWorker"],
   "compilerOptions": {
     "experimentalDecorators": true,
     "target": "es5",

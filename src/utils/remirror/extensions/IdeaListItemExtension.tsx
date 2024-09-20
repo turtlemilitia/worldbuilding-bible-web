@@ -50,6 +50,7 @@ export class IdeaListExtension extends NodeExtension {
 }
 
 export interface IdeaListItemOptions {}
+
 @extension<IdeaListItemOptions>({ defaultOptions: {} })
 export class IdeaListItemExtension extends NodeExtension<IdeaListItemOptions> {
   get name() {
