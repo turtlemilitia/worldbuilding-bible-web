@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom'
 import {
   ApplySchemaAttributes,
+  assertGet,
   extension,
   ExtensionTag,
   NodeExtension,
@@ -13,7 +14,6 @@ import { AnyExtension, getMatchString } from 'remirror'
 import IdeaNode from '../nodes/IdeaNode'
 import { ListItemSharedExtension, wrapSelectedItems } from 'remirror/extensions'
 import { wrappingInputRule } from 'prosemirror-inputrules'
-import { assertGet } from '@remirror/core-helpers'
 import { InputRule } from '@remirror/pm/inputrules'
 import { findParentNodeOfType, isElementDomNode } from '@remirror/core-utils'
 
