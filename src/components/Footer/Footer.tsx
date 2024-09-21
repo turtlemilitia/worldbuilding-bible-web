@@ -15,7 +15,7 @@ const Footer: React.FunctionComponent = (): JSX.Element => {
           <MusicPlayer/>
         )}
         <div>
-          <CopyrightIcon className="inline-block h-4 w-4"/> 2023 Worldbuilding Bible
+          <CopyrightIcon className="inline-block h-4 w-4"/> {new Date().getFullYear()} Worldbuilding Bible
         </div>
         <div>
           Filipe Fonseca
