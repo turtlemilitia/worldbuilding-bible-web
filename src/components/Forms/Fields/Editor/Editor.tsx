@@ -1,11 +1,12 @@
 import 'remirror/styles/extension-placeholder.css'
 import React, { FunctionComponent, useCallback, useEffect, useState } from 'react'
-import { Remirror, useRemirror } from '@remirror/react'
+import {EditorComponent, Remirror, useRemirror} from '@remirror/react'
 import { AnyExtension } from 'remirror'
 import { RemirrorEventListenerProps } from '@remirror/core'
 
 import { getExtensions } from './extensions';
 import { TEditorProps } from './types'
+import FloatingLinkToolbar from "./FloatingLinkToolbar";
 
 const Editor: FunctionComponent<TEditorProps> = ({ id, className, initialValue, onChange, placeholder, canEdit }) => {
 
