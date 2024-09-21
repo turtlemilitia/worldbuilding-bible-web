@@ -7,6 +7,8 @@ import LanguageDialog from './LanguageDialog'
 import QuestDialog from './QuestDialog'
 import SessionDialog from './SessionDialog'
 import SceneDialog from './SceneDialog'
+import CharacterDialog from "./CharacterDialog";
+import LocationDialog from "./LocationDialog";
 
 const DialogFactory: FunctionComponent<TSelectDialogProps> =  (props) => {
   switch (props.type) {
@@ -29,6 +31,16 @@ const DialogFactory: FunctionComponent<TSelectDialogProps> =  (props) => {
       return <LanguageDialog
         {...props}
         languageId={props.id}
+      />
+    case 'location':
+      return <LocationDialog
+        {...props}
+        locationId={props.id}
+      />
+    case 'character':
+      return <CharacterDialog
+        {...props}
+        characterId={props.id}
       />
     case 'quest':
       return <QuestDialog

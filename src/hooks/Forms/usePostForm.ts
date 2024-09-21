@@ -19,9 +19,9 @@ import {
   hasPermissionsAttachableDataManager,
   hasPinsAttachableDataManager,
   hasScenesAttachableDataManager,
+  hasLocationsAttachableDataManager,
   TOneOfAttachableNames
 } from '../DataManagers/useAttachableDataManager'
-import { useAppDispatch } from '../../hooks'
 import usePinHandler from '../usePinHandler'
 import useFavouriteHandler from '../useFavouriteHandler'
 import useUserPermissionHandler from '../useUserPermissionHandler'
@@ -31,7 +31,7 @@ type TProps<T, R> = {
   mapData: (payload: T) => R,
   include?: string,
   manager: TDataManager<T, R> & hasImageableDataManager
-    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager & hasScenesAttachableDataManager & hasPermissionsAttachableDataManager>
+    & Partial<hasNotesAttachableDataManager & hasEncountersAttachableDataManager & hasQuestsAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager & hasScenesAttachableDataManager & hasPermissionsAttachableDataManager & hasLocationsAttachableDataManager>
   fields?: TField[],
   onFetched?: (data: T) => any
   onCreated?: (data: T) => any
@@ -102,6 +102,12 @@ const usePostForm = <T extends TGenericPost, R> ({
 
         case 'languages':
           return manager.languages?.attach(id, { languageId: attachedId })
+
+        case 'locations':
+          return manager.locations?.attach(id, { locationId: attachedId })
+
+        case 'characters':
+          return manager.characters?.attach(id, { characterId: attachedId })
 
         case 'notes':
           return manager.notes?.attach(id, { noteId: attachedId })

@@ -5,10 +5,12 @@ import {
   useNotableDataManager,
   useQuestableDataManager,
   useSceneableDataManager,
+  useCharacterableDataManager,
   hasEncountersAttachableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager,
-  hasScenesAttachableDataManager
+  hasScenesAttachableDataManager,
+  hasCharactersAttachableDataManager
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
@@ -18,7 +20,7 @@ import { locationSlice } from '../../../reducers/compendium/location/locationSli
 type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationRequest> & {
   compendium?: TCompendium,
   location?: TLocation,
-} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasScenesAttachableDataManager
+} & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasScenesAttachableDataManager & hasCharactersAttachableDataManager
 
 const useLocationDataManager = (): TLocationDataManager => {
   const manager = useChildDataManager(
@@ -32,6 +34,7 @@ const useLocationDataManager = (): TLocationDataManager => {
     ...manager,
     compendium: manager.parent,
     location: manager.entity,
+    characters: useCharacterableDataManager(locationSlice, LocationService.characters),
     notes: useNotableDataManager(locationSlice, LocationService.notes),
     quests: useQuestableDataManager(locationSlice, LocationService.quests),
     encounters: useEncounterableDataManager(locationSlice, LocationService.encounters),

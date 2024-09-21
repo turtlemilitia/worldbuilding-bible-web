@@ -9,7 +9,7 @@ import {
   useLocationTypeIndexDataManager,
   useNotebookDataManager
 } from '../../DataManagers'
-import { encounterField, multiSelectField, questField, sceneField } from '../../fieldTools/fieldTools'
+import {characterField, encounterField, multiSelectField, questField, sceneField} from '../../fieldTools/fieldTools'
 import useUrlFormatter from '../../useUrlFormatter'
 
 const useLocationFields = (): TUseFields => {
@@ -66,6 +66,11 @@ const useLocationFields = (): TUseFields => {
           })
         )
       }
+      fields.push(
+          characterField({
+            options: manager.compendium.characters || []
+          })
+      )
     }
 
     if (manager.location && campaign) {

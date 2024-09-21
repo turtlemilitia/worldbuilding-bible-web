@@ -1,12 +1,11 @@
-import { AxiosResponse } from 'axios'
 import { TLocation, TLocationGovernmentType, TLocationType } from '../../../types'
-import api from '../../../api'
 import { createChildApiService } from '../createApiService'
 import { createImageableService } from '../createImageableService'
 import { createNotableService } from '../createNotableService'
 import { createQuestableService } from '../createQuestableService'
 import { createEncounterableService } from '../createEncounterableService'
 import { createSceneableService } from '../createSceneableService'
+import {createCharacterableService} from "../createCharacterableService";
 
 export interface TLocationRequest {
   parentId: TLocation['id'];
@@ -27,17 +26,12 @@ const pluralName = 'locations'
 
 const LocationService = {
   ...createChildApiService<TLocationRequest, TLocationIndexResponse, TLocationResponse>('compendia', pluralName),
+  ...createCharacterableService(pluralName),
   ...createNotableService(pluralName),
   ...createImageableService(pluralName),
   ...createQuestableService(pluralName),
   ...createEncounterableService(pluralName),
   ...createSceneableService(pluralName),
-  attachToCharacter: (slug: string, locationId: number): Promise<AxiosResponse<TLocationResponse>> => {
-    return api.post(`/api/characters/${slug}/locations`, { locationId })
-  },
-  detachFromCharacter: (slug: string, locationSlug: string): Promise<AxiosResponse<{}>> => {
-    return api.delete(`/api/characters/${slug}/locations/${locationSlug}`)
-  }
 }
 
 export default LocationService

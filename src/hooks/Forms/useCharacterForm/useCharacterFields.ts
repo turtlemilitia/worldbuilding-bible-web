@@ -2,7 +2,7 @@ import { TUseFields } from '../../../components/Post/types'
 import useUrlFormatter from '../../useUrlFormatter'
 import { useCampaignDataManager, useCharacterDataManager, useNotebookDataManager } from '../../DataManagers'
 import { factionField, languageField, noteField, numberField, selectField, textField, TField } from '../../fieldTools'
-import { encounterField, questField, sceneField } from '../../fieldTools/fieldTools'
+import {encounterField, locationField, questField, sceneField} from '../../fieldTools/fieldTools'
 import { useMemo } from 'react'
 
 const useCharacterFields = (): TUseFields => {
@@ -34,6 +34,10 @@ const useCharacterFields = (): TUseFields => {
         factionField({
           options: manager.compendium.factions || [],
           link: (id: string | number) => `${compendiumPath}/factions/${id}`,
+        }),
+        locationField({
+          options: manager.compendium.locations || [],
+          link: (id: string | number) => `${compendiumPath}/locations/${id}`,
         })
       )
     }

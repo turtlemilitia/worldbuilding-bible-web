@@ -13,7 +13,7 @@ type TProps<T> = {
   fields?: TField[],
   profileImage?: string
   canHaveProfileImage?: boolean;
-  onProfileImageSelected?: (imageId: number) => Promise<any>;
+  openProfileImagePicker?: () => any;
   disabled?: boolean
   loading: boolean
 }
@@ -24,7 +24,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
   fields = [],
   profileImage,
   canHaveProfileImage = false,
-  onProfileImageSelected,
+  openProfileImagePicker,
   disabled,
   loading
 }): JSX.Element => {
@@ -35,9 +35,9 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
         `transition-all duration-1000`,
         'data-[closed]:-top-10 data-[closed]:opacity-0',
       ])}>
-        <FloatingBox className={`${canHaveProfileImage && onProfileImageSelected ? 'mt-32' : ''}`}>
-          {canHaveProfileImage && onProfileImageSelected && (
-            <ProfileImage image={profileImage} onSelected={onProfileImageSelected}/>
+        <FloatingBox className={`${canHaveProfileImage && openProfileImagePicker ? 'mt-32' : ''}`}>
+          {canHaveProfileImage && openProfileImagePicker && (
+            <ProfileImage image={profileImage} openPicker={openProfileImagePicker}/>
           )}
           <ul className="font-serif text-serif-md leading-tight max-h-[50vh] overflow-y-scroll overflow-x-clip">
             {fields.map((props, index) => {

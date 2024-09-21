@@ -16,22 +16,22 @@
     @apply mt-4 mb-2 border-b font-sans-serif tracking-wider
 }
 .remirror-theme h1 {
-    @apply font-display text-3xl text-burnOrange border-burnOrange
+    @apply text-4xl text-burnOrange border-burnOrange
 }
 .remirror-theme h2 {
-    @apply text-lg text-yellow-500 border-yellow-500
+    @apply text-3xl text-yellow-700 border-yellow-700
 }
 .remirror-theme h3 {
-    @apply text-burnOrange border-burnOrange
+    @apply text-2xl text-yellow-600 border-yellow-600
 }
 .remirror-theme h4 {
-    @apply text-yellow-500 border-yellow-500
+    @apply text-xl text-yellow-500 border-yellow-500
 }
 .remirror-theme h5 {
-    @apply text-burnOrange
+    @apply text-lg text-yellow-400 border-yellow-400
 }
 .remirror-theme h6 {
-    @apply text-yellow-500
+    @apply text-base text-yellow-300 border-yellow-300
 }
 .remirror-theme p {
     @apply my-1

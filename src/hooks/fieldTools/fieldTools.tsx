@@ -108,6 +108,33 @@ export const factionField = ({
   dialogType: 'faction'
 })
 
+// other generic fields
+export const locationField = ({
+  required,
+  options,
+  link
+}: TSelectFieldProps) => multiSelectField({
+  name: 'locations',
+  label: 'Locations',
+  required,
+  options,
+  link,
+  dialogType: 'location'
+})
+
+export const characterField = ({
+  required,
+  options,
+  link
+}: TSelectFieldProps) => multiSelectField({
+  name: 'characters',
+  label: 'Characters',
+  required,
+  options,
+  link,
+  dialogType: 'character'
+})
+
 export const languageField = ({
   required,
   options,
