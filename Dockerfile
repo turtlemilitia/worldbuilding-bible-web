@@ -1,18 +1,29 @@
-# Use an official lightweight nginx image
-FROM nginx:alpine
+# Stage 1: Build the Vite project
+FROM node:18-alpine AS build
 
-# Set working directory to nginx asset directory
-WORKDIR /usr/share/nginx/html
+# Set the working directory
+WORKDIR /app
 
-# Remove default nginx static assets
-RUN rm -rf ./*
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-# Copy static assets from builder stage
-COPY build /usr/share/nginx/html
+# Install dependencies
+RUN npm install
 
-# Copy custom nginx config file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy the rest of the app's source code
+COPY . .
 
-# Containers run nginx with global directives and daemon off
+# Build the app for production
+RUN npm run build
+
+# Stage 2: Serve the build using Caddy (or any other web server you prefer)
+FROM caddy:alpine
+
+# Copy the build output from the previous stage to the Caddy web root
+COPY --from=build /app/dist /usr/share/caddy
+
+# Serve the app with Caddy by default on port 80
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Start Caddy
+CMD ["caddy", "file-server", "--root", "/usr/share/caddy", "--listen", ":80"]
