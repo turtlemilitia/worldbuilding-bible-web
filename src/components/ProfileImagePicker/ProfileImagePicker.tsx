@@ -1,27 +1,24 @@
-import React, { FunctionComponent } from 'react'
-import { Popover } from '@headlessui/react'
-import { SelectImageButton } from '../SelectImageButton'
-import { ImagePicker } from '../ImagePicker'
+import React, {FunctionComponent} from 'react'
+import {Dialog, DialogPanel} from '@headlessui/react'
+import {ImagePicker} from '../ImagePicker'
 
 export type TProps = {
-  onProfileImageSelected: (imageId: number) => Promise<number>
+    open: boolean
+    onClose: () => any
+    onProfileImageSelected: (imageId: number) => Promise<number>
 }
-const ProfileImagePicker: FunctionComponent<TProps> = ({
-  onProfileImageSelected
-}) => {
+const ProfileImagePicker: FunctionComponent<TProps> = ({open, onClose, onProfileImageSelected}) => {
 
-  return (
-    <Popover className="z-40 absolute -bottom-3 right-0">
-
-      <Popover.Button className="outline-none">
-        <SelectImageButton/>
-      </Popover.Button>
-
-      <Popover.Panel className="fixed top-1/2 mb-4 right-20 z-10">
-        <ImagePicker multiple={false} onSelected={(ids) => onProfileImageSelected(ids[0])}/>
-      </Popover.Panel>
-
-    </Popover>
-  )
+    return (
+        <Dialog open={open} onClose={onClose} className="relative z-50">
+            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                <div className={'w-full lg:w-2/3 min-h-64 max-h-full max-w-6xl'}>
+                    <DialogPanel>
+                        <ImagePicker multiple={false} onSelected={(ids) => onProfileImageSelected(ids[0])}/>
+                    </DialogPanel>
+                </div>
+            </div>
+        </Dialog>
+)
 }
 export default ProfileImagePicker;

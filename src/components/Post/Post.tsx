@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from 'react'
+import React, {JSX, useEffect, useState} from 'react'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import EditorsWrapper from './EditorsWrapper'
 import FormToolbar from '../Forms/FormToolbar'
@@ -14,6 +14,7 @@ import { FloatingBox } from '../FloatingBox'
 import CampaignQuickLinks from '../CampaignWrapper/CampaignFavourites'
 import RightBar from './RightBar'
 import usePostDataManager from '../../hooks/DataManagers/usePostDataManager'
+import ProfileImagePicker from "../ProfileImagePicker";
 
 // todo
 //  <TopMenu>
@@ -42,6 +43,8 @@ const Post = <T extends TGenericPost> ({
 
   const { setBackgroundImage } = usePostDataManager();
 
+  const [profileImagePickerOpen, setProfileImagePickerOpen] = useState<boolean>(false)
+
   useEffect(() => {
 
     setBackgroundImage(form.imageHandler.getImage('cover'))
@@ -67,7 +70,7 @@ const Post = <T extends TGenericPost> ({
             data={form.data}
             fields={form.fields}
             profileImage={form.imageHandler && form.imageHandler.getImage('profile')}
-            onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}
+            openProfileImagePicker={() => setProfileImagePickerOpen(true)}
             canHaveProfileImage={form.imageHandler.canHaveProfileImage}
             disabled={!form.canEdit}
           />
@@ -99,6 +102,7 @@ const Post = <T extends TGenericPost> ({
           </FloatingBox>
         </EditorsWrapper>
       </form>
+      <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
     </LoadingWrapper>
   )
 
