@@ -8,7 +8,7 @@ import {
   TEncounter,
   TFaction,
   TFavourite,
-  TLanguage,
+  TLanguage, TLocation,
   TNote,
   TPermission,
   TPin,
@@ -49,6 +49,11 @@ import {
   TPermissionAttachRequest,
   TPermissionAttachResponse
 } from '../../services/ApiService/createPermissionableService'
+import {
+  TLocationableApi,
+  TLocationAttachRequest,
+  TLocationAttachResponse
+} from "../../services/ApiService/createLocationableService";
 
 export type TAttachableDataManager<TAttached, TRequest> = {
   attachData: (entity: TAttached) => any,
@@ -58,7 +63,7 @@ export type TAttachableDataManager<TAttached, TRequest> = {
   detach: (parentId: number | string, id: number | string) => Promise<void>,
 }
 
-export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages' | 'characters' | 'favourites' | 'pins' | 'scenes' | 'permissions';
+export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages' | 'characters' | 'favourites' | 'pins' | 'scenes' | 'permissions' | 'locations';
 
 export const useAttachableDataManager = <TEntity, TAttached extends { id: number | string }, TAttachRequest, TAttachResponse extends TAttached> (
   attachedName: TOneOfAttachableNames,
@@ -145,6 +150,13 @@ export const useLanguageableDataManager = <TEntity> (
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TLanguageableApi['languages'],
 ): TLanguageableDataManager => useAttachableDataManager<TEntity, TLanguage, TLanguageAttachRequest, TLanguageAttachResponse>('languages', slice, api)
+
+export type TLocationableDataManager = TAttachableDataManager<TLocation, TLocationAttachRequest>
+export type hasLocationsAttachableDataManager = { locations: TLocationableDataManager }
+export const useLocationableDataManager = <TEntity> (
+  slice: Slice<TEntitySliceState<TEntity>>,
+  api: TLocationableApi['locations'],
+): TLocationableDataManager => useAttachableDataManager<TEntity, TLocation, TLocationAttachRequest, TLocationAttachResponse>('locations', slice, api)
 
 export type TCharacterableDataManager = TAttachableDataManager<TCharacter, TCharacterAttachRequest>
 export type hasCharactersAttachableDataManager = { characters: TCharacterableDataManager }
