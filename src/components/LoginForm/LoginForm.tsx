@@ -69,8 +69,8 @@ const LoginForm = (): JSX.Element => {
       {hasErrors && <ErrorBanner errors={errors}/>}
       <ul
         className="text-stone-200">
-        {fields.map((props) => {
-          return <FieldMapper currentValue={loginData[props.name]} onChange={handleLoginDataChange} {...props}/>
+        {fields.map((props, index) => {
+          return <FieldMapper key={index} currentValue={loginData[props.name]} onChange={handleLoginDataChange} {...props}/>
         })}
       </ul>
       <div className="mt-8 -mb-16 flex justify-center">

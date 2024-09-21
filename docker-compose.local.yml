@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-5173}:5173"
     networks:
       - nginx_network      # proxy and app must be in same network
 networks:

@@ -2,9 +2,10 @@ import axios from 'axios'
 import { store } from './store'
 import { setToken } from './reducers/auth/authSlice'
 
-
+const apiURL = import.meta.env.VITE_API_URL;
+console.log(apiURL)
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL, // Replace with your API base URL
+  baseURL: apiURL, // Replace with your API base URL
 });
 
 api.defaults.withCredentials = true
