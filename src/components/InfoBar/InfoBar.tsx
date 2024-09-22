@@ -35,7 +35,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
         `transition-all duration-1000`,
         'data-[closed]:-top-10 data-[closed]:opacity-0',
       ])}>
-        <FloatingBox className={`${canHaveProfileImage && openProfileImagePicker ? 'mt-32' : ''}`}>
+        <FloatingBox color={'transparent'} className={`${canHaveProfileImage && openProfileImagePicker ? 'mt-32' : ''}`}>
           {canHaveProfileImage && openProfileImagePicker && (
             <ProfileImage image={profileImage} openPicker={openProfileImagePicker}/>
           )}

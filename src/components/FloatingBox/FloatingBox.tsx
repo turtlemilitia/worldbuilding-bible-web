@@ -11,7 +11,7 @@ const boxVariants = cva(
           glass: 'shadow-stone-950 border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 backdrop-blur-md text-stone-300',
           transparent: 'shadow-stone-950 border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 text-stone-300',
           dark: 'shadow-stone-950 border-opacity-80 border-stone-600 bg-stone-800 bg-opacity-50 backdrop-blur-md text-stone-300',
-          solid: 'shadow-stone-950 border-opacity-80 border-stone-600 bg-stone-800 backdrop-blur-md text-stone-300',
+          solid: 'shadow-stone-950 border-opacity-80 border-stone-600 bg-stone-800 text-stone-300',
         },
       },
       defaultVariants: {
