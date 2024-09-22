@@ -1,6 +1,6 @@
 import { FunctionComponent, JSX } from 'react'
 import {
-  AlertTriangle,
+  AlertTriangle, BrushIcon,
   DollarSignIcon,
   HeartIcon,
   HelpCircleIcon,
@@ -26,6 +26,7 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
       <input type='checkbox' className='hidden'/>
       <label className={`flex items-center justify-center w-4 h-4`}>
         { type === 'i' && <InfoIcon className="text-blue-500"/>}
+        { type === 'd' && <BrushIcon className="text-amber-500"/>}
         { type === 'I' && <LightbulbIcon className="text-amber-500"/>}
         { type === 'k' && <KeyIcon className="text-yellow-500"/>}
         { type === 'l' && <MapPinIcon className="text-green-600"/>}
