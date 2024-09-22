@@ -81,7 +81,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
               disabled={disabled}
             />
           )}
-          {type === 'multiSelect' && (options?.length ?? 0) > 0 && (
+          {type === 'multiSelect' && (((options?.length ?? 0) > 0) || dialogType) && (
             <MultipleSelectField
               label={label}
               required={required}
