@@ -1,15 +1,36 @@
-import { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
+import {cva, VariantProps} from "class-variance-authority";
+import {Slot} from "@radix-ui/react-slot";
+import {cn} from "../../lib/utils";
 
-export type TProps = {
-  className?: string;
-}
-const FloatingBox: FunctionComponent<TProps & PropsWithChildren> = ({ children, className = '' }) => {
-  return (
-    <div
-      className={`text-stone-300 antialiased rounded-3xl shadow-md shadow-stone-950 border border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 px-8 py-6 backdrop-blur-md max-sm:px-8 ${className}`}>
-      {children}
-    </div>
-  )
-}
+const boxVariants = cva(
+    'antialiased rounded-3xl shadow-md border px-8 py-6 max-sm:px-8',
+    {
+      variants: {
+        color: {
+          glass: 'shadow-stone-950 border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 backdrop-blur-md text-stone-300',
+          transparent: 'shadow-stone-950 border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 text-stone-300',
+          dark: 'shadow-stone-950 border-opacity-80 border-stone-600 bg-stone-800 bg-opacity-50 backdrop-blur-md text-stone-300',
+          solid: 'shadow-stone-950 border-opacity-80 border-stone-600 bg-stone-800 backdrop-blur-md text-stone-300',
+        },
+      },
+      defaultVariants: {
+        color: 'glass',
+      }
+    }
+)
+
+export type TProps = React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof boxVariants>
+const FloatingBox = React.forwardRef<HTMLDivElement, TProps>(
+    ({ className, color, ...props }, ref) => {
+      return (
+          <div
+              className={cn(boxVariants({ color, className }))}
+              ref={ref}
+              {...props}
+          />
+      )
+    }
+)
 
 export default FloatingBox

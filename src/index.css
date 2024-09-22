@@ -61,8 +61,8 @@
 }
 .remirror-theme em,
 .remirror-theme i {
-    @apply text-violet-500
+    @apply text-emerald-500
 }
 .remirror-theme blockquote {
-    @apply border-x my-2 border-stone-400 p-4 bg-stone-700 text-stone-300
+    @apply border-x my-2 border-stone-400 p-4 bg-emerald-600 bg-opacity-10 text-stone-300
 }

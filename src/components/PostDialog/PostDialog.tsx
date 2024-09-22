@@ -57,7 +57,7 @@ const PostDialog = <T extends TGenericPost, >({
                                             />
                                         </div>
                                     )}
-                                    <div className={`w-full md:w-3/4 px-3 lg:flex-1`}>
+                                    <div className={`w-full md:w-3/4 px-6 lg:flex-1`}>
                                         {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
                                         {(form.canEdit) && (
                                             <FormToolbar
@@ -70,7 +70,7 @@ const PostDialog = <T extends TGenericPost, >({
                                                 onDelete={form.onDelete}
                                             />
                                         )}
-                                        <FloatingBox className={'max-h-[calc(100vh/2)] overflow-scroll'}>
+                                        <FloatingBox color={'solid'} className={'max-h-[calc(100vh/2)] overflow-scroll'}>
                                             <Editor
                                                 id={form.data?.slug ?? 'new'}
                                                 initialValue={form.data?.content}

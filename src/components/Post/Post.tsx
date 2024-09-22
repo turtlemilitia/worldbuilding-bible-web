@@ -91,7 +91,7 @@ const Post = <T extends TGenericPost> ({
             permissionHandler={form.permissionHandler}
             onCoverImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'cover')}
           />
-          <FloatingBox>
+          <FloatingBox color={'solid'}>
             <Editor
               id={form.data?.slug ?? 'new'}
               initialValue={form.data?.content}
