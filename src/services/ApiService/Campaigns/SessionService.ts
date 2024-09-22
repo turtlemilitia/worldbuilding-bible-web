@@ -2,6 +2,9 @@ import { TSession } from '../../../types'
 import { createChildApiService } from '../createApiService'
 import { createNotableService } from '../createNotableService'
 import { createImageableService } from '../createImageableService'
+import {createSceneableService} from "../createSceneableService";
+import {createEncounterableService} from "../createEncounterableService";
+import {createQuestableService} from "../createQuestableService";
 
 export interface TSessionRequest {
   name: string;
@@ -19,6 +22,9 @@ type TSessionIndexResponse = TSession[];
 const SessionService = {
   ...createChildApiService<TSessionRequest, TSessionIndexResponse, TSessionResponse>('campaigns', 'sessions'),
   ...createNotableService('sessions'),
+  ...createSceneableService('sessions'),
+  ...createEncounterableService('sessions'),
+  ...createQuestableService('sessions'),
   ...createImageableService('sessions')
 }
 
