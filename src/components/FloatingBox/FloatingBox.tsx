@@ -1,6 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react'
 import {cva, VariantProps} from "class-variance-authority";
-import {Slot} from "@radix-ui/react-slot";
 import {cn} from "../../lib/utils";
 
 const boxVariants = cva(

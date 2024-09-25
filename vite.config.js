@@ -12,6 +12,7 @@ export default defineConfig({
         })
     ],
     server: {
+        host: 'worldbuildingbible.io',
         open: true, // Auto-opens the browser on startup
     },
     "esbuild": {

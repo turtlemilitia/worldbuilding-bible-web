@@ -1,4 +1,4 @@
-import React, {JSX} from 'react'
+import React, {JSX, useEffect, useState} from 'react'
 import {Button, Dialog} from '@headlessui/react'
 import {FloatingBox} from '../FloatingBox'
 import {ErrorBanner} from '../Banners/ErrorBanner'
@@ -23,6 +23,14 @@ const PostDialog = <T extends TGenericPost, >({
                                                   form
                                               }: TProps<T>): JSX.Element => {
 
+    const [backgroundImage, setBackgroundImage] = useState<string>();
+
+    useEffect(() => {
+
+        setBackgroundImage(form.imageHandler.getImage('cover'))
+
+    }, [form.imageHandler.getImage('cover')])
+
     return (
         <Dialog
             open={isOpen}
@@ -30,7 +38,7 @@ const PostDialog = <T extends TGenericPost, >({
             className="relative z-50"
         >
             <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                <div className={'w-full lg:w-2/3 min-h-64 max-h-full max-w-6xl'}>
+                <FloatingBox color={'dark'} className={'w-full lg:w-2/3 min-h-64 max-h-full max-w-6xl p-12 bg-cover bg-center'} style={{backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none'}}>
                     <LoadingWrapper loading={form.loading} opacity={'100'} positioning={'absolute'}>
                         {!form.loading && (
                             <Dialog.Panel>
@@ -68,6 +76,11 @@ const PostDialog = <T extends TGenericPost, >({
                                                 onSave={form.onSave}
                                                 onRefresh={form.onFetch}
                                                 onDelete={form.onDelete}
+                                                pinHandler={form.pinHandler}
+                                                favouriteHandler={form.favouriteHandler}
+                                                playerCharacterHandler={form.playerCharacterHandler}
+                                                permissionHandler={form.permissionHandler}
+                                                onCoverImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'cover')}
                                             />
                                         )}
                                         <FloatingBox color={'solid'} className={'max-h-[calc(100vh/2)] overflow-scroll'}>
@@ -84,7 +97,7 @@ const PostDialog = <T extends TGenericPost, >({
                             </Dialog.Panel>
                         )}
                     </LoadingWrapper>
-                </div>
+                </FloatingBox>
             </div>
         </Dialog>
     )
