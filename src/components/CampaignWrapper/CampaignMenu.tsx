@@ -50,7 +50,7 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
   }, [campaign.slug, campaign.compendium, campaign.quests, campaign.encounters, campaign.sessions, user?.id, campaign.gameMaster?.id, campaign.scenes])
 
   return (
-    <div className="fixed top-20 w-full z-40">
+    <div className="fixed top-20 w-full z-50">
       <Menu>
         {menuItems.map((menuItem, index) => (
           <CampaignMenuItem menuItem={menuItem} key={index}/>

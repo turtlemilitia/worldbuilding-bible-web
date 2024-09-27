@@ -53,7 +53,9 @@ const CampaignWrapper = (): JSX.Element => {
         <CampaignMenu campaign={campaign}/>
       )}
       <div className="relative w-full">
-        <Outlet/>
+        {(campaignId === 'new' || campaign) && (
+          <Outlet/>
+        )}
       </div>
     </>
   )

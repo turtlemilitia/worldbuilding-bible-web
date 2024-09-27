@@ -38,7 +38,9 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
         <CompendiumSidebar compendium={compendium}/>
       )}
       <div className="relative w-full">
-        <Outlet/>
+        {(compendiumId === 'new' || compendium) && (
+          <Outlet/>
+        )}
       </div>
     </>
   )

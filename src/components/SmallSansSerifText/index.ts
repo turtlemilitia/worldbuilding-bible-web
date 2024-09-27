@@ -1,3 +1,3 @@
-import SmallSansSerifText from './SmallSansSerifText'
+import SansSerifText from './SansSerifText'
 
-export default SmallSansSerifText
+export default SansSerifText

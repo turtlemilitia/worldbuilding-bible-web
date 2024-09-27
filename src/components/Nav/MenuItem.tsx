@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX, useState } from 'react'
-import { NavLink, useLocation, useMatch, useResolvedPath } from 'react-router-dom'
+import {
+  matchPath,
+  NavLink,
+  useLocation,
+  useMatch,
+  useResolvedPath,
+} from 'react-router-dom'
 import Dropdown from './Dropdown'
 import { ChevronDownIcon } from 'lucide-react'
 import { MenuItemInterface } from './MenuItemInterface'
@@ -8,29 +14,29 @@ type TProps = {
   menuItem: MenuItemInterface,
   className?: string
   activeClassName?: string
+  matchExact: boolean,
 }
 
-const MenuItem: FunctionComponent<TProps> = ({ menuItem, className = '', activeClassName = 'text-emerald-600' }): JSX.Element => {
+const MenuItem: FunctionComponent<TProps> = ({ menuItem, className = '', activeClassName = 'text-emerald-600', matchExact }): JSX.Element => {
   const { title, to, children, hide } = menuItem
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
 
   let location = useLocation()
   let resolved = useResolvedPath(to)
-  let match = useMatch({ path: resolved.pathname, end: false })
+  let match = useMatch({ path: resolved.pathname, end: matchExact })
 
   if (hide) {
     return <></>
   }
   
   if (!children) {
-    const active = location.pathname.includes(menuItem.to)
     return <li>
-      <NavLink to={to} className={`block py-2 ${active ? activeClassName : ''} ${className}`}>{title}</NavLink>
+      <NavLink to={to} className={`block py-2 ${match ? activeClassName : ''} ${className}`}>{title}</NavLink>
     </li>
   }
 
   const activeChild = children.find(child => {
-    return location.pathname.includes(child.to)
+    return matchPath({ path: location.pathname }, child.to)
   })
 
   return (
