@@ -3,6 +3,8 @@ import { createChildApiService } from '../createApiService'
 import { createNotableService } from '../createNotableService'
 import { createImageableService } from '../createImageableService'
 import { createEncounterableService } from '../createEncounterableService'
+import { createCharacterableService } from '../createCharacterableService'
+import { createLocationableService } from '../createLocationableService'
 
 export type TSceneRequest = {
   name: string;
@@ -17,7 +19,9 @@ const SceneService = {
   ...createChildApiService<TSceneRequest, TSceneIndexResponse, TSceneResponse> ('campaigns', 'scenes'),
   ...createEncounterableService('scenes'),
   ...createNotableService('scenes'),
-  ...createImageableService('scenes')
+  ...createImageableService('scenes'),
+  ...createCharacterableService('scenes'),
+  ...createLocationableService('scenes')
 }
 
 export default SceneService

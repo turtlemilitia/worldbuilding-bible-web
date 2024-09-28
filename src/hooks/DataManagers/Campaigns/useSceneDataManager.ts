@@ -6,7 +6,11 @@ import {
   hasNotesAttachableDataManager,
   hasEncountersAttachableDataManager,
   useEncounterableDataManager,
-  useNotableDataManager
+  useNotableDataManager,
+  useCharacterableDataManager,
+  hasCharactersAttachableDataManager,
+  useLocationableDataManager,
+  hasLocationsAttachableDataManager,
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 import { TCampaign, TScene } from '../../../types'
@@ -14,7 +18,7 @@ import { TCampaign, TScene } from '../../../types'
 type TSceneDataManager = TChildDataManager<TCampaign, TScene, TSceneRequest> & {
   campaign?: TCampaign,
   scene?: TScene
-} & hasNotesAttachableDataManager & hasImageableDataManager & hasEncountersAttachableDataManager
+} & hasNotesAttachableDataManager & hasImageableDataManager & hasEncountersAttachableDataManager & hasCharactersAttachableDataManager & hasLocationsAttachableDataManager
 
 const useSceneDataManager = (): TSceneDataManager => {
   const manager = useChildDataManager(
@@ -29,6 +33,8 @@ const useSceneDataManager = (): TSceneDataManager => {
     scene: manager.entity,
     notes: useNotableDataManager(sceneSlice, sceneService.notes),
     encounters: useEncounterableDataManager(sceneSlice, sceneService.encounters),
+    characters: useCharacterableDataManager(sceneSlice, sceneService.characters),
+    locations: useLocationableDataManager(sceneSlice, sceneService.locations),
     images: useImageableDataManager(sceneSlice, sceneService.images)
   }
 }

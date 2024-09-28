@@ -11,7 +11,7 @@ type TOwnProps = {
 }
 const useSceneForm = ({ sceneId, onFetched, onCreated, onUpdated, onDeleted }: TOwnProps & TUseFormProps<TScene>): TForm<TScene> => {
 
-  const include = useMemo(() => 'encounters;notes;quests', [])
+  const include = useMemo(() => 'encounters;notes;quests;characters;locations', [])
 
   const manager = useSceneDataManager();
 
