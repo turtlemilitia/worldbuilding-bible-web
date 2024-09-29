@@ -17,7 +17,7 @@ const QuestWrapper: FunctionComponent = () => {
     if (!campaign?.slug || questId) {
       return
     }
-    if (campaign.quests?.length > 1) {
+    if (campaign.quests?.length > 0) {
       navigate(`/campaigns/${campaign.slug}/quests/${campaign.quests[0]?.slug}`)
     } else {
       navigate(`/campaigns/${campaign.slug}/quests/new`)

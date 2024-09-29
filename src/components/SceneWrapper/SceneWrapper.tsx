@@ -15,7 +15,7 @@ const SceneWrapper: FunctionComponent = () => {
     if (!campaign?.slug || sceneId) {
       return;
     }
-    if (campaign.scenes?.length > 1) {
+    if (campaign.scenes?.length > 0) {
       navigate(`/campaigns/${campaign.slug}/scenes/${campaign.scenes[0]?.slug}`)
     } else {
       navigate(`/campaigns/${campaign.slug}/scenes/new`)

@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/Popover'
-import { FunctionComponent, useCallback, useState } from 'react'
+import { FunctionComponent, useCallback, useMemo, useState } from 'react'
 import SelectField from '@/components/Forms/Fields/SelectField'
 import Label from '@/components/Forms/Fields/Label'
 import { Button, Field } from '@headlessui/react'
@@ -33,7 +33,7 @@ export const DatePickerWithPresets: FunctionComponent<TOwnProps> = ({
 }) => {
 
   const [selected, setSelected] = useState<TSelectOption | null>(null)
-  const date = parse(value, formatString, new Date())
+  const date = useMemo(() => value ? parse(value, formatString, new Date()) : undefined, [value, formatString])
   const setDate = useCallback((dateObject: Date) => {
     onChange(format(dateObject, 'yyyy-M-d H:m:s'))
   }, [])

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react'
 import Menu from '../Nav/Menu'
-import { TCampaign } from '../../types'
+import { TCampaign } from '@/types'
 import CampaignMenuItem from './CampaignMenuItem'
 import useAuthUserDataManager from '../../hooks/DataManagers/useAuthUserDataManager'
 import { MenuItemInterface } from '../Nav/MenuItemInterface'
@@ -28,22 +28,22 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
         },
         {
           title: 'Scenes',
-          to: `/campaigns/${campaign.slug}/scenes/${campaign.scenes?.[0]?.slug ?? 'new'}`
+          to: `/campaigns/${campaign.slug}/scenes`
         },
         {
           title: 'Quests',
-          to: `/campaigns/${campaign.slug}/quests/${campaign.quests?.[0]?.slug ?? 'new'}`
+          to: `/campaigns/${campaign.slug}/quests`
         },
         {
           title: 'Encounters',
-          to: `/campaigns/${campaign.slug}/encounters/${campaign.encounters?.[0]?.slug ?? 'new'}`
+          to: `/campaigns/${campaign.slug}/encounters`
         }
       )
     }
     items.push(
       {
         title: 'Sessions',
-        to: `/campaigns/${campaign.slug}/sessions/${campaign.sessions?.[0]?.slug ?? 'new'}`
+        to: `/campaigns/${campaign.slug}/sessions`
       }
     )
     return items;
