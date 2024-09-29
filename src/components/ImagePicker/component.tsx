@@ -156,7 +156,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
     <FloatingBox>
       <LoadingWrapper loading={loading} key="loading-image-picker" colour={'transparent'} positioning={'absolute'}>
         {!showFileInput && (
-          <div className="h-128 w-128 overflow-scroll">
+          <div className="min-w-128 h-128 w-full overflow-scroll">
             <div className="grid grid-cols-4 gap-4">
               {images.map((image, index) => {
                 return (
@@ -174,7 +174,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
           </div>
         )}
         {showFileInput && (
-          <div className="w-128">
+          <div className="min-w-128 w-full">
             <FileInput
               onChange={handleFilesSelected} name={'coverImage'}
               fileSpecificationsText="SVG, PNG, JPG or GIF (MAX. 800x400px)"

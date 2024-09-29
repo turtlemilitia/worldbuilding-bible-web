@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback, useEffect, useState } from 'react'
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import LoadingWrapper from '../../LoadingWrapper'
 import { TImageThumbnailProps } from './types'
 import { PencilIcon, SaveIcon, TrashIcon } from 'lucide-react'
@@ -9,7 +14,7 @@ const ImageThumbnail: FunctionComponent<TImageThumbnailProps> = ({
   selected,
   onSelected,
   onDelete,
-  onSave
+  onSave,
 }) => {
   const [showIcons, setShowIcons] = useState(true)
   const [showFields, setShowFields] = useState(false)
@@ -21,7 +26,8 @@ const ImageThumbnail: FunctionComponent<TImageThumbnailProps> = ({
   }, [image.name, image.alt])
 
   const canBeSaved = useCallback(() => {
-    return image.id === undefined || image.name !== data.name || image.alt !== data.alt
+    return image.id === undefined || image.name !== data.name || image.alt !==
+      data.alt
   }, [image.name, data.name, image.alt, data.alt, image.id])
 
   const handleFieldChange = (field: 'name' | 'alt', value: string) => {
@@ -31,38 +37,42 @@ const ImageThumbnail: FunctionComponent<TImageThumbnailProps> = ({
   return (
     <>
       <div>
-        <div className="w-full h-full max-h-28">
-          <div
-            onMouseEnter={() => setShowIcons(true)}
-            onMouseLeave={() => setShowIcons(false)}
-            className={`rounded-md ${id && selected ? 'border-2 border-yellow-500' : ''} relative top-1/2 -translate-y-1/2 overflow-hidden`}>
-            <LoadingWrapper loading={!!saving} colour={'light'} positioning={'absolute'}>
+        <LoadingWrapper loading={!!saving} colour={'light'}
+                        positioning={'absolute'}>
+          <div className="relative w-full h-full max-h-28">
+            <div
+              className={`rounded-md ${id && selected ? 'border-2 border-yellow-500' : ''}`}>
               <img
-                className={`${id ? 'cursor-pointer' : 'opacity-50'} max-w-full max-h-full m-auto`}
+                onMouseEnter={() => setShowIcons(true)}
+                onMouseLeave={() => setShowIcons(false)}
+                className={`${id ? 'cursor-pointer' : 'opacity-50'} max-h-28 w-full object-contain`}
                 src={thumbnail}
                 alt={alt}
                 onClick={() => onSelected(id)}
               />
-            </LoadingWrapper>
-            {showIcons && (
-              <div className="absolute bottom-0 w-full flex justify-end">
-                <button type="button" className="p-1 hover:text-burnOrange" onClick={() => setShowFields(true)}>
-                  <PencilIcon size={15}/>
-                </button>
-                {canBeSaved() && (
-                  <button type="button" className="p-1 hover:text-burnOrange" onClick={() => onSave(data)}>
-                    <SaveIcon size={15}/>
+              {showIcons && (
+                <div className="absolute bottom-0 w-full flex justify-end">
+                  <button type="button" className="p-1 hover:text-burnOrange"
+                          onClick={() => setShowFields(true)}>
+                    <PencilIcon size={15}/>
                   </button>
-                )}
-                {id && (
-                  <button type="button" className="p-1 hover:text-burnOrange" onClick={() => onDelete(uniqueId, id)}>
-                    <TrashIcon size={15}/>
-                  </button>
-                )}
-              </div>
-            )}
+                  {canBeSaved() && (
+                    <button type="button" className="p-1 hover:text-burnOrange"
+                            onClick={() => onSave(data)}>
+                      <SaveIcon size={15}/>
+                    </button>
+                  )}
+                  {id && (
+                    <button type="button" className="p-1 hover:text-burnOrange"
+                            onClick={() => onDelete(uniqueId, id)}>
+                      <TrashIcon size={15}/>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </LoadingWrapper>
         <div className="text-xs text-center mt-1">{data.name}</div>
       </div>
       <ImageDataDialog

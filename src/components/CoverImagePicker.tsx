@@ -1,5 +1,10 @@
 import React, { FunctionComponent } from 'react'
-import { Popover } from '@headlessui/react'
+import {
+  Popover,
+  PopoverBackdrop,
+  PopoverButton,
+  PopoverPanel,
+} from '@headlessui/react'
 import { SelectImageButton } from './SelectImageButton'
 import { ImagePicker } from './ImagePicker'
 
@@ -7,21 +12,22 @@ type TCoverImagePickerProps = {
   onCoverImageSelected: (imageId: number) => Promise<number>
 }
 const CoverImagePicker: FunctionComponent<TCoverImagePickerProps> = ({
-  onCoverImageSelected
+  onCoverImageSelected,
 }) => {
 
   return (
     <Popover>
 
-      <Popover.Button className="outline-none">
+      <PopoverButton className="outline-none">
         <SelectImageButton/>
-      </Popover.Button>
-
-      <Popover.Panel className="absolute bottom-full mb-4 right-0 z-10">
-        <ImagePicker multiple={false} onSelected={(ids) => onCoverImageSelected(ids[0])}/>
-      </Popover.Panel>
+      </PopoverButton>
+      <PopoverBackdrop className="fixed inset-0 bg-black/15" />
+      <PopoverPanel anchor={'bottom'} className="flex flex-col p-4 z-50">
+          <ImagePicker multiple={false}
+                       onSelected={(ids) => onCoverImageSelected(ids[0])}/>
+      </PopoverPanel>
 
     </Popover>
   )
 }
-export default CoverImagePicker;
+export default CoverImagePicker
