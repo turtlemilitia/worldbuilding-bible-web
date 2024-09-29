@@ -1,9 +1,11 @@
 import React, { FunctionComponent } from 'react'
 import { Popover } from '@headlessui/react'
-import { SelectImageButton } from '../SelectImageButton'
-import { ImagePicker } from '../ImagePicker'
-import { TCoverImagePickerProps } from './types'
+import { SelectImageButton } from './SelectImageButton'
+import { ImagePicker } from './ImagePicker'
 
+type TCoverImagePickerProps = {
+  onCoverImageSelected: (imageId: number) => Promise<number>
+}
 const CoverImagePicker: FunctionComponent<TCoverImagePickerProps> = ({
   onCoverImageSelected
 }) => {

@@ -10,12 +10,20 @@ type TGenericFieldParams = {
 export type TTextField = TGenericFieldParams & {
   type: 'text'
 }
-export type TTextFieldFn = (props: { name: TTextField['name'], label: TTextField['label'], required?: TTextField['required']}) => TTextField
+export type TTextFieldFn = (props: {
+  name: TTextField['name'],
+  label: TTextField['label'],
+  required?: TTextField['required']
+}) => TTextField
 
 type TNumberField = TGenericFieldParams & {
   type: 'number'
 }
-export type TNumberFieldFn = (props: { name: TNumberField['name'], label: TNumberField['label'], required?: TNumberField['required']}) => TNumberField
+export type TNumberFieldFn = (props: {
+  name: TNumberField['name'],
+  label: TNumberField['label'],
+  required?: TNumberField['required']
+}) => TNumberField
 
 type TSelectField = TGenericFieldParams & {
   type: 'select',
@@ -46,7 +54,26 @@ export type TAsyncMultiSelectFieldFn = (props: {
   dialogType?: TDialogTypes
 }) => TAsyncMultiSelectField
 
-export type TDialogTypes = 'note'|'session'|'quest'|'encounter'|'faction'|'language'|'scene'|'character'|'location';
+export type TDatepickerField = TGenericFieldParams & {
+  type: 'datePicker'
+}
+export type TDatePickerFieldFn = (props: {
+  name: TDatepickerField['name'],
+  label: TDatepickerField['label'],
+  required?: TDatepickerField['required'],
+  formatString?: string
+}) => TDatepickerField
+
+export type TDialogTypes =
+  'note'
+  | 'session'
+  | 'quest'
+  | 'encounter'
+  | 'faction'
+  | 'language'
+  | 'scene'
+  | 'character'
+  | 'location';
 export type TSelectDialogProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any,
@@ -54,7 +81,7 @@ export type TSelectDialogProps = {
   type: TDialogTypes
   onCreated?: (data: any) => any,
   onUpdated?: (data: any) => any,
-  onDeleted?: (id: string|number) => any,
+  onDeleted?: (id: string | number) => any,
 }
 export type TMultiSelectFieldFn = (props: {
   name: TSelectField['name'],
@@ -85,12 +112,34 @@ export type TLanguageFieldFn = <TEntity> (props: {
 
 export type TField = {
   name: string,
-  label: string,
-  type: 'text' | 'number' | 'email' | 'password' | 'list' | 'listAdd' | 'select' | 'asyncSelect' | 'asyncMultiSelect' | 'multiSelect' | 'callback'
-  options?: TSelectOption[],
-  search?: (term: string) => Promise<TSelectOption[]>
+  label: string
+  required?: boolean
+} & ({
+  type: 'text' | 'number' | 'email' | 'password' | 'listAdd'
+} | {
+  type: 'dialog'
+} | {
+  type: 'list'
   link?: (id: number | string) => string,
-  Callback?: FunctionComponent,
+} | {
+  type: 'select'
+  options?: TSelectOption[],
+  link?: (id: number | string) => string,
+} | {
+  type: 'multiSelect'
   dialogType?: TDialogTypes
-  required?: boolean,
-}
+  options?: TSelectOption[],
+  link?: (id: number | string) => string,
+} | {
+  type: 'asyncMultiSelect' | 'asyncSelect'
+  dialogType?: TDialogTypes
+  options?: TSelectOption[],
+  link?: (id: number | string) => string,
+  search: (term: string) => Promise<TSelectOption[]>
+} | {
+  type: 'datePicker'
+  formatString: string;
+} | {
+  type: 'callback'
+  Callback: FunctionComponent,
+})

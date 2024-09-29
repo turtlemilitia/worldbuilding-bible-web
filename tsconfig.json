@@ -1,6 +1,10 @@
 {
   "lib": ["WebWorker"],
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "experimentalDecorators": false,
     "target": "es5",
     "lib": [

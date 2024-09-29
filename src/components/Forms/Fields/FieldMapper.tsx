@@ -5,9 +5,10 @@ import AsyncSelectField from './AsyncSelectField'
 import ListField from './ListField'
 import MultipleAsyncSelectField from './MultipleAsyncSelectField'
 import ListAddName from './ListAddName'
-import { TField } from '../../../hooks/fieldTools'
+import { TField } from '@/hooks/fieldTools'
 import MultipleSelectField from './MultipleSelectField'
 import { Fieldset } from '@headlessui/react'
+import DatePickerWithPresets from '@/components/DatePicker'
 
 export type TSelectOption = {
   id: string | number,
@@ -44,78 +45,84 @@ const FieldMapper: FunctionComponent<TProps> = ({
   name,
   label,
   currentValue,
-  type,
-  options,
   onChange,
-  search,
-  dialogType,
-  link,
-  Callback,
   disabled,
-  required
+  required,
+  ...props
 }) => {
   return (
     <li>
       <Fieldset className="antialiased relative my-6">
         <div className="font-light">
-          {type === 'list' && (
-            <ListField value={currentValue} link={link} label={label} required={required}/>
+          {props.type === 'list' && (
+            <ListField value={currentValue} link={props.link} label={label}
+                       required={required}/>
           )}
-          {type === 'select' && (options?.length ?? 0) > 0 && (
+          {props.type === 'select' && (props.options?.length ?? 0) > 0 && (
             <SelectField
               label={label}
               required={required}
               value={currentValue}
               onChange={(value) => onChange(name, value)}
-              options={options || []}
+              options={props.options || []}
               disabled={disabled}
             />
           )}
-          {type === 'asyncSelect' && search && (
+          {props.type === 'asyncSelect' && (
             <AsyncSelectField
               label={label}
               required={required}
               value={currentValue}
               onChange={(value) => onChange(name, value)}
-              search={search}
+              search={props.search}
               disabled={disabled}
             />
           )}
-          {type === 'multiSelect' && (((options?.length ?? 0) > 0) || dialogType) && (
-            <MultipleSelectField
-              label={label}
-              required={required}
-              value={currentValue}
-              onChange={(value) => onChange(name, value)}
-              link={link}
-              options={options || []}
-              dialogType={dialogType}
-              disabled={disabled}
-            />
-          )}
-          {type === 'asyncMultiSelect' && search && (
+          {props.type === 'multiSelect' &&
+            (((props.options?.length ?? 0) > 0) || props.dialogType) && (
+              <MultipleSelectField
+                label={label}
+                required={required}
+                value={currentValue}
+                onChange={(value) => onChange(name, value)}
+                link={props.link}
+                options={props.options || []}
+                dialogType={props.dialogType}
+                disabled={disabled}
+              />
+            )}
+          {props.type === 'asyncMultiSelect' && (
             <MultipleAsyncSelectField
               label={label}
               required={required}
               value={currentValue}
               onChange={(value) => onChange(name, value)}
-              link={link}
-              search={search}
-              dialogType={dialogType}
+              link={props.link}
+              search={props.search}
+              dialogType={props.dialogType}
               disabled={disabled}
             />
           )}
-          {['text', 'number', 'email', 'password'].includes(type) && (
+          {['text', 'number', 'email', 'password'].includes(props.type) && (
             <TextField
               label={label}
               required={required}
               value={currentValue}
               onChange={(value) => onChange(name, value)}
-              type={type}
+              type={props.type}
               disabled={disabled}
             />
           )}
-          {type === 'listAdd' && (
+          {props.type === 'datePicker' && (
+            <DatePickerWithPresets
+              required={required}
+              label={label}
+              value={currentValue}
+              onChange={(value) => onChange(name, value)}
+              formatString={props.formatString}
+            />
+          )}
+          {props.type === 'listAdd' && (
             <ListAddName
               label={label}
               required={required}
@@ -124,8 +131,8 @@ const FieldMapper: FunctionComponent<TProps> = ({
               disabled={!disabled}
             />
           )}
-          {type === 'callback' && Callback && (
-            <Callback/>
+          {props.type === 'callback' && (
+            <props.Callback/>
           )}
         </div>
       </Fieldset>

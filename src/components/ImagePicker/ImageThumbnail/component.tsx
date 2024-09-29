@@ -36,7 +36,7 @@ const ImageThumbnail: FunctionComponent<TImageThumbnailProps> = ({
             onMouseEnter={() => setShowIcons(true)}
             onMouseLeave={() => setShowIcons(false)}
             className={`rounded-md ${id && selected ? 'border-2 border-yellow-500' : ''} relative top-1/2 -translate-y-1/2 overflow-hidden`}>
-            <LoadingWrapper loading={!!saving} colour={'stone-200'} positioning={'absolute'}>
+            <LoadingWrapper loading={!!saving} colour={'light'} positioning={'absolute'}>
               <img
                 className={`${id ? 'cursor-pointer' : 'opacity-50'} max-w-full max-h-full m-auto`}
                 src={thumbnail}

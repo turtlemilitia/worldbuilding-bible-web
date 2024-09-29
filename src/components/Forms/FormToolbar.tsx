@@ -1,6 +1,6 @@
 import React, { FunctionComponent, JSX, SyntheticEvent } from 'react'
 import { RefreshCwIcon, SaveIcon, StarIcon, TrashIcon } from 'lucide-react'
-import { CoverImagePicker } from '../CoverImagePicker'
+import CoverImagePicker from '../CoverImagePicker'
 import { SmallFloatingBox } from '../FloatingBox'
 import { Button } from '@headlessui/react'
 import { PinForSelector } from '../PinPicker'

@@ -5,7 +5,7 @@ import { TSelectOption } from './FieldMapper'
 import Label from './Label'
 
 type TProp = {
-  label: string
+  label?: string
   required?: boolean
   value: TSelectOption|null;
   onChange: (value: TSelectOption|null) => any;
@@ -24,7 +24,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
 
   return (
     <Field className="relative">
-      <Label required={required}>{label}</Label>
+      {label && <Label required={required}>{label}</Label>}
       <Combobox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
           <>
@@ -46,7 +46,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
               leaveTo="opacity-0"
             >
               <Combobox.Options
-                className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 text-stone-200 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 {filteredOptions.map((option) => (
                   <Combobox.Option
                     key={option?.id}

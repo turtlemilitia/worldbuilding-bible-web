@@ -1,10 +1,10 @@
 import {
-  TAsyncMultiSelectFieldFn,
+  TAsyncMultiSelectFieldFn, TDatePickerFieldFn,
   TMultiSelectFieldFn,
   TNumberFieldFn,
   TSelectFieldFn,
   TSelectFieldProps,
-  TTextFieldFn
+  TTextFieldFn,
 } from './types'
 
 export const textField: TTextFieldFn = (props) => ({
@@ -26,6 +26,10 @@ export const multiSelectField: TMultiSelectFieldFn = (props) => ({
 export const asyncMultiSelectField: TAsyncMultiSelectFieldFn = (props) => ({
   ...props,
   type: 'asyncMultiSelect',
+})
+export const datePickerField: TDatePickerFieldFn = (props) => ({
+  ...props,
+  type: 'datePicker'
 })
 
 // other generic fields

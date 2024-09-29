@@ -1,7 +1,12 @@
 import { noteField, numberField, textField, TField } from '../../fieldTools'
 import {TUseFields} from "../../../components/Post/types";
 import { useNotebookDataManager, useSessionDataManager } from '../../DataManagers'
-import {encounterField, questField, sceneField} from "../../fieldTools/fieldTools";
+import {
+  datePickerField,
+  encounterField,
+  questField,
+  sceneField,
+} from '../../fieldTools/fieldTools'
 
 const useSessionFields = (): TUseFields => {
 
@@ -14,7 +19,7 @@ const useSessionFields = (): TUseFields => {
       label: 'Session number',
       required: true
     }),
-    textField({
+    datePickerField({
       name: 'scheduled_at',
       label: 'Scheduled at',
       required: true

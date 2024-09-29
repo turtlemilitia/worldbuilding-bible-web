@@ -1,3 +1,4 @@
+import path from "path"
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -11,6 +12,11 @@ export default defineConfig({
             },
         })
     ],
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src"),
+        },
+    },
     server: {
         host: 'worldbuildingbible.io',
         open: true, // Auto-opens the browser on startup
