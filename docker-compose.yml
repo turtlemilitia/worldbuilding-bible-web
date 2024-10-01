@@ -1,18 +1,33 @@
-version: '3.8'
 services:
-  react-app:
-    container_name: react-app
+  nginx:
+    container_name: react-nginx
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "${PORT:-3000}:80"
     environment:
       - NODE_ENV=${NODE_ENV:-development}
     networks:
-      - nginx_network      # proxy and app must be in same network
+      - nginx_network
+
+  build:
+    container_name: react-build
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    ports:
+      - "${PORT:-5173}:5173"
+    environment:
+      - NODE_ENV={$NODE_ENV:-development}
+    networks:
+      - nginx_network
+    volumes:
+      - .:/app:delegated
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:
+
 networks:
-  worldbuildingbible-network:
-    driver: bridge
   nginx_network:
     external: true
