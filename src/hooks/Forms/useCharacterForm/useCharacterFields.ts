@@ -69,7 +69,7 @@ const useCharacterFields = (): TUseFields => {
     return fields
   }, [manager.compendium, manager.character, campaign?.quests, campaign?.encounters, campaign?.scenes])
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useCharacterFields

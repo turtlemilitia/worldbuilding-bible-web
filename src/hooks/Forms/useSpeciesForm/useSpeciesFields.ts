@@ -17,7 +17,7 @@ const useSpeciesFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useSpeciesFields

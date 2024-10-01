@@ -14,10 +14,10 @@ type TProps = {
   menuItem: MenuItemInterface,
   className?: string
   activeClassName?: string
-  matchExact: boolean,
+  matchExact?: boolean,
 }
 
-const MenuItem: FunctionComponent<TProps> = ({ menuItem, className = '', activeClassName = 'text-emerald-600', matchExact }): JSX.Element => {
+const MenuItem: FunctionComponent<TProps> = ({ menuItem, className = '', activeClassName = 'text-emerald-600', matchExact = false }): JSX.Element => {
   const { title, to, children, hide } = menuItem
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
 

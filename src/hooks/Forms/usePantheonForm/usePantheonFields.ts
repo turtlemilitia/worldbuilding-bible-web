@@ -17,7 +17,7 @@ const usePantheonFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default usePantheonFields

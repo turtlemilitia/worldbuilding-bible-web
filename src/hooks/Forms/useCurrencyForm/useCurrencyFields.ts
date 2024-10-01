@@ -17,7 +17,7 @@ const useCurrencyFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useCurrencyFields

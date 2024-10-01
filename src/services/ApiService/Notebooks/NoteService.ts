@@ -1,10 +1,11 @@
-import { TNote } from '../../../types'
-import { createChildApiService } from '../createApiService'
+import { TNote } from '@/types'
+import { createApiService } from '../createApiService'
 import { createImageableService } from '../createImageableService'
 
 export interface TNoteRequest {
   name: string;
   content: string;
+  notebookId: number|null;
 }
 
 type TNoteResponse = TNote;
@@ -12,7 +13,7 @@ type TNoteResponse = TNote;
 type TNoteIndexResponse = TNote[];
 
 const NoteService = {
-  ...createChildApiService<TNoteRequest, TNoteIndexResponse, TNoteResponse> ('notebooks', 'notes'),
+  ...createApiService<TNoteRequest, TNoteIndexResponse, TNoteResponse> ('notes'),
   ...createImageableService('notes')
 }
 

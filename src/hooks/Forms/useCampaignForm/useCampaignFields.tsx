@@ -1,13 +1,13 @@
-import { selectField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
-import { useCompendiumIndexDataManager, useNotebookIndexDataManager } from '../../DataManagers'
+import { noteField, selectField, TField } from '../../fieldTools'
+import {TUseFields} from '@/components/Post/types';
+import { useCompendiumIndexDataManager, useNoteIndexDataManager, } from '../../DataManagers'
 import CampaignService from "../../../services/ApiService/Campaigns/CampaignService";
-import {Button} from "../../../components/Forms/Fields/Button";
+import {Button} from '@/components/Forms/Fields/Button';
 
 const useCampaignFields = (campaignId: string): TUseFields => {
 
   const { compendia } = useCompendiumIndexDataManager()
-  const {notebooks} = useNotebookIndexDataManager()
+  const {notes} = useNoteIndexDataManager()
 
   const fields: TField[] = [
     selectField({
@@ -17,12 +17,10 @@ const useCampaignFields = (campaignId: string): TUseFields => {
     })
   ]
 
-  if (notebooks && notebooks.length > 0) {
+  if (notes) {
     fields.push(
-      selectField({
-        name: 'notebook',
-        label: 'Notebook',
-        options: notebooks,
+      noteField({
+        options: notes,
       })
     )
   }
@@ -40,7 +38,7 @@ const useCampaignFields = (campaignId: string): TUseFields => {
     })
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useCampaignFields

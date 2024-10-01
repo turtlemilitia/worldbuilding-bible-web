@@ -7,15 +7,15 @@ const Note: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { notebookId, noteId } = useParams() as { notebookId: string, noteId: string } // router
+  const { noteId } = useParams() as { notebookId: string, noteId: string } // router
 
   const form = useNoteForm({
     noteId,
     onCreated: (data) => {
-      navigate(`/notebooks/${notebookId}/notes/${data.slug}`)
+      navigate(`/notes/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/notebooks/${notebookId}/notes`)
+      navigate(`/notes`)
     },
   })
 

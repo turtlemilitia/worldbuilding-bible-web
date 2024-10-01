@@ -17,7 +17,7 @@ const useStoryFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useStoryFields

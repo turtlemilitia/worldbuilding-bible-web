@@ -1,27 +1,25 @@
-import { selectField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
-import { useNotebookIndexDataManager } from '../../DataManagers'
 import { useMemo } from 'react'
+import { noteField, TField } from '../../fieldTools'
+import {TUseFields} from '@/components/Post/types';
+import { useNoteIndexDataManager } from '@/hooks/DataManagers'
 
 const useCompendiumFields = (): TUseFields => {
 
-  const {notebooks} = useNotebookIndexDataManager()
+  const {notes} = useNoteIndexDataManager()
 
   const fields = useMemo(() => {
     const fields: TField[] = [];
-    if (notebooks && notebooks.length > 0) {
+    if (notes) {
       fields.push(
-        selectField({
-          name: 'notebook',
-          label: 'Notebook',
-          options: notebooks,
+        noteField({
+          options: notes,
         })
       )
     }
     return fields;
-  }, [notebooks]);
+  }, [notes]);
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useCompendiumFields

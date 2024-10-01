@@ -1,23 +1,23 @@
 import { noteField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
-import { useItemDataManager, useNotebookDataManager } from '../../DataManagers'
+import {TUseFields} from '@/components/Post/types';
+import { useItemDataManager, useNoteIndexDataManager, } from '../../DataManagers'
 
 const useItemFields = (): TUseFields => {
 
   const manager = useItemDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = []
 
-  if (manager.item && notebook?.notes) {
+  if (manager.item && notes) {
     fields.push(
       noteField({
-        options: notebook.notes,
+        options: notes,
       })
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useItemFields

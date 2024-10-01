@@ -5,7 +5,7 @@ import { usePostForm } from '../index'
 import { useCallback, useMemo } from 'react'
 import useCompendiumFields from './useCompendiumFields'
 
-export const compendiumIncludes = 'creator;notebook;characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories';
+export const compendiumIncludes = 'creator;notes;characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories';
 
 type TOwnProps = {
   compendiumId: TCompendium['slug'];

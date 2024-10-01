@@ -17,15 +17,16 @@ const useNoteForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TNote>): TForm<TNote> => {
 
-  const include = useMemo(() => '', [])
+  const include = useMemo(() => 'notebook', [])
 
   const manager = useNoteDataManager();
 
   const { fields } = useNoteFields();
 
-  const mapData = useCallback((data: any): TNoteRequest => ({
+  const mapData = useCallback((data: TNote): TNoteRequest => ({
     name: data.name,
     content: data.content,
+    notebookId: data.notebook?.id || null
   }), [])
 
   return usePostForm({

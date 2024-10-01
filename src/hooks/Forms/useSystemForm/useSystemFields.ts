@@ -5,7 +5,7 @@ const useSystemFields = (): TUseFields => {
 
   const fields: TField[] = []
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useSystemFields

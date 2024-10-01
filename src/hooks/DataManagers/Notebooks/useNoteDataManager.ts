@@ -1,22 +1,20 @@
 import noteService, { TNoteRequest } from '../../../services/ApiService/Notebooks/NoteService'
-import { noteSlice } from '../../../reducers/notebook/note/noteSlice'
-import { notebookSlice } from '../../../reducers/notebook/notebookSlice'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TNote, TNotebook } from '../../../types'
+import { noteSlice } from '@/reducers/notebook/note/noteSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
+import { TNote, TNotebook } from '@/types'
+import { notesIndexSlice } from '@/reducers/notebook/note/notesIndexSlice'
+import { TDataManager, useDataManager } from '@/hooks/DataManagers'
 
-type TNoteDataManager = TChildDataManager<TNotebook, TNote, TNoteRequest> & {
-  notebook?: TNotebook,
+type TNoteDataManager = TDataManager<TNote, TNoteRequest> & {
   note?: TNote,
 } & hasImageableDataManager
 
 const useNoteDataManager = (): TNoteDataManager => {
 
-  const manager = useChildDataManager(
+  const manager = useDataManager(
     'note',
-    'notebook',
     noteSlice,
-    notebookSlice,
+    notesIndexSlice,
     noteService,
   )
   return {

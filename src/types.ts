@@ -151,7 +151,9 @@ export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
   notes: TGenericPostBasic[]
 }
 
-export type TNote = TGenericPost & TPlayerTools & TCanHaveImages
+export type TNote = TGenericPost & TPlayerTools & TCanHaveImages & {
+  notebook: TNotebook|null
+}
 
 export type TPermission = {
   id: number;

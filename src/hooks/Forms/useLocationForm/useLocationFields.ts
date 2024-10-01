@@ -101,7 +101,7 @@ const useLocationFields = (): TUseFields => {
     return fields
   }, [manager.compendium, manager.location, campaign?.quests, campaign?.encounters, campaign?.scenes, locationTypes, governmentTypes])
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useLocationFields

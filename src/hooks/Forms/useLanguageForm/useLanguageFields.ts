@@ -17,7 +17,7 @@ const useLanguageFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useLanguageFields

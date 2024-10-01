@@ -39,7 +39,7 @@ const useQuestFields = (): TUseFields => {
     return fields;
   }, [manager.quest, manager.campaign?.quests, notebook?.notes])
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useQuestFields

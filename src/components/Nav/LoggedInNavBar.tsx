@@ -82,17 +82,7 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
     },
     {
       title: 'Notes',
-      to: '/notebooks',
-      children: [
-        ...notebooks?.map(({ slug, name }) => ({
-          title: name,
-          to: `/notebooks/${slug}`
-        })) || [],
-        {
-          title: 'Create new',
-          to: '/notebooks/new',
-        }
-      ]
+      to: '/notes'
     }
   ]
 

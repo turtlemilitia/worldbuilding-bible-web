@@ -5,7 +5,6 @@ import { TSelectOption } from '../Forms/Fields/FieldMapper'
 
 export type TUseFields = {
   fields: TField[];
-  ready: boolean
 }
 
 type TPost<T> = T & TGenericPost;

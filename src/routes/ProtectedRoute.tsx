@@ -1,7 +1,7 @@
 import React, {JSX, useEffect, useState} from 'react'
 import {Navigate, Outlet} from 'react-router-dom'
-import {useAppSelector} from '../hooks'
-import {RootState} from '../store'
+import {useAppSelector} from '@/hooks'
+import {RootState} from '@/store'
 import {
     useCampaignIndexDataManager,
     useCompendiumIndexDataManager,
@@ -9,10 +9,13 @@ import {
     useSystemIndexDataManager,
     useImageTypeIndexDataManager,
     useGovernmentTypeIndexDataManager,
-    useLocationTypeIndexDataManager, useQuestTypeIndexDataManager, useEncounterTypeIndexDataManager
+    useLocationTypeIndexDataManager,
+    useQuestTypeIndexDataManager,
+    useEncounterTypeIndexDataManager
 } from '../hooks/DataManagers'
 import useAuthUserDataManager from '../hooks/DataManagers/useAuthUserDataManager'
 import LoadingWrapper from "../components/LoadingWrapper";
+import { useNoteIndexDataManager } from '@/hooks/DataManagers'
 
 export const ProtectedRoute = (): JSX.Element => {
 
@@ -24,6 +27,7 @@ export const ProtectedRoute = (): JSX.Element => {
     const compendiumIndexDataManager = useCompendiumIndexDataManager()
     const campaignIndexDataManager = useCampaignIndexDataManager()
     const notebookIndexDataManager = useNotebookIndexDataManager()
+    const noteIndexDataManager = useNoteIndexDataManager()
     const imageTypeIndexDataManager = useImageTypeIndexDataManager()
     const governmentTypeIndexDataManager = useGovernmentTypeIndexDataManager()
     const locationTypeIndexDataManager = useLocationTypeIndexDataManager()
@@ -37,7 +41,8 @@ export const ProtectedRoute = (): JSX.Element => {
                 systemIndexDataManager.index(),
                 compendiumIndexDataManager.index(),
                 campaignIndexDataManager.index(),
-                notebookIndexDataManager.index({include: 'notes'}),
+                notebookIndexDataManager.index(),
+                noteIndexDataManager.index({ include: 'notebook:id,slug,name' }),
                 imageTypeIndexDataManager.index(),
                 governmentTypeIndexDataManager.index(),
                 locationTypeIndexDataManager.index(),

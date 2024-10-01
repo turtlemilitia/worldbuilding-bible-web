@@ -3,6 +3,7 @@ import authSlice from './reducers/auth/authSlice'
 import systemsIndexSlice from './reducers/system/systemsIndexSlice'
 import systemSlice from './reducers/system/systemSlice'
 import notebooksIndexSlice from './reducers/notebook/notebooksIndexSlice'
+import notesIndexSlice from './reducers/notebook/note/notesIndexSlice'
 import compendiaIndexSlice from './reducers/compendium/compendiaIndexSlice'
 import compendiumSlice from './reducers/compendium/compendiumSlice'
 import conceptSlice from './reducers/compendium/concept/conceptSlice'
@@ -49,6 +50,7 @@ export const store = configureStore({
     compendia: compendiaIndexSlice,
     campaigns: campaignsIndexSlice,
     notebooks: notebooksIndexSlice,
+    notes: notesIndexSlice,
     imageTypes: imageTypesIndexSlice,
     governmentTypes: governmentTypesIndexSlice,
     locationTypes: locationTypesIndexSlice,

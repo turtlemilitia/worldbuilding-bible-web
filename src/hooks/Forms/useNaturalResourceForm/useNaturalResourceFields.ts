@@ -17,7 +17,7 @@ const useNaturalResourceFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useNaturalResourceFields

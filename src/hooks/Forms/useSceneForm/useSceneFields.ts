@@ -53,7 +53,7 @@ const useSceneFields = (): TUseFields => {
     return fields
   }, [manager.scene, campaign?.encounters, notebook?.notes, compendium?.characters, compendium?.locations])
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useSceneFields

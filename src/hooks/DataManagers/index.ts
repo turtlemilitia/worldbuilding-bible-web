@@ -38,6 +38,7 @@ import useGovernmentTypeIndexDataManager from './Compendia/useGovernmentTypeInde
 import useLocationTypeIndexDataManager from './Compendia/useLocationTypeIndexDataManager'
 import useQuestTypeIndexDataManager from './Campaigns/useQuestTypeIndexDataManager'
 import useEncounterTypeIndexDataManager from './Campaigns/useEncounterTypeIndexDataManager'
+import useNoteIndexDataManager from './Notebooks/useNoteIndexDataManager'
 
 export {
   useDataManager,
@@ -75,6 +76,7 @@ export {
   useLocationTypeIndexDataManager,
   useQuestTypeIndexDataManager,
   useEncounterTypeIndexDataManager,
+  useNoteIndexDataManager
 }
 
 export type {

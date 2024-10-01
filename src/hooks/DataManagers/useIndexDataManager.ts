@@ -1,9 +1,9 @@
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useCallback } from 'react'
-import { TIndexApi, TQueryParams } from '../../services/ApiService/types'
+import { TIndexApi, TQueryParams } from '@/services/ApiService/types'
 import { Slice } from '@reduxjs/toolkit'
-import { TIndexSliceState } from '../../reducers/createIndexSlice'
-import { TOptionList } from '../../types'
+import { TIndexSliceState } from '@/reducers/createIndexSlice'
+import { TOptionList } from '@/types'
 
 export type TIndexDataManager<TEntity> = {
   list?: (TEntity)[],
@@ -12,7 +12,7 @@ export type TIndexDataManager<TEntity> = {
 }
 
 export const useIndexDataManager = <TEntity extends TOptionList, TIndexResponse extends TEntity[]> (
-  name: 'campaigns' | 'compendia' | 'notebooks' | 'systems' | 'imageTypes' | 'governmentTypes' | 'locationTypes' | 'questTypes' | 'encounterTypes',
+  name: 'campaigns' | 'compendia' | 'notebooks' | 'notes' | 'systems' | 'imageTypes' | 'governmentTypes' | 'locationTypes' | 'questTypes' | 'encounterTypes',
   slice: Slice<TIndexSliceState<TEntity>>,
   api: TIndexApi<TIndexResponse>,
 ): TIndexDataManager<TEntity> => {

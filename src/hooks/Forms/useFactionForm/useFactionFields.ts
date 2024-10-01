@@ -25,7 +25,7 @@ const useFactionFields = (): TUseFields => {
     )
   }
 
-  return { fields, ready: true }
+  return { fields }
 }
 
 export default useFactionFields

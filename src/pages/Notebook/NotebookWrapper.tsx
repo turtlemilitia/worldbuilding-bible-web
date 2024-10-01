@@ -1,41 +1,68 @@
 import React, { JSX, useEffect } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
-import { useNotebookDataManager } from '../../hooks/DataManagers'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar/Sidebar'
-import { StickyNoteIcon } from 'lucide-react'
-import useNoteDataManager from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
-import { notebookIncludes } from '../../hooks/Forms/useNotebookForm/useNotebookForm'
+import { LucideProps, StickyNoteIcon } from 'lucide-react'
+import useNoteDataManager
+  from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
+import {
+  useNotebookDataManager,
+  useNotebookIndexDataManager,
+  useNoteIndexDataManager,
+} from '@/hooks/DataManagers'
 
 const NotebookWrapper = (): JSX.Element => {
 
-  const { notebook, view, clearData } = useNotebookDataManager() // redux
+  const { notebooks = [] } = useNotebookIndexDataManager() // redux
+  const { notes = [] } = useNoteIndexDataManager() // redux
+  const { destroy: destroyNotebook } = useNotebookDataManager() // redux
   const { destroy: destroyNote } = useNoteDataManager() // redux
 
-  const { notebookId } = useParams() as { notebookId: string } // router
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const isNew: boolean = notebookId === 'new'
-    if (!isNew) {
-      view(notebookId, {include: notebookIncludes})
+    if (notes?.length > 0) {
+      navigate(`/notes/${notes[0]?.slug}`)
+    } else {
+      navigate(`/notes/new`)
     }
-    return () => {
-      clearData(notebookId)
-    }
-  }, [notebookId])
+  }, [])
+
+  const onDeleted = () => {
+    navigate('notes')
+  }
 
   return (
     <>
-      {notebook && (
-        <Sidebar
-          title={notebook.name}
-          addNew={`/notebooks/${(notebook.slug)}/notes/new`}
-          items={notebook.notes.map((note) => ({
-            title: note.name,
-            to: `/notebooks/${(notebook.slug)}/notes/${note.slug}`,
-            icon: (props) => <StickyNoteIcon {...props}/>,
-            onDelete: () => destroyNote(note.slug)
-          }))}/>
-      )}
+      <Sidebar
+        title={'My Notes'}
+        addNew={`/notes/notebooks/new`}
+        items={[
+          ...notebooks.map((notebook) => ({
+            title: notebook.name,
+            to: `/notebooks/${(notebook.slug)}`,
+            icon: (props: LucideProps) =>
+              <StickyNoteIcon {...props}/>,
+            onDelete: () => destroyNotebook(notebook.slug),
+            addNewLink: `/notes/new`,
+            addNewLinkState: { notebook },
+            children: notes.filter(note => note.notebook?.id === notebook.id).
+              map((note) => ({
+                title: note.name,
+                to: `/notes/${note.slug}`,
+                icon: (props: LucideProps) => <StickyNoteIcon {...props}/>,
+                onDelete: () => destroyNote(note.slug)
+                  .then(() => onDeleted()),
+              })),
+          })),
+          ...notes.filter(note => !note.notebook).
+              map((note) => ({
+                title: note.name,
+                to: `/notes/${note.slug}`,
+                icon: (props: LucideProps) => <StickyNoteIcon {...props}/>,
+                onDelete: () => destroyNote(note.slug)
+                  .then(() => onDeleted()),
+              })),
+        ]}/>
       <div className="relative w-full">
         <Outlet/>
       </div>

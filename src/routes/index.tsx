@@ -7,7 +7,7 @@ import System from '../pages/System/System'
 import SystemsWrapper from '../pages/System/SystemsWrapper'
 import PageWrapper from '../pages/PageWrapper'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { RootState } from '../store'
+import { RootState } from '@/store'
 import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
 import Home from '../pages/Home'
@@ -42,7 +42,7 @@ import { wait } from '@testing-library/user-event/dist/utils'
 import QuestWrapper from '../components/QuestWrapper'
 import EncounterWrapper from '../components/EncounterWrapper'
 import SessionWrapper from '../components/SessionWrapper'
-import NotebookWrapper from '../pages/Notebook/NotebookWrapper'
+import NotesWrapper from '../pages/Notebook/NotebookWrapper'
 import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
 import usePostDataManager from '../hooks/DataManagers/usePostDataManager'
@@ -266,24 +266,19 @@ const Routes = (): JSX.Element => {
           element: <>TODO: Stories</> // sidebar with list of stories/chapters
         },
         {
-          path: 'notebooks',
+          path: '/notes',
+          element: <NotesWrapper/>,
           children: [
             {
-              path: ':notebookId',
-              element: <NotebookWrapper/>,
-              children: [
-                {
-                  path: '',
-                  element: <Notebook/>,
-                  loader: loadPost,
-                },
-                {
-                  path: 'notes/:noteId',
-                  element: <Note/>,
-                  loader: loadPost
-                }
-              ]
-            }
+              path: ':noteId',
+              element: <Note/>,
+              loader: loadPost
+            },
+            {
+              path: 'notebook/:notebookId',
+              element: <Notebook/>,
+              loader: loadPost,
+            },
           ]
         },
         {
