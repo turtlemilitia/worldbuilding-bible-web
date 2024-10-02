@@ -5,6 +5,8 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useStoryDataManager } from '../../DataManagers'
 import useStoryFields from '../useStoryForm/useStoryFields'
+import useUrlFormatter from '@/hooks/useUrlFormatter'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   storyId: TStory['slug'];
@@ -38,7 +40,8 @@ const useStoryForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('stories', storyId)
   })
 }
 

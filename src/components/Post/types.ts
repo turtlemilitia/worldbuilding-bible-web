@@ -27,6 +27,7 @@ export type TForm<T> =  TFormHandling<T> & {
   favouriteHandler: TFavouriteHandler;
   playerCharacterHandler?: TPlayerCharacterHandler;
   permissionHandler?: TPermissionHandler;
+  link: string;
 }
 
 export type TPinForOption = TSelectOption & { type: 'user' | 'campaign', disabled?: boolean }

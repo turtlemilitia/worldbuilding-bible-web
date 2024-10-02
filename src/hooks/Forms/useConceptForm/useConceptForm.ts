@@ -5,6 +5,7 @@ import { TConceptRequest } from '../../../services/ApiService/Compendia/ConceptS
 import { usePostForm } from '../index'
 import { useConceptDataManager } from '../../DataManagers'
 import useConceptFields from './useConceptFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   conceptId: TConcept['slug'];
@@ -38,6 +39,7 @@ const useConceptForm = ({
     onCreated,
     onUpdated,
     onDeleted,
+    link: useLink('concepts', conceptId)
   })
 }
 

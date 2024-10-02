@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useDeityDataManager } from '../../DataManagers'
 import useDeityFields from '../useDeityForm/useDeityFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   deityId: TDeity['slug'];
@@ -38,7 +39,8 @@ const useDeityForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('deities', deityId)
   })
 }
 

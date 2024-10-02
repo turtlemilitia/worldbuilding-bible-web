@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useSpeciesDataManager } from '../../DataManagers'
 import useSpeciesFields from '../useSpeciesForm/useSpeciesFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   speciesId: TSpecies['slug'];
@@ -38,7 +39,8 @@ const useSpeciesForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('species', speciesId)
   })
 }
 

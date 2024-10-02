@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useSpellDataManager } from '../../DataManagers'
 import useSpellFields from '../useSpellForm/useSpellFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   spellId: TSpell['slug'];
@@ -38,7 +39,8 @@ const useSpellForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('spells', spellId)
   })
 }
 

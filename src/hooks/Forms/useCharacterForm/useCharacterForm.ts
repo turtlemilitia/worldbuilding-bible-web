@@ -6,6 +6,7 @@ import { useCharacterDataManager } from '../../DataManagers'
 import useCharacterFields from '../useCharacterForm/useCharacterFields'
 import { usePostForm } from '../index'
 import usePlayerCharacterHandler from '../../usePlayerCharacterHandler'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   characterId: TCharacter['slug'];
@@ -44,6 +45,7 @@ const useCharacterForm = ({
       onCreated,
       onUpdated,
       onDeleted,
+      link: useLink('characters', characterId)
     }),
     playerCharacterHandler: usePlayerCharacterHandler({ manager })
   }

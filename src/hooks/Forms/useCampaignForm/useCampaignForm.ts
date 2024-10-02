@@ -5,6 +5,7 @@ import { useCampaignDataManager } from '../../DataManagers'
 import { useCallback } from 'react'
 import usePostForm from '../usePostForm'
 import useCampaignFields from './useCampaignFields'
+import useLink from '@/hooks/useLink'
 
 export const campaignIncludes = 'compendium;notes;quests;quests.type;quests.parent;encounters;encounters.type;sessions;scenes;pins;pins.pinnable;users;users.pins;users.pins.pinnable;users.characters;permissions;users.permissions;gameMaster';
 
@@ -26,8 +27,7 @@ const useCampaignForm = ({
   const mapData = useCallback((data: TCampaign): TCampaignRequest => ({
     name: data.name,
     content: data.content,
-    compendiumId: data.compendium?.id,
-    notebookId: data.notebook?.id
+    compendiumId: data.compendium?.id
   }), [])
 
   return usePostForm({
@@ -40,7 +40,8 @@ const useCampaignForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('campaigns', campaignId)
   })
 }
 

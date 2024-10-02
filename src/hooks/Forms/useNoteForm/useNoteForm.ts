@@ -5,6 +5,7 @@ import { TNoteRequest } from '../../../services/ApiService/Notebooks/NoteService
 import useNoteDataManager from '../../DataManagers/Notebooks/useNoteDataManager'
 import usePostForm from '../usePostForm'
 import useNoteFields from './useNoteFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   noteId: TNote['slug'];
@@ -39,7 +40,8 @@ const useNoteForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('notes', noteId)
   })
 }
 

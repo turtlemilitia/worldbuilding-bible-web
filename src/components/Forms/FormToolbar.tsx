@@ -1,5 +1,11 @@
 import React, { FunctionComponent, JSX, SyntheticEvent } from 'react'
-import { RefreshCwIcon, SaveIcon, StarIcon, TrashIcon } from 'lucide-react'
+import {
+  ExternalLinkIcon,
+  RefreshCwIcon,
+  SaveIcon,
+  StarIcon,
+  TrashIcon,
+} from 'lucide-react'
 import CoverImagePicker from '../CoverImagePicker'
 import { SmallFloatingBox } from '../FloatingBox'
 import { Button } from '@headlessui/react'
@@ -7,6 +13,7 @@ import { PinForSelector } from '../PinPicker'
 import { TFavouriteHandler, TPermissionHandler, TPinHandler, TPlayerCharacterHandler } from '../Post/types'
 import PlayerCharacterSelector from '../PlayerCharacterSelector'
 import UserPermissionsSelector from '../UserPermissionsSelector'
+import { Link } from 'react-router-dom'
 
 type TProps = {
   canEdit?: boolean
@@ -21,6 +28,7 @@ type TProps = {
   playerCharacterHandler?: TPlayerCharacterHandler,
   permissionHandler?: TPermissionHandler,
   onCoverImageSelected?: (imageId: number) => Promise<any>;
+  link?: string;
 }
 
 const FormToolbar: FunctionComponent<TProps> = ({
@@ -35,7 +43,8 @@ const FormToolbar: FunctionComponent<TProps> = ({
   favouriteHandler,
   playerCharacterHandler,
   permissionHandler,
-  onCoverImageSelected
+  onCoverImageSelected,
+  link
 }: TProps): JSX.Element => {
 
   const handleOnRefresh = (event: React.SyntheticEvent) => {
@@ -94,6 +103,13 @@ const FormToolbar: FunctionComponent<TProps> = ({
                 <TrashIcon className="stroke-stone-400 h-5 w-5"/>
               </SmallFloatingBox>
             </Button>
+          )}
+          {link && (
+            <Link to={link}>
+              <SmallFloatingBox hover>
+                <ExternalLinkIcon className="stroke-stone-400 h-5 w-5"/>
+              </SmallFloatingBox>
+            </Link>
           )}
         </>
       )}

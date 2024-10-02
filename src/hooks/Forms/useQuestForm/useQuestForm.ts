@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { useQuestDataManager } from '../../DataManagers'
 import usePostForm from '../usePostForm'
 import useQuestFields from './useQuestFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   questId: TQuest['slug'];
@@ -40,7 +41,8 @@ const useQuestForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('quests', questId)
   })
 }
 

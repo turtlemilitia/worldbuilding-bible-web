@@ -5,6 +5,7 @@ import useSystemFields from '../useSystemForm/useSystemFields'
 import { TSystem } from '../../../types'
 import useSystemDataManager from '../../DataManagers/Systems/useSystemDataManager'
 import { TSystemRequest } from '../../../services/ApiService/Systems/SystemService'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   systemId: TSystem['slug'];
@@ -38,7 +39,8 @@ const useSystemForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('systems', systemId)
   })
 }
 

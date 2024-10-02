@@ -4,6 +4,7 @@ import { useCompendiumDataManager } from '../../DataManagers'
 import { usePostForm } from '../index'
 import { useCallback, useMemo } from 'react'
 import useCompendiumFields from './useCompendiumFields'
+import useLink from '@/hooks/useLink'
 
 export const compendiumIncludes = 'creator;notes;characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories';
 
@@ -27,7 +28,6 @@ const useCompendiumForm = ({
   const mapData = useCallback((data: TCompendium) => ({
     name: data.name,
     content: data.content,
-    notebookId: data.notebook?.id,
   }), [])
 
   return usePostForm({
@@ -40,6 +40,7 @@ const useCompendiumForm = ({
     onCreated,
     onUpdated,
     onDeleted,
+    link: useLink('compendia', compendiumId)
   })
 }
 

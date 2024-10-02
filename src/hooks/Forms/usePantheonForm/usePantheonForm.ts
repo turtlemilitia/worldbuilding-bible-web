@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { usePantheonDataManager } from '../../DataManagers'
 import usePantheonFields from '../usePantheonForm/usePantheonFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   pantheonId: TPantheon['slug'];
@@ -38,7 +39,8 @@ const usePantheonForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('pantheons', pantheonId)
   })
 }
 

@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useLanguageDataManager } from '../../DataManagers'
 import useLanguageFields from '../useLanguageForm/useLanguageFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   languageId: TLanguage['slug'];
@@ -38,7 +39,8 @@ const useLanguageForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('languages', languageId)
   })
 }
 

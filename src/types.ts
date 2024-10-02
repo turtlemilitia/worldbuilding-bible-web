@@ -57,9 +57,8 @@ export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
   content: string;
 }
 
-export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   creator: TUser;
-  notebook?: TGenericPostBasic;
   characters?: TGenericPostBasic[];
   concepts?: TGenericPostBasic[];
   currencies?: TGenericPostBasic[];
@@ -278,7 +277,7 @@ export type TFavourite = {
   favouritable: TQuest
 })
 
-export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
+export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   gameMaster?: TUser;
   compendium?: TGenericPost;
   users: TUser[];
@@ -287,7 +286,6 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & {
   encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
   scenes: (TGenericPostBasic)[];
   quests: (TGenericPostBasic & { type: TQuest['type'] })[];
-  notebook?: TNotebook
   pins: TPin[]
   permissions: TPermission[]
 }

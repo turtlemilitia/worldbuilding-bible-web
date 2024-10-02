@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import usePostForm from '../usePostForm'
 import { useEncounterDataManager } from '../../DataManagers'
 import useEncounterFields from './useEncounterFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   encounterId: TEncounter['slug'];
@@ -33,7 +34,8 @@ const useEncounterForm = ({ encounterId, onFetched, onCreated, onUpdated, onDele
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('encounters', encounterId)
   })
 }
 

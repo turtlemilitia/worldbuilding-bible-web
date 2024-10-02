@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { useCurrencyDataManager } from '../../DataManagers'
 import useCurrencyFields from '../useCurrencyForm/useCurrencyFields'
 import { usePostForm } from '../index'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   currencyId: TCurrency['slug'];
@@ -38,7 +39,8 @@ const useCurrencyForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('currencies', currencyId)
   })
 }
 

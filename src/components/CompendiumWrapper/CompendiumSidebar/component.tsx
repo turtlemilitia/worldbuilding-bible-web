@@ -136,7 +136,7 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
       },
       {
         title: 'Natural Resources',
-        addNewLink: addNewLink('naturalResources'),
+        addNewLink: addNewLink('natural-resources'),
         icon: (props) => <FlowerIcon {...props}/>,
         children: compendium.naturalResources?.map(naturalResource => mapNaturalResource(naturalResource)),
       },

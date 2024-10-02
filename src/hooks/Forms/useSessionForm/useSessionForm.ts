@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { useSessionDataManager } from '../../DataManagers'
 import usePostForm from '../usePostForm'
 import useSessionFields from './useSessionFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   sessionId: TSession['slug'];
@@ -42,7 +43,8 @@ const useSessionForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('sessions', sessionId)
   })
 }
 

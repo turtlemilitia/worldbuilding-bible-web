@@ -1,10 +1,11 @@
-import { TItem } from '../../../types'
-import { TItemRequest } from '../../../services/ApiService/Compendia/ItemService'
+import { TItem } from '@/types'
+import { TItemRequest } from '@/services/ApiService/Compendia/ItemService'
 import { useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import { usePostForm } from '../index'
 import { useConceptDataManager } from '../../DataManagers'
 import useConceptFields from '../useConceptForm/useConceptFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   itemId: TItem['slug'];
@@ -38,7 +39,8 @@ const useItemForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('items', itemId)
   })
 }
 

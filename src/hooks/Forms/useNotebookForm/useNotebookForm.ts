@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import usePostForm from '../usePostForm'
 import { useNotebookDataManager } from '../../DataManagers'
 import useNotebookFields from './useNotebookFields'
+import useLink from '@/hooks/useLink'
 
 
 export const notebookIncludes = 'notes'
@@ -39,7 +40,8 @@ const useNotebookForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('notebooks', notebookId)
   })
 }
 

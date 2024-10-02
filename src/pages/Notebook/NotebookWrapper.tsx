@@ -1,5 +1,5 @@
 import React, { JSX, useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import { LucideProps, StickyNoteIcon } from 'lucide-react'
 import useNoteDataManager
@@ -12,6 +12,7 @@ import {
 
 const NotebookWrapper = (): JSX.Element => {
 
+  const { noteId } = useParams() // redux
   const { notebooks = [] } = useNotebookIndexDataManager() // redux
   const { notes = [] } = useNoteIndexDataManager() // redux
   const { destroy: destroyNotebook } = useNotebookDataManager() // redux
@@ -20,10 +21,12 @@ const NotebookWrapper = (): JSX.Element => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (notes?.length > 0) {
-      navigate(`/notes/${notes[0]?.slug}`)
-    } else {
-      navigate(`/notes/new`)
+    if (!noteId) {
+      if (notes?.length > 0) {
+        navigate(`/notes/${notes[0]?.slug}`)
+      } else {
+        navigate(`/notes/new`)
+      }
     }
   }, [])
 
@@ -39,7 +42,7 @@ const NotebookWrapper = (): JSX.Element => {
         items={[
           ...notebooks.map((notebook) => ({
             title: notebook.name,
-            to: `/notebooks/${(notebook.slug)}`,
+            to: `/notes/notebooks/${(notebook.slug)}`,
             icon: (props: LucideProps) =>
               <StickyNoteIcon {...props}/>,
             onDelete: () => destroyNotebook(notebook.slug),

@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { usePlaneDataManager } from '../../DataManagers'
 import usePlaneFields from '../usePlaneForm/usePlaneFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   planeId: TPlane['slug'];
@@ -38,7 +39,8 @@ const usePlaneForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('planes', planeId)
   })
 }
 

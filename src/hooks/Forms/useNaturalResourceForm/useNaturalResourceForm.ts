@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useNaturalResourceDataManager } from '../../DataManagers'
 import useNaturalResourceFields from '../useNaturalResourceForm/useNaturalResourceFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   naturalResourceId: TNaturalResource['slug'];
@@ -38,7 +39,8 @@ const useNaturalResourceForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('natural-resources', naturalResourceId)
   })
 }
 

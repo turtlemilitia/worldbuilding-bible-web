@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useFactionDataManager } from '../../DataManagers'
 import useFactionFields from '../useFactionForm/useFactionFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   factionId: TFaction['slug'];
@@ -38,7 +39,8 @@ const useFactionForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('factions', factionId)
   })
 }
 

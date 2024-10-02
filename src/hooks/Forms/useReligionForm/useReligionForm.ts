@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useReligionDataManager } from '../../DataManagers'
 import useReligionFields from '../useReligionForm/useReligionFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   religionId: TReligion['slug'];
@@ -38,7 +39,8 @@ const useReligionForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('religions', religionId)
   })
 }
 

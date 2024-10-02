@@ -275,7 +275,7 @@ const Routes = (): JSX.Element => {
               loader: loadPost
             },
             {
-              path: 'notebook/:notebookId',
+              path: 'notebooks/:notebookId',
               element: <Notebook/>,
               loader: loadPost,
             },

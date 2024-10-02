@@ -38,6 +38,7 @@ type TProps<T, R> = {
   onUpdated?: (data: T) => any
   onDeleted?: () => any
   canHaveProfileImage?: boolean
+  link: string
 }
 const usePostForm = <T extends TGenericPost, R> ({
   id,
@@ -49,7 +50,8 @@ const usePostForm = <T extends TGenericPost, R> ({
   onCreated,
   onUpdated,
   onDeleted,
-  canHaveProfileImage
+  canHaveProfileImage,
+  link
 }: TProps<T, R>): TForm<T> => {
 
   const { entity, store, update, destroy, view } = manager
@@ -151,7 +153,8 @@ const usePostForm = <T extends TGenericPost, R> ({
     imageHandler,
     pinHandler,
     favouriteHandler,
-    permissionHandler
+    permissionHandler,
+    link
   }
 }
 

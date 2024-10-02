@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import { usePostForm } from '../index'
 import { useLocationDataManager } from '../../DataManagers'
 import useLocationFields from '../useLocationForm/useLocationFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   locationId: TLocation['slug'];
@@ -44,7 +45,8 @@ const useLocationForm = ({
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('locations', locationId)
   })
 }
 

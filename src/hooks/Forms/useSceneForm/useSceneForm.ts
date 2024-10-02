@@ -5,6 +5,7 @@ import { TForm, TUseFormProps } from '../../../components/Post/types'
 import usePostForm from '../usePostForm'
 import { useSceneDataManager } from '../../DataManagers'
 import useSceneFields from './useSceneFields'
+import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
   sceneId: TScene['slug'];
@@ -32,7 +33,8 @@ const useSceneForm = ({ sceneId, onFetched, onCreated, onUpdated, onDeleted }: T
     onFetched,
     onCreated,
     onUpdated,
-    onDeleted
+    onDeleted,
+    link: useLink('scenes', sceneId)
   })
 }
 
