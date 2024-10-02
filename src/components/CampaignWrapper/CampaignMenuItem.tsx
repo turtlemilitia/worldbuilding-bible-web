@@ -13,7 +13,8 @@ const CampaignMenuItem: FunctionComponent<TProps> = ({menuItem}) => {
       <MenuItem
         menuItem={menuItem}
         className={clsx([
-          'p-4',
+          'p-4 pr-3',
+          'h-8',
           'border border-transparent',
           'rounded-full',
           'transition-all ease-in-out duration-500',

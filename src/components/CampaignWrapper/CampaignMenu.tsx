@@ -4,6 +4,7 @@ import { TCampaign } from '@/types'
 import CampaignMenuItem from './CampaignMenuItem'
 import useAuthUserDataManager from '../../hooks/DataManagers/useAuthUserDataManager'
 import { MenuItemInterface } from '../Nav/MenuItemInterface'
+import SearchCampaign from '@/components/CampaignWrapper/SearchCampaign'
 
 type TProps = {
   campaign: TCampaign
@@ -47,7 +48,7 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
       }
     )
     return items;
-  }, [campaign.slug, campaign.compendium, campaign.quests, campaign.encounters, campaign.sessions, user?.id, campaign.gameMaster?.id, campaign.scenes])
+  }, [campaign.slug, campaign.compendium, user?.id, campaign.gameMaster?.id])
 
   return (
     <div className="fixed top-20 w-full z-50">
@@ -55,6 +56,7 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
         {menuItems.map((menuItem, index) => (
           <CampaignMenuItem menuItem={menuItem} key={index}/>
         ))}
+        <SearchCampaign/>
       </Menu>
     </div>
   )
