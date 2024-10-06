@@ -45,6 +45,10 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
       {
         title: 'Sessions',
         to: `/campaigns/${campaign.slug}/sessions`
+      },
+      {
+        title: 'Notes',
+        to: `/campaigns/${campaign.slug}/notes`
       }
     )
     return items;

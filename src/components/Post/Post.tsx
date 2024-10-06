@@ -3,12 +3,11 @@ import PageTitleField from '../Forms/Fields/PageTitleField'
 import EditorsWrapper from './EditorsWrapper'
 import FormToolbar from '../Forms/FormToolbar'
 import { Editor } from '../Forms/Fields/Editor'
-import LoadingWrapper from '../LoadingWrapper'
 import { InfoBar } from '../InfoBar'
 import { TPostProps } from './types'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import SavingDialog from '../SavingDialog'
-import { TGenericPost } from '../../types'
+import { TGenericPost } from '@/types'
 import HeaderWrapper from './HeaderWrapper'
 import { FloatingBox } from '../FloatingBox'
 import CampaignQuickLinks from '../CampaignWrapper/CampaignFavourites'
@@ -52,7 +51,7 @@ const Post = <T extends TGenericPost> ({
   }, [form.imageHandler.getImage('cover')])
 
   return (
-    <LoadingWrapper loading={form.loading} opacity={'100'}>
+    <>
       <SavingDialog saving={form.saving}/>
       <form onSubmit={(e => e.preventDefault())}>
         <HeaderWrapper page={pageTypeName}>
@@ -104,7 +103,7 @@ const Post = <T extends TGenericPost> ({
       </form>
       <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
       <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
-    </LoadingWrapper>
+    </>
   )
 
 }

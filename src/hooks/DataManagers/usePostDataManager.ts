@@ -1,5 +1,5 @@
-import { postSlice } from '../../reducers/post/postSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { postSlice } from '@/reducers/post/postSlice'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useCallback } from 'react'
 
 const usePostDataManager = () => {
@@ -11,7 +11,7 @@ const usePostDataManager = () => {
   const { loading, backgroundImage } = useAppSelector(state => state.post)
 
   // REDUX MANAGEMENT
-  const setLoading = useCallback((loading: boolean) => {
+  const setLoading = useCallback((loading: { [id: string]: boolean }) => {
     dispatch(slice.actions.setLoading(loading))
   }, [])
 
@@ -24,7 +24,7 @@ const usePostDataManager = () => {
   }, [])
 
   return {
-    loading,
+    loading: Object.values(loading).some(value => Boolean(value)),
     backgroundImage,
     setLoading,
     setBackgroundImage,

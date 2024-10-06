@@ -4,18 +4,25 @@ import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
 import { useCompendiumDataManager } from '../../hooks/DataManagers'
 import { compendiumIncludes } from '@/hooks/Forms/useCompendiumForm/useCompendiumForm'
+import { useCampaignDataManager } from '@/hooks/DataManagers'
 
 const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
+  const { campaign } = useCampaignDataManager()
   const { compendium, view, clearData } = useCompendiumDataManager()
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
   useEffect(() => {
-    if (compendiumId !== 'new') {
+    if (
+      compendiumId !== 'new'
+      && (!compendium || compendium?.slug !== compendiumId) // if it's been loaded as part of the campaign
+    ) {
       view(compendiumId, { include: compendiumIncludes })
     }
     return () => {
-      clearData(compendiumId)
+      if (!campaign) {
+        clearData(compendiumId)
+      }
     }
   }, [compendiumId])
 

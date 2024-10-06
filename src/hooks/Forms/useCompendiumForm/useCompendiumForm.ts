@@ -1,5 +1,5 @@
-import { TForm, TUseFormProps } from '../../../components/Post/types'
-import { TCompendium } from '../../../types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
+import { TCompendium } from '@/types'
 import { useCompendiumDataManager } from '../../DataManagers'
 import { usePostForm } from '../index'
 import { useCallback, useMemo } from 'react'
@@ -31,6 +31,7 @@ const useCompendiumForm = ({
   }), [])
 
   return usePostForm({
+    fetchOnMount: false, // it's fetched in the Wrapper
     id: compendiumId,
     mapData,
     include,

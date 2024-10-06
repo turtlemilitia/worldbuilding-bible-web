@@ -1,6 +1,6 @@
-import { TCampaign } from '../../../types'
-import { TCampaignRequest } from '../../../services/ApiService/Campaigns/CampaignService'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TCampaign } from '@/types'
+import { TCampaignRequest } from '@/services/ApiService/Campaigns/CampaignService'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import { useCampaignDataManager } from '../../DataManagers'
 import { useCallback } from 'react'
 import usePostForm from '../usePostForm'
@@ -31,6 +31,7 @@ const useCampaignForm = ({
   }), [])
 
   return usePostForm({
+    fetchOnMount: false, // it's fetched on the Wrapper
     id: campaignId,
     mapData,
     include: campaignIncludes,

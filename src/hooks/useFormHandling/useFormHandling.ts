@@ -2,12 +2,14 @@ import { useCallback, useEffect, useState } from 'react'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import equal from 'fast-deep-equal/react'
-import { TGenericPostBasic } from '../../types'
+import { TGenericPostBasic } from '@/types'
 import { TFormHandling } from './types'
 import { isEmpty } from 'lodash'
-import { readyDataForRequest } from '../../utils/dataUtils'
+import { readyDataForRequest } from '@/utils/dataUtils'
+import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
 
 type TProps<T, R> = {
+  fetchOnMount?: boolean;
   id: string | number | 'new'
   isNew: boolean,
   mapData: (data: T) => R;
@@ -33,6 +35,7 @@ const useFormHandling = <T, R> ({
   isNew,
   mapData,
 
+  fetchOnMount = true,
   onFetch,
   onCreate,
   onUpdate,
@@ -51,24 +54,18 @@ const useFormHandling = <T, R> ({
 }: TProps<T, R>): TFormHandling<T> => {
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
+  const {loading, setLoading} = usePostDataManager();
 
-  // when we are fetching or deleting
-  const [loading, setLoading] = useState(true)
   // when we are saving (autosave)
   const [saving, setSaving] = useState(false)
   const [data, setData] = useState<T>()
 
   // Fetch data on mount
   useEffect(() => {
-    if (!isNew) {
+    if (!isNew && fetchOnMount) {
       handleOnFetch()
     } else {
-      setLoading(false)
-    }
-
-    // Reset loading state on unmount
-    return () => {
-      setLoading(true)
+      setLoading({ [id]: false })
     }
 
   }, [id])
@@ -94,7 +91,7 @@ const useFormHandling = <T, R> ({
 
   // Fetch data function
   const handleOnFetch = () => {
-    setLoading(true)
+    setLoading({ [id]: true })
     resetErrors()
     onFetch()
       .then((apiData) => {
@@ -102,7 +99,7 @@ const useFormHandling = <T, R> ({
       })
       .catch(handleResponseErrors)
       .finally(() => {
-        setLoading(false)
+        setLoading({ [id]: false })
       })
   }
 
@@ -172,11 +169,11 @@ const useFormHandling = <T, R> ({
 
   // Delete data function
   const handleOnDelete = () => {
-    setLoading(true)
+    setLoading({ [id]: true })
     onDelete()
       .then(() => {
         onDeleted && onDeleted()
-        setLoading(false)
+        setLoading({ [id]: false })
       })
       .catch(handleResponseErrors)
   }

@@ -4,7 +4,7 @@ import Nav from '../components/Nav/Nav'
 import { Outlet } from 'react-router-dom'
 import Footer from '../components/Footer/Footer'
 import AuthProvider from '../providers/AuthProvider'
-import { useAppSelector } from '../hooks'
+import { useAppSelector } from '@/hooks'
 
 const PageWrapper = (): JSX.Element => {
 

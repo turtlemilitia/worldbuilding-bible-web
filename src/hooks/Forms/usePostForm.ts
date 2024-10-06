@@ -1,6 +1,6 @@
-import { TForm } from '../../components/Post/types'
+import { TForm } from '@/components/Post/types'
 import useFormHandling from '../useFormHandling'
-import { TGenericPost } from '../../types'
+import { TGenericPost } from '@/types'
 import { TField } from '../fieldTools'
 import { useEffect, useMemo } from 'react'
 import useImageSelection from '../useImageSelection'
@@ -27,6 +27,7 @@ import useFavouriteHandler from '../useFavouriteHandler'
 import useUserPermissionHandler from '../useUserPermissionHandler'
 
 type TProps<T, R> = {
+  fetchOnMount?: boolean,
   id: string | number,
   mapData: (payload: T) => R,
   include?: string,
@@ -41,6 +42,7 @@ type TProps<T, R> = {
   link: string
 }
 const usePostForm = <T extends TGenericPost, R> ({
+  fetchOnMount = true,
   id,
   mapData,
   include = '',
@@ -86,6 +88,7 @@ const usePostForm = <T extends TGenericPost, R> ({
 
     errors
   } = useFormHandling({
+    fetchOnMount,
     id,
     isNew,
     mapData,

@@ -1,6 +1,6 @@
 import React, {JSX} from 'react';
 import './App.css';
-import Routes from "./routes";
+import Routes from "./routes/Routes";
 
 const App = (): JSX.Element => {
   return (

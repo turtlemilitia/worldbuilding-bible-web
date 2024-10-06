@@ -1,12 +1,16 @@
 import { ProtectedRoute } from './ProtectedRoute'
-import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom'
-import React, { JSX, useCallback } from 'react'
+import {
+  createBrowserRouter,
+  RouteObject,
+  RouterProvider,
+} from 'react-router-dom'
+import React, { JSX } from 'react'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import Login from '../pages/Login'
 import System from '../pages/System/System'
 import SystemsWrapper from '../pages/System/SystemsWrapper'
 import PageWrapper from '../pages/PageWrapper'
-import { useAppDispatch, useAppSelector } from '../hooks'
+import { useAppSelector } from '@/hooks'
 import { RootState } from '@/store'
 import Compendium from '../pages/Compendium/Compendium'
 import Location from '../pages/Compendium/Location'
@@ -32,45 +36,39 @@ import Quest from '../pages/Campaign/Quest'
 import Spell from '../pages/Compendium/Spell'
 import Story from '../pages/Compendium/Story'
 import Pantheon from '../pages/Compendium/Pantheon'
-import CompendiumWrapper from '../components/CompendiumWrapper/CompendiumWrapper'
+import CompendiumWrapper
+  from '../components/CompendiumWrapper/CompendiumWrapper'
 import CampaignInvitation from '../pages/CampaignInvitation'
-import CampaignInvitationService from '../services/ApiService/Campaigns/CampaignInvitationService'
+import CampaignInvitationService
+  from '../services/ApiService/Campaigns/CampaignInvitationService'
 import Register from '../pages/Register'
 import NotFound from '../pages/NotFound'
 import CampaignInvitationInvalid from '../pages/CampaignInvitationInvalid'
-import { wait } from '@testing-library/user-event/dist/utils'
 import QuestWrapper from '../components/QuestWrapper'
 import EncounterWrapper from '../components/EncounterWrapper'
 import SessionWrapper from '../components/SessionWrapper'
-import NotesWrapper from '../pages/Notebook/NotebookWrapper'
+import NotesWrapper from '../pages/Notebook/NotesWrapper'
 import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
-import usePostDataManager from '../hooks/DataManagers/usePostDataManager'
 
 const Routes = (): JSX.Element => {
 
   const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
-  const { setLoading } = usePostDataManager();
-
-  const loadPost = useCallback(() => {
-    setLoading(true)
-    return wait(250).then(() => true)
-  }, [])
-
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
     {
       path: '/about',
-      element: <>TODO: About us</>
+      element: <>TODO: About us</>,
     },
     {
       path: '/campaigns/:campaignId/invitations/:token',
       element: <CampaignInvitation/>,
-      loader: ({ params }) => CampaignInvitationService.check(params.campaignId as string, params.token as string)
-        .then(({ data }) => data?.data),
-      errorElement: <CampaignInvitationInvalid/>
-    }
+      loader: ({ params }) => CampaignInvitationService.check(
+        params.campaignId as string, params.token as string).
+        then(({ data }) => data?.data),
+      errorElement: <CampaignInvitationInvalid/>,
+    },
   ]
 
   // Define routes accessible only to authenticated users
@@ -81,94 +79,91 @@ const Routes = (): JSX.Element => {
       {
         path: '',
         element: <Compendium/>,
-        loader: loadPost
       },
       {
         path: 'characters/:characterId',
         element: <Character/>,
-        loader: loadPost
       },
       {
         path: 'concepts/:conceptId',
         element: <Concept/>,
-        loader: loadPost
       },
       {
         path: 'currencies/:currencyId',
         element: <Currency/>,
-        loader: loadPost
       },
       {
         path: 'deities/:deityId',
         element: <Deity/>,
-        loader: loadPost
       },
       {
         path: 'encounters/:encounterId',
         element: <Encounter/>,
-        loader: loadPost
       },
       {
         path: 'factions/:factionId',
         element: <Faction/>,
-        loader: loadPost
       },
       {
         path: 'items/:itemId',
         element: <Item/>,
-        loader: loadPost
       },
       {
         path: 'languages/:languageId',
         element: <Language/>,
-        loader: loadPost
       },
       {
         path: 'locations/:locationId',
         element: <Location/>,
-        loader: loadPost
       },
       {
         path: 'natural-resources/:naturalResourceId',
         element: <NaturalResource/>,
-        loader: loadPost
       },
       {
         path: 'pantheons/:pantheonId',
         element: <Pantheon/>,
-        loader: loadPost
       },
       {
         path: 'planes/:planeId',
         element: <Plane/>,
-        loader: loadPost
       },
       {
         path: 'quests/:questId',
         element: <Quest/>,
-        loader: loadPost
       },
       {
         path: 'religions/:religionId',
         element: <Religion/>,
-        loader: loadPost
       },
       {
         path: 'species/:speciesId',
         element: <Species/>,
-        loader: loadPost
       },
       {
         path: 'spells/:spellId',
         element: <Spell/>,
-        loader: loadPost
       },
       {
         path: 'stories/:storyId',
         element: <Story/>,
-        loader: loadPost
       },
-    ]
+    ],
+  }
+
+  const notesRoutes = {
+    path: 'notes',
+    element: <NotesWrapper/>,
+    children: [
+      {
+        path: ':noteId',
+        element: <Note/>,
+      },
+      {
+        path: 'notebooks/:notebookId',
+        element: <Notebook/>,
+      },
+    ],
   }
 
   const routesForAuthenticatedOnly: RouteObject[] = [
@@ -187,9 +182,8 @@ const Routes = (): JSX.Element => {
             {
               path: '/systems/:systemId',
               element: <System/>,
-              loader: loadPost
-            }
-          ]
+            },
+          ],
         },
         compendiumRoutes,
         {
@@ -202,91 +196,68 @@ const Routes = (): JSX.Element => {
                 {
                   path: '',
                   element: <Campaign/>,
-                  loader: loadPost,
                 },
                 compendiumRoutes,
+                notesRoutes,
                 {
                   path: 'scenes',
                   element: <SceneWrapper/>,
-                  loader: loadPost,
                   children: [
                     {
                       path: ':sceneId',
                       element: <Scene/>,
-                      loader: loadPost
-                    }
-                  ]
+                    },
+                  ],
                 },
                 {
                   path: 'quests',
                   element: <QuestWrapper/>,
-                  loader: loadPost,
                   children: [
                     {
                       path: ':questId',
                       element: <Quest/>,
-                      loader: loadPost
-                    }
-                  ]
+                    },
+                  ],
                 },
                 {
                   path: 'encounters',
                   element: <EncounterWrapper/>,
-                  loader: loadPost,
                   children: [
                     {
                       path: ':encounterId',
                       element: <Encounter/>,
-                      loader: loadPost
-                    }
-                  ]
+                    },
+                  ],
                 },
                 {
                   path: 'sessions',
                   element: <SessionWrapper/>,
-                  loader: loadPost,
                   children: [
                     {
                       path: ':sessionId',
                       element: <Session/>,
-                      loader: loadPost
-                    }
-                  ]
-                }
-              ]
+                    },
+                  ],
+                },
+              ],
             },
-          ]
+          ],
         },
         {
           path: '/tools',
-          element: <>TODO: Tools</> // sidebar with different tools
+          element: <>TODO: Tools</>, // sidebar with different tools
         },
         {
           path: '/stories',
-          element: <>TODO: Stories</> // sidebar with list of stories/chapters
+          element: <>TODO: Stories</>, // sidebar with list of stories/chapters
         },
-        {
-          path: '/notes',
-          element: <NotesWrapper/>,
-          children: [
-            {
-              path: ':noteId',
-              element: <Note/>,
-              loader: loadPost
-            },
-            {
-              path: 'notebooks/:notebookId',
-              element: <Notebook/>,
-              loader: loadPost,
-            },
-          ]
-        },
+        notesRoutes,
         {
           path: '/profile',
-          element: <>TODO: User Profile</>
+          element: <>TODO: User Profile</>,
         },
-      ]
-    }
+      ],
+    },
   ]
 
   // Define routes accessible only to non-authenticated users
@@ -316,10 +287,10 @@ const Routes = (): JSX.Element => {
         ...routesForAuthenticatedOnly,
         {
           path: '*',
-          element: <NotFound/>
-        }
-      ]
-    }
+          element: <NotFound/>,
+        },
+      ],
+    },
   ])
 
   // Provide the router configuration using RouterProvider

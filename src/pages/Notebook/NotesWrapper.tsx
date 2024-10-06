@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from 'react'
+import React, { JSX, useEffect, useMemo } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import { LucideProps, StickyNoteIcon } from 'lucide-react'
@@ -10,9 +10,9 @@ import {
   useNoteIndexDataManager,
 } from '@/hooks/DataManagers'
 
-const NotebookWrapper = (): JSX.Element => {
+const NotesWrapper = (): JSX.Element => {
 
-  const { noteId } = useParams() // redux
+  const { campaignId, noteId } = useParams() // redux
   const { notebooks = [] } = useNotebookIndexDataManager() // redux
   const { notes = [] } = useNoteIndexDataManager() // redux
   const { destroy: destroyNotebook } = useNotebookDataManager() // redux
@@ -20,38 +20,40 @@ const NotebookWrapper = (): JSX.Element => {
 
   const navigate = useNavigate()
 
+  const prefix = useMemo(() => campaignId ? `/campaigns/${campaignId}` : '', [campaignId])
+
   useEffect(() => {
     if (!noteId) {
       if (notes?.length > 0) {
-        navigate(`/notes/${notes[0]?.slug}`)
+        navigate(`${prefix}/notes/${notes[0]?.slug}`)
       } else {
-        navigate(`/notes/new`)
+        navigate(`${prefix}/notes/new`)
       }
     }
   }, [])
 
   const onDeleted = () => {
-    navigate('notes')
+    navigate(`${prefix}/notes`)
   }
 
   return (
     <>
       <Sidebar
         title={'My Notes'}
-        addNew={`/notes/notebooks/new`}
+        addNew={`${prefix}/notes/notebooks/new`}
         items={[
           ...notebooks.map((notebook) => ({
             title: notebook.name,
-            to: `/notes/notebooks/${(notebook.slug)}`,
+            to: `${prefix}/notes/notebooks/${(notebook.slug)}`,
             icon: (props: LucideProps) =>
               <StickyNoteIcon {...props}/>,
             onDelete: () => destroyNotebook(notebook.slug),
-            addNewLink: `/notes/new`,
+            addNewLink: `${prefix}/notes/new`,
             addNewLinkState: { notebook },
             children: notes.filter(note => note.notebook?.id === notebook.id).
               map((note) => ({
                 title: note.name,
-                to: `/notes/${note.slug}`,
+                to: `${prefix}/notes/${note.slug}`,
                 icon: (props: LucideProps) => <StickyNoteIcon {...props}/>,
                 onDelete: () => destroyNote(note.slug)
                   .then(() => onDeleted()),
@@ -60,7 +62,7 @@ const NotebookWrapper = (): JSX.Element => {
           ...notes.filter(note => !note.notebook).
               map((note) => ({
                 title: note.name,
-                to: `/notes/${note.slug}`,
+                to: `${prefix}/notes/${note.slug}`,
                 icon: (props: LucideProps) => <StickyNoteIcon {...props}/>,
                 onDelete: () => destroyNote(note.slug)
                   .then(() => onDeleted()),
@@ -73,4 +75,4 @@ const NotebookWrapper = (): JSX.Element => {
   )
 }
 
-export default NotebookWrapper
+export default NotesWrapper

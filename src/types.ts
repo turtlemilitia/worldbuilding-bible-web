@@ -59,6 +59,8 @@ export type TSystem = TGenericPost & TPlayerTools & TCanHaveImages & {
 
 export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   creator: TUser;
+} & TCompendiumRelationships
+export type TCompendiumRelationships = {
   characters?: TGenericPostBasic[];
   concepts?: TGenericPostBasic[];
   currencies?: TGenericPostBasic[];
@@ -282,12 +284,14 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveN
   compendium?: TGenericPost;
   users: TUser[];
   invitations: TInvitation[];
+  pins: TPin[]
+  permissions: TPermission[]
+} & TCampaignRelationships
+export type TCampaignRelationships = {
   sessions: (TGenericPostBasic & { session_number: TSession['session_number'] })[];
   encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
   scenes: (TGenericPostBasic)[];
   quests: (TGenericPostBasic & { type: TQuest['type'] })[];
-  pins: TPin[]
-  permissions: TPermission[]
 }
 
 export type TSession = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {

@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TCharacter, TCompendium } from '../../../types'
+import { TCharacter, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useFactionableDataManager,
@@ -16,10 +16,10 @@ import {
   useLocationableDataManager,
   hasLocationsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
+import { compendiumSlice } from '@/reducers/compendium/compendiumSlice'
 import CharacterService, { TCharacterRequest } from '../../../services/ApiService/Compendia/CharacterService'
-import { characterSlice } from '../../../reducers/compendium/character/characterSlice'
+import { characterSlice } from '@/reducers/compendium/character/characterSlice'
 
 export type TCharacterDataManager = TChildDataManager<TCompendium, TCharacter, TCharacterRequest> & {
   compendium?: TCompendium,
