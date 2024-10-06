@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useRef } from 'react'
+import { FunctionComponent } from 'react'
 import {
   CommandDialog,
   CommandEmpty,
@@ -32,17 +32,9 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
   const { notes } = useNoteIndexDataManager()
   const { compendiumPath } = useUrlFormatter()
 
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [isOpen])
-
   return (
     <CommandDialog isOpen={isOpen} setIsOpen={setIsOpen}>
-      <CommandInput placeholder="Search..." ref={inputRef}/>
+      <CommandInput placeholder="Search..."/>
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         {compendium && (
@@ -64,12 +56,12 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
               'spells',
               'stories',
             ].map((path) => (
-              <CommandGroup heading={path}>
+              <CommandGroup heading={startCase(path)}>
                 {compendium[path as keyof TCompendiumRelationships]?.map(entity => (
                     <CommandItem
                       onSelect={() => onSelect(`${compendiumPath}/${kebabCase(path)}/${entity.slug}`)}
                     >
-                      {startCase(entity.name)}
+                      {entity.name}
                     </CommandItem>
                   ))}
               </CommandGroup>
@@ -85,14 +77,14 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
             'encounters',
             'sessions',
           ].map((path) => (
-            <CommandGroup heading={path}>
+            <CommandGroup heading={startCase(path)}>
               {campaign[path as keyof TCampaignRelationships]?.map(
                 entity => (
                   <CommandItem
                     onSelect={() => onSelect(
                       `/campaigns/${campaign.slug}/${path}/${entity.slug}`)}
                   >
-                    {startCase(entity.name)}
+                    {entity.name}
                   </CommandItem>
                 ))}
             </CommandGroup>
@@ -105,7 +97,7 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
               <CommandItem onSelect={() => onSelect(
                 `${campaign ? `/campaigns/${campaign!.slug}` : ''}/notes/${note.slug}`
               )}>
-                {startCase(note.name)}
+                {note.name}
               </CommandItem>
             ))}
           </CommandGroup>

@@ -5,9 +5,11 @@ import CompendiumSidebar from './CompendiumSidebar'
 import { useCompendiumDataManager } from '../../hooks/DataManagers'
 import { compendiumIncludes } from '@/hooks/Forms/useCompendiumForm/useCompendiumForm'
 import { useCampaignDataManager } from '@/hooks/DataManagers'
+import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
 
 const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
+  const { setLoading } = usePostDataManager()
   const { campaign } = useCampaignDataManager()
   const { compendium, view, clearData } = useCompendiumDataManager()
   const { compendiumId } = useParams() as { compendiumId: string } // router
@@ -17,7 +19,9 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
       compendiumId !== 'new'
       && (!compendium || compendium?.slug !== compendiumId) // if it's been loaded as part of the campaign
     ) {
-      view(compendiumId, { include: compendiumIncludes })
+      setLoading({ [compendiumId]: true })
+      view(compendiumId, { include: compendiumIncludes }).
+        then(() => setLoading({ [compendiumId]: false }))
     }
     return () => {
       if (!campaign) {
