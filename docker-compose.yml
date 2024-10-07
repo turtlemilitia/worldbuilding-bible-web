@@ -4,12 +4,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - NODE_ENV=${NODE_ENV:-development}
     networks:
       - nginx_network
     profiles:
-      - dev
+      - production
 
   build:
     container_name: react-build
@@ -27,7 +25,7 @@ services:
       - .:/app:delegated
       - node_modules:/app/node_modules
     profiles:
-      - production
+      - dev
 
 volumes:
   node_modules:
