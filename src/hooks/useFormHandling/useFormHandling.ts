@@ -6,7 +6,6 @@ import { TGenericPostBasic } from '@/types'
 import { TFormHandling } from './types'
 import { isEmpty } from 'lodash'
 import { readyDataForRequest } from '@/utils/dataUtils'
-import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
 
 type TProps<T, R> = {
   fetchOnMount?: boolean;
@@ -54,8 +53,9 @@ const useFormHandling = <T, R> ({
 }: TProps<T, R>): TFormHandling<T> => {
 
   const { errors, handleResponseErrors, resetErrors } = useErrorHandling()
-  const {loading, setLoading} = usePostDataManager();
 
+  // when we are fetching or deleting
+  const [loading, setLoading] = useState(true)
   // when we are saving (autosave)
   const [saving, setSaving] = useState(false)
   const [data, setData] = useState<T>()
@@ -65,7 +65,7 @@ const useFormHandling = <T, R> ({
     if (!isNew && fetchOnMount) {
       handleOnFetch()
     } else {
-      setLoading({ [id]: false })
+      setLoading(false)
     }
 
   }, [id])
@@ -91,7 +91,7 @@ const useFormHandling = <T, R> ({
 
   // Fetch data function
   const handleOnFetch = () => {
-    setLoading({ [id]: true })
+    setLoading(true)
     resetErrors()
     onFetch()
       .then((apiData) => {
@@ -99,7 +99,7 @@ const useFormHandling = <T, R> ({
       })
       .catch(handleResponseErrors)
       .finally(() => {
-        setLoading({ [id]: false })
+        setLoading(false)
       })
   }
 
@@ -169,11 +169,11 @@ const useFormHandling = <T, R> ({
 
   // Delete data function
   const handleOnDelete = () => {
-    setLoading({ [id]: true })
+    setLoading(true)
     onDelete()
       .then(() => {
         onDeleted && onDeleted()
-        setLoading({ [id]: false })
+        setLoading(false)
       })
       .catch(handleResponseErrors)
   }
