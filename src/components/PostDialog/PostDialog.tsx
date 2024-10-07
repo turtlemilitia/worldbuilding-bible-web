@@ -84,13 +84,15 @@ const PostDialog = <T extends TGenericPost, > ({
                     />
                   )}
                   <FloatingBox color={'solid'} className={'max-h-[calc(100vh/2)] overflow-scroll'}>
-                    <Editor
-                      id={form.data?.slug ?? 'new'}
-                      initialValue={form.data?.content}
-                      onChange={(value) => value !== null && form.onFieldChange('content', value)}
-                      placeholder={contentPlaceholder}
-                      canEdit={form.canEdit}
-                    />
+                    {!form.loading && (
+                      <Editor
+                        id={form.data?.slug ?? 'new'}
+                        initialValue={form.data?.content}
+                        onChange={(value) => value !== null && form.onFieldChange('content', value)}
+                        placeholder={contentPlaceholder}
+                        canEdit={form.canEdit}
+                      />
+                    )}
                   </FloatingBox>
                 </div>
               </Dialog.Description>
