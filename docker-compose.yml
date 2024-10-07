@@ -8,6 +8,8 @@ services:
       - NODE_ENV=${NODE_ENV:-development}
     networks:
       - nginx_network
+    profiles:
+      - dev
 
   build:
     container_name: react-build
@@ -24,6 +26,8 @@ services:
     volumes:
       - .:/app:delegated
       - node_modules:/app/node_modules
+    profiles:
+      - production
 
 volumes:
   node_modules:

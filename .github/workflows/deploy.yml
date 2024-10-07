@@ -71,6 +71,6 @@ jobs:
           script: |
             cd /srv/wbb/frontend
             git pull origin main
-            docker compose down
-            docker compose build --no-cache
-            docker compose up -d
+            docker compose --profile production down
+            docker compose --profile production build --no-cache
+            docker compose --profile production up -d
