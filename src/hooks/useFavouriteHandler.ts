@@ -1,9 +1,9 @@
 import { hasFavouritesAttachableDataManager } from './DataManagers/useAttachableDataManager'
-import { TFavouriteHandler } from '../components/Post/types'
+import { TFavouriteHandler } from '@/components/Post/types'
 import useAuthUserDataManager from './DataManagers/useAuthUserDataManager'
 import { useCallback, useMemo } from 'react'
 import { TDataManager } from './DataManagers'
-import { TFavourite, TGenericPostBasic } from '../types'
+import { TFavourite, TGenericPostBasic } from '@/types'
 
 type TProps<TEntity> = {
   manager: TDataManager<TEntity, any> & Partial<hasFavouritesAttachableDataManager>
@@ -19,7 +19,7 @@ const useFavouriteHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T
     return authUser.favourites.find(favourite => {
       return favourite.favouritableType === manager.entityName && favourite.favouritable.id === manager.entity?.id
     }) ?? null
-  }, [authUser])
+  }, [authUser?.favourites, manager.entityName, manager.entity])
 
   const isFavourited: boolean = useMemo(() => !!favourite, [favourite])
 

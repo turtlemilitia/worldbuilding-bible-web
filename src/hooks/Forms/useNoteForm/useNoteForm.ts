@@ -42,7 +42,7 @@ const useNoteForm = ({
     onUpdated,
     onDeleted,
     link: useLink('notes', noteId)
-  }), pinHandler: undefined}
+  }), pinHandler: undefined, permissionHandler: undefined}
 }
 
 export default useNoteForm;
