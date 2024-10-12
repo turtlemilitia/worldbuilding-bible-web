@@ -5,9 +5,10 @@ import { useCampaignDataManager } from '../../hooks/DataManagers'
 import { Transition } from '@headlessui/react'
 import useUrlFormatter from '../../hooks/useUrlFormatter'
 import { Link } from 'react-router-dom'
-import { mapPlural } from '../../utils/dataUtils'
+import { mapPlural } from '@/utils/dataUtils'
 import useAuthUserDataManager
   from '../../hooks/DataManagers/useAuthUserDataManager'
+import { makeLink } from '@/hooks/useLink'
 
 type CampaignFavouriteList = {
   link: string,
@@ -47,8 +48,7 @@ const CampaignFavourites: FunctionComponent = () => {
     }
     if (user?.favourites) {
       list.push(...user?.favourites.map((item): CampaignFavouriteList => ({
-        link: `${compendiumPath}/${mapPlural(
-          item.favouritableType)}/${item.favouritable.slug}`,
+        link: makeLink(mapPlural(item.favouritableType), item.favouritable.slug, compendiumPath, campaign?.slug),
         name: item.favouritable.name,
         type: 'favourite',
       })))
@@ -57,9 +57,10 @@ const CampaignFavourites: FunctionComponent = () => {
   }, [
     user?.characters,
     compendiumPath,
-    campaign?.pins,
     user?.pins,
-    user?.favourites])
+    user?.favourites,
+    campaign?.pins,
+    campaign?.slug])
 
   return (
     <Transition
