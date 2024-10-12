@@ -1,6 +1,6 @@
-import {TField} from "../../hooks/fieldTools";
-import {TGenericPost} from "../../types";
-import { TFormHandling } from '../../hooks/useFormHandling/types'
+import {TField} from '@/hooks/fieldTools';
+import {TGenericPost} from '@/types';
+import { TFormHandling } from '@/hooks/useFormHandling/types'
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
 
 export type TUseFields = {
@@ -23,7 +23,7 @@ export type TForm<T> =  TFormHandling<T> & {
   canEdit: boolean;
   // canDelete?: boolean;
   imageHandler: TImageHandler;
-  pinHandler: TPinHandler;
+  pinHandler?: TPinHandler;
   favouriteHandler: TFavouriteHandler;
   playerCharacterHandler?: TPlayerCharacterHandler;
   permissionHandler?: TPermissionHandler;

@@ -1,36 +1,7 @@
 import useUrlFormatter from '@/hooks/useUrlFormatter'
 import { useCampaignDataManager } from '@/hooks/DataManagers'
 
-type TEntityLink =
-  'compendia' |
-  'characters' |
-  'concepts' |
-  'currencies' |
-  'deities' |
-  'factions' |
-  'items' |
-  'languages' |
-  'locations' |
-  'natural-resources' |
-  'pantheons' |
-  'planes' |
-  'religions' |
-  'species' |
-  'spells' |
-  'stories' |
-  'systems' |
-  'campaigns' |
-  'scenes' |
-  'quests' |
-  'encounters' |
-  'sessions' |
-  'notes' |
-  'notebooks';
-
-const useLink = (entityPath: TEntityLink, id: string | number): string => {
-
-  const { compendiumPath } = useUrlFormatter()
-  const { campaign } = useCampaignDataManager()
+export const makeLink = (entityPath: string, id: string|number, compendiumPath: string, campaignPath?: string) => {
 
   let prefix = ''
 
@@ -56,14 +27,25 @@ const useLink = (entityPath: TEntityLink, id: string | number): string => {
     case 'quests':
     case 'encounters':
     case 'sessions':
-      prefix = `/campaigns/${campaign?.slug}`
+      prefix = `/campaigns/${campaignPath}`
+      break
+    case 'notes':
+      prefix = `${campaignPath ? `/campaigns/${campaignPath}` : ''}`
       break
     case 'notebooks':
-      prefix = `/notes`
+      prefix = `${campaignPath ? `/campaigns/${campaignPath}` : ''}/notes`
       break
   }
 
   return `${prefix}/${entityPath}/${id}`
+}
+
+const useLink = (entityPath: string, id: string | number): string => {
+
+  const { compendiumPath } = useUrlFormatter()
+  const { campaign } = useCampaignDataManager()
+
+  return makeLink(entityPath, id, compendiumPath, campaign!.slug)
 }
 
 export default useLink;

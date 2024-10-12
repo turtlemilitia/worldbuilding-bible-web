@@ -3,8 +3,8 @@ import { TItemRequest } from '@/services/ApiService/Compendia/ItemService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '@/components/Post/types'
 import { usePostForm } from '../index'
-import { useConceptDataManager } from '../../DataManagers'
-import useConceptFields from '../useConceptForm/useConceptFields'
+import useItemFields from '@/hooks/Forms/useItemForm/useItemFields'
+import { useItemDataManager } from '@/hooks/DataManagers'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
@@ -20,9 +20,9 @@ const useItemForm = ({
 
   const include = useMemo(() => 'notes;encounters;quests', [])
 
-  const manager = useConceptDataManager()
+  const manager = useItemDataManager()
 
-  const { fields } = useConceptFields()
+  const { fields } = useItemFields()
 
   const mapData = (data: any): TItemRequest => ({
     name: data.name,

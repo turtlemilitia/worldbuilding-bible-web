@@ -1,9 +1,9 @@
 import { TDataManager, useCampaignDataManager } from './DataManagers'
-import { TPinForOption, TPinHandler } from '../components/Post/types'
+import { TPinForOption, TPinHandler } from '@/components/Post/types'
 import useAuthUserDataManager from './DataManagers/useAuthUserDataManager'
 import { useCallback, useMemo } from 'react'
-import { TSelectOption } from '../components/Forms/Fields/FieldMapper'
-import { TGenericPostBasic } from '../types'
+import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
+import { TGenericPostBasic } from '@/types'
 import useUserDataManager from './DataManagers/Campaigns/useUserDataManager'
 
 type TProps<TEntity> = {
@@ -63,7 +63,7 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
     return Promise.all(promises)
   }, [campaign, manager.entity, manager.entityName])
 
-  const values = useMemo(() => {
+  const values: TPinForOption[] = useMemo(() => {
     const values: TPinForOption[] = []
     if (campaign?.pins && campaign.pins.some(pin => pin.pinnableType === manager.entityName && pin.pinnable.id === manager.entity?.id)) {
       values.push({ ...campaign, type: 'campaign' })
@@ -74,7 +74,7 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
       }
     })
     return values
-  }, [campaign, manager.entity, manager.entityName])
+  }, [campaign, manager.entity?.id, manager.entityName])
 
   const permittedUsers = useMemo(() => {
     return campaign?.users.filter((user) => {
@@ -106,7 +106,7 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
 
   const canPin = useMemo(() => {
     return (campaign || permittedUsers?.length > 0) && authUser?.id === campaign?.gameMaster?.id
-  }, [authUser, campaign])
+  }, [authUser, campaign, permittedUsers])
 
   return {
     canPin,

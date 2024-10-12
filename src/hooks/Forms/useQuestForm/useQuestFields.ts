@@ -1,13 +1,13 @@
 import { noteField, selectField, TField } from '../../fieldTools'
-import { TUseFields } from '../../../components/Post/types'
-import { useNotebookDataManager, useQuestDataManager, useQuestTypeIndexDataManager } from '../../DataManagers'
+import { TUseFields } from '@/components/Post/types'
+import { useNoteIndexDataManager, useQuestDataManager, useQuestTypeIndexDataManager } from '../../DataManagers'
 import { useMemo } from 'react'
 
 const useQuestFields = (): TUseFields => {
 
   const { questTypes: types } = useQuestTypeIndexDataManager()
   const manager = useQuestDataManager();
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = useMemo(() => {
     const fields: TField[] = [
@@ -28,16 +28,16 @@ const useQuestFields = (): TUseFields => {
       )
     }
 
-    if (manager.quest && notebook?.notes) {
+    if (manager.quest && notes) {
       fields.push(
         noteField({
-          options: notebook.notes,
+          options: notes,
         })
       )
     }
 
     return fields;
-  }, [manager.quest, manager.campaign?.quests, notebook?.notes])
+  }, [manager.quest, manager.campaign?.quests, notes])
 
   return { fields }
 }

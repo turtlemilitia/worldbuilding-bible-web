@@ -1,29 +1,30 @@
 import { noteField, TField } from '../../fieldTools'
-import { TUseFields } from '../../../components/Post/types'
-import { useFactionDataManager, useNotebookDataManager } from '../../DataManagers'
+import { TUseFields } from '@/components/Post/types'
+import { useFactionDataManager, useNoteIndexDataManager } from '../../DataManagers'
 import { multiSelectField } from '../../fieldTools/fieldTools'
+import { useMemo } from 'react'
 
 const useFactionFields = (): TUseFields => {
 
   const manager = useFactionDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
-  const fields: TField[] = []
-
-  if (manager.compendium) {
-    multiSelectField({
-      label: 'Characters',
-      name: 'characters',
-      options: manager.compendium?.characters || []
-    })
-  }
-  if (manager.faction && notebook?.notes) {
-    fields.push(
-      noteField({
-        options: notebook.notes,
-      })
-    )
-  }
+  const fields: TField[] = useMemo(() => {
+    const fields: TField[] = []
+    if (manager.compendium) {
+      fields.push(multiSelectField({
+        label: 'Characters',
+        name: 'characters',
+        options: manager.compendium?.characters || [],
+      }));
+    }
+    if (manager.faction && notes) {
+      fields.push(noteField({
+        options: notes || [],
+      }));
+    }
+    return fields;
+  }, [manager.faction, manager.compendium, notes])
 
   return { fields }
 }

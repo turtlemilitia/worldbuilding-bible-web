@@ -1,10 +1,11 @@
 import { noteField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
+import {TUseFields} from '@/components/Post/types';
 import {
   useSceneDataManager,
-  useNotebookDataManager,
-  useCampaignDataManager, useCompendiumDataManager,
-} from '../../DataManagers'
+  useNoteIndexDataManager,
+  useCampaignDataManager,
+  useCompendiumDataManager,
+} from '@/hooks/DataManagers'
 import { useMemo } from 'react'
 import {
   characterField,
@@ -16,7 +17,7 @@ const useSceneFields = (): TUseFields => {
 
   const { campaign } = useCampaignDataManager()
   const { compendium } = useCompendiumDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
   const manager = useSceneDataManager()
 
@@ -43,15 +44,15 @@ const useSceneFields = (): TUseFields => {
         })
       )
     }
-    if (manager.scene && notebook?.notes) {
+    if (manager.scene && notes) {
       fields.push(
         noteField({
-          options: notebook.notes,
+          options: notes,
         })
       )
     }
     return fields
-  }, [manager.scene, campaign?.encounters, notebook?.notes, compendium?.characters, compendium?.locations])
+  }, [manager.scene, campaign?.encounters, notes, compendium?.characters, compendium?.locations])
 
   return { fields }
 }

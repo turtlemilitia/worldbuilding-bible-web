@@ -1,21 +1,22 @@
 import { noteField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
-import { useCurrencyDataManager, useNotebookDataManager } from '../../DataManagers'
+import {TUseFields} from '@/components/Post/types';
+import { useMemo } from 'react'
+import { useCurrencyDataManager, useNoteIndexDataManager } from '@/hooks/DataManagers'
 
 const useCurrencyFields = (): TUseFields => {
 
   const manager = useCurrencyDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
-  const fields: TField[] = []
-
-  if (manager.currency && notebook?.notes) {
-    fields.push(
-      noteField({
-        options: notebook.notes,
-      })
-    )
-  }
+  const fields: TField[] = useMemo(() => {
+    const fields: TField[] = []
+    if (manager.currency && notes) {
+      fields.push(noteField({
+        options: notes || [],
+      }));
+    }
+    return fields;
+  }, [notes])
 
   return { fields }
 }
