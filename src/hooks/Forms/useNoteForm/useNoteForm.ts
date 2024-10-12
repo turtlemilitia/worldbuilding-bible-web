@@ -1,7 +1,7 @@
-import { TNote } from '../../../types'
+import { TNote } from '@/types'
 import { useCallback, useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
-import { TNoteRequest } from '../../../services/ApiService/Notebooks/NoteService'
+import { TForm, TUseFormProps } from '@/components/Post/types'
+import { TNoteRequest } from '@/services/ApiService/Notebooks/NoteService'
 import useNoteDataManager from '../../DataManagers/Notebooks/useNoteDataManager'
 import usePostForm from '../usePostForm'
 import useNoteFields from './useNoteFields'
@@ -30,7 +30,7 @@ const useNoteForm = ({
     notebookId: data.notebook?.id || null
   }), [])
 
-  return usePostForm({
+  return {...usePostForm({
     id: noteId,
     mapData,
     include,
@@ -42,7 +42,7 @@ const useNoteForm = ({
     onUpdated,
     onDeleted,
     link: useLink('notes', noteId)
-  })
+  }), pinHandler: undefined}
 }
 
 export default useNoteForm;
