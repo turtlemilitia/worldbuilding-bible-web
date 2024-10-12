@@ -55,7 +55,8 @@ export type TAsyncMultiSelectFieldFn = (props: {
 }) => TAsyncMultiSelectField
 
 export type TDatepickerField = TGenericFieldParams & {
-  type: 'datePicker'
+  type: 'datePicker',
+  formatString: string
 }
 export type TDatePickerFieldFn = (props: {
   name: TDatepickerField['name'],
@@ -136,10 +137,8 @@ export type TField = {
   options?: TSelectOption[],
   link?: (id: number | string) => string,
   search: (term: string) => Promise<TSelectOption[]>
-} | {
-  type: 'datePicker'
-  formatString: string;
-} | {
+} | TDatepickerField
+  | {
   type: 'callback'
   Callback: FunctionComponent,
 })
