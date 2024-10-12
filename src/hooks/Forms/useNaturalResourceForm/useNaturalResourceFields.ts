@@ -1,21 +1,22 @@
 import { noteField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
-import { useNaturalResourceDataManager, useNotebookDataManager } from '../../DataManagers'
+import {TUseFields} from '@/components/Post/types';
+import { useNaturalResourceDataManager, useNoteIndexDataManager } from '../../DataManagers'
+import { useMemo } from 'react'
 
 const useNaturalResourceFields = (): TUseFields => {
 
   const manager = useNaturalResourceDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
-  const fields: TField[] = []
-
-  if (manager.naturalResource && notebook?.notes) {
-    fields.push(
-      noteField({
-        options: notebook.notes,
-      })
-    )
-  }
+  const fields: TField[] = useMemo(() => {
+    const fields: TField[] = []
+    if (manager.naturalResource && notes) {
+      fields.push(noteField({
+        options: notes || [],
+      }));
+    }
+    return fields;
+  }, [manager.naturalResource, notes])
 
   return { fields }
 }

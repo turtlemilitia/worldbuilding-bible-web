@@ -1,21 +1,22 @@
 import { noteField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
-import { useNotebookDataManager, useSpellDataManager } from '../../DataManagers'
+import {TUseFields} from '@/components/Post/types';
+import { useNoteIndexDataManager, useSpellDataManager } from '../../DataManagers'
+import { useMemo } from 'react'
 
 const useSpellFields = (): TUseFields => {
 
   const manager = useSpellDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
-  const fields: TField[] = []
-
-  if (manager.spell && notebook?.notes) {
-    fields.push(
-      noteField({
-        options: notebook?.notes || [],
-      })
-    )
-  }
+  const fields: TField[] = useMemo(() => {
+    const fields: TField[] = []
+    if (manager.spell && notes) {
+      fields.push(noteField({
+        options: notes || [],
+      }));
+    }
+    return fields;
+  }, [manager.spell, notes])
 
   return { fields }
 }

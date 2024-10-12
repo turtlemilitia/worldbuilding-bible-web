@@ -1,6 +1,10 @@
-import { TUseFields } from '../../../components/Post/types'
+import { TUseFields } from '@/components/Post/types'
 import useUrlFormatter from '../../useUrlFormatter'
-import { useCampaignDataManager, useCharacterDataManager, useNotebookDataManager } from '../../DataManagers'
+import {
+  useCampaignDataManager,
+  useCharacterDataManager,
+  useNoteIndexDataManager,
+} from '../../DataManagers'
 import { factionField, languageField, noteField, numberField, selectField, textField, TField } from '../../fieldTools'
 import {encounterField, locationField, questField, sceneField} from '../../fieldTools/fieldTools'
 import { useMemo } from 'react'
@@ -9,7 +13,7 @@ const useCharacterFields = (): TUseFields => {
 
   const manager = useCharacterDataManager()
   const { campaign } = useCampaignDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
 
   const { compendiumPath } = useUrlFormatter()
 
@@ -59,15 +63,15 @@ const useCharacterFields = (): TUseFields => {
       )
     }
 
-    if (manager.character && notebook?.notes) {
+    if (manager.character && notes) {
       fields.push(
         noteField({
-          options: notebook.notes,
+          options: notes,
         })
       )
     }
     return fields
-  }, [manager.compendium, manager.character, campaign?.quests, campaign?.encounters, campaign?.scenes])
+  }, [manager.compendium, manager.character, campaign?.quests, campaign?.encounters, campaign?.scenes, notes])
 
   return { fields }
 }

@@ -1,14 +1,14 @@
 import { noteField, selectField, textField, TField } from '../../fieldTools'
-import { TLocation } from '../../../types'
-import { TUseFields } from '../../../components/Post/types'
+import { TLocation } from '@/types'
+import { TUseFields } from '@/components/Post/types'
 import { useMemo } from 'react'
 import {
   useCampaignDataManager,
   useGovernmentTypeIndexDataManager,
   useLocationDataManager,
   useLocationTypeIndexDataManager,
-  useNotebookDataManager
-} from '../../DataManagers'
+  useNoteIndexDataManager
+} from '@/hooks/DataManagers'
 import {characterField, encounterField, multiSelectField, questField, sceneField} from '../../fieldTools/fieldTools'
 import useUrlFormatter from '../../useUrlFormatter'
 
@@ -16,7 +16,7 @@ const useLocationFields = (): TUseFields => {
 
   const manager = useLocationDataManager()
   const { campaign } = useCampaignDataManager()
-  const { notebook } = useNotebookDataManager()
+  const { notes } = useNoteIndexDataManager()
   const { locationTypes } = useLocationTypeIndexDataManager()
   const { governmentTypes } = useGovernmentTypeIndexDataManager()
   const { compendiumPath } = useUrlFormatter()
@@ -90,16 +90,16 @@ const useLocationFields = (): TUseFields => {
       )
     }
 
-    if (manager.location && notebook?.notes) {
+    if (manager.location && notes) {
       fields.push(
         noteField({
-          options: notebook.notes,
+          options: notes,
         })
       )
     }
 
     return fields
-  }, [manager.compendium, manager.location, campaign?.quests, campaign?.encounters, campaign?.scenes, locationTypes, governmentTypes])
+  }, [manager.compendium, manager.location, campaign?.quests, campaign?.encounters, campaign?.scenes, locationTypes, governmentTypes, notes])
 
   return { fields }
 }

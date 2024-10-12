@@ -1,29 +1,30 @@
 import { noteField, selectField, TField } from '../../fieldTools'
-import {TUseFields} from "../../../components/Post/types";
-import { useEncounterDataManager, useEncounterTypeIndexDataManager, useNotebookDataManager } from '../../DataManagers'
+import {TUseFields} from '@/components/Post/types';
+import { useEncounterDataManager, useEncounterTypeIndexDataManager, useNoteIndexDataManager } from '../../DataManagers'
+import { useMemo } from 'react'
 
 const useEncounterFields = (): TUseFields => {
 
-  const { notebook } = useNotebookDataManager()
+  const manager = useEncounterDataManager()
+  const { notes } = useNoteIndexDataManager()
   const { encounterTypes: types } = useEncounterTypeIndexDataManager();
 
-  const manager = useEncounterDataManager()
-
-  const fields: TField[] = [
-    selectField({
-      name: 'type',
-      label: 'Type',
-      options: types || [],
-    })
-  ]
-
-  if (manager.encounter && notebook?.notes) {
-    fields.push(
-      noteField({
-        options: notebook.notes,
+  const fields: TField[] = useMemo(() => {
+    const fields: TField[] = []
+    if (types) {
+      selectField({
+        name: 'type',
+        label: 'Type',
+        options: types || [],
       })
-    )
-  }
+    }
+    if (manager.encounter && notes) {
+      fields.push(noteField({
+        options: notes || [],
+      }));
+    }
+    return fields;
+  }, [manager.encounter && notes])
 
   return { fields }
 }
