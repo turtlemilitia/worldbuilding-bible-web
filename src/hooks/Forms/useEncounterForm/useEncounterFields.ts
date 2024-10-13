@@ -15,16 +15,16 @@ const useEncounterFields = (): TUseFields => {
       selectField({
         name: 'type',
         label: 'Type',
-        options: types || [],
+        options: types,
       })
     }
     if (manager.encounter && notes) {
       fields.push(noteField({
-        options: notes || [],
+        options: notes,
       }));
     }
     return fields;
-  }, [manager.encounter && notes])
+  }, [manager.encounter, notes, types])
 
   return { fields }
 }
