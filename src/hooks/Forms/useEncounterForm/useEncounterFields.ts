@@ -10,13 +10,15 @@ const useEncounterFields = (): TUseFields => {
   const { encounterTypes: types } = useEncounterTypeIndexDataManager();
 
   const fields: TField[] = useMemo(() => {
+    debugger;
     const fields: TField[] = []
     if (types) {
-      selectField({
+      fields.push(selectField({
         name: 'type',
         label: 'Type',
         options: types,
-      })
+        required: true
+      }))
     }
     if (manager.encounter && notes) {
       fields.push(noteField({
