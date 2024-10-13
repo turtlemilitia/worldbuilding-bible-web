@@ -86,7 +86,7 @@ const PostDialog = <T extends TGenericPost, > ({
                     )}
                     <FloatingBox color={'solid'} className={'max-h-[calc(100vh/2)] overflow-scroll'}>
                       <Editor
-                        id={form.data?.slug ?? 'new'}
+                        key={form.data?.id}
                         initialValue={form.data?.content}
                         onChange={(value) => form.onFieldChange('content', value)}
                         placeholder={contentPlaceholder}

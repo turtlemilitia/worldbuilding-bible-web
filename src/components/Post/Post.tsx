@@ -94,15 +94,17 @@ const Post = <T extends TGenericPost> ({
             permissionHandler={form.permissionHandler}
             onCoverImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'cover')}
           />
-          <FloatingBox color={'solid'}>
-            <Editor
-              id={form.data?.slug ?? 'new'}
-              initialValue={form.data?.content}
-              onChange={(value) => form.onFieldChange('content', value)}
-              canEdit={form.canEdit}
-              className={'min-h-40'}
-            />
-          </FloatingBox>
+          {!form.loading && (
+            <FloatingBox color={'solid'}>
+              <Editor
+                key={form.data?.id}
+                initialValue={form.data?.content}
+                onChange={(value) => form.onFieldChange('content', value)}
+                canEdit={form.canEdit}
+                className={'min-h-40'}
+              />
+            </FloatingBox>
+          )}
         </EditorsWrapper>
       </form>
       <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
