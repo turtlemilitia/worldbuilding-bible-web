@@ -1,20 +1,17 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import { FloatingBox } from '../FloatingBox'
-import SansSerifText from '../SmallSansSerifText'
+import SmallSansSerifText from '../SmallSansSerifText'
 import { useCampaignDataManager } from '../../hooks/DataManagers'
 import { Transition } from '@headlessui/react'
 import useUrlFormatter from '../../hooks/useUrlFormatter'
-import { Link } from 'react-router-dom'
 import { mapPlural } from '@/utils/dataUtils'
 import useAuthUserDataManager
   from '../../hooks/DataManagers/useAuthUserDataManager'
 import { makeLink } from '@/hooks/useLink'
+import FavouriteLink, {
+  CampaignFavouriteLink,
+} from '@/components/CampaignWrapper/FavouriteLink'
 
-type CampaignFavouriteList = {
-  link: string,
-  name: string,
-  type: 'pin' | 'character' | 'favourite'
-};
+type TCampaignFavouriteItem = (CampaignFavouriteLink & { type: string });
 const CampaignFavourites: FunctionComponent = () => {
 
   const { user } = useAuthUserDataManager()
@@ -22,45 +19,40 @@ const CampaignFavourites: FunctionComponent = () => {
   const { compendiumPath } = useUrlFormatter()
 
   const links = useMemo(() => {
-    const list: CampaignFavouriteList[] = []
-    if (user?.characters) {
-      list.push(...user.characters.map((item): CampaignFavouriteList => ({
-        link: `${compendiumPath}/characters/${item.slug}`,
-        name: item.name,
-        type: 'character',
-      })))
-    }
+    const list: TCampaignFavouriteItem[] = []
     if (campaign?.pins) {
-      list.push(...campaign.pins.map((item): CampaignFavouriteList => ({
-        link: `${compendiumPath}/${mapPlural(
-          item.pinnableType)}/${item.pinnable.slug}`,
+      list.push(...campaign.pins.map((item): TCampaignFavouriteItem => ({
+        link: `${compendiumPath}/${mapPlural(item.pinnableType)}/${item.pinnable.slug}`,
         name: item.pinnable.name,
-        type: 'pin',
+        type: item.pinnableType
       })))
     }
     if (user?.pins) {
-      list.push(...user.pins.map((item): CampaignFavouriteList => ({
-        link: `${compendiumPath}/${mapPlural(
-          item.pinnableType)}/${item.pinnable.slug}`,
+      list.push(...user.pins.map((item): TCampaignFavouriteItem => ({
+        link: `${compendiumPath}/${mapPlural(item.pinnableType)}/${item.pinnable.slug}`,
         name: item.pinnable.name,
-        type: 'pin',
+        type: item.pinnableType
       })))
     }
     if (user?.favourites) {
-      list.push(...user?.favourites.map((item): CampaignFavouriteList => ({
+      list.push(...user?.favourites.map((item): TCampaignFavouriteItem => ({
         link: makeLink(mapPlural(item.favouritableType), item.favouritable.slug, compendiumPath, campaign?.slug),
         name: item.favouritable.name,
-        type: 'favourite',
+        type: item.favouritableType
       })))
     }
-    return list
-  }, [
-    user?.characters,
-    compendiumPath,
-    user?.pins,
-    user?.favourites,
-    campaign?.pins,
-    campaign?.slug])
+
+    return Object.entries(
+      list.reduce((acc, item) => {
+        const { type } = item;
+        if (!acc[type]) {
+          acc[type] = [];
+        }
+        acc[type].push(item);
+        return acc;
+      }, {} as Record<string, TCampaignFavouriteItem[]>)
+    ).map(([type, items]) => ({ type, items }))
+  }, [compendiumPath, user?.pins, user?.favourites, campaign?.pins, campaign?.slug])
 
   return (
     <Transition
@@ -73,22 +65,38 @@ const CampaignFavourites: FunctionComponent = () => {
       leaveTo={'-top-10 opacity-0'}
     >
       <div className="flex-1 items-end space-y-4 mb-4 text-right">
-        {links?.map(({ link, name, type }, index) => {
-          return (
-            <div key={index}>
-              <Link to={link}>
-                <FloatingBox
-                  size={'sm'}
-                  color={type === 'character' ? 'solid' : 'dark'}
-                  border={type === 'character' ? 'yellow' : 'dark'}
-                  className={`transition-all duration-1000 hover:bg-yellow-600`}
-                >
-                  <SansSerifText className={'mx-2'}>{name}</SansSerifText>
-                </FloatingBox>
-              </Link>
-            </div>
-          )
-        })}
+        {!!user?.characters?.length && (
+          <div className={'flex-1 space-y-2'}>
+            <SmallSansSerifText size={'xxs'}>Characters</SmallSansSerifText>
+            {user.characters.map(({ slug, name }, index) => {
+              return (
+                <FavouriteLink
+                  key={index}
+                  link={`${compendiumPath}/characters/${slug}`}
+                  name={name}
+                  color={'solid'}
+                  border={'yellow'}
+                />
+              )
+            })}
+          </div>
+        )}
+        {links && links.map(({ type, items }) => (
+          <div className={'flex-1 space-y-2'}>
+            <SmallSansSerifText size={'xxs'}>{mapPlural(type)}</SmallSansSerifText>
+            {items.map(({ link, name }, index) => {
+              return (
+                <FavouriteLink
+                  key={index}
+                  link={link}
+                  name={name}
+                  color={'dark'}
+                  border={'dark'}
+                />
+              )
+            })}
+          </div>
+        ))}
       </div>
     </Transition>
   )

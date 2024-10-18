@@ -1,8 +1,8 @@
 import { useCampaignDataManager } from './DataManagers'
-import { TPlayerCharacterHandler } from '../components/Post/types'
+import { TPlayerCharacterHandler } from '@/components/Post/types'
 import useAuthUserDataManager from './DataManagers/useAuthUserDataManager'
 import { useCallback, useMemo } from 'react'
-import { TSelectOption } from '../components/Forms/Fields/FieldMapper'
+import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import useUserDataManager from './DataManagers/Campaigns/useUserDataManager'
 import { TCharacterDataManager } from './DataManagers/Compendia/useCharacterDataManager'
 
@@ -54,7 +54,13 @@ const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler
   }, [campaign?.users, manager.character])
 
   const permittedUsers = useMemo(() => {
-    return campaign?.users.filter((user) => {
+    if (!campaign?.users) {
+      return []
+    }
+    if (campaign.permissions.some(permission => permission.permissionableId === manager.entity?.id)) {
+      return campaign.users;
+    }
+    return campaign.users.filter((user) => {
       return user.permissions?.some(permission => {
         return permission.permissionableId === manager.entity?.id
       })

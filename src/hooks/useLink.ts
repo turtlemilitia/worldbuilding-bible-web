@@ -45,7 +45,7 @@ const useLink = (entityPath: string, id: string | number): string => {
   const { compendiumPath } = useUrlFormatter()
   const { campaign } = useCampaignDataManager()
 
-  return makeLink(entityPath, id, compendiumPath, campaign!.slug)
+  return makeLink(entityPath, id, compendiumPath, campaign?.slug)
 }
 
 export default useLink;

@@ -1,7 +1,7 @@
 import React, { JSX, useEffect, useMemo } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar/Sidebar'
-import { LucideProps, StickyNoteIcon } from 'lucide-react'
+import { BookIcon, LucideProps, PenBoxIcon, StickyNoteIcon } from 'lucide-react'
 import useNoteDataManager
   from '../../hooks/DataManagers/Notebooks/useNoteDataManager'
 import {
@@ -46,7 +46,7 @@ const NotesWrapper = (): JSX.Element => {
             title: notebook.name,
             to: `${prefix}/notes/notebooks/${(notebook.slug)}`,
             icon: (props: LucideProps) =>
-              <StickyNoteIcon {...props}/>,
+              <BookIcon {...props}/>,
             onDelete: () => destroyNotebook(notebook.slug),
             addNewLink: `${prefix}/notes/new`,
             addNewLinkState: { notebook },
@@ -63,7 +63,7 @@ const NotesWrapper = (): JSX.Element => {
               map((note) => ({
                 title: note.name,
                 to: `${prefix}/notes/${note.slug}`,
-                icon: (props: LucideProps) => <StickyNoteIcon {...props}/>,
+                icon: (props: LucideProps) => <PenBoxIcon {...props}/>,
                 onDelete: () => destroyNote(note.slug)
                   .then(() => onDeleted()),
               })),

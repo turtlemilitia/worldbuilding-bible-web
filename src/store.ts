@@ -37,12 +37,14 @@ import questTypesIndexSlice from './reducers/questType/questTypesIndexSlice'
 import encounterTypesIndexSlice from './reducers/encounterType/encounterTypesIndexSlice'
 import authUserSlice from './reducers/auth/authUserSlice'
 import userSlice from './reducers/auth/userSlice'
+import imagesIndexSlice from '@/reducers/image/imagesIndexSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     authUser: authUserSlice,
     user: userSlice,
+    images: imagesIndexSlice,
     // system
     post: postSlice,
     // indexes

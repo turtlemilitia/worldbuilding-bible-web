@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { TSelectOption } from './FieldMapper'
 import Label from './Label'
 import Dialog from '../../Dialogs'
-import { TDialogTypes } from '../../../hooks/fieldTools/types'
+import { TDialogTypes } from '@/hooks/fieldTools/types'
 
 type TProp = {
   label: string;
@@ -59,52 +59,56 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
             ) : (
               <div className="text-stone-500 italic">Nothing here</div>
             )}
-            <div className="w-full flex justify-between py-2 rounded-lg focus:bg-stone-800">
-              <Combobox.Button className="w-full flex justify-between">
-                <Combobox.Input
-                  className="w-full bg-transparent outline-none"
-                  onChange={(event) => setQuery(event.target.value)}
-                  displayValue={(option: TSelectOption) => option?.name}/>
-                {!disabled && (
-                  <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
-                )}
-              </Combobox.Button>
-              {dialogType && (
-                <PlusIcon
-                  className="text-stone-300 h-5 w-5 cursor-pointer"
-                  onClick={() => setDialogIsOpen('new')}
-                />
-              )}
-            </div>
-            <Transition
-              show={open}
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Combobox.Options
-                className="absolute z-20 left-0 top-full mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {!filteredOptions.length && (
-                  <li className="py-1 text-stone-600">No results found.</li>
-                )}
-                {filteredOptions.map((option) => (
-                  <Combobox.Option
-                    key={option.id}
-                    value={option}
-                    as={Fragment}
-                  >
-                    {({ active, selected }) => (
-                      <li className={`py-1 flex justify-between cursor-pointer`}>
-                        {option.name}
-                        {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
-                        {!selected && active && <DotIcon className="text-stone-300 h-5 w-5"/>}
-                      </li>
+            {!disabled && (
+              <>
+                <div className="w-full flex justify-between py-2 rounded-lg focus:bg-stone-800">
+                  <Combobox.Button className="w-full flex justify-between">
+                    <Combobox.Input
+                      className="w-full bg-transparent outline-none"
+                      onChange={(event) => setQuery(event.target.value)}
+                      displayValue={(option: TSelectOption) => option?.name}/>
+                    {!disabled && (
+                      <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
                     )}
-                  </Combobox.Option>
-                ))}
-              </Combobox.Options>
-            </Transition>
+                  </Combobox.Button>
+                  {dialogType && (
+                    <PlusIcon
+                      className="text-stone-300 h-5 w-5 cursor-pointer"
+                      onClick={() => setDialogIsOpen('new')}
+                    />
+                  )}
+                </div>
+                <Transition
+                  show={open}
+                  as={Fragment}
+                  leave="transition ease-in duration-100"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Combobox.Options
+                    className="absolute z-20 left-0 top-full mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    {!filteredOptions.length && (
+                      <li className="py-1 text-stone-600">No results found.</li>
+                    )}
+                    {filteredOptions.map((option) => (
+                      <Combobox.Option
+                        key={option.id}
+                        value={option}
+                        as={Fragment}
+                      >
+                        {({ active, selected }) => (
+                          <li className={`py-1 flex justify-between cursor-pointer`}>
+                            {option.name}
+                            {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
+                            {!selected && active && <DotIcon className="text-stone-300 h-5 w-5"/>}
+                          </li>
+                        )}
+                      </Combobox.Option>
+                    ))}
+                  </Combobox.Options>
+                </Transition>
+                </>
+              )}
           </>
         )}
       </Combobox>

@@ -256,6 +256,10 @@ const Routes = (): JSX.Element => {
           path: '/profile',
           element: <>TODO: User Profile</>,
         },
+        {
+          path: '*',
+          element: <NotFound/>,
+        },
       ],
     },
   ]
@@ -274,6 +278,10 @@ const Routes = (): JSX.Element => {
       path: '/register',
       element: <Register/>,
     },
+    {
+      path: '*',
+      element: <NotFound/>,
+    },
   ]
 
   // Combine and conditionally include routes based on authentication status
@@ -284,11 +292,7 @@ const Routes = (): JSX.Element => {
       children: [
         ...routesForPublic,
         ...(!token ? routesForNotAuthenticatedOnly : []), // only add these conditionally
-        ...routesForAuthenticatedOnly,
-        {
-          path: '*',
-          element: <NotFound/>,
-        },
+        ...routesForAuthenticatedOnly
       ],
     },
   ])

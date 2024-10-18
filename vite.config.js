@@ -1,6 +1,7 @@
 import path from "path"
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
     plugins: [
@@ -10,7 +11,8 @@ export default defineConfig({
                     ['@babel/plugin-proposal-decorators', { version: '2023-05' }], // https://github.com/owlsdepartment/vite-plugin-babel/issues/24
                 ],
             },
-        })
+        }),
+        mkcert()
     ],
     resolve: {
         alias: {

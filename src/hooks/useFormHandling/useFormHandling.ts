@@ -12,6 +12,7 @@ type TProps<T, R> = {
   id: string | number | 'new'
   isNew: boolean,
   mapData: (data: T) => R;
+  canEdit: boolean;
 
   // API
   onFetch: () => Promise<T>,
@@ -33,6 +34,7 @@ const useFormHandling = <T, R> ({
   id,
   isNew,
   mapData,
+  canEdit,
 
   fetchOnMount = true,
   onFetch,
@@ -111,6 +113,9 @@ const useFormHandling = <T, R> ({
 
   // Save data function
   const handleOnSave = async () => {
+    if (!canEdit) {
+      return;
+    }
     if (!data) {
       console.error('cannot save empty data')
       return
