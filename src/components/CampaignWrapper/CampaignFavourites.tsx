@@ -67,7 +67,6 @@ const CampaignFavourites: FunctionComponent = () => {
       <div className="flex-1 items-end space-y-4 mb-4 text-right">
         {!!user?.characters?.length && (
           <div className={'flex-1 space-y-2'}>
-            <SmallSansSerifText size={'xxs'}>Characters</SmallSansSerifText>
             {user.characters.map(({ slug, name }, index) => {
               return (
                 <FavouriteLink
