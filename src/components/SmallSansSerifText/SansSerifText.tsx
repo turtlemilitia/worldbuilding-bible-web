@@ -6,6 +6,7 @@ const sansSerifTextVariants = cva(
   {
     variants: {
       size: {
+        'xxs': 'text-xxs',
         'xs': 'text-xs',
         'normal': '',
       },

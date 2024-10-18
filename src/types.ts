@@ -6,6 +6,9 @@ export type TUser = {
   favourites?: TFavourite[];
   characters?: TCharacter[];
   permissions?: TPermission[];
+  canViewSystems: boolean;
+  canCreateCompendia: boolean;
+  canCreateCampaigns: boolean;
 }
 
 export type TInvitation = {

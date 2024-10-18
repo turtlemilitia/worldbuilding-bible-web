@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react'
 import { FloatingBox } from '../FloatingBox'
 import { Button } from '../Forms/Fields/Button'
 import { FileInput } from '../Forms/Fields/FileInput'
-import { readURL } from '../../utils/fileManager'
+import { readURL } from '@/utils/fileManager'
 import { PlusIcon, XIcon } from 'lucide-react'
 import ImageService from '../../services/ApiService/Images/ImageService'
 import { TImage, TImagePickerProps } from './types'
@@ -10,8 +10,12 @@ import LoadingWrapper from '../LoadingWrapper'
 import useErrorHandling from '../../hooks/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import { ImageThumbnail } from './ImageThumbnail'
+import useImageIndexDataManager
+  from '@/hooks/DataManagers/Images/useImageIndexDataManager'
 
 const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, onSelected }) => {
+
+  const { images: remoteImages, setOne, updateOne, removeOne } = useImageIndexDataManager();
 
   const [loading, setLoading] = useState(false)
   const [showFileInput, setShowFileInput] = useState(false)
@@ -37,15 +41,10 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
   }
 
   useEffect(() => {
-    setLoading(true)
-    ImageService.index()
-      .then(({ data }) => {
-        setImages(data.data.map(image => ({
-          uniqueId: Math.random().toString().slice(2),
-          ...image
-        })))
-        setLoading(false)
-      })
+    setImages(remoteImages!.map(image => ({
+      uniqueId: Math.random().toString().slice(2),
+      ...image
+    })))
   }, [])
 
   const addImagesFromFiles = async (files: FileList) => {
@@ -97,7 +96,8 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
     if (data.id) {
       ImageService.update(data.id, { name: data.name, alt: data.alt })
         .then((response) => {
-          setImageData(data.uniqueId, { ...response.data.data, saving: false })
+          setImageData(data.uniqueId, { ...response.data.data, saving: false });
+          updateOne(response.data.data)
         })
         .catch((err) => {
           setImageData(data.uniqueId, { saving: false })
@@ -114,7 +114,8 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
 
       ImageService.store(formData)
         .then((response) => {
-          setImageData(data.uniqueId, { ...response.data.data, saving: false })
+          setImageData(data.uniqueId, { ...response.data.data, saving: false });
+          setOne(response.data.data)
         })
         .catch((err) => {
           setImageData(data.uniqueId, { saving: false })
@@ -133,7 +134,8 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
     setImageData(uniqueId, { saving: true })
     ImageService.destroy(id)
       .then(() => {
-        removeImage(uniqueId)
+        removeImage(uniqueId);
+        removeOne(id)
       })
       .catch(err => {
         setImageData(uniqueId, { saving: false })

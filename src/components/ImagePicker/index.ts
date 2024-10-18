@@ -1,4 +1,4 @@
-import ImagePicker from './component'
+import ImagePicker from './ImagePicker'
 
 export {
   ImagePicker

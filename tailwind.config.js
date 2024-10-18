@@ -29,6 +29,7 @@ module.exports = {
         'width': 'width'
       },
       fontSize: {
+        'xxs': '0.65rem',
         'serif-md': '1.25rem',
         'serif-lg': '1.35rem'
       }

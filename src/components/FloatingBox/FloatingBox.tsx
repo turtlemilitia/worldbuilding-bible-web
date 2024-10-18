@@ -1,6 +1,6 @@
 import React from 'react'
 import {cva, VariantProps} from "class-variance-authority";
-import {cn} from "../../lib/utils";
+import {cn} from '@/lib/utils';
 
 const boxVariants = cva(
     'antialiased rounded-3xl shadow-md border shadow-stone-950',
@@ -30,8 +30,8 @@ const boxVariants = cva(
     }
 )
 
-export type TProps = React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof boxVariants>
-const FloatingBox = React.forwardRef<HTMLDivElement, TProps>(
+export type TFloatingBoxProps = React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof boxVariants>
+const FloatingBox = React.forwardRef<HTMLDivElement, TFloatingBoxProps>(
     ({ className, color, size, border, ...props }, ref) => {
       return (
           <div

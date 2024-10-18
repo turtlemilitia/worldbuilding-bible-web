@@ -2,10 +2,11 @@ import React, { FunctionComponent, JSX } from 'react'
 import clsx from 'clsx'
 import FieldMapper from '../../components/Forms/Fields/FieldMapper'
 import { FloatingBox } from '../FloatingBox'
-import { TTypesAllowed } from '../../types'
+import { TTypesAllowed } from '@/types'
 import ProfileImage from '../ProfileImage'
 import { Transition } from '@headlessui/react'
-import { TField } from '../../hooks/fieldTools'
+import { TField } from '@/hooks/fieldTools'
+import isEmpty from '@/utils/isEmpty'
 
 type TProps<T> = {
   onChange: (key: string, value: any) => void;
@@ -40,7 +41,10 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
             <ProfileImage image={profileImage} openPicker={openProfileImagePicker}/>
           )}
           <ul className="font-serif text-serif-md leading-tight max-h-[50vh] overflow-y-scroll overflow-x-clip">
-            {fields.map((props, index) => {
+            {fields.filter((props) => {
+              const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
+              return !(disabled && isEmpty(currentValue))
+            }).map((props, index) => {
               const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
               return <FieldMapper
                 key={index}

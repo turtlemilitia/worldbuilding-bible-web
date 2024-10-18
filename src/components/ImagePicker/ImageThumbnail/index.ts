@@ -1,4 +1,4 @@
-import ImageThumbnail from './component'
+import ImageThumbnail from './ImageThumbnail'
 
 export {
   ImageThumbnail
