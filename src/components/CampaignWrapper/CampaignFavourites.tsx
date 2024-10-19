@@ -29,7 +29,7 @@ const CampaignFavourites: FunctionComponent = () => {
     }
     if (user?.pins) {
       list.push(...user.pins.map((item): TCampaignFavouriteItem => ({
-        link: `${compendiumPath}/${mapPlural(item.pinnableType)}/${item.pinnable.slug}`,
+        link: makeLink(mapPlural(item.pinnableType), item.pinnable.slug, compendiumPath, campaign?.slug),
         name: item.pinnable.name,
         type: item.pinnableType
       })))
