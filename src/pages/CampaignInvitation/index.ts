@@ -1,3 +1,3 @@
-import CampaignInvitation from './component'
+import CampaignInvitation from './CampaignInvitation'
 
 export default CampaignInvitation
