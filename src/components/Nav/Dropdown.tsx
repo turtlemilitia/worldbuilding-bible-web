@@ -11,7 +11,7 @@ interface DropdownParams {
 
 const Dropdown = ({ menuItems, show }: DropdownParams): JSX.Element => {
 
-  const rounded = menuItems.length > 1 ? 'rounded-xl' : 'rounded-full'
+  const rounded = (menuItems.length > 1 || !menuItems[0].to.includes('new')) ? 'rounded-xl' : 'rounded-full'
 
   return (
     <Transition show={show}>
