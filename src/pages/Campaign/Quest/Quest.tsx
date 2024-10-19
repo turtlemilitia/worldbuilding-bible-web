@@ -12,10 +12,10 @@ const Quest: FunctionComponent = () => {
   const form = useQuestForm({
     questId,
     onCreated: (data) => {
-      navigate(`/campaign/${campaignId}/quests/${data.slug}`)
+      navigate(`/campaigns/${campaignId}/quests/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/campaign/${campaignId}/quests`)
+      navigate(`/campaigns/${campaignId}/quests`)
     },
   })
 
