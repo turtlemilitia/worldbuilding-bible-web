@@ -78,8 +78,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
               disabled={disabled}
             />
           )}
-          {props.type === 'multiSelect' &&
-            (((props.options?.length ?? 0) > 0) || props.dialogType) && (
+          {props.type === 'multiSelect' && (((props.options?.length ?? 0) > 0) || (props.dialogType)) && (
               <MultipleSelectField
                 label={label}
                 required={required}

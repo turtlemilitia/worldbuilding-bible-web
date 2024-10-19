@@ -1,8 +1,8 @@
-import { authUserSlice } from '../../reducers/auth/authUserSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { authUserSlice } from '@/reducers/auth/authUserSlice'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useCallback } from 'react'
-import { TUser } from '../../types'
-import { TQueryParams } from '../../services/ApiService/types'
+import { TPermission, TUser } from '@/types'
+import { TQueryParams } from '@/services/ApiService/types'
 import userService, { TUserRequest } from '../../services/ApiService/User/UserService'
 import {
   hasCharactersAttachableDataManager, hasFavouritesAttachableDataManager, hasPinsAttachableDataManager,
@@ -18,6 +18,9 @@ type TAuthUserDataManager = {
   viewOwn: (query?: TQueryParams) => Promise<TUser>,
   view: (id: string | number, query?: TQueryParams) => Promise<TUser>,
   update: (id: string | number, payload: Partial<TUserRequest>, query?: TQueryParams) => Promise<TUser>,
+
+  // utility
+  hasPermission: (permission: TPermission) => boolean
 } & hasCharactersAttachableDataManager & hasFavouritesAttachableDataManager & hasPinsAttachableDataManager
 
 /**
@@ -63,6 +66,17 @@ const useAuthUserDataManager = (): TAuthUserDataManager => {
     return data.data
   }, [])
 
+  const hasPermission = (permission: TPermission): boolean => {
+    if (!entity?.permissions) {
+      return false;
+    }
+    return entity.permissions.some(value => {
+      return value.permission === permission.permission
+        && value.permissionableType === permission.permissionableType
+        && value.permissionableId === permission.permissionableId
+    })
+  }
+
   return {
     user: entity,
     setData,
@@ -74,6 +88,7 @@ const useAuthUserDataManager = (): TAuthUserDataManager => {
     characters: useCharacterableDataManager(authUserSlice, userService.characters),
     favourites: useFavouritableDataManager(authUserSlice, userService.favourites),
     pins: useAttachableDataManager('pins', authUserSlice, userService.pins),
+    hasPermission
   }
 }
 

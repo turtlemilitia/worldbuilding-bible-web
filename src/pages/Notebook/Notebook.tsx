@@ -11,8 +11,8 @@ const Notebook: FunctionComponent = (): JSX.Element => {
 
   const form = useNotebookForm({
     notebookId,
-    onCreated: (data) => navigate(`/notebooks/${data.slug}`),
-    onDeleted: () => navigate(`/notebooks`)
+    onCreated: (data) => navigate(`/notes/notebooks/${data.slug}`),
+    onDeleted: () => navigate(`/notes/notebooks`)
   });
 
   return (

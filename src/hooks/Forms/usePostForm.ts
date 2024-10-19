@@ -59,7 +59,7 @@ const usePostForm = <T extends TGenericPost, R> ({
   const { entity, store, update, destroy, view } = manager
 
   const isNew = useMemo(() => id === 'new', [id])
-  const canEdit = useMemo(() => isNew || entity?.canUpdate !== undefined, [isNew, entity?.canUpdate])
+  const canEdit = useMemo(() => isNew || entity?.canUpdate === true, [isNew, entity?.canUpdate])
 
   const imageHandler = useImageSelection<T>({ manager, canHaveProfileImage })
   const pinHandler = usePinHandler<T>({ manager })
@@ -92,6 +92,7 @@ const usePostForm = <T extends TGenericPost, R> ({
     id,
     isNew,
     mapData,
+    canEdit,
 
     onFetch: () => view(id, { include: `${include ? `${include};` : ''}images` }),
     onCreate: (data: T) => store(mapData(data), { include }),

@@ -18,6 +18,8 @@ import useAuthUserDataManager
 import LoadingWrapper from '../components/LoadingWrapper'
 import { useNoteIndexDataManager } from '@/hooks/DataManagers'
 import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
+import useImageIndexDataManager
+  from '@/hooks/DataManagers/Images/useImageIndexDataManager'
 
 export const ProtectedRoute = (): JSX.Element => {
 
@@ -35,26 +37,32 @@ export const ProtectedRoute = (): JSX.Element => {
   const locationTypeIndexDataManager = useLocationTypeIndexDataManager()
   const questTypeIndexDataManager = useQuestTypeIndexDataManager()
   const encounterTypeIndexDataManager = useEncounterTypeIndexDataManager()
+  const imageIndexDataManager = useImageIndexDataManager()
 
   // Here we will be adding the missing items where needed
   useEffect(() => {
     if (token) {
-      const promises = [
-        systemIndexDataManager.index(),
-        compendiumIndexDataManager.index(),
-        campaignIndexDataManager.index(),
-        notebookIndexDataManager.index(),
-        noteIndexDataManager.index({ include: 'notebook:id,slug,name' }),
-        imageTypeIndexDataManager.index(),
-        governmentTypeIndexDataManager.index(),
-        locationTypeIndexDataManager.index(),
-        questTypeIndexDataManager.index(),
-        encounterTypeIndexDataManager.index(),
-        authUserDataManager.viewOwn({ include: 'favourites;favourites.favouritable;pins;pins.pinnable;characters' }),
-      ]
-      Promise.all(promises).then(() => {
-        setLoading({ init: false })
-      })
+      authUserDataManager.viewOwn({ include: 'favourites;favourites.favouritable;pins;pins.pinnable;characters;permissions' }).
+        then((user) => {
+          const promises = [
+            compendiumIndexDataManager.index(),
+            campaignIndexDataManager.index(),
+            notebookIndexDataManager.index(),
+            noteIndexDataManager.index({ include: 'notebook:id,slug,name' }),
+            imageTypeIndexDataManager.index(),
+            governmentTypeIndexDataManager.index(),
+            locationTypeIndexDataManager.index(),
+            questTypeIndexDataManager.index(),
+            encounterTypeIndexDataManager.index(),
+            imageIndexDataManager.index(),
+          ]
+          if (user.canViewSystems) {
+            promises.push(systemIndexDataManager.index())
+          }
+          Promise.all(promises).then(() => {
+            setLoading({ init: false })
+          })
+        })
     }
   }, [token])
 

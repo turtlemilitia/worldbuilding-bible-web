@@ -16,7 +16,7 @@ const ImageThumbnail: FunctionComponent<TImageThumbnailProps> = ({
   onDelete,
   onSave,
 }) => {
-  const [showIcons, setShowIcons] = useState(true)
+  const [showIcons, setShowIcons] = useState(false)
   const [showFields, setShowFields] = useState(false)
   const [data, setData] = useState(image)
   const { uniqueId, id, thumbnail, alt, saving } = image
@@ -41,10 +41,11 @@ const ImageThumbnail: FunctionComponent<TImageThumbnailProps> = ({
                         positioning={'absolute'}>
           <div className="relative w-full h-full max-h-28">
             <div
-              className={`rounded-md ${id && selected ? 'border-2 border-yellow-500' : ''}`}>
+              className={`rounded-md ${id && selected ? 'border-2 border-yellow-500' : ''}`}
+              onMouseEnter={() => setShowIcons(true)}
+              onMouseLeave={() => setShowIcons(false)}
+            >
               <img
-                onMouseEnter={() => setShowIcons(true)}
-                onMouseLeave={() => setShowIcons(false)}
                 className={`${id ? 'cursor-pointer' : 'opacity-50'} max-h-28 w-full object-contain`}
                 src={thumbnail}
                 alt={alt}
