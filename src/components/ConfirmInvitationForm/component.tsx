@@ -1,13 +1,13 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import BoxWithTitle from '../BoxWithTitle'
 import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useAppSelector } from '../../hooks'
+import { useAppSelector } from '@/hooks'
 import CampaignInvitationService from '../../services/ApiService/Campaigns/CampaignInvitationService'
 import LoadingSpinner from '../LoadingSpinner'
-import { RootState } from '../../store'
+import { RootState } from '@/store'
 import useErrorHandling from '../../hooks/useErrorHandling'
 import { ErrorBanner } from '../Banners/ErrorBanner'
-import { TInvitation } from '../../types'
+import { TInvitation } from '@/types'
 
 const ConfirmInvitationForm: FunctionComponent = () => {
 
@@ -22,6 +22,7 @@ const ConfirmInvitationForm: FunctionComponent = () => {
   const { errors, handleResponseErrors, hasErrors } = useErrorHandling()
 
   useEffect(() => {
+    debugger;
     if (!isLoggedIn) {
       navigate('/register', { state: { redirectTo: location, email: invitation.email } })
     } else {

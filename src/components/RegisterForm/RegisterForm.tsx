@@ -1,8 +1,8 @@
 import React, { FormEvent, FunctionComponent, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../hooks'
-import { register, RegisterParams } from '../../services/AuthService'
-import { setToken } from '../../reducers/auth/authSlice'
+import { useAppDispatch } from '@/hooks'
+import { register, RegisterParams } from '@/services/AuthService'
+import { setToken } from '@/reducers/auth/authSlice'
 import FieldMapper from '../Forms/Fields/FieldMapper'
 import { TRegisterFormProps } from './types'
 import useErrorHandling from '../../hooks/useErrorHandling'
@@ -34,6 +34,7 @@ const RegisterForm: FunctionComponent<TRegisterFormProps> = () => {
 
     register(registerData)
       .then(() => {
+        debugger;
         console.log('logged in at server side... setting token...')
         dispatch(setToken(true))
         const redirect = location.state?.redirectTo

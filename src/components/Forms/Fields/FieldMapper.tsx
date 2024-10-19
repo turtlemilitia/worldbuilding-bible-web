@@ -9,6 +9,7 @@ import { TField } from '@/hooks/fieldTools'
 import MultipleSelectField from './MultipleSelectField'
 import { Fieldset } from '@headlessui/react'
 import DatePickerWithPresets from '@/components/DatePicker'
+import ListAddUsers from '@/pages/Campaign/ListAddUsers'
 
 export type TSelectOption = {
   id: string | number,
@@ -128,6 +129,13 @@ const FieldMapper: FunctionComponent<TProps> = ({
               value={currentValue}
               onSubmit={(value) => onChange(name, [...currentValue, value])}
               disabled={!disabled}
+            />
+          )}
+          {props.type === 'listAddUsers' && (
+            <ListAddUsers
+              users={props.users || []}
+              invitations={currentValue || []}
+              onSubmit={props.onSubmit}
             />
           )}
           {props.type === 'callback' && (

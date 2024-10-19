@@ -1,6 +1,6 @@
-import { TSelectOption } from '../../components/Forms/Fields/FieldMapper'
+import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import { FunctionComponent } from 'react'
-import { TGenericPostBasic } from '../../types'
+import { TGenericPostBasic, TUser } from '@/types'
 
 type TGenericFieldParams = {
   name: string,
@@ -116,7 +116,7 @@ export type TField = {
   label: string
   required?: boolean
 } & ({
-  type: 'text' | 'number' | 'email' | 'password' | 'listAdd'
+  type: 'text' | 'number' | 'email' | 'password'
 } | {
   type: 'dialog'
 } | {
@@ -141,4 +141,10 @@ export type TField = {
   | {
   type: 'callback'
   Callback: FunctionComponent,
+} | {
+  type: 'listAdd',
+} | {
+  type: 'listAddUsers',
+  users: TUser[],
+  onSubmit: (email:string) => any
 })
