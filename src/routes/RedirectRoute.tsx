@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import { FunctionComponent, PropsWithChildren, useEffect } from 'react'
 import { useAppSelector } from '@/hooks'
 import { RootState } from '@/store'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-export const RedirectRoute: FunctionComponent = () => {
+export const RedirectRoute: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   const { token: isLoggedIn } = useAppSelector((state: RootState) => state.auth)
 
@@ -24,6 +24,6 @@ export const RedirectRoute: FunctionComponent = () => {
 
   // If authenticated, render the child routes
   return (
-    <Outlet/>
+    children
   )
 }
