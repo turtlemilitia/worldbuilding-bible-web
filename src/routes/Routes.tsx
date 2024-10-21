@@ -50,6 +50,7 @@ import SessionWrapper from '../components/SessionWrapper'
 import NotesWrapper from '../pages/Notebook/NotesWrapper'
 import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
+import { RedirectRoute } from '@/routes/RedirectRoute'
 
 const Routes = (): JSX.Element => {
 
@@ -60,6 +61,20 @@ const Routes = (): JSX.Element => {
     {
       path: '/about',
       element: <>TODO: About us</>,
+    },
+    {
+      path: '',
+      element: <RedirectRoute/>,
+      children: [
+        {
+          path: '/login',
+          element: <Login/>,
+        },
+        {
+          path: '/register',
+          element: <Register/>,
+        }
+      ]
     },
     {
       path: '/campaigns/:campaignId/invitations/:token',
@@ -168,7 +183,7 @@ const Routes = (): JSX.Element => {
 
   const routesForAuthenticatedOnly: RouteObject[] = [
     {
-      path: '/',
+      path: '',
       element: <ProtectedRoute/>, // Wrap the component in ProtectedRoute
       children: [
         {
@@ -269,14 +284,6 @@ const Routes = (): JSX.Element => {
     {
       path: '/',
       element: <Home/>,
-    },
-    {
-      path: '/login',
-      element: <Login/>,
-    },
-    {
-      path: '/register',
-      element: <Register/>,
     },
     {
       path: '*',

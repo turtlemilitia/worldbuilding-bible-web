@@ -1,8 +1,8 @@
 import React, { FormEvent, JSX, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { login, LoginParams } from '../../services/AuthService'
-import { setToken } from '../../reducers/auth/authSlice'
-import { useAppDispatch } from '../../hooks'
+import { useLocation } from 'react-router-dom'
+import { login, LoginParams } from '@/services/AuthService'
+import { setToken } from '@/reducers/auth/authSlice'
+import { useAppDispatch } from '@/hooks'
 import FieldMapper from '../Forms/Fields/FieldMapper'
 import { ErrorBanner } from '../Banners/ErrorBanner'
 import useErrorHandling from '../../hooks/useErrorHandling'
@@ -11,12 +11,10 @@ import CheckButton from '../CheckButton'
 const LoginForm = (): JSX.Element => {
 
   const location = useLocation()
-  const navigate = useNavigate()
-
   const dispatch = useAppDispatch()
 
   const [loginData, setLoginData] = useState<LoginParams>({
-    email: location.state?.redirectTo || '',
+    email: location.state?.email || '',
     password: ''
   })
 
@@ -33,12 +31,6 @@ const LoginForm = (): JSX.Element => {
       .then(() => {
         console.log('logged in at server side... setting token...')
         dispatch(setToken(true))
-        const redirect = location.state?.redirectTo
-        if (redirect && redirect !== '/login') {
-          navigate(location.state.redirectTo, { replace: true })
-        } else {
-          navigate('/', { replace: true })
-        }
       })
       .catch((err) => handleResponseErrors(err, 'Login failed. Please try again.'))
       .finally(() => {

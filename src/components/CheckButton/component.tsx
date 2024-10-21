@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react'
+import React, { ButtonHTMLAttributes, FunctionComponent } from 'react'
 import { CheckIcon } from 'lucide-react'
 import { TCheckButtonProps } from './types'
 import LoadingSpinner from '../LoadingSpinner'
 
-const CheckButton: FunctionComponent<TCheckButtonProps> = ({ loading = false }) => {
+const CheckButton: FunctionComponent<TCheckButtonProps & ButtonHTMLAttributes<HTMLButtonElement>> = ({ loading = false }) => {
 
   return (
     <button

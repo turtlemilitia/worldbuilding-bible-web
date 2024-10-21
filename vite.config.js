@@ -23,7 +23,11 @@ export default defineConfig({
         host: 'worldbuildingbible.io',
         open: true, // Auto-opens the browser on startup
     },
-    "esbuild": {
-        "target": "ES2020"
+    esbuild: {
+        target: "ES2020"
+    },
+    test: {
+        environment: 'jsdom',
+        globals: true
     }
 });
