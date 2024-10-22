@@ -20,7 +20,7 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
       && (!compendium || compendium?.slug !== compendiumId) // if it's been loaded as part of the campaign
     ) {
       setLoading({ [compendiumId]: true })
-      view(compendiumId, { include: compendiumIncludes }).
+      view(compendiumId, { include: `${compendiumIncludes};images` }).
         then(() => setLoading({ [compendiumId]: false }))
     }
     return () => {

@@ -29,7 +29,7 @@ const CampaignWrapper = (): JSX.Element => {
   useEffect(() => {
     if (campaignId !== 'new') {
       setLoading({ [campaignId]: true })
-      view(campaignId, { include: campaignIncludes }).
+      view(campaignId, { include: `${campaignIncludes};images` }).
         then(() => setLoading({ [campaignId]: false }))
     }
     return () => {
