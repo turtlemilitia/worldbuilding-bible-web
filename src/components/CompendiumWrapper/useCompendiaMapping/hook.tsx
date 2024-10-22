@@ -15,7 +15,7 @@ import {
   TSpell,
   TStory,
   TTypesAllowed
-} from '../../../types'
+} from '@/types'
 import { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import {
   BookIcon,
@@ -34,7 +34,7 @@ import {
   UserIcon,
   Wand2Icon
 } from 'lucide-react'
-import { TUseCompendiaMapping } from './types'
+import { TUseCompendiaMappingProps } from './types'
 import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
 import {
@@ -53,9 +53,9 @@ import {
   useSpeciesDataManager,
   useSpellDataManager,
   useStoryDataManager
-} from '../../../hooks/DataManagers'
+} from '@/hooks/DataManagers'
 
-const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
+const useCompendiaMapping = ({ prefix }: TUseCompendiaMappingProps) => {
 
   const navigate = useNavigate()
 
@@ -153,6 +153,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
 
   const mapPantheon = (pantheon: TPantheon): SidebarItemInterface => ({
     title: pantheon.name,
+    subtitle: pantheon.religion?.name,
     to: `${prefix}/pantheons/${pantheon.slug}`,
     icon: (props) => <SunIcon {...props}/>,
     onDelete: () => destroyPantheon(pantheon.slug)
@@ -193,6 +194,7 @@ const useCompendiaMapping: TUseCompendiaMapping = ({ prefix }) => {
 
   const mapDeity = (deity: TDeity): SidebarItemInterface => ({
     title: deity.name,
+    subtitle: deity.pantheon?.name,
     to: `${prefix}/deities/${deity.slug}`,
     icon: (props) => <PersonStandingIcon {...props}/>,
     onDelete: () => destroyDeity(deity.slug)

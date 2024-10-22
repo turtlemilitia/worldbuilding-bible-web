@@ -1,7 +1,7 @@
-import { TPantheon } from '../../../types'
-import { TPantheonRequest } from '../../../services/ApiService/Compendia/PantheonService'
+import { TPantheon } from '@/types'
+import { TPantheonRequest } from '@/services/ApiService/Compendia/PantheonService'
 import { useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import { usePostForm } from '../index'
 import { usePantheonDataManager } from '../../DataManagers'
 import usePantheonFields from '../usePantheonForm/usePantheonFields'
@@ -18,15 +18,16 @@ const usePantheonForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TPantheon>): TForm<TPantheon> => {
 
-  const include = useMemo(() => 'notes', [])
+  const include = useMemo(() => 'religion:id,slug,name;notes', [])
 
   const manager = usePantheonDataManager()
 
   const { fields } = usePantheonFields()
 
-  const mapData = (data: any): TPantheonRequest => ({
+  const mapData = (data: TPantheon): TPantheonRequest => ({
     name: data.name,
     content: data.content,
+    religionId: data.religion?.id
   })
 
   return usePostForm({

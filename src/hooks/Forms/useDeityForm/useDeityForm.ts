@@ -1,7 +1,7 @@
-import { TDeity } from '../../../types'
-import { TDeityRequest } from '../../../services/ApiService/Compendia/DeityService'
+import { TDeity } from '@/types'
+import { TDeityRequest } from '@/services/ApiService/Compendia/DeityService'
 import { useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import { usePostForm } from '../index'
 import { useDeityDataManager } from '../../DataManagers'
 import useDeityFields from '../useDeityForm/useDeityFields'
@@ -18,15 +18,16 @@ const useDeityForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TDeity>): TForm<TDeity> => {
 
-  const include = useMemo(() => 'notes', [])
+  const include = useMemo(() => 'pantheon:id,slug,name;notes', [])
 
   const manager = useDeityDataManager()
 
   const { fields } = useDeityFields()
 
-  const mapData = (data: any): TDeityRequest => ({
+  const mapData = (data: TDeity): TDeityRequest => ({
     name: data.name,
     content: data.content,
+    pantheonId: data.pantheon?.id
   })
 
   return usePostForm({

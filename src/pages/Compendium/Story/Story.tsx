@@ -23,7 +23,7 @@ const Story: FunctionComponent = () => {
 
   return (
     <Post
-      pageTypeName={'Story'}
+      pageTypeName={'Lore & History'}
       form={form}
     />
   )

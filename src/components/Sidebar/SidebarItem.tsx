@@ -4,6 +4,7 @@ import { SidebarItemInterface } from './Sidebar'
 import { ChevronDownIcon, PlusIcon, Trash2Icon } from 'lucide-react'
 import LoadingSpinner from '../LoadingSpinner'
 import { Button } from '@headlessui/react'
+import SmallSansSerifText from '@/components/SmallSansSerifText'
 
 interface TProps {
   item: SidebarItemInterface;
@@ -13,6 +14,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
 
   const {
     title,
+    subtitle,
     to,
     icon,
     addNewLink,
@@ -29,7 +31,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
 
   const [loadingChildren, setLoadingChildren] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
-  const [open, setOpen] = useState<boolean>(startOpen ?? true)
+  const [open, setOpen] = useState<boolean>(startOpen ?? false)
 
   const handleOpenChildren = () => {
     if (!open) {
@@ -67,7 +69,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
         {to ? (
           <NavLink to={to}
                    className={({ isActive }) => `${isActive ? 'text-amber-500' : ''} hover:text-amber-500 flex items-center`}>
-            {icon && <span className="w-6">{icon({ color: 'white', size: 14, className: 'inline-block mr-3' })} </span>}<span>{title}</span>
+            {icon && <span className="w-6">{icon({ color: 'white', size: 14, className: 'inline-block mr-3' })} </span>}<span>{title}{subtitle && <SmallSansSerifText className={'inline opacity-50 ml-2'}>{subtitle}</SmallSansSerifText>}</span>
           </NavLink>
         ) : (
           <div className="flex items-center">
@@ -75,7 +77,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
               color: 'white',
               size: 14,
               className: 'inline-block mr-3'
-            })}</span>}<span>{title}</span>
+            })}</span>}<span>{title}{subtitle && <span>{subtitle}</span>}</span>
           </div>
         )}
         {(canAddNew || collapsable || onDelete) && (
@@ -98,13 +100,14 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
                 </Link>
               </Button>
             )}
-            {canDelete && !deleting && (
+            {canDelete && (
+              !deleting ? (
               <Button onClick={handleOnDelete}>
                 <Trash2Icon className="h-4 text-stone-400"/>
               </Button>
-            )}
-            {deleting && (
+              ) : (
               <LoadingSpinner size={20}/>
+              )
             )}
           </div>
         )}

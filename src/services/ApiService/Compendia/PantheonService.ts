@@ -1,4 +1,4 @@
-import { TPantheon } from '../../../types'
+import { TPantheon } from '@/types'
 import { createChildApiService } from '../createApiService'
 import { createNotableService } from '../createNotableService'
 import { createImageableService } from '../createImageableService'
@@ -8,6 +8,7 @@ import { createEncounterableService } from '../createEncounterableService'
 export interface TPantheonRequest {
   name: string;
   content: string;
+  religionId?: number;
 }
 type TPantheonResponse = TPantheon;
 

@@ -1,3 +1,3 @@
-import CompendiumSidebar from './component'
+import CompendiumSidebar from './CompendiumSidebar'
 
 export default CompendiumSidebar

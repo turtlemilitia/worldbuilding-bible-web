@@ -6,7 +6,7 @@ import { useCallback, useMemo } from 'react'
 import useCompendiumFields from './useCompendiumFields'
 import useLink from '@/hooks/useLink'
 
-export const compendiumIncludes = 'creator;notes;characters;concepts;currencies;deities;factions;items;languages;locations;locations.parent;naturalResources;pantheons;planes;religions;species;spells;stories';
+export const compendiumIncludes = 'creator;notes;characters;concepts;currencies;deities;deities.pantheon;factions;items;languages;locations;locations.parent;naturalResources;pantheons;pantheons.religion;planes;religions;species;spells;stories';
 
 type TOwnProps = {
   compendiumId: TCompendium['slug'];

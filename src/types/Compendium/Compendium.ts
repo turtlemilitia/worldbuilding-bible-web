@@ -13,21 +13,21 @@ export type TCompendium = TGenericPost & TPlayerTools & TCanHaveImages & TCanHav
 } & TCompendiumRelationships
 
 export type TCompendiumRelationships = {
-  characters?: TGenericPostBasic[];
-  concepts?: TGenericPostBasic[];
-  currencies?: TGenericPostBasic[];
-  deities?: TGenericPostBasic[];
-  factions?: TGenericPostBasic[];
-  items?: TGenericPostBasic[];
-  languages?: TGenericPostBasic[];
-  locations?: TLocationList[];
-  naturalResources?: TGenericPostBasic[];
-  pantheons?: TGenericPostBasic[];
-  planes?: TGenericPostBasic[];
-  religions?: TGenericPostBasic[];
-  species?: TGenericPostBasic[];
-  spells?: TGenericPostBasic[];
-  stories?: TGenericPostBasic[];
+  characters?: TCharacter[];
+  concepts?: TConcept[];
+  currencies?: TCurrency[];
+  deities?: TDeity[];
+  factions?: TFaction[];
+  items?: TItem[];
+  languages?: TLanguage[];
+  locations?: TLocation[];
+  naturalResources?: TNaturalResource[];
+  pantheons?: TPantheon[];
+  planes?: TPlane[];
+  religions?: TReligion[];
+  species?: TSpecies[];
+  spells?: TSpell[];
+  stories?: TStory[];
 }
 
 
@@ -43,7 +43,9 @@ export type TCharacter = TGenericPost & TPlayerTools & TCanHaveImages & TCanHave
 
 export type TCurrency = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
-export type TDeity = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
+export type TDeity = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
+  pantheon?: TPantheon
+}
 
 export type TFaction = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 
@@ -71,7 +73,9 @@ export type TLocationType = TOptionList
 
 export type TLocationGovernmentType = TOptionList
 
-export type TPantheon = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
+export type TPantheon = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
+  religion?: TReligion
+}
 
 export type TReligion = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
 

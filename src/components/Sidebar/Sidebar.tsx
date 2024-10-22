@@ -8,6 +8,7 @@ import { useCampaignDataManager } from '../../hooks/DataManagers'
 export interface SidebarItemInterface {
   id?: string;
   title: string;
+  subtitle?: string;
   to?: string;
   icon?: (props: LucideProps) => JSX.Element,
   addNewLink?: string;

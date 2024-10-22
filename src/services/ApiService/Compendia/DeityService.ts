@@ -1,4 +1,4 @@
-import { TDeity } from '../../../types'
+import { TDeity } from '@/types'
 
 import { createChildApiService } from '../createApiService'
 import { createImageableService } from '../createImageableService'
@@ -9,6 +9,7 @@ import { createEncounterableService } from '../createEncounterableService'
 export interface TDeityRequest {
   name: string;
   content: string;
+  pantheonId?: number;
 }
 type TDeityResponse = TDeity;
 
