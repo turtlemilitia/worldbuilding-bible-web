@@ -19,7 +19,7 @@ import {
 import useCompendiaMapping from '../useCompendiaMapping'
 import { FunctionComponent, useMemo } from 'react'
 import { TCompendiumSidebarProps } from './types'
-import { createNestedArray } from '../../../utils/treeUtils'
+import { createNestedArray } from '@/utils/treeUtils'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
 
 const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compendium }) => {
