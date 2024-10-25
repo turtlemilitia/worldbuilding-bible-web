@@ -17,7 +17,7 @@ const Editor: FunctionComponent<TEditorProps> = ({ className, initialValue, onCh
   })
 
   const handleEditorChange = useCallback(({ helpers }: RemirrorEventListenerProps<AnyExtension>) => {
-    onChange(helpers.getMarkdown())
+    onChange && onChange(helpers.getMarkdown())
   }, [onChange])
 
   return (

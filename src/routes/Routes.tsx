@@ -50,6 +50,7 @@ import SessionWrapper from '../components/SessionWrapper'
 import NotesWrapper from '../pages/Notebook/NotesWrapper'
 import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
+import MarkdownExample from '@/pages/MarkdownExample'
 
 const Routes = (): JSX.Element => {
 
@@ -182,6 +183,10 @@ const Routes = (): JSX.Element => {
         {
           path: '/',
           element: <>TODO: Dashboard</>,
+        },
+        {
+          path: '/markdown-example',
+          element: <MarkdownExample/>
         },
         {
           path: '/systems',

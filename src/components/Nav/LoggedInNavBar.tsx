@@ -109,6 +109,9 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
     menuItems.push({
       title: 'Notes',
       to: '/notes',
+    }, {
+      title: 'Markdown Help',
+      to: '/markdown-example'
     })
     return menuItems
   }, [
