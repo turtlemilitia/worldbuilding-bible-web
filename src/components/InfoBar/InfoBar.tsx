@@ -30,12 +30,11 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
   loading
 }): JSX.Element => {
 
-  const filteredFields = useMemo(() => {
-    return fields.filter((props) => {
-      const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
-      return !(disabled && isEmpty(currentValue))
-    })
-  }, fields)
+  const filteredFields = fields.filter((props) => {
+    const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
+    return !(disabled && isEmpty(currentValue))
+  })
+
   return (
     <Transition show={!loading && filteredFields.length > 0}>
       <div className={clsx([
