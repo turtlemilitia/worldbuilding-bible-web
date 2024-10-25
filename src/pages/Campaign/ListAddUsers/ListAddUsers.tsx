@@ -2,6 +2,8 @@ import { PlusIcon } from 'lucide-react'
 import React, { FunctionComponent, useState } from 'react'
 import { TListAddUsersProps } from './types'
 import LoadingSpinner from '../../../components/LoadingSpinner'
+import { Field } from '@headlessui/react'
+import Label from '@/components/Forms/Fields/Label'
 
 const ListAddUsers: FunctionComponent<TListAddUsersProps> = ({ users, invitations, onSubmit }) => {
 
@@ -20,7 +22,8 @@ const ListAddUsers: FunctionComponent<TListAddUsersProps> = ({ users, invitation
   const all = [...users, ...invitations]
 
   return (
-    <div className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
+    <Field className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
+      <Label>Add Users to Campaign</Label>
       <div>
         <>
           {all.length > 0 && (
@@ -43,7 +46,7 @@ const ListAddUsers: FunctionComponent<TListAddUsersProps> = ({ users, invitation
           </div>
         </>
       </div>
-    </div>
+    </Field>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX } from 'react'
+import React, { FunctionComponent, JSX, useMemo } from 'react'
 import clsx from 'clsx'
 import FieldMapper from '../../components/Forms/Fields/FieldMapper'
 import { FloatingBox } from '../FloatingBox'
@@ -30,8 +30,14 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
   loading
 }): JSX.Element => {
 
+  const filteredFields = useMemo(() => {
+    return fields.filter((props) => {
+      const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
+      return !(disabled && isEmpty(currentValue))
+    })
+  }, fields)
   return (
-    <Transition show={!loading}>
+    <Transition show={!loading && filteredFields.length > 0}>
       <div className={clsx([
         `transition-all duration-1000`,
         'data-[closed]:-top-10 data-[closed]:opacity-0',
@@ -41,10 +47,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
             <ProfileImage image={profileImage} openPicker={openProfileImagePicker}/>
           )}
           <ul className="font-serif text-serif-md leading-tight max-h-[50vh] overflow-y-scroll overflow-x-clip">
-            {fields.filter((props) => {
-              const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
-              return !(disabled && isEmpty(currentValue))
-            }).map((props, index) => {
+            {filteredFields.map((props, index) => {
               const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
               return <FieldMapper
                 key={index}
