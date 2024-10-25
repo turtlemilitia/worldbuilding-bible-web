@@ -28,38 +28,38 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
     const pinnedToCampaign = campaign?.pins.find(pin => {
       return pin.pinnableType === manager.entityName && pin.pinnable.id === manager.entity?.id
     })
+    const promises: Promise<void>[] = []
     if (pinToCampaign && !pinnedToCampaign) {
-      campaignPinsDataManager.attach(campaign.slug, {
+      promises.push(campaignPinsDataManager.attach(campaign.slug, {
         pinnableId: manager.entity.id,
         pinnableType: manager.entityName
-      })
+      }))
     } else if (!pinToCampaign && pinnedToCampaign) {
-      campaignPinsDataManager.detach(campaign.slug, pinnedToCampaign.id)
+      promises.push(campaignPinsDataManager.detach(campaign.slug, pinnedToCampaign.id))
     }
-    if (pinToCampaign) {
-      return
+    if (!pinToCampaign) {
+      campaign.users.forEach((user) => {
+        if (!manager.entity) {
+          return
+        }
+        const pinToUser = values.some(value => {
+          return value.id === user.id
+        })
+        const pinnedToUser = user.pins?.find(pin => {
+          return pin.pinnableType === manager.entityName && pin.pinnable.id ===
+            manager.entity?.id
+        })
+        if (pinToUser && !pinnedToUser) {
+          promises.push(userPinsDataManager.attach(user.id, {
+            pinnableId: manager.entity.id,
+            pinnableType: manager.entityName
+          }))
+        }
+        if (!pinToUser && pinnedToUser) {
+          promises.push(userPinsDataManager.detach(user.id, pinnedToUser.id))
+        }
+      })
     }
-    const promises: Promise<void>[] = []
-    campaign.users.forEach((user) => {
-      if (!manager.entity) {
-        return
-      }
-      const pinToUser = values.some(value => {
-        return value.id === user.id
-      })
-      const pinnedToUser = user.pins?.find(pin => {
-        return pin.pinnableType === manager.entityName && pin.pinnable.id === manager.entity?.id
-      })
-      if (pinToUser && !pinnedToUser) {
-        promises.push(userPinsDataManager.attach(user.id, {
-          pinnableId: manager.entity.id,
-          pinnableType: manager.entityName
-        }))
-      }
-      if (!pinToUser && pinnedToUser) {
-        promises.push(userPinsDataManager.detach(user.id, pinnedToUser.id))
-      }
-    })
     return Promise.all(promises)
   }, [campaign, manager.entity, manager.entityName])
 

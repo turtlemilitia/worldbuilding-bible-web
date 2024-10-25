@@ -1,11 +1,11 @@
 import { TDataManager, useCampaignDataManager } from './DataManagers'
-import { TPermissionHandler, TPermissionForOption } from '../components/Post/types'
+import { TPermissionHandler, TPermissionForOption } from '@/components/Post/types'
 import useAuthUserDataManager from './DataManagers/useAuthUserDataManager'
 import { useCallback, useMemo } from 'react'
-import { TSelectOption } from '../components/Forms/Fields/FieldMapper'
+import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import useUserDataManager from './DataManagers/Campaigns/useUserDataManager'
 import { hasPermissionsAttachableDataManager } from './DataManagers/useAttachableDataManager'
-import { TGenericPostBasic } from '../types'
+import { TGenericPostBasic } from '@/types'
 
 type TProps<TEntity> = {
   manager: TDataManager<TEntity, any> & Partial<hasPermissionsAttachableDataManager>
@@ -23,6 +23,7 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
     if (!manager.entity) {
       return
     }
+    const promises: Promise<void>[] = []
     const addPermissionToCampaign = values.some(value => {
       return value.type === 'campaign' && value.id === campaign.id
     })
@@ -30,39 +31,39 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
       return permission.permissionableType === manager.entityName && permission.permissionableId === manager.entity?.id
     })
     if (addPermissionToCampaign && !permissionAddedToCampaign) {
-      campaignPermissionsDataManager.attach(campaign.slug, {
+      promises.push(campaignPermissionsDataManager.attach(campaign.slug, {
         permissionableId: manager.entity.id,
         permission: 'view',
         permissionableType: manager.entityName
-      })
+      }))
     } else if (!addPermissionToCampaign && permissionAddedToCampaign) {
-      campaignPermissionsDataManager.detach(campaign.slug, permissionAddedToCampaign.id)
+      promises.push(campaignPermissionsDataManager.detach(campaign.slug, permissionAddedToCampaign.id))
     }
-    if (addPermissionToCampaign) {
-      return
+    if (!addPermissionToCampaign) {
+      campaign.users.forEach((user) => {
+        if (!manager.entity) {
+          return
+        }
+        const permissionToUser = values.some(value => {
+          return value.id === user.id
+        })
+        const permissionedToUser = user.permissions?.find(permission => {
+          return permission.permissionableType === manager.entityName &&
+            permission.permissionableId === manager.entity?.id
+        })
+        if (permissionToUser && !permissionedToUser) {
+          promises.push(userPermissionsDataManager.attach(user.id, {
+            permissionableId: manager.entity.id,
+            permission: 'view',
+            permissionableType: manager.entityName
+          }))
+        }
+        if (!permissionToUser && permissionedToUser) {
+          promises.push(
+            userPermissionsDataManager.detach(user.id, permissionedToUser.id))
+        }
+      })
     }
-    const promises: Promise<void>[] = []
-    campaign.users.forEach((user) => {
-      if (!manager.entity) {
-        return
-      }
-      const permissionToUser = values.some(value => {
-        return value.id === user.id
-      })
-      const permissionedToUser = user.permissions?.find(permission => {
-        return permission.permissionableType === manager.entityName && permission.permissionableId === manager.entity?.id
-      })
-      if (permissionToUser && !permissionedToUser) {
-        promises.push(userPermissionsDataManager.attach(user.id, {
-          permissionableId: manager.entity.id,
-          permission: 'view',
-          permissionableType: manager.entityName
-        }))
-      }
-      if (!permissionToUser && permissionedToUser) {
-        promises.push(userPermissionsDataManager.detach(user.id, permissionedToUser.id))
-      }
-    })
     return Promise.all(promises)
   }, [campaign, manager.entity, manager.entityName])
 
