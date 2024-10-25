@@ -1,3 +1,3 @@
-import SessionSidebar from './component'
+import SessionSidebar from './SessionSidebar'
 
 export default SessionSidebar

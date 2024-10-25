@@ -13,13 +13,13 @@ const EncounterSidebar: FunctionComponent<TEncounterSidebarProps> = ({ campaign 
 
   const items: SidebarItemInterface[] = types?.map(type => ({
     title: type.name,
-    addNewLink: `/campaigns/${campaign.slug}/encounters/new`,
+    addNewLink: campaign.canUpdate ? `/campaigns/${campaign.slug}/encounters/new`: undefined,
     addNewLinkState: { type: type.id },
     icon: (props) => <SwordsIcon {...props}/>,
     children: campaign.encounters?.filter(encounter => encounter.type.id === type.id).map(encounter => mapEncounter(encounter)) ?? []
   })) ?? []
 
-  return <Sidebar title={'Encounters'} items={items}/>
+  return <Sidebar title={'Encounters'} items={items} canAdd={campaign.canUpdate}/>
 }
 
 export default EncounterSidebar

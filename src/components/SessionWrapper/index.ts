@@ -1,3 +1,3 @@
-import SessionWrapper from './component'
+import SessionWrapper from './SessionWrapper'
 
 export default SessionWrapper;

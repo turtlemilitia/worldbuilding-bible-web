@@ -24,9 +24,10 @@ interface TOwnProps {
   title: string;
   items: SidebarItemInterface[],
   addNew?: string,
+  canAdd?: boolean
 }
 
-const Sidebar = ({ title, items, addNew }: TOwnProps): JSX.Element => {
+const Sidebar = ({ title, items, addNew, canAdd = false }: TOwnProps): JSX.Element => {
 
   const [show, setShow] = useState<boolean>(false)
 
@@ -45,7 +46,7 @@ const Sidebar = ({ title, items, addNew }: TOwnProps): JSX.Element => {
             <div className="max-h-underScreen overflow-y-auto">
               <div className="flex justify-between">
                 <h2 className="text-xl font-sans-serif tracking-widest uppercase text-stone-400">{title}</h2>
-                {addNew && (
+                {addNew && canAdd && (
                   <Link to={addNew}
                         className={`block w-7 font-serif text-serif-md text-stone-300 text-center`}>
                     <PlusIcon color="white" className="inline-block"/>

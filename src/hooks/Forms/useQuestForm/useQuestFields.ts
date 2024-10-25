@@ -14,7 +14,8 @@ const useQuestFields = (): TUseFields => {
       selectField({
         name: 'type',
         label: 'Type',
-        options: types ?? []
+        options: types ?? [],
+        required: true
       })
     ]
 

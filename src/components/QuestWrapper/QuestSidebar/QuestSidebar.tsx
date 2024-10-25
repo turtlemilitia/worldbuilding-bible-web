@@ -3,8 +3,9 @@ import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import { TQuestSidebarProps } from './types'
 import { StarIcon } from 'lucide-react'
 import useCampaignsMapping from '../../../hooks/useCampaignsMapping'
-import { createNestedArray } from '../../../utils/treeUtils'
+import { createNestedArray } from '@/utils/treeUtils'
 import { useQuestTypeIndexDataManager } from '../../../hooks/DataManagers'
+import quest from '@/pages/Campaign/Quest'
 
 const QuestSidebar: FunctionComponent<TQuestSidebarProps> = React.memo(({ campaign }) => {
 
@@ -18,14 +19,18 @@ const QuestSidebar: FunctionComponent<TQuestSidebarProps> = React.memo(({ campai
 
     return {
       title: `${type.name} Quests`,
-      addNewLink: `/campaigns/${campaign.slug}/quests/new`,
+      addNewLink: campaign.canUpdate ? `/campaigns/${campaign.slug}/quests/new` : '',
       addNewLinkState: { type: type.id },
       icon: (props) => <StarIcon {...props}/>,
       children: nestedQuests.map(quest => mapQuest(quest)) ?? []
     }
   }) || [], [types, campaign.quests, campaign.slug, mapQuest])
 
-  return <Sidebar title={'Quests'} items={items}/>
+  return <Sidebar
+    title={'Quests'}
+    items={items}
+    canAdd={campaign.canUpdate}
+  />
 })
 
 export default QuestSidebar

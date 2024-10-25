@@ -1,3 +1,3 @@
-import EncounterSidebar from './component'
+import EncounterSidebar from './EncounterSidebar'
 
 export default EncounterSidebar

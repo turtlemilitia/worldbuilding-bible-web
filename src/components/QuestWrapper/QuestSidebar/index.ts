@@ -1,3 +1,3 @@
-import QuestSidebar from './component'
+import QuestSidebar from './QuestSidebar'
 
 export default QuestSidebar

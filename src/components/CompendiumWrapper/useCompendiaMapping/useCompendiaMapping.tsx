@@ -87,34 +87,34 @@ const useCompendiaMapping = ({ prefix }: TUseCompendiaMappingProps) => {
     title: concept.name,
     to: `${prefix}/concepts/${concept.slug}`,
     icon: (props) => <StarIcon {...props}/>,
-    onDelete: () => destroyConcept(concept.slug)
-      .then(() => onDeleted('concepts', concept.slug))
+    onDelete: concept.canDelete ? () => destroyConcept(concept.slug)
+      .then(() => onDeleted('concepts', concept.slug)) : undefined
   })
 
   const mapSpecies = (species: TSpecies): SidebarItemInterface => ({
     title: species.name,
     to: `${prefix}/species/${species.slug}`,
     icon: (props) => <CatIcon {...props}/>,
-    onDelete: () => destroySpecies(species.slug)
-      .then(() => onDeleted('species', species.slug))
+    onDelete: species.canDelete ? () => destroySpecies(species.slug)
+      .then(() => onDeleted('species', species.slug)) : undefined
   })
 
   const mapCharacter = (character: TCharacter): SidebarItemInterface => ({
     title: character.name,
     to: `${prefix}/characters/${character.slug}`,
     icon: (props) => <UserIcon {...props}/>,
-    onDelete: () => destroyCharacter(character.slug)
-      .then(() => onDeleted('characters', character.slug))
+    onDelete: character.canDelete ? () => destroyCharacter(character.slug)
+      .then(() => onDeleted('characters', character.slug)) : undefined
   })
 
   const mapLocation = (location: TLocation): SidebarItemInterface => ({
     title: location.name,
     to: `${prefix}/locations/${location.slug}`,
     icon: (props) => <MapPinIcon {...props}/>,
-    addNewLink: `${prefix}/locations/new`,
+    addNewLink: location.canUpdate ? `${prefix}/locations/new` : '',
     addNewLinkState: { parent: location },
-    onDelete: () => destroyLocation(location.slug)
-      .then(() => onDeleted('locations', location.slug)),
+    onDelete: location.canDelete ? () => destroyLocation(location.slug)
+      .then(() => onDeleted('locations', location.slug)) : undefined,
     hasChildren: location.hasSubLocations,
     children: location.children?.map(subLocation => mapLocation(subLocation))
   })
@@ -123,32 +123,32 @@ const useCompendiaMapping = ({ prefix }: TUseCompendiaMappingProps) => {
     title: item.name,
     to: `${prefix}/items/${item.slug}`,
     icon: (props) => <SwordIcon {...props}/>,
-    onDelete: () => destroyItem(item.slug)
-      .then(() => onDeleted('items', item.slug))
+    onDelete: item.canDelete ? () => destroyItem(item.slug)
+      .then(() => onDeleted('items', item.slug)) : undefined
   })
 
   const mapFaction = (faction: TFaction): SidebarItemInterface => ({
     title: faction.name,
     to: `${prefix}/factions/${faction.slug}`,
     icon: (props) => <FlagIcon {...props}/>,
-    onDelete: () => destroyFaction(faction.slug)
-      .then(() => onDeleted('factions', faction.slug))
+    onDelete: faction.canDelete ? () => destroyFaction(faction.slug)
+      .then(() => onDeleted('factions', faction.slug)) : undefined
   })
 
   const mapLanguage = (language: TLanguage): SidebarItemInterface => ({
     title: language.name,
     to: `${prefix}/languages/${language.slug}`,
     icon: (props) => <LanguagesIcon {...props}/>,
-    onDelete: () => destroyLanguage(language.slug)
-      .then(() => onDeleted('languages', language.slug))
+    onDelete: language.canDelete ? () => destroyLanguage(language.slug)
+      .then(() => onDeleted('languages', language.slug)) : undefined
   })
 
   const mapReligion = (religion: TReligion): SidebarItemInterface => ({
     title: religion.name,
     to: `${prefix}/religions/${religion.slug}`,
     icon: (props) => <ChurchIcon {...props}/>,
-    onDelete: () => destroyReligion(religion.slug)
-      .then(() => onDeleted('religions', religion.slug))
+    onDelete: religion.canDelete ? () => destroyReligion(religion.slug)
+      .then(() => onDeleted('religions', religion.slug)) : undefined
   })
 
   const mapPantheon = (pantheon: TPantheon): SidebarItemInterface => ({
@@ -156,40 +156,40 @@ const useCompendiaMapping = ({ prefix }: TUseCompendiaMappingProps) => {
     subtitle: pantheon.religion?.name,
     to: `${prefix}/pantheons/${pantheon.slug}`,
     icon: (props) => <SunIcon {...props}/>,
-    onDelete: () => destroyPantheon(pantheon.slug)
-      .then(() => onDeleted('pantheons', pantheon.slug))
+    onDelete: pantheon.canDelete ? () => destroyPantheon(pantheon.slug)
+      .then(() => onDeleted('pantheons', pantheon.slug)) : undefined
   })
 
   const mapCurrency = (currency: TCurrency): SidebarItemInterface => ({
     title: currency.name,
     to: `${prefix}/currencies/${currency.slug}`,
     icon: (props) => <CoinsIcon {...props}/>,
-    onDelete: () => destroyCurrency(currency.slug)
-      .then(() => onDeleted('currencies', currency.slug))
+    onDelete: currency.canDelete ? () => destroyCurrency(currency.slug)
+      .then(() => onDeleted('currencies', currency.slug)) : undefined
   })
 
   const mapStory = (story: TStory): SidebarItemInterface => ({
     title: story.name,
     to: `${prefix}/stories/${story.slug}`,
     icon: (props) => <BookIcon {...props}/>,
-    onDelete: () => destroyStory(story.slug)
-      .then(() => onDeleted('stories', story.slug))
+    onDelete: story.canDelete ? () => destroyStory(story.slug)
+      .then(() => onDeleted('stories', story.slug)) : undefined
   })
 
   const mapNaturalResource = (naturalResource: TNaturalResource): SidebarItemInterface => ({
     title: naturalResource.name,
     to: `${prefix}/natural-resources/${naturalResource.slug}`,
     icon: (props) => <FlowerIcon {...props}/>,
-    onDelete: () => destroyNaturalResource(naturalResource.slug)
-      .then(() => onDeleted('naturalResources', naturalResource.slug))
+    onDelete: naturalResource.canDelete ? () => destroyNaturalResource(naturalResource.slug)
+      .then(() => onDeleted('naturalResources', naturalResource.slug)) : undefined
   })
 
   const mapPlane = (plane: TPlane): SidebarItemInterface => ({
     title: plane.name,
     to: `${prefix}/planes/${plane.slug}`,
     icon: (props) => <CircleIcon {...props}/>,
-    onDelete: () => destroyPlane(plane.slug)
-      .then(() => onDeleted('planes', plane.slug))
+    onDelete: plane.canDelete ? () => destroyPlane(plane.slug)
+      .then(() => onDeleted('planes', plane.slug)) : undefined
   })
 
   const mapDeity = (deity: TDeity): SidebarItemInterface => ({
@@ -197,16 +197,16 @@ const useCompendiaMapping = ({ prefix }: TUseCompendiaMappingProps) => {
     subtitle: deity.pantheon?.name,
     to: `${prefix}/deities/${deity.slug}`,
     icon: (props) => <PersonStandingIcon {...props}/>,
-    onDelete: () => destroyDeity(deity.slug)
-      .then(() => onDeleted('deities', deity.slug))
+    onDelete: deity.canDelete ? () => destroyDeity(deity.slug)
+      .then(() => onDeleted('deities', deity.slug)) : undefined
   })
 
   const mapSpell = (spell: TSpell): SidebarItemInterface => ({
     title: spell.name,
     to: `${prefix}/spells/${spell.slug}`,
     icon: (props) => <Wand2Icon {...props}/>,
-    onDelete: () => destroySpell(spell.slug)
-      .then(() => onDeleted('spells', spell.slug))
+    onDelete: spell.canDelete ? () => destroySpell(spell.slug)
+      .then(() => onDeleted('spells', spell.slug)) : undefined
   })
 
   return {

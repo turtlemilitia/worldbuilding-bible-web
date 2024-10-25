@@ -33,18 +33,18 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
     title: encounter.name,
     to: `${prefix}/encounters/${encounter.slug}`,
     icon: (props) => <SwordsIcon {...props}/>,
-    onDelete: () => destroyEncounter(encounter.slug)
-      .then(() => onDeleted('encounters', encounter.slug))
+    onDelete: encounter.canDelete ? () => destroyEncounter(encounter.slug)
+      .then(() => onDeleted('encounters', encounter.slug)) : undefined
   }), [prefix, destroyEncounter, onDeleted])
 
   const mapQuest = useCallback((quest: TQuest): SidebarItemInterface => ({
     title: quest.name,
     to: `${prefix}/quests/${quest.slug}`,
     icon: (props) => <StarIcon {...props}/>,
-    addNewLink: `${prefix}/quests/new`,
+    addNewLink: quest.canUpdate ? `${prefix}/quests/new` : '',
     addNewLinkState: { type: quest.type.id, parent: quest.id },
-    onDelete: () => destroyQuest(quest.slug)
-      .then(() => onDeleted('quests', quest.slug)),
+    onDelete: quest.canDelete ? () => destroyQuest(quest.slug)
+      .then(() => onDeleted('quests', quest.slug)) : undefined,
     children: quest.children?.map(subQuest => mapQuest(subQuest))
   }), [prefix, destroyQuest, onDeleted])
 
@@ -52,16 +52,16 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
     title: session.name,
     to: `${prefix}/sessions/${session.slug}`,
     icon: (props) => <StickyNoteIcon {...props}/>,
-    onDelete: () => destroySession(session.slug)
-      .then(() => onDeleted('sessions', session.slug))
+    onDelete: session.canDelete ? () => destroySession(session.slug)
+      .then(() => onDeleted('sessions', session.slug)) : undefined
   }), [prefix, destroySession, onDeleted])
 
   const mapScene = useCallback((scene: TScene): SidebarItemInterface => ({
     title: scene.name,
     to: `${prefix}/scenes/${scene.slug}`,
     icon: (props) => <VenetianMaskIcon {...props}/>,
-    onDelete: () => destroyScene(scene.slug)
-      .then(() => onDeleted('scenes', scene.slug))
+    onDelete: scene.canDelete ? () => destroyScene(scene.slug)
+      .then(() => onDeleted('scenes', scene.slug)) : undefined
   }), [prefix, destroyScene, onDeleted])
 
   return {
