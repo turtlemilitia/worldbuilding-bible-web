@@ -14,6 +14,7 @@ const SceneSidebar: FunctionComponent<TSceneSidebarProps> = ({ campaign }) => {
 
   return <Sidebar
     title={'Scenes'}
+    addNew={`/campaigns/${campaign.slug}/scenes/new`}
     items={items}
     canAdd={campaign.canUpdate}
   />
