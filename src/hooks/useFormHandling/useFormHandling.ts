@@ -114,7 +114,9 @@ const useFormHandling = <T, R> ({
   // Save data function
   const handleOnSave = async () => {
     if (!canEdit) {
-      return;
+      setSaving(true)
+      await handleManyToMany()
+      setSaving(false)
     }
     if (!data) {
       console.error('cannot save empty data')
@@ -153,7 +155,9 @@ const useFormHandling = <T, R> ({
     }
     const attachEntityPromises: Promise<void>[] = []
     const detachEntityPromises: Promise<void>[] = []
-    manyToManyFields.forEach((key) => {
+    manyToManyFields
+    .filter((key) => canEdit ? true : key === 'notes')
+    .forEach((key) => {
       const entitiesToAttach = (data[key] as TGenericPostBasic[])
         ?.filter(entity => !(persistedData[key] as TGenericPostBasic[])?.some(prevEntity => prevEntity.id === entity.id))
       const entitiesToDetach = (persistedData[key] as TGenericPostBasic[])

@@ -88,7 +88,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
                 link={props.link}
                 options={props.options || []}
                 dialogType={props.dialogType}
-                disabled={disabled}
+                disabled={disabled && name !== 'notes'}
               />
             )}
           {props.type === 'asyncMultiSelect' && (

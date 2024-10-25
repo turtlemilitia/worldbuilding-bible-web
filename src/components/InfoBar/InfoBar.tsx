@@ -32,7 +32,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
 
   const filteredFields = fields.filter((props) => {
     const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
-    return !(disabled && isEmpty(currentValue))
+    return props.name === 'notes' || !(disabled && isEmpty(currentValue))
   })
 
   return (
