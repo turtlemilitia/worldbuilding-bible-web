@@ -57,6 +57,7 @@ const PostDialog = <T extends TGenericPost, > ({
                   {!isEmpty(form.fields) && (
                     <div className="w-full md:w-96 px-6">
                       <InfoBar
+                        key={form.data?.id}
                         loading={form.loading || !form.fields.length}
                         onChange={form.onFieldChange}
                         data={form.data}
@@ -72,7 +73,7 @@ const PostDialog = <T extends TGenericPost, > ({
                         canEdit={form.canEdit}
                         canManuallySave={true}
                         canRefresh={!form.isNew}
-                        canDelete={form.canEdit}
+                        canDelete={form.canEdit && !form.isNew}
                         onSave={form.onSave}
                         onRefresh={form.onFetch}
                         onDelete={form.onDelete}
@@ -80,7 +81,7 @@ const PostDialog = <T extends TGenericPost, > ({
                         favouriteHandler={form.favouriteHandler}
                         playerCharacterHandler={form.playerCharacterHandler}
                         permissionHandler={form.permissionHandler}
-                        onCoverImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'cover')}
+                        onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
                         link={!form.isNew ? form.link : ''}
                       />
                     )}

@@ -101,8 +101,8 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
   }, [campaign, values])
 
   const canAssign = useMemo(() => {
-    return authUser?.id === campaign?.gameMaster?.id
-  }, [authUser, campaign])
+    return !!manager.entity?.id && authUser?.id === campaign?.gameMaster?.id
+  }, [manager.entity, authUser, campaign])
 
   return {
     canAssign,

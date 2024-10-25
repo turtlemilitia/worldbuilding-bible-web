@@ -36,8 +36,11 @@ const useFavouriteHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T
     })
   }, [authUser, manager.entity, favourite])
 
+  const canFavourite = !!manager.entity?.id
+
   return {
     toggleFavourite,
+    canFavourite,
     isFavourited
   }
 }

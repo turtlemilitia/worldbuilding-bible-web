@@ -111,8 +111,8 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
   }, [campaign, values, permittedUsers])
 
   const canPin = useMemo(() => {
-    return (campaign || permittedUsers?.length > 0) && authUser?.id === campaign?.gameMaster?.id
-  }, [authUser, campaign, permittedUsers])
+    return !!manager.entity?.id && (campaign || permittedUsers?.length > 0) && authUser?.id === campaign?.gameMaster?.id
+  }, [manager.entity, authUser, campaign, permittedUsers])
 
   return {
     canPin,

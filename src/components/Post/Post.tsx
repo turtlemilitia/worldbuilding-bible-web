@@ -68,6 +68,7 @@ const Post = <T extends TGenericPost> ({
         <RightBar>
           <CampaignQuickLinks/>
           <InfoBar
+            key={form.data?.id}
             loading={form.loading || !form.fields.length}
             onChange={form.onFieldChange}
             data={form.data}
@@ -84,7 +85,7 @@ const Post = <T extends TGenericPost> ({
             canEdit={form.canEdit}
             canManuallySave={true}
             canRefresh={!form.isNew}
-            canDelete={form.canEdit}
+            canDelete={form.canEdit && !form.isNew}
             onSave={form.onSave}
             onRefresh={form.onFetch}
             onDelete={form.onDelete}
@@ -92,7 +93,7 @@ const Post = <T extends TGenericPost> ({
             favouriteHandler={form.favouriteHandler}
             playerCharacterHandler={form.playerCharacterHandler}
             permissionHandler={form.permissionHandler}
-            onCoverImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'cover')}
+            onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
           />
           {!form.loading && (
             <FloatingBox color={'solid'}>

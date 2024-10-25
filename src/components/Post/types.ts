@@ -45,6 +45,7 @@ export type TPinHandler = {
 export type TFavouriteHandler = {
   toggleFavourite: () => Promise<void>
   isFavourited: boolean
+  canFavourite: boolean
 }
 export type TPlayerCharacterHandler = {
   handleOnSelectUser: (values: TSelectOption[]) => Promise<any>
