@@ -5,7 +5,7 @@ import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
 import { TSelectOption } from '../FieldMapper'
 import Label from '../Label'
-import { TDialogTypes } from '../../../../hooks/fieldTools/types'
+import { TDialogTypes } from '@/hooks/fieldTools/types'
 import Dialog from '../../../Dialogs'
 
 type TProp = {
@@ -42,7 +42,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({
 
   return (
     <Field className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
-      <Label required={required}>{label}</Label>
+      <Label required={required && !disabled}>{label}</Label>
       <Combobox value={value} by="id" onChange={onChange} multiple disabled={disabled}>
         {({ open }) => (
           <>

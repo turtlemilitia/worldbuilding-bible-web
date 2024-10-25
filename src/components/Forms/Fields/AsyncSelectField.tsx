@@ -27,7 +27,7 @@ const AsyncSelectField: FunctionComponent<TProp> = ({ value, onChange, search, d
 
   return (
     <Label className="relative">
-      <Label required={required}>{label}</Label>
+      <Label required={required && !disabled}>{label}</Label>
       <Combobox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
           <>

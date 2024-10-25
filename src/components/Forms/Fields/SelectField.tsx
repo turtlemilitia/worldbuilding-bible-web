@@ -24,7 +24,7 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
 
   return (
     <Field className="relative">
-      {label && <Label required={required}>{label}</Label>}
+      {label && <Label required={required && !disabled}>{label}</Label>}
       <Combobox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
           <>

@@ -23,13 +23,15 @@ type TOwnProps = {
   onChange: (value: string) => any;
   formatString?: string;
   required?: boolean;
+  disabled?: boolean;
 }
 export const DatePickerWithPresets: FunctionComponent<TOwnProps> = ({
   label,
   value,
   onChange,
   formatString = 'yyyy-M-d H:m:s',
-  required = false
+  required = false,
+  disabled
 }) => {
 
   const [selected, setSelected] = useState<TSelectOption | null>(null)
@@ -40,10 +42,11 @@ export const DatePickerWithPresets: FunctionComponent<TOwnProps> = ({
 
   return (
     <Field className={'relative'}>
-      {label && <Label required={required}>{label}</Label>}
+      {label && <Label required={required && !disabled}>{label}</Label>}
       <Popover>
         <PopoverTrigger asChild>
           <Button
+            disabled={disabled}
             className={cn(
               'rounded-lg px-4 py-3',
               'inline-flex items-center w-full justify-start text-left font-normal',

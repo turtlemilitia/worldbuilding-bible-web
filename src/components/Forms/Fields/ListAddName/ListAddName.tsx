@@ -14,7 +14,7 @@ const ListAddName: FunctionComponent<TListAddProps> = ({ label, required, value,
 
   return (
     <Field>
-      <Label required={required}>{label}</Label>
+      <Label required={required && !disabled}>{label}</Label>
       <div className="relative w-full py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800">
         <div>
           <>

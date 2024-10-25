@@ -13,7 +13,7 @@ type TProps = {
 const TextField: FunctionComponent<TProps> = ({ type, value, onChange, disabled, required, label }) => {
   return (
     <Field>
-      {label && <Label required={required}>{label}</Label>}
+      {label && <Label required={required && !disabled}>{label}</Label>}
       <Input
         className="w-full px-4 py-2 rounded-lg border-none bg-stone-700 bg-opacity-50 focus:bg-stone-800 text-inherit placeholder:text-slate-200 outline-none"
         type={type}

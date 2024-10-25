@@ -120,6 +120,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
               value={currentValue}
               onChange={(value) => onChange(name, value)}
               formatString={props.formatString}
+              disabled={disabled}
             />
           )}
           {props.type === 'listAdd' && (
