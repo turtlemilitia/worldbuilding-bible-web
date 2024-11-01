@@ -12,6 +12,10 @@ export interface Named {
   name: string;
 }
 
+export interface Completable {
+  completedAt: string;
+}
+
 export type TGenericPostBasic = Identifiable & Sluggable & Named
 
 export type TPlayerTools = {

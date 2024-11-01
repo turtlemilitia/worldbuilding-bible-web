@@ -25,11 +25,11 @@ export type TNumberFieldFn = (props: {
   required?: TNumberField['required']
 }) => TNumberField
 
-type TSelectField = TGenericFieldParams & {
+export type TSelectField = TGenericFieldParams & {
   type: 'select',
   options: TSelectOption[],
 }
-type TMultiSelectField = TGenericFieldParams & {
+export type TMultiSelectField = TGenericFieldParams & {
   type: 'multiSelect',
   options: TSelectOption[],
 }
@@ -58,12 +58,12 @@ export type TDatepickerField = TGenericFieldParams & {
   type: 'datePicker',
   formatString: string
 }
-export type TDatePickerFieldFn = (props: {
+export type TDatePickerFieldProps = {
   name: TDatepickerField['name'],
   label: TDatepickerField['label'],
   required?: TDatepickerField['required'],
   formatString?: string
-}) => TDatepickerField
+}
 
 export type TDialogTypes =
   'note'
@@ -84,14 +84,14 @@ export type TSelectDialogProps = {
   onUpdated?: (data: any) => any,
   onDeleted?: (id: string | number) => any,
 }
-export type TMultiSelectFieldFn = (props: {
+export type TMultiSelectFieldProps = {
   name: TSelectField['name'],
   label: TSelectField['label'],
   options: TSelectField['options']
   required?: TSelectField['required']
   link?: TAsyncMultiSelectField['link'],
   dialogType?: TDialogTypes
-}) => TMultiSelectField
+}
 
 export type TSelectFieldProps = {
   required?: TMultiSelectField['required'],

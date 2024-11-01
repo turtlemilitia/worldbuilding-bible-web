@@ -1,7 +1,7 @@
-import { TEncounter } from '../../../types'
-import { TEncounterRequest } from '../../../services/ApiService/Campaigns/EncounterService'
+import { TEncounter } from '@/types'
+import { TEncounterRequest } from '@/services/ApiService/Campaigns/EncounterService'
 import { useCallback, useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import usePostForm from '../usePostForm'
 import { useEncounterDataManager } from '../../DataManagers'
 import useEncounterFields from './useEncounterFields'
@@ -22,6 +22,7 @@ const useEncounterForm = ({ encounterId, onFetched, onCreated, onUpdated, onDele
     name: data.name,
     content: data.content,
     typeId: data.type?.id,
+    completedAt: data.completedAt,
   }), [])
 
   return usePostForm<TEncounter, TEncounterRequest>({

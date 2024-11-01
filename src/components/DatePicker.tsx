@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { addDays, format, parse } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
+import { Calendar as CalendarIcon, XIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/Calendar'
@@ -20,7 +20,7 @@ import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 type TOwnProps = {
   label: string;
   value: string;
-  onChange: (value: string) => any;
+  onChange: (value: string|null) => any;
   formatString?: string;
   required?: boolean;
   disabled?: boolean;
@@ -55,7 +55,8 @@ export const DatePickerWithPresets: FunctionComponent<TOwnProps> = ({
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4"/>
-            {date ? format(date, 'PPP') : <span>Pick a date</span>}
+            {date ? format(date, 'PPP') : <span className={'text-stone-400 italic'}>Pick a date</span>}
+            {!disabled && !required && <XIcon className="ml-auto h-4 w-4" onClick={() => onChange(null)}/>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="flex w-auto flex-col space-y-2 p-2 bg-stone-800 border-stone-700">

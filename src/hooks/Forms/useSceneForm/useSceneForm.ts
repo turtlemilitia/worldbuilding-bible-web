@@ -1,7 +1,7 @@
-import { TScene } from '../../../types'
-import { TSceneRequest } from '../../../services/ApiService/Campaigns/SceneService'
+import { TScene } from '@/types'
+import { TSceneRequest } from '@/services/ApiService/Campaigns/SceneService'
 import { useCallback, useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import usePostForm from '../usePostForm'
 import { useSceneDataManager } from '../../DataManagers'
 import useSceneFields from './useSceneFields'
@@ -21,6 +21,7 @@ const useSceneForm = ({ sceneId, onFetched, onCreated, onUpdated, onDeleted }: T
   const mapData = useCallback((data: any): TSceneRequest => ({
     name: data.name,
     content: data.content,
+    completedAt: data.completedAt,
   }), [])
 
   return usePostForm<TScene, TSceneRequest>({

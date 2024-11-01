@@ -6,6 +6,7 @@ import { TSelectOption } from './FieldMapper'
 import Label from './Label'
 import Dialog from '../../Dialogs'
 import { TDialogTypes } from '@/hooks/fieldTools/types'
+import { Completable } from '@/types'
 
 type TProp = {
   label: string;
@@ -36,7 +37,6 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
       ? options
       : options.filter((option) => {
         return option?.name.toLowerCase().includes(query.toLowerCase())
-          && !value?.find(singleValue => singleValue.id === option.id)
       })
 
   return (
@@ -47,14 +47,19 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           <>
             {value && value.length > 0 ? (
               <ul>
-                {value.map((item) => (
-                  <li key={item.id} className="py-1">
-                    {(dialogType && item.slug) ? <Button
-                        onClick={() => setDialogIsOpen(item.slug as string)}>{item.name}</Button>
-                      : (link && item.slug ? <Link to={link(item.slug as string)}>{item.name}</Link>
-                        : item.name)}
-                  </li>
-                ))}
+                {value.map(({ id, name, slug, completedAt }: TSelectOption & Partial<Completable>) => {
+                  const displayName = completedAt ? <span className={'line-through'}>{name}</span> : name
+                  return (
+                    <li key={id} className="py-1">
+                      {(dialogType && slug) ? <Button
+                          onClick={() => setDialogIsOpen(
+                            slug as string)}>{displayName}</Button>
+                        : (link && slug ? <Link
+                            to={link(slug as string)}>{displayName}</Link>
+                          : displayName)}
+                    </li>
+                  )
+                })}
               </ul>
             ) : (
               <div className="text-stone-500 italic">Nothing here</div>
@@ -98,7 +103,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
                       >
                         {({ active, selected }) => (
                           <li className={`py-1 flex justify-between cursor-pointer`}>
-                            {option.name}
+                            {option.label ?? option.name}
                             {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
                             {!selected && active && <DotIcon className="text-stone-300 h-5 w-5"/>}
                           </li>

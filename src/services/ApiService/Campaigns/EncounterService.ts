@@ -1,4 +1,4 @@
-import { TEncounter } from '../../../types'
+import { TEncounter } from '@/types'
 import { createChildApiService } from '../createApiService'
 import { createNotableService } from '../createNotableService'
 import { createImageableService } from '../createImageableService'
@@ -6,7 +6,8 @@ import { createImageableService } from '../createImageableService'
 export type TEncounterRequest = {
   name: string;
   content: string;
-  typeId: number
+  typeId: number;
+  completedAt?: string|null;
 }
 
 export type TEncounterResponse = TEncounter

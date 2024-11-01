@@ -1,4 +1,4 @@
-import { TQuest } from '../../../types'
+import { TQuest } from '@/types'
 import { createChildApiService } from '../createApiService'
 import { createNotableService } from '../createNotableService'
 import { createImageableService } from '../createImageableService'
@@ -8,6 +8,7 @@ export type TQuestRequest = {
   typeId: number;
   content: string;
   parentId?: number;
+  completedAt?: string|null;
 }
 
 export type TQuestResponse = TQuest

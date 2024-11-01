@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, JSX } from 'react'
 import SelectField from './SelectField'
 import TextField from './TextField'
 import AsyncSelectField from './AsyncSelectField'
@@ -15,6 +15,7 @@ export type TSelectOption = {
   id: string | number,
   slug?: string,
   name: string
+  label?: string | JSX.Element
 }
 type TProps = TField & {
   currentValue?: any,

@@ -1,4 +1,5 @@
 import {
+  Completable,
   TCanHaveImages,
   TCanHaveNotes,
   TGenericPost,
@@ -33,12 +34,12 @@ export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNote
   type: TQuestType,
   parent?: TQuest,
   children?: TQuest[]
-}
+} & Completable
 
 export type TEncounterType = TOptionList
 
 export type TEncounter = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   type: TEncounterType
-}
+} & Completable
 
-export type TScene = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes
+export type TScene = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & Completable

@@ -1,7 +1,7 @@
-import { TQuest } from '../../../types'
-import { TQuestRequest } from '../../../services/ApiService/Campaigns/QuestService'
+import { TQuest } from '@/types'
+import { TQuestRequest } from '@/services/ApiService/Campaigns/QuestService'
 import { useCallback, useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import { useQuestDataManager } from '../../DataManagers'
 import usePostForm from '../usePostForm'
 import useQuestFields from './useQuestFields'
@@ -29,6 +29,7 @@ const useQuestForm = ({
     content: data.content,
     typeId: data.type?.id,
     parentId: data.parent?.id,
+    completedAt: data.completedAt,
   }), []);
 
   return usePostForm({

@@ -1,25 +1,29 @@
+import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import {
-  TAsyncMultiSelectFieldFn, TDatePickerFieldFn,
-  TMultiSelectFieldFn,
+  TAsyncMultiSelectFieldFn,
+  TDatepickerField,
+  TDatePickerFieldProps, TMultiSelectField,
+  TMultiSelectFieldProps,
   TNumberFieldFn,
   TSelectFieldFn,
   TSelectFieldProps,
   TTextFieldFn,
 } from './types'
+import { Completable, TEncounter, TQuest, TScene } from '@/types'
 
 export const textField: TTextFieldFn = (props) => ({
   ...props,
-  type: 'text'
+  type: 'text',
 })
 export const numberField: TNumberFieldFn = (props) => ({
   ...props,
-  type: 'number'
+  type: 'number',
 })
 export const selectField: TSelectFieldFn = (props) => ({
   ...props,
   type: 'select',
 })
-export const multiSelectField: TMultiSelectFieldFn = (props) => ({
+export const multiSelectField = (props: TMultiSelectFieldProps): TMultiSelectField => ({
   ...props,
   type: 'multiSelect',
 })
@@ -27,9 +31,10 @@ export const asyncMultiSelectField: TAsyncMultiSelectFieldFn = (props) => ({
   ...props,
   type: 'asyncMultiSelect',
 })
-export const datePickerField: TDatePickerFieldFn = (props) => ({
+export const datePickerField = (props: TDatePickerFieldProps): TDatepickerField => ({
   ...props,
-  type: 'datePicker'
+  type: 'datePicker',
+  formatString: props.formatString || 'yyyy-M-d H:m:s'
 })
 
 // other generic fields
@@ -43,7 +48,7 @@ export const noteField = ({
   required,
   options,
   link,
-  dialogType: 'note'
+  dialogType: 'note',
 })
 
 export const sessionField = ({
@@ -56,8 +61,16 @@ export const sessionField = ({
   required,
   options,
   link,
-  dialogType: 'session'
+  dialogType: 'session',
 })
+
+export const crossOutCompleted = (options: (TSelectOption & Completable)[]) => {
+  return options.map(({ name, ...option }) => ({
+    ...option,
+    name,
+    label: option.completedAt ? <span className={'line-through'}>{name}</span> : name
+  }));
+}
 
 export const sceneField = ({
   required,
@@ -67,7 +80,7 @@ export const sceneField = ({
   name: 'scenes',
   label: 'Scenes',
   required,
-  options,
+  options: crossOutCompleted(options as TScene[]),
   link,
   dialogType: 'scene'
 })
@@ -80,7 +93,7 @@ export const questField = ({
   name: 'quests',
   label: 'Quests',
   required,
-  options,
+  options: crossOutCompleted(options as TQuest[]),
   link,
   dialogType: 'quest'
 })
@@ -93,7 +106,7 @@ export const encounterField = ({
   name: 'encounters',
   label: 'Encounters',
   required,
-  options,
+  options: crossOutCompleted(options as TEncounter[]),
   link,
   dialogType: 'encounter'
 })

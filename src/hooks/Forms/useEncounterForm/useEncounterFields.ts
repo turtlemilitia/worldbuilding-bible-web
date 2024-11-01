@@ -2,6 +2,7 @@ import { noteField, selectField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
 import { useEncounterDataManager, useEncounterTypeIndexDataManager, useNoteIndexDataManager } from '../../DataManagers'
 import { useMemo } from 'react'
+import { datePickerField } from '@/hooks/fieldTools/fieldTools'
 
 const useEncounterFields = (): TUseFields => {
 
@@ -20,6 +21,10 @@ const useEncounterFields = (): TUseFields => {
         required: true
       }))
     }
+    fields.push(datePickerField({
+      name: 'completedAt',
+      label: 'Completed'
+    }))
     if (manager.encounter && notes) {
       fields.push(noteField({
         options: notes,

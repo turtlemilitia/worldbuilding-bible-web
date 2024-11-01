@@ -2,6 +2,7 @@ import { noteField, selectField, TField } from '../../fieldTools'
 import { TUseFields } from '@/components/Post/types'
 import { useNoteIndexDataManager, useQuestDataManager, useQuestTypeIndexDataManager } from '../../DataManagers'
 import { useMemo } from 'react'
+import { datePickerField } from '@/hooks/fieldTools/fieldTools'
 
 const useQuestFields = (): TUseFields => {
 
@@ -16,6 +17,10 @@ const useQuestFields = (): TUseFields => {
         label: 'Type',
         options: types ?? [],
         required: true
+      }),
+      datePickerField({
+        name: 'completedAt',
+        label: 'Completed'
       })
     ]
 

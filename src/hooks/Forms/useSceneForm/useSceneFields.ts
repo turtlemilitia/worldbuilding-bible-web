@@ -8,7 +8,7 @@ import {
 } from '@/hooks/DataManagers'
 import { useMemo } from 'react'
 import {
-  characterField,
+  characterField, datePickerField,
   encounterField,
   locationField,
 } from '../../fieldTools/fieldTools'
@@ -22,7 +22,12 @@ const useSceneFields = (): TUseFields => {
   const manager = useSceneDataManager()
 
   const fields: TField[] = useMemo(() => {
-    const fields: TField[] = []
+    const fields: TField[] = [
+      datePickerField({
+        name: 'completedAt',
+        label: 'Completed'
+      })
+    ]
     if (manager.scene && campaign?.encounters) {
       fields.push(
         encounterField({

@@ -1,4 +1,4 @@
-import { TScene } from '../../../types'
+import { TScene } from '@/types'
 import { createChildApiService } from '../createApiService'
 import { createNotableService } from '../createNotableService'
 import { createImageableService } from '../createImageableService'
@@ -9,6 +9,7 @@ import { createLocationableService } from '../createLocationableService'
 export type TSceneRequest = {
   name: string;
   content: string;
+  completedAt?: string|null;
 }
 
 export type TSceneResponse = TScene
