@@ -1,25 +1,35 @@
 import React, { FunctionComponent } from 'react'
-import Sidebar, { SidebarItemInterface } from '../../Sidebar/Sidebar'
+import Sidebar from '../../Sidebar/Sidebar'
 import { TEncounterSidebarProps } from './types'
-import { SwordsIcon } from 'lucide-react'
 import useCampaignsMapping from '../../../hooks/useCampaignsMapping'
 import { useEncounterTypeIndexDataManager } from '../../../hooks/DataManagers'
+import SidebarSection from '@/components/Sidebar/SidebarSection'
 
 const EncounterSidebar: FunctionComponent<TEncounterSidebarProps> = ({ campaign }) => {
 
+  const { encounterTypes: types } = useEncounterTypeIndexDataManager()
+
   const { mapEncounter } = useCampaignsMapping({ campaignId: campaign.slug })
 
-  const { encounterTypes: types } = useEncounterTypeIndexDataManager();
+  const addNewLink = `/campaigns/${campaign.slug}/encounters/new`
 
-  const items: SidebarItemInterface[] = types?.map(type => ({
-    title: type.name,
-    addNewLink: campaign.canUpdate ? `/campaigns/${campaign.slug}/encounters/new`: undefined,
-    addNewLinkState: { type: type.id },
-    icon: (props) => <SwordsIcon {...props}/>,
-    children: campaign.encounters?.filter(encounter => encounter.type.id === type.id).map(encounter => mapEncounter(encounter)) ?? []
-  })) ?? []
-
-  return <Sidebar title={'Encounters'} items={items} canAdd={campaign.canUpdate}/>
+  return <Sidebar title={'Encounters'} canAdd={campaign.canUpdate}>
+    {types?.filter(type => {
+      return campaign.canUpdate
+        || campaign.encounters?.find(encounter => encounter.type.id === type.id)
+    }).map(type => (
+      <SidebarSection
+        title={type.name}
+        addNewLink={campaign.canUpdate ? addNewLink : undefined}
+        addNewLinkState={{ type }}
+        items={
+          campaign.encounters?.filter(
+            encounter => encounter.type.id === type.id).
+            map(quest => mapEncounter(quest))}
+      />
+    ))
+    }
+  </Sidebar>
 }
 
 export default EncounterSidebar

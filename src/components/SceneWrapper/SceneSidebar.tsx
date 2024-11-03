@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react'
 import Sidebar, { SidebarItemInterface } from '../Sidebar/Sidebar'
 import useCampaignsMapping from '../../hooks/useCampaignsMapping'
 import { TCampaign } from '@/types'
+import SidebarSection from '@/components/Sidebar/SidebarSection'
 
 export type TSceneSidebarProps = {
   campaign: TCampaign
@@ -15,9 +16,10 @@ const SceneSidebar: FunctionComponent<TSceneSidebarProps> = ({ campaign }) => {
   return <Sidebar
     title={'Scenes'}
     addNew={`/campaigns/${campaign.slug}/scenes/new`}
-    items={items}
     canAdd={campaign.canUpdate}
-  />
+  >
+    <SidebarSection items={items}/>
+  </Sidebar>
 }
 
 export default SceneSidebar

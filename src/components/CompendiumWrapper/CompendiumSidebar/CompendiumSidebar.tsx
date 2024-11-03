@@ -21,6 +21,7 @@ import { FunctionComponent, useMemo } from 'react'
 import { TCompendiumSidebarProps } from './types'
 import { createNestedArray } from '@/utils/treeUtils'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import SidebarSection from '@/components/Sidebar/SidebarSection'
 
 const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compendium }) => {
 
@@ -163,7 +164,9 @@ const CompendiumSidebar: FunctionComponent<TCompendiumSidebarProps> = ({ compend
     return items.map(item => ({ ...item, startOpen: false }))
   }, [compendium.species, mapSpecies, compendium.characters, mapCharacter, compendium.concepts, mapConcept, compendium.languages, mapLanguage, compendium.religions, mapReligion, compendium.pantheons, mapPantheon, compendium.deities, mapDeity, compendium.currencies, mapCurrency, compendium.factions, mapFaction, nestedLocations, mapLocation, compendium.items, mapItem, compendium.naturalResources, mapNaturalResource, compendium.planes, mapPlane, compendium.stories, mapStory, compendium.spells, mapSpell, compendium.canUpdate, prefix])
 
-  return <Sidebar title={'Compendium'} items={items}/>
+  return <Sidebar title={'Compendium'}>
+    <SidebarSection items={items}/>
+  </Sidebar>
 }
 
 export default CompendiumSidebar

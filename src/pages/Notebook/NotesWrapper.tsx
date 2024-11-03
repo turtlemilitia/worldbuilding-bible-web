@@ -9,6 +9,7 @@ import {
   useNotebookIndexDataManager,
   useNoteIndexDataManager,
 } from '@/hooks/DataManagers'
+import SidebarSection from '@/components/Sidebar/SidebarSection'
 
 const NotesWrapper = (): JSX.Element => {
 
@@ -20,7 +21,8 @@ const NotesWrapper = (): JSX.Element => {
 
   const navigate = useNavigate()
 
-  const prefix = useMemo(() => campaignId ? `/campaigns/${campaignId}` : '', [campaignId])
+  const prefix = useMemo(() => campaignId ? `/campaigns/${campaignId}` : '',
+    [campaignId])
 
   useEffect(() => {
     if (!noteId) {
@@ -41,33 +43,35 @@ const NotesWrapper = (): JSX.Element => {
       <Sidebar
         title={'My Notes'}
         addNew={`${prefix}/notes/notebooks/new`}
-        items={[
-          ...notebooks.map((notebook) => ({
-            title: notebook.name,
-            to: `${prefix}/notes/notebooks/${(notebook.slug)}`,
-            icon: (props: LucideProps) =>
-              <BookIcon {...props}/>,
-            onDelete: () => destroyNotebook(notebook.slug),
-            addNewLink: `${prefix}/notes/new`,
-            addNewLinkState: { notebook },
-            children: notes.filter(note => note.notebook?.id === notebook.id).
-              map((note) => ({
-                title: note.name,
-                to: `${prefix}/notes/${note.slug}`,
-                icon: (props: LucideProps) => <StickyNoteIcon {...props}/>,
-                onDelete: () => destroyNote(note.slug)
-                  .then(() => onDeleted()),
-              })),
-          })),
-          ...notes.filter(note => !note.notebook).
+      >
+        <SidebarSection
+          items={[
+            ...notebooks.map((notebook) => ({
+              title: notebook.name,
+              to: `${prefix}/notes/notebooks/${(notebook.slug)}`,
+              icon: (props: LucideProps) =>
+                <BookIcon {...props}/>,
+              onDelete: () => destroyNotebook(notebook.slug),
+              addNewLink: `${prefix}/notes/new`,
+              addNewLinkState: { notebook },
+              children: notes.filter(note => note.notebook?.id === notebook.id).
+                map((note) => ({
+                  title: note.name,
+                  to: `${prefix}/notes/${note.slug}`,
+                  icon: (props: LucideProps) => <StickyNoteIcon {...props}/>,
+                  onDelete: () => destroyNote(note.slug).
+                    then(() => onDeleted()),
+                })),
+            })),
+            ...notes.filter(note => !note.notebook).
               map((note) => ({
                 title: note.name,
                 to: `${prefix}/notes/${note.slug}`,
                 icon: (props: LucideProps) => <PenBoxIcon {...props}/>,
-                onDelete: () => destroyNote(note.slug)
-                  .then(() => onDeleted()),
+                onDelete: () => destroyNote(note.slug).then(() => onDeleted()),
               })),
-        ]}/>
+          ]}/>
+      </Sidebar>
       <div className="relative w-full">
         <Outlet/>
       </div>

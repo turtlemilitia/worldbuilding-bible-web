@@ -1,12 +1,16 @@
-import React, { JSX, useEffect, useState } from 'react'
+import React, {
+  JSX,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from 'react'
 import { LucideProps, PlusIcon } from 'lucide-react'
-import SidebarItem from './SidebarItem'
 import { FloatingBox } from '../FloatingBox'
 import { Link } from 'react-router-dom'
 import { useCampaignDataManager } from '../../hooks/DataManagers'
 
 export interface SidebarItemInterface {
-  id?: string;
+  id?: string|number;
   title: string;
   subtitle?: string;
   to?: string;
@@ -20,14 +24,13 @@ export interface SidebarItemInterface {
   onDelete?: () => any;
 }
 
-interface TOwnProps {
+interface TOwnProps extends PropsWithChildren {
   title: string;
-  items: SidebarItemInterface[],
   addNew?: string,
   canAdd?: boolean
 }
 
-const Sidebar = ({ title, items, addNew, canAdd = false }: TOwnProps): JSX.Element => {
+const Sidebar = ({ title, addNew, canAdd = false, children }: TOwnProps): JSX.Element => {
 
   const [show, setShow] = useState<boolean>(false)
 
@@ -44,7 +47,7 @@ const Sidebar = ({ title, items, addNew, canAdd = false }: TOwnProps): JSX.Eleme
           className={`absolute transition-all duration-1000 ${show ? 'top-5 opacity-100' : '-top-14 opacity-0'} w-full px-6`}>
           <FloatingBox>
             <div className="max-h-underScreen overflow-y-auto">
-              <div className="flex justify-between">
+              <div className="flex justify-between mb-4">
                 <h2 className="text-xl font-sans-serif tracking-widest uppercase text-stone-400">{title}</h2>
                 {addNew && canAdd && (
                   <Link to={addNew}
@@ -53,11 +56,7 @@ const Sidebar = ({ title, items, addNew, canAdd = false }: TOwnProps): JSX.Eleme
                   </Link>
                 )}
               </div>
-              <ul className="mt-5 font-serif text-serif-md leading-none">
-                {items.map((item, index) => {
-                  return <SidebarItem item={item} key={index}/>
-                })}
-              </ul>
+              {children}
             </div>
           </FloatingBox>
         </div>

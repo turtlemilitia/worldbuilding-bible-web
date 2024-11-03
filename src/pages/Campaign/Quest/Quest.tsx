@@ -1,11 +1,12 @@
-import React, { FunctionComponent } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { FunctionComponent, useEffect } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useQuestForm } from '../../../hooks/Forms'
 
 const Quest: FunctionComponent = () => {
 
   const navigate = useNavigate()
+  const location = useLocation();
 
   const { campaignId, questId } = useParams() as { campaignId: string, questId: string } // router
 
@@ -18,6 +19,12 @@ const Quest: FunctionComponent = () => {
       navigate(`/campaigns/${campaignId}/quests`)
     },
   })
+
+  useEffect(() => {
+    if (location.state?.type) {
+      form.onFieldChange('type', location.state.type)
+    }
+  }, [form.data?.type, location.state?.type])
 
   return (
     <Post
