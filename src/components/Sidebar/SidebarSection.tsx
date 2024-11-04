@@ -36,7 +36,9 @@ const SidebarSection: FunctionComponent<TOwnProps> = ({
         </div>
       )}
       <ul className="font-serif text-serif-md leading-none">
-        {items.map((item, index) => {
+        {items
+        .sort((a, b) => Number(Boolean(a.done)) - Number(Boolean(b.done)))
+        .map((item, index) => {
           return <SidebarItem item={item} key={index}/>
         })}
       </ul>

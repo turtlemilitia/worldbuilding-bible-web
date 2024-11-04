@@ -1,7 +1,7 @@
 import { TUseCampaignsMapping } from './types'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { TEncounter, TQuest, TScene, TSession, TTypesAllowed } from '../../types'
-import { SidebarItemInterface } from '../../components/Sidebar/Sidebar'
+import { TEncounter, TQuest, TScene, TSession, TTypesAllowed } from '@/types'
+import { SidebarItemInterface } from '@/components/Sidebar/Sidebar'
 import { StarIcon, StickyNoteIcon, SwordsIcon, VenetianMaskIcon } from 'lucide-react'
 import React, { useCallback, useMemo } from 'react'
 import {
@@ -31,6 +31,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
 
   const mapEncounter = useCallback((encounter: TEncounter): SidebarItemInterface => ({
     title: encounter.name,
+    done: Boolean(encounter.completedAt),
     to: `${prefix}/encounters/${encounter.slug}`,
     icon: (props) => <SwordsIcon {...props}/>,
     onDelete: encounter.canDelete ? () => destroyEncounter(encounter.slug)
@@ -39,6 +40,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
 
   const mapQuest = useCallback((quest: TQuest): SidebarItemInterface => ({
     title: quest.name,
+    done: Boolean(quest.completedAt),
     to: `${prefix}/quests/${quest.slug}`,
     icon: (props) => <StarIcon {...props}/>,
     addNewLink: quest.canUpdate ? `${prefix}/quests/new` : '',
@@ -58,6 +60,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
 
   const mapScene = useCallback((scene: TScene): SidebarItemInterface => ({
     title: scene.name,
+    done: Boolean(scene.completedAt),
     to: `${prefix}/scenes/${scene.slug}`,
     icon: (props) => <VenetianMaskIcon {...props}/>,
     onDelete: scene.canDelete ? () => destroyScene(scene.slug)

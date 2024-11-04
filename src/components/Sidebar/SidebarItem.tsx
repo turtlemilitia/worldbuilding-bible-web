@@ -15,6 +15,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
   const {
     title,
     subtitle,
+    done,
     to,
     icon,
     addNewLink,
@@ -63,21 +64,36 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
     }
   }, [children?.length])
 
+  const Content = () => (
+    <>
+      {icon && (
+        <span className="w-6">{icon({ color: 'white', size: 14, className: 'inline-block mr-3' })}</span>
+      )}
+      <span className={done ? 'line-through' : ''}>{title}
+        {subtitle && (
+          <SmallSansSerifText className="inline opacity-50 ml-2">
+            {subtitle}
+          </SmallSansSerifText>
+        )}
+      </span>
+    </>
+  )
+
   return (
     <li className="my-3">
       <div className="flex justify-between">
         {to ? (
-          <NavLink to={to}
-                   className={({ isActive }) => `${isActive ? 'text-amber-500' : ''} hover:text-amber-500 flex items-center`}>
-            {icon && <span className="w-6">{icon({ color: 'white', size: 14, className: 'inline-block mr-3' })} </span>}<span>{title}{subtitle && <SmallSansSerifText className={'inline opacity-50 ml-2'}>{subtitle}</SmallSansSerifText>}</span>
+          <NavLink
+            to={to}
+            className={({ isActive }) =>
+              `flex items-center hover:text-amber-500 ${isActive ? 'text-amber-500' : ''}`
+            }
+          >
+            <Content />
           </NavLink>
         ) : (
           <div className="flex items-center">
-            {icon && <span className="w-6">{icon({
-              color: 'white',
-              size: 14,
-              className: 'inline-block mr-3'
-            })}</span>}<span>{title}{subtitle && <span>{subtitle}</span>}</span>
+            <Content />
           </div>
         )}
         {(canAddNew || collapsable || onDelete) && (
@@ -115,6 +131,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
       {children && open && (
         <ul className="ml-1.5 pl-3 border-l border-l-yellow-500">
           {children
+            .sort((a, b) => Number(Boolean(a.done)) - Number(Boolean(b.done)))
             .sort((a, b) => a.title.localeCompare(b.title))
             .map((item, index) => {
               return <SidebarItem item={item} key={index}/>

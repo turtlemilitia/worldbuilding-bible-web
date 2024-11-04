@@ -12,6 +12,7 @@ import { useCampaignDataManager } from '../../hooks/DataManagers'
 export interface SidebarItemInterface {
   id?: string|number;
   title: string;
+  done?: boolean;
   subtitle?: string;
   to?: string;
   icon?: (props: LucideProps) => JSX.Element,
