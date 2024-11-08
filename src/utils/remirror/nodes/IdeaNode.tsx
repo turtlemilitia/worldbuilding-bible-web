@@ -32,7 +32,7 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
       <input type='checkbox' className='hidden'/>
       <label className={`flex items-center justify-center w-4 h-4`}>
         { type === 'd' && <BrushIcon className="text-amber-500"/>}
-        { type === 'D' && <DramaIcon className="text-emerald-600"/>}
+        { type === 'D' && <DramaIcon className="text-amber-600"/>}
         { type === 'h' && <CalendarIcon className="text-emerald-600"/>}
         { type === 'i' && <InfoIcon className="text-blue-500"/>}
         { type === 'I' && <LightbulbIcon className="text-amber-500"/>}
