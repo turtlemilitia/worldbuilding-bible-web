@@ -19,7 +19,7 @@ import {
   PenIcon,
   QuoteIcon,
   StarIcon,
-  SwordIcon,
+  SwordsIcon,
   WandIcon,
 } from 'lucide-react'
 
@@ -43,7 +43,7 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
         { type === 'p' && <PenIcon className="text-blue-500"/>}
         { type === 'P' && <FingerprintIcon className="text-blue-500"/>}
         { type === 'r' && <DicesIcon className="text-amber-500"/>}
-        { type === 's' && <SwordIcon className="text-amber-600"/>}
+        { type === 's' && <SwordsIcon className="text-amber-600"/>}
         { type === 'S' && <EyeOffIcon className="text-red-800"/>}
         { type === 'w' && <WandIcon className="text-amber-500"/>}
         { type === '?' && <HelpCircleIcon className="text-fuchsia-500"/>}
