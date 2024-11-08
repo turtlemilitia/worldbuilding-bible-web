@@ -11,7 +11,7 @@ const ideaListPlugin: Plugin = () => {
         const text = firstChild.children[0].value;
 
         // Regular expression to match your custom list markers
-        const match = text.match(/^\[(d|h|i|I|k|l|L|m|p|P|r|s|S|w|\?|!|"|\*|\$|<3)]\s*(.*)$/);
+        const match = text.match(/^\[(d|D|h|i|I|k|l|L|m|p|P|r|s|S|w|\?|!|"|\*|\$|<3)]\s*(.*)$/);
 
         if (match) {
           if (parent && parent.type === 'list') {

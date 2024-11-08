@@ -27,7 +27,7 @@
     "jwt-decode": "^3.1.2",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.263.1",
+    "lucide-react": "^0.279.0",
     "postcss": "^8.4.47",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

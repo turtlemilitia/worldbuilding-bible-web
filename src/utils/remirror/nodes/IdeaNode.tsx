@@ -2,13 +2,14 @@ import { FunctionComponent, JSX } from 'react'
 import {
   AlertTriangle,
   BrushIcon,
+  CalendarIcon,
   CoinsIcon,
   DicesIcon,
+  DramaIcon,
   EyeOffIcon,
   FingerprintIcon,
   HeartIcon,
   HelpCircleIcon,
-  HistoryIcon,
   InfoIcon,
   KeyIcon,
   LightbulbIcon,
@@ -31,7 +32,8 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
       <input type='checkbox' className='hidden'/>
       <label className={`flex items-center justify-center w-4 h-4`}>
         { type === 'd' && <BrushIcon className="text-amber-500"/>}
-        { type === 'h' && <HistoryIcon className="text-emerald-600"/>}
+        { type === 'D' && <DramaIcon className="text-emerald-600"/>}
+        { type === 'h' && <CalendarIcon className="text-emerald-600"/>}
         { type === 'i' && <InfoIcon className="text-blue-500"/>}
         { type === 'I' && <LightbulbIcon className="text-amber-500"/>}
         { type === 'k' && <KeyIcon className="text-yellow-500"/>}
