@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/Forms/Fields/Button'
-import { KeyIcon, PinIcon } from 'lucide-react'
+import { KeyIcon } from 'lucide-react'
 
 const useFilterByPinned = () => {
 

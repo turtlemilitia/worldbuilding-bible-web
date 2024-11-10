@@ -1,5 +1,4 @@
 import SidebarSection from '@/components/Sidebar/SidebarSection'
-import { createNestedArray } from '@/utils/treeUtils'
 import React from 'react'
 import { TCampaign } from '@/types'
 import useCampaignsMapping from '@/hooks/useCampaignsMapping'

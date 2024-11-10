@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useCallback, useEffect } from 'react'
+import React, { FunctionComponent, JSX, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
