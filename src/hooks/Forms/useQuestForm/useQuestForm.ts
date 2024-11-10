@@ -18,7 +18,7 @@ const useQuestForm = ({
   onDeleted
 }: TOwnProps & TUseFormProps<TQuest>): TForm<TQuest> => {
 
-  const include = useMemo(() => 'type;parent;notes', [])
+  const include = useMemo(() => 'type;parent;notes;locations', [])
 
   const manager = useQuestDataManager()
 

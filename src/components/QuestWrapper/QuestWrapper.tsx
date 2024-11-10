@@ -1,29 +1,25 @@
 import React, { FunctionComponent, useEffect } from 'react'
-import { Outlet, useNavigate, useParams } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import QuestSidebar from './QuestSidebar'
 import { useCampaignDataManager } from '../../hooks/DataManagers'
 import useQuestTypeIndexDataManager from '../../hooks/DataManagers/Campaigns/useQuestTypeIndexDataManager'
+import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
+import bgImage from '@/assets/images/quests.png'
 
 const QuestWrapper: FunctionComponent = () => {
 
   const { campaign } = useCampaignDataManager()
   const { questTypes } = useQuestTypeIndexDataManager()
 
-  const { questId } = useParams()
-  const navigate = useNavigate()
+  const { setDefaultBackgroundImage, clearDefaultBackgroundImage } = usePostDataManager()
 
   useEffect(() => {
+    setDefaultBackgroundImage(bgImage)
 
-    if (!campaign?.slug || questId) {
-      return
+    return () => {
+      clearDefaultBackgroundImage()
     }
-    if (campaign.quests?.length > 0) {
-      navigate(`/campaigns/${campaign.slug}/quests/${campaign.quests[0]?.slug}`)
-    } else {
-      navigate(`/campaigns/${campaign.slug}/quests/new`)
-    }
-
-  }, [campaign?.quests])
+  }, [])
 
   return (
     <>

@@ -23,7 +23,7 @@ const useCompendiumForm = ({
 
   const { fields } = useCompendiumFields()
 
-  const include = useMemo(() => compendiumIncludes, [])
+  const include = useMemo(() => `${compendiumIncludes};images`, [])
 
   const mapData = useCallback((data: TCompendium) => ({
     name: data.name,

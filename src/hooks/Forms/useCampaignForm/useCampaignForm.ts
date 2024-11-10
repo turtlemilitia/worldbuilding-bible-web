@@ -7,7 +7,21 @@ import usePostForm from '../usePostForm'
 import useCampaignFields from './useCampaignFields'
 import useLink from '@/hooks/useLink'
 
-export const campaignIncludes = 'compendium;notes;quests;quests.type;quests.parent;encounters;encounters.type;sessions;scenes;pins;pins.pinnable;invitations;users;users.pins;users.pins.pinnable;users.characters;permissions;users.permissions;gameMaster';
+export const campaignIncludes = [
+  'compendium',
+  'notes',
+  'quests', 'quests.type', 'quests.parent', 'quests.locations',
+  'encounters', 'encounters.type', 'encounters.locations',
+  'sessions',
+  'scenes',
+  'pins', 'pins.pinnable',
+  'invitations',
+  'users',
+  'users.pins', 'users.pins.pinnable',
+  'users.characters',
+  'permissions', 'users.permissions',
+  'gameMaster'
+].join(';');
 
 type TOwnProps = {
   campaignId: TCampaign['slug'];

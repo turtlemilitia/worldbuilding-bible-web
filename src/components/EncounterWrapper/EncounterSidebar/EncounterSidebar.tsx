@@ -1,34 +1,50 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import Sidebar from '../../Sidebar/Sidebar'
 import { TEncounterSidebarProps } from './types'
-import useCampaignsMapping from '../../../hooks/useCampaignsMapping'
-import { useEncounterTypeIndexDataManager } from '../../../hooks/DataManagers'
-import SidebarSection from '@/components/Sidebar/SidebarSection'
+import { Button } from '@/components/Forms/Fields/Button'
+import { MapPinIcon } from 'lucide-react'
+import EncountersByType
+  from '@/components/EncounterWrapper/EncounterSidebar/EncountersByType'
+import EncountersByLocation
+  from '@/components/EncounterWrapper/EncounterSidebar/EncountersByLocation'
 
 const EncounterSidebar: FunctionComponent<TEncounterSidebarProps> = ({ campaign }) => {
 
-  const { encounterTypes: types } = useEncounterTypeIndexDataManager()
-
-  const { mapEncounter } = useCampaignsMapping({ campaignId: campaign.slug })
+  const [orderBy, setOrderBy] = useState<'location' | null>(null)
 
   const addNewLink = `/campaigns/${campaign.slug}/encounters/new`
 
-  return <Sidebar title={'Encounters'} canAdd={campaign.canUpdate}>
-    {types?.filter(type => {
-      return campaign.canUpdate
-        || campaign.encounters?.find(encounter => encounter.type.id === type.id)
-    }).map(type => (
-      <SidebarSection
-        title={type.name}
-        addNewLink={campaign.canUpdate ? addNewLink : undefined}
-        addNewLinkState={{ type }}
-        items={
-          campaign.encounters?.filter(
-            encounter => encounter.type.id === type.id).
-            map(quest => mapEncounter(quest))}
-      />
-    ))
-    }
+  const filters = []
+  if (campaign.canUpdate) {
+    filters.push(
+      <Button
+        size={'icon'}
+        variant={orderBy === 'location' ? 'primary' : 'ghost'}
+        className={'block text-stone-300 text-center content-center'}
+        onClick={() => setOrderBy(
+          prevState => prevState !== 'location' ? 'location' : null)}
+      >
+        <MapPinIcon size={20} className="inline-block"/>
+      </Button>,
+    )
+  }
+
+  return <Sidebar
+    title={'Encounters'}
+    canAdd={campaign.canUpdate}
+    filters={filters}
+  >
+    {orderBy === 'location' ? (
+      <EncountersByLocation
+        campaign={campaign}
+        addNewLink={addNewLink}
+        encounters={campaign.encounters}/>
+    ) : (
+      <EncountersByType
+        campaign={campaign}
+        addNewLink={addNewLink}
+        encounters={campaign.encounters}/>
+    )}
   </Sidebar>
 }
 

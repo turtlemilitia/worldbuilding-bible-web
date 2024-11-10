@@ -51,6 +51,7 @@ import NotesWrapper from '../pages/Notebook/NotesWrapper'
 import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
 import MarkdownExample from '@/pages/MarkdownExample'
+import Quests from '@/pages/Campaign/Quests'
 
 const Routes = (): JSX.Element => {
 
@@ -138,10 +139,6 @@ const Routes = (): JSX.Element => {
         element: <Plane/>,
       },
       {
-        path: 'quests/:questId',
-        element: <Quest/>,
-      },
-      {
         path: 'religions/:religionId',
         element: <Religion/>,
       },
@@ -226,6 +223,10 @@ const Routes = (): JSX.Element => {
                   path: 'quests',
                   element: <QuestWrapper/>,
                   children: [
+                    {
+                      path: '',
+                      element: <Quests/>,
+                    },
                     {
                       path: ':questId',
                       element: <Quest/>,

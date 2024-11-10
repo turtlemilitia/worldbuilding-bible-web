@@ -1,21 +1,21 @@
 import React, { JSX } from 'react'
-import bgImage from '../assets/images/darkAlley1.png'
+import bgImage from '@/assets/images/darkAlley1.png'
 import Nav from '../components/Nav/Nav'
 import { Outlet } from 'react-router-dom'
 import Footer from '../components/Footer/Footer'
 import AuthProvider from '../providers/AuthProvider'
-import { useAppSelector } from '@/hooks'
+import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
 
 const PageWrapper = (): JSX.Element => {
 
-  const { backgroundImage } = useAppSelector(state => state.post)
+  const { backgroundImage, defaultBackgroundImage } = usePostDataManager()
 
   return (
     <AuthProvider>
       <div className="min-h-screen font-sans-serif">
         <div className="-z-10 fixed w-full h-full bg-cover bg-no-repeat bg-center"
-             style={{ backgroundImage: `url(${backgroundImage ?? bgImage})` }}/>
-        <div className="bg-stone-950/50">
+             style={{ backgroundImage: `url(${backgroundImage ?? defaultBackgroundImage ?? bgImage})` }}/>
+        <div className="bg-stone-950/50 min-h-screen">
           <Nav/>
           <Outlet/>
           <Footer/>

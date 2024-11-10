@@ -29,9 +29,10 @@ interface TOwnProps extends PropsWithChildren {
   title: string;
   addNew?: string,
   canAdd?: boolean
+  filters?: JSX.Element[]
 }
 
-const Sidebar = ({ title, addNew, canAdd = false, children }: TOwnProps): JSX.Element => {
+const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps): JSX.Element => {
 
   const [show, setShow] = useState<boolean>(false)
 
@@ -49,13 +50,16 @@ const Sidebar = ({ title, addNew, canAdd = false, children }: TOwnProps): JSX.El
           <FloatingBox>
             <div className="max-h-underScreen overflow-y-auto">
               <div className="flex justify-between mb-4">
-                <h2 className="text-xl font-sans-serif tracking-widest uppercase text-stone-400">{title}</h2>
-                {addNew && canAdd && (
-                  <Link to={addNew}
-                        className={`block w-7 font-serif text-serif-md text-stone-300 text-center`}>
-                    <PlusIcon color="white" className="inline-block"/>
-                  </Link>
-                )}
+                <h2 className="text-xl font-sans-serif tracking-widest uppercase content-center text-stone-400">{title}</h2>
+                <div className={'flex justify-end'}>
+                  {filters}
+                  {addNew && canAdd && (
+                    <Link to={addNew}
+                          className={`block w-7 text-stone-300 text-center content-center ml-1`}>
+                      <PlusIcon color="white" className="inline-block"/>
+                    </Link>
+                  )}
+                </div>
               </div>
               {children}
             </div>

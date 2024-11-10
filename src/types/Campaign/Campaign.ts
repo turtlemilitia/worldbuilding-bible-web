@@ -4,7 +4,7 @@ import {
   TCanHaveNotes,
   TGenericPost,
   TGenericPostBasic,
-  TInvitation, TOptionList,
+  TInvitation, TLocation, TOptionList,
   TPermission,
   TPin,
   TPlayerTools,
@@ -23,9 +23,9 @@ export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveN
 
 export type TCampaignRelationships = {
   sessions: (TGenericPostBasic & { session_number: TSession['session_number'] })[];
-  encounters: (TGenericPostBasic & { type: TEncounter['type'] })[];
+  encounters: (TGenericPostBasic & { type: TEncounter['type'], locations: TLocation[] })[];
   scenes: (TGenericPostBasic)[];
-  quests: (TGenericPostBasic & { type: TQuest['type'] })[];
+  quests: (TGenericPostBasic & { type: TQuest['type'], locations: TLocation[] })[];
 }
 
 export type TQuestType = TOptionList
@@ -33,7 +33,8 @@ export type TQuestType = TOptionList
 export type TQuest = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
   type: TQuestType,
   parent?: TQuest,
-  children?: TQuest[]
+  children?: TQuest[],
+  locations?: TLocation[]
 } & Completable
 
 export type TEncounterType = TOptionList

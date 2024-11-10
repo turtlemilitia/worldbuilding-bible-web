@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useEffect } from 'react'
+import React, { FunctionComponent, JSX, useCallback, useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
@@ -12,6 +12,7 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
   const { setLoading } = usePostDataManager()
   const { campaign } = useCampaignDataManager()
   const { compendium, view, clearData } = useCompendiumDataManager()
+  const {setDefaultBackgroundImage, clearDefaultBackgroundImage} = usePostDataManager()
   const { compendiumId } = useParams() as { compendiumId: string } // router
 
   useEffect(() => {
@@ -29,6 +30,16 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
       }
     }
   }, [compendiumId])
+
+
+  useEffect(() => {
+
+    const coverImage = compendium?.images?.find(image => image.pivot?.type?.name.toLowerCase() === 'cover')?.original
+    setDefaultBackgroundImage(coverImage)
+
+    return () => clearDefaultBackgroundImage()
+
+  }, [compendium])
 
   return (
     <>

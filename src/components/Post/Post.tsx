@@ -40,13 +40,15 @@ const Post = <T extends TGenericPost> ({
   form
 }: TPostProps<T>): JSX.Element => {
 
-  const { setBackgroundImage, setLoading } = usePostDataManager();
+  const { setBackgroundImage, clearBackgroundImage, setLoading } = usePostDataManager();
 
   const [profileImagePickerOpen, setProfileImagePickerOpen] = useState<boolean>(false)
 
   useEffect(() => {
 
     setBackgroundImage(form.imageHandler.getImage('cover'))
+
+    return () => clearBackgroundImage()
 
   }, [form.imageHandler.getImage('cover')])
 

@@ -1,3 +1,3 @@
-import QuestWrapper from './component'
+import QuestWrapper from './QuestWrapper'
 
 export default QuestWrapper;

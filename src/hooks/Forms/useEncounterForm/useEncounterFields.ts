@@ -11,7 +11,6 @@ const useEncounterFields = (): TUseFields => {
   const { encounterTypes: types } = useEncounterTypeIndexDataManager();
 
   const fields: TField[] = useMemo(() => {
-    debugger;
     const fields: TField[] = []
     if (types) {
       fields.push(selectField({
