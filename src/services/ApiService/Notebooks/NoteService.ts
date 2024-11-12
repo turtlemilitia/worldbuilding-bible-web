@@ -6,6 +6,7 @@ export interface TNoteRequest {
   name: string;
   content: string;
   notebookId: number|null;
+  parentId: number|null;
 }
 
 type TNoteResponse = TNote;

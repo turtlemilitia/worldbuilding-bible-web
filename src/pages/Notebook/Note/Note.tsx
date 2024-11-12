@@ -1,11 +1,12 @@
-import React, { FunctionComponent } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { FunctionComponent, useEffect } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useNoteForm } from '../../../hooks/Forms'
 
 const Note: FunctionComponent = () => {
 
   const navigate = useNavigate()
+  const location = useLocation()
 
   const { noteId } = useParams() as { notebookId: string, noteId: string } // router
 
@@ -18,6 +19,12 @@ const Note: FunctionComponent = () => {
       navigate(`/notes`)
     },
   })
+
+  useEffect(() => {
+    if (location.state?.parent) {
+      form.onFieldChange('parent', location.state.parent)
+    }
+  }, [form.data?.parent, location.state?.parent])
 
   return (
     <Post

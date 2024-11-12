@@ -1,8 +1,8 @@
 import React, { JSX } from 'react'
 import { CopyrightIcon } from 'lucide-react'
 import { MusicPlayer } from '../MusicPlayer'
-import { useAppSelector } from '../../hooks'
-import { RootState } from '../../store'
+import { useAppSelector } from '@/hooks'
+import { RootState } from '@/store'
 
 const Footer: React.FunctionComponent = (): JSX.Element => {
 
@@ -15,7 +15,7 @@ const Footer: React.FunctionComponent = (): JSX.Element => {
           <MusicPlayer/>
         )}
         <div>
-          <CopyrightIcon className="inline-block h-4 w-4"/> {new Date().getFullYear()} Worldbuilding Bible
+          <CopyrightIcon className="inline-block h-4 w-4"/> {new Date().getFullYear()} Worldbuilding Tome
         </div>
         <div>
           Filipe Fonseca

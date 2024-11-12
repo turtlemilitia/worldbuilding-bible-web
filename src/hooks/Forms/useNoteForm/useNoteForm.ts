@@ -18,7 +18,7 @@ const useNoteForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TNote>): TForm<TNote> => {
 
-  const include = useMemo(() => 'notebook', [])
+  const include = useMemo(() => 'notebook;parent', [])
 
   const manager = useNoteDataManager();
 
@@ -27,7 +27,8 @@ const useNoteForm = ({
   const mapData = useCallback((data: TNote): TNoteRequest => ({
     name: data.name,
     content: data.content,
-    notebookId: data.notebook?.id || null
+    notebookId: data.notebook?.id || null,
+    parentId: data.parent?.id || null
   }), [])
 
   return {...usePostForm({

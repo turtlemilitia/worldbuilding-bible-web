@@ -48,7 +48,7 @@ export const ProtectedRoute = (): JSX.Element => {
             compendiumIndexDataManager.index(),
             campaignIndexDataManager.index(),
             notebookIndexDataManager.index(),
-            noteIndexDataManager.index({ include: 'notebook:id,slug,name' }),
+            noteIndexDataManager.index({ include: 'notebook:id,slug,name;parent:id,slug,name' }),
             imageTypeIndexDataManager.index(),
             governmentTypeIndexDataManager.index(),
             locationTypeIndexDataManager.index(),

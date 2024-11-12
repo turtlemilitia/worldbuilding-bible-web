@@ -1,6 +1,6 @@
 import React, { FunctionComponent, JSX } from 'react'
 import RippedPaperEffect from '../assets/images/RippedPaperEffect'
-import { Button } from '../components/Forms/Fields/Button'
+import { Button } from '@/components/Forms/Fields/Button'
 import bgImage from '../assets/images/city-noir.png'
 import { FloatingBox } from '../components/FloatingBox'
 
@@ -13,11 +13,11 @@ const Home: FunctionComponent = (): JSX.Element => {
         <div
           className="h-underScreen p-5 flex items-center justify-center text-center bg-stone-800 bg-opacity-50 shadow-sm shadow-stone-800 backdrop-blur-sm">
           <div className="max-w-3xl text-stone-100">
-            <h1 className="font-display text-6xl mb-7">Worldbuilding Bible</h1>
+            <h1 className="font-display text-6xl mb-7">Worldbuilding Tome</h1>
             <p className="font-sans-serif uppercase my-3">Unleash your creativity</p>
             <p className="my-3">Create and Craft Your Perfect Literary World</p>
             <p className="my-3">Are you a Dungeon Master, an aspiring novelist, or just a lover of epic tales?</p>
-            <p>Worldbuilding Bible is your ultimate companion for crafting immersive worlds, characters, and adventures
+            <p>Worldbuilding Tome is your ultimate companion for crafting immersive worlds, characters, and adventures
               in the realm of Dungeons & Dragons.</p>
           </div>
         </div>
@@ -30,7 +30,7 @@ const Home: FunctionComponent = (): JSX.Element => {
           <div className="max-w-3xl">
             <h1 className="font-display text-5xl mb-7">Join the Journey</h1>
             <p className="my-3">Embark on a journey of endless possibilities. Craft intricate realms, breathe life into
-              characters, and forge legends that will resonate for ages. Begin your adventure with Worldbuilding Bible
+              characters, and forge legends that will resonate for ages. Begin your adventure with Worldbuilding Tome
               today.</p>
             <div className="my-3">
               <Button>Get Started</Button>
@@ -70,7 +70,7 @@ const Home: FunctionComponent = (): JSX.Element => {
               <li className="my-6">
                 <h2 className="font-sans-serif uppercase tracking-widest">For Players & Masters</h2>
                 Whether you're a player seeking character depth or a master
-                weaving worlds, Worldbuilding Bible has something for you.
+                weaving worlds, Worldbuilding Tome has something for you.
               </li>
             </ul>
           </FloatingBox>
@@ -82,7 +82,7 @@ const Home: FunctionComponent = (): JSX.Element => {
         </div>
         <div className="relative h-underScreen bg-stone-200 p-5 flex items-center justify-center text-center">
           <div className="md:w-3/4">
-            <h1 className="font-display text-5xl mb-7">Why Choose Worldbuilding Bible?</h1>
+            <h1 className="font-display text-5xl mb-7">Why Choose Worldbuilding Tome?</h1>
             <ul>
               <li className="my-3">
                 🌟 Unleash Creativity: Seamlessly create, modify, and organize every facet of your fantasy world.

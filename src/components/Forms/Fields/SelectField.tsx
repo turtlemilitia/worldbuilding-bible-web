@@ -1,5 +1,5 @@
 import { Combobox, Field, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDownIcon } from 'lucide-react'
+import { CheckIcon, ChevronDownIcon, XIcon } from 'lucide-react'
 import React, { Fragment, FunctionComponent, useState } from 'react'
 import { TSelectOption } from './FieldMapper'
 import Label from './Label'
@@ -38,6 +38,11 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
                 <ChevronDownIcon className="text-stone-300 h-5 w-5"/>
               )}
             </Combobox.Button>
+            {value && !disabled && !required && (
+              <div className={'absolute top-2 right-10 cursor-pointer'}>
+                <XIcon className="text-stone-300 h-5 w-5" onClick={() => onChange(null)}/>
+              </div>
+            )}
             <Transition
               show={open}
               as={Fragment}

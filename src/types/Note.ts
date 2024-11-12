@@ -11,4 +11,6 @@ export type TNotebook = TGenericPost & TPlayerTools & TCanHaveImages & {
 
 export type TNote = TGenericPost & TPlayerTools & TCanHaveImages & {
   notebook: TNotebook|null
+  parent?: TNote
+  children?: TNote[]
 }
