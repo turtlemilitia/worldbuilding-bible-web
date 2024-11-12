@@ -1,7 +1,7 @@
 import { TNote } from '@/types'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
-import NoteService from '@/services/ApiService/Notebooks/NoteService'
-import { notesIndexSlice } from '@/reducers/notebook/note/notesIndexSlice'
+import NoteService from '@/services/ApiService/Notes/NoteService'
+import { notesIndexSlice } from '@/reducers/note/notesIndexSlice'
 
 type TNoteIndexDataManager = TIndexDataManager<TNote> & {
   notes?: TNote[]

@@ -5,7 +5,6 @@ import { RootState } from '@/store'
 import {
   useCampaignIndexDataManager,
   useCompendiumIndexDataManager,
-  useNotebookIndexDataManager,
   useSystemIndexDataManager,
   useImageTypeIndexDataManager,
   useGovernmentTypeIndexDataManager,
@@ -30,7 +29,6 @@ export const ProtectedRoute = (): JSX.Element => {
   const systemIndexDataManager = useSystemIndexDataManager()
   const compendiumIndexDataManager = useCompendiumIndexDataManager()
   const campaignIndexDataManager = useCampaignIndexDataManager()
-  const notebookIndexDataManager = useNotebookIndexDataManager()
   const noteIndexDataManager = useNoteIndexDataManager()
   const imageTypeIndexDataManager = useImageTypeIndexDataManager()
   const governmentTypeIndexDataManager = useGovernmentTypeIndexDataManager()
@@ -47,8 +45,7 @@ export const ProtectedRoute = (): JSX.Element => {
           const promises = [
             compendiumIndexDataManager.index(),
             campaignIndexDataManager.index(),
-            notebookIndexDataManager.index(),
-            noteIndexDataManager.index({ include: 'notebook:id,slug,name;parent:id,slug,name' }),
+            noteIndexDataManager.index({ include: 'parent:id,slug,name' }),
             imageTypeIndexDataManager.index(),
             governmentTypeIndexDataManager.index(),
             locationTypeIndexDataManager.index(),

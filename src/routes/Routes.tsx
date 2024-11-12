@@ -21,8 +21,7 @@ import Item from '../pages/Compendium/Item'
 import Concept from '../pages/Compendium/Concept'
 import Faction from '../pages/Compendium/Faction'
 import Language from '../pages/Compendium/Language'
-import Notebook from '../pages/Notebook/Notebook'
-import Note from '../pages/Notebook/Note'
+import Note from '@/pages/Note/Note'
 import CampaignWrapper from '../pages/Campaign/CampaignWrapper'
 import Campaign from '../pages/Campaign/Campaign'
 import Session from '../pages/Campaign/Session'
@@ -47,7 +46,7 @@ import CampaignInvitationInvalid from '../pages/CampaignInvitationInvalid'
 import QuestWrapper from '../components/QuestWrapper'
 import EncounterWrapper from '../components/EncounterWrapper'
 import SessionWrapper from '../components/SessionWrapper'
-import NotesWrapper from '../pages/Notebook/NotesWrapper'
+import NotesWrapper from '@/pages/Note/NotesWrapper'
 import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
 import MarkdownExample from '@/pages/MarkdownExample'
@@ -164,11 +163,7 @@ const Routes = (): JSX.Element => {
       {
         path: ':noteId',
         element: <Note/>,
-      },
-      {
-        path: 'notebooks/:notebookId',
-        element: <Notebook/>,
-      },
+      }
     ],
   }
 

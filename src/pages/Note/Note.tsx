@@ -1,18 +1,19 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import Post from '../../../components/Post'
-import { useNoteForm } from '../../../hooks/Forms'
+import Post from '../../components/Post'
+import { useNoteForm } from '../../hooks/Forms'
+import { TNote } from '@/types'
 
 const Note: FunctionComponent = () => {
 
   const navigate = useNavigate()
   const location = useLocation()
 
-  const { noteId } = useParams() as { notebookId: string, noteId: string } // router
+  const { noteId } = useParams() as { noteId: string } // router
 
   const form = useNoteForm({
     noteId,
-    onCreated: (data) => {
+    onCreated: (data: TNote) => {
       navigate(`/notes/${data.slug}`)
     },
     onDeleted: () => {

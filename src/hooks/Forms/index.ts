@@ -10,7 +10,6 @@ import useItemForm from "./useItemForm/useItemForm";
 import useLanguageForm from "./useLanguageForm/useLanguageForm";
 import useLocationForm from "./useLocationForm/useLocationForm";
 import useNaturalResourceForm from "./useNaturalResourceForm/useNaturalResourceForm";
-import useNotebookForm from "./useNotebookForm/useNotebookForm";
 import useNoteForm from "./useNoteForm/useNoteForm";
 import usePantheonForm from "./usePantheonForm/usePantheonForm";
 import usePlaneForm from "./usePlaneForm/usePlaneForm";
@@ -38,7 +37,6 @@ export {
   useLanguageForm,
   useLocationForm,
   useNaturalResourceForm,
-  useNotebookForm,
   useNoteForm,
   usePantheonForm,
   usePlaneForm,

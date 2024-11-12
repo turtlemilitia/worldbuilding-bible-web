@@ -14,7 +14,7 @@ export type TIndexDataManager<TEntity> = {
 }
 
 export const useIndexDataManager = <TEntity, TIndexResponse extends TEntity[]> (
-  name: 'campaigns' | 'compendia' | 'notebooks' | 'notes' | 'systems' | 'images' | 'imageTypes' | 'governmentTypes' | 'locationTypes' | 'questTypes' | 'encounterTypes',
+  name: 'campaigns' | 'compendia' | 'notes' | 'systems' | 'images' | 'imageTypes' | 'governmentTypes' | 'locationTypes' | 'questTypes' | 'encounterTypes',
   slice: Slice<TIndexSliceState<TEntity>>,
   api: TIndexApi<TIndexResponse>,
 ): TIndexDataManager<TEntity> => {

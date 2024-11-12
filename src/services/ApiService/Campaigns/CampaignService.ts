@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { TCampaign, TInvitation } from '../../../types'
+import { TCampaign, TInvitation } from '@/types'
 import api from '../../../api'
 import { createApiService } from '../createApiService'
 import { createImageableService } from '../createImageableService'
@@ -11,7 +11,6 @@ export interface TCampaignRequest {
   name: string;
   content: string;
   compendiumId?: number;
-  notebookId?: number;
 }
 
 export type TCampaignResponse = TCampaign;

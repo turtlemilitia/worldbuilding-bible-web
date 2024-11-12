@@ -1,8 +1,8 @@
 import { TNote } from '@/types'
 import { useCallback, useMemo } from 'react'
 import { TForm, TUseFormProps } from '@/components/Post/types'
-import { TNoteRequest } from '@/services/ApiService/Notebooks/NoteService'
-import useNoteDataManager from '../../DataManagers/Notebooks/useNoteDataManager'
+import { TNoteRequest } from '@/services/ApiService/Notes/NoteService'
+import useNoteDataManager from '@/hooks/DataManagers/Notes/useNoteDataManager'
 import usePostForm from '../usePostForm'
 import useNoteFields from './useNoteFields'
 import useLink from '@/hooks/useLink'
@@ -18,7 +18,7 @@ const useNoteForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TNote>): TForm<TNote> => {
 
-  const include = useMemo(() => 'notebook;parent', [])
+  const include = useMemo(() => 'parent', [])
 
   const manager = useNoteDataManager();
 
@@ -27,7 +27,6 @@ const useNoteForm = ({
   const mapData = useCallback((data: TNote): TNoteRequest => ({
     name: data.name,
     content: data.content,
-    notebookId: data.notebook?.id || null,
     parentId: data.parent?.id || null
   }), [])
 

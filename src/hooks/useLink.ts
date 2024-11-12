@@ -32,9 +32,6 @@ export const makeLink = (entityPath: string, id: string|number, compendiumPath: 
     case 'notes':
       prefix = `${campaignPath ? `/campaigns/${campaignPath}` : ''}`
       break
-    case 'notebooks':
-      prefix = `${campaignPath ? `/campaigns/${campaignPath}` : ''}/notes`
-      break
   }
 
   return `${prefix}/${entityPath}/${id}`

@@ -1,11 +1,11 @@
-import { TChildApi, TQueryParams } from '../../services/ApiService/types'
-import { TGenericPostBasic } from '../../types'
-import { TEntitySliceState } from '../../reducers/createEntitySlice'
+import { TChildApi, TQueryParams } from '@/services/ApiService/types'
+import { Identifiable, TGenericPostBasic } from '@/types'
+import { TEntitySliceState } from '@/reducers/createEntitySlice'
 import { Slice } from '@reduxjs/toolkit'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useCallback } from 'react'
 import { TDataManager } from './useDataManager'
-import { mapPlural } from '../../utils/dataUtils'
+import { mapPlural } from '@/utils/dataUtils'
 
 export type TChildDataManager<TParentEntity, TEntity, TRequest> = TDataManager<TEntity, TRequest> & {
   parent?: TParentEntity
@@ -13,7 +13,7 @@ export type TChildDataManager<TParentEntity, TEntity, TRequest> = TDataManager<T
 
 export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
   name: 'quest' | 'encounter' | 'session' | 'note' | 'character' | 'concept' | 'currency' | 'deity' | 'faction' | 'item' | 'language' | 'location' | 'naturalResource' | 'pantheon' | 'plane' | 'religion' | 'species' | 'spell' | 'story' | 'user' | 'scene',
-  parentName: 'campaign' | 'notebook' | 'compendium',
+  parentName: 'campaign' | 'compendium',
   slice: Slice<TEntitySliceState<TEntity>>,
   parentSlice: Slice<TEntitySliceState<TParentEntity>>,
   api: TChildApi<TRequest, TIndexResponse, TResponse>,
@@ -48,11 +48,11 @@ export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResp
     dispatch(slice.actions.clear(id))
   }, [slice])
 
-  const setChildData = useCallback((field: string, data: TGenericPostBasic) => {
+  const setChildData = useCallback((field: string, data: Identifiable) => {
     dispatch(slice.actions.setChildData({ field, data }))
   }, [slice])
 
-  const updateChildData = useCallback((field: string, data: TGenericPostBasic) => {
+  const updateChildData = useCallback((field: string, data: Identifiable) => {
     dispatch(slice.actions.updateChildData({ field, data }))
   }, [slice])
 

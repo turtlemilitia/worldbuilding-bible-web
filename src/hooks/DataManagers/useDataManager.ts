@@ -24,7 +24,7 @@ export type TDataManager<TEntity, TRequest> = {
 }
 
 export const useDataManager = <TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
-  name: 'campaign' | 'compendium' | 'notebook' | 'note' | 'system' | 'authUser',
+  name: 'campaign' | 'compendium' | 'note' | 'system' | 'authUser',
   slice: Slice<TEntitySliceState<TEntity>>,
   indexSlice: Slice<TIndexSliceState<TEntity>>,
   api: TApi<TRequest, TIndexResponse, TResponse>,

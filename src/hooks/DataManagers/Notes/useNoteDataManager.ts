@@ -1,8 +1,8 @@
-import noteService, { TNoteRequest } from '../../../services/ApiService/Notebooks/NoteService'
-import { noteSlice } from '@/reducers/notebook/note/noteSlice'
+import noteService, { TNoteRequest } from '@/services/ApiService/Notes/NoteService'
+import { noteSlice } from '@/reducers/note/noteSlice'
 import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
-import { TNote, TNotebook } from '@/types'
-import { notesIndexSlice } from '@/reducers/notebook/note/notesIndexSlice'
+import { TNote } from '@/types'
+import { notesIndexSlice } from '@/reducers/note/notesIndexSlice'
 import { TDataManager, useDataManager } from '@/hooks/DataManagers'
 
 type TNoteDataManager = TDataManager<TNote, TNoteRequest> & {

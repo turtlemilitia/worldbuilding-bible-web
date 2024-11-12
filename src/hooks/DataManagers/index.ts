@@ -9,7 +9,6 @@ import { useDataManager, TDataManager } from './useDataManager'
 import { useImageableDataManager, hasImageableDataManager } from './useImageableDataManager'
 import useCampaignDataManager from './Campaigns/useCampaignDataManager'
 import useCompendiumDataManager from './Compendia/useCompendiumDataManager'
-import useNotebookDataManager from './Notebooks/useNotebookDataManager'
 import useEncounterDataManager from './Campaigns/useEncounterDataManager'
 import useSceneDataManager from './Campaigns/useSceneDataManager'
 import useSessionDataManager from './Campaigns/useSessionDataManager'
@@ -32,13 +31,12 @@ import useStoryDataManager from './Compendia/useStoryDataManager'
 import useCampaignIndexDataManager from './Campaigns/useCampaignIndexDataManager'
 import useCompendiumIndexDataManager from './Compendia/useCompendiumIndexDataManager'
 import useImageTypeIndexDataManager from './Images/useImageTypeIndexDataManager'
-import useNotebookIndexDataManager from './Notebooks/useNotebookIndexDataManager'
 import useSystemIndexDataManager from './Systems/useSystemIndexDataManager'
 import useGovernmentTypeIndexDataManager from './Compendia/useGovernmentTypeIndexDataManager'
 import useLocationTypeIndexDataManager from './Compendia/useLocationTypeIndexDataManager'
 import useQuestTypeIndexDataManager from './Campaigns/useQuestTypeIndexDataManager'
 import useEncounterTypeIndexDataManager from './Campaigns/useEncounterTypeIndexDataManager'
-import useNoteIndexDataManager from './Notebooks/useNoteIndexDataManager'
+import useNoteIndexDataManager from '@/hooks/DataManagers/Notes/useNoteIndexDataManager'
 
 export {
   useDataManager,
@@ -66,11 +64,9 @@ export {
   useSceneDataManager,
   useSessionDataManager,
   useQuestDataManager,
-  useNotebookDataManager,
   useCampaignIndexDataManager,
   useCompendiumIndexDataManager,
   useImageTypeIndexDataManager,
-  useNotebookIndexDataManager,
   useSystemIndexDataManager,
   useGovernmentTypeIndexDataManager,
   useLocationTypeIndexDataManager,
