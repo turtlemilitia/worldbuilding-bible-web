@@ -60,7 +60,7 @@ const NotesWrapper = (): JSX.Element => {
       <Sidebar
         title={'My Notes'}
         canAdd={true}
-        addNew={`${prefix}/notes/notebooks/new`}
+        addNew={`${prefix}/notes/new`}
       >
         <SidebarSection
           items={[
