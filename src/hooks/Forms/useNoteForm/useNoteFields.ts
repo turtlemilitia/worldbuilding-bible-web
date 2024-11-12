@@ -14,7 +14,13 @@ const useNoteFields = (): TUseFields => {
       name: 'parent',
       label: 'Parent',
       options: notes || []
-    })
+    }),
+    {
+      type: 'list',
+      name: 'children',
+      link: (slug) => `/notes/${slug}`,
+      label: 'Children',
+    }
   ], [notes])
 
   return { fields }

@@ -18,7 +18,7 @@ const useNoteForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TNote>): TForm<TNote> => {
 
-  const include = useMemo(() => 'parent', [])
+  const include = useMemo(() => 'parent:id,slug,name;children:id,slug,name,parent_id', [])
 
   const manager = useNoteDataManager();
 

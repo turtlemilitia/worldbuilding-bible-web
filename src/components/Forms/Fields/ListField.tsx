@@ -22,7 +22,7 @@ const ListField: FunctionComponent<TProps> = ({ value, link, required, label }) 
           <ul>
             {value.map((item) => (
               <li key={item.id} className="py-1">
-                {link ? <Link to={link(item.id)}>{item.name}</Link> : item.name}
+                {link ? <Link to={link(item.slug ?? item.id)}>{item.name}</Link> : item.name}
               </li>
             ))}
           </ul>
