@@ -1,12 +1,4 @@
 import React, { JSX, useMemo } from 'react'
-import { Link, NavigateFunction, useNavigate } from 'react-router-dom'
-import Menu from './Menu'
-import { AlignLeftIcon, LogOutIcon, User2Icon } from 'lucide-react'
-import { logout } from '@/services/AuthService'
-import { setToken } from '@/reducers/auth/authSlice'
-import { useAppDispatch } from '@/hooks'
-import MenuItem from './MenuItem'
-import { MenuItemInterface } from './MenuItemInterface'
 import {
   useCampaignIndexDataManager,
   useCompendiumIndexDataManager,
@@ -14,23 +6,10 @@ import {
 } from '../../hooks/DataManagers'
 import useAuthUserDataManager from '@/hooks/DataManagers/useAuthUserDataManager'
 import isEmpty from '@/utils/isEmpty'
+import SidebarSection from '@/components/Sidebar/SidebarSection'
+import { SidebarItemInterface } from '@/components/Sidebar/Sidebar'
 
-interface NavBarParams {
-  setSideBarOpen: (open: boolean) => any;
-}
-
-const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
-
-  const dispatch = useAppDispatch()
-  const navigate: NavigateFunction = useNavigate()
-
-  const handleLogout = (): void => {
-    logout().then(() => {
-      console.log('logged out on the server')
-      dispatch(setToken(undefined))
-      navigate('/', { replace: true })
-    })
-  }
+const LoggedInSidebar = (): JSX.Element => {
 
   const { user } = useAuthUserDataManager()
   const { systems } = useSystemIndexDataManager()
@@ -53,22 +32,19 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
     })
   }, [user?.permissions])
 
-  const menuItems: MenuItemInterface[] = useMemo(() => {
-    const menuItems = []
+  const menuItems: SidebarItemInterface[] = useMemo(() => {
+    const menuItems: SidebarItemInterface[] = []
     if (!isEmpty(systems) || canCreateNewSystems) {
       menuItems.push({
         title: 'Systems',
         to: '/systems',
+        startOpen: true,
+        addNewLink: canCreateNewSystems ? '/systems/new' : undefined,
         children: [
           ...systems?.map(({ slug, name }) => ({
             title: name,
             to: `/systems/${slug}`,
           })) || [],
-          ...(canCreateNewSystems ? [
-            {
-              title: 'Create new',
-              to: '/systems/new',
-            }] : []),
         ],
       })
     }
@@ -76,16 +52,13 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
       menuItems.push({
         title: 'Compendia',
         to: '/compendia',
+        startOpen: true,
+        addNewLink: canCreateNewCompendia ? '/compendia/new' : undefined,
         children: [
           ...compendia?.map(({ slug, name }) => ({
             title: name,
             to: `/compendia/${slug}`,
           })) || [],
-          ...(canCreateNewCompendia ? [
-            {
-              title: 'Create new',
-              to: '/compendia/new',
-            }] : []),
         ],
       })
     }
@@ -93,16 +66,13 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
       menuItems.push({
         title: 'Campaigns',
         to: '/campaigns',
+        startOpen: true,
+        addNewLink: canCreateNewCampaigns ? '/campaigns/new' : undefined,
         children: [
           ...campaigns?.map(({ slug, name }) => ({
             title: name,
             to: `/campaigns/${slug}`,
           })) || [],
-          ...(canCreateNewCampaigns ? [
-            {
-              title: 'Create new',
-              to: '/campaigns/new',
-            }] : []),
         ],
       })
     }
@@ -111,7 +81,10 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
       to: '/notes',
     }, {
       title: 'Markdown Help',
-      to: '/markdown-example'
+      to: '/markdown-example',
+    }, {
+      title: 'Logout',
+      to: '/logout'
     })
     return menuItems
   }, [
@@ -124,29 +97,12 @@ const LoggedInNavBar = ({ setSideBarOpen }: NavBarParams): JSX.Element => {
   ])
 
   return (
-    <div
-      className="flex justify-between bg-stone-950 text-stone-300 px-5 py-2 items-center">
-      <div
-        className="cursor-pointer"
-        onClick={() => setSideBarOpen(true)}>
-        <AlignLeftIcon size={25}/>
-      </div>
-      <Menu>
-        {menuItems.map(
-          (menuItem, index) => <MenuItem menuItem={menuItem} key={index}/>)}
-      </Menu>
-      <div className="flex flex-row gap-2">
-        <Link
-          className="cursor-pointer"
-          to={'/account'}>
-          <User2Icon size={25}/>
-        </Link>
-        <button onClick={handleLogout}>
-          <LogOutIcon size={25}/>
-        </button>
-      </div>
+    <div className={'relative flex w-full'}>
+      <SidebarSection
+        items={menuItems}
+      />
     </div>
   )
 }
 
-export default LoggedInNavBar
+export default LoggedInSidebar

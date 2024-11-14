@@ -19,7 +19,7 @@ const SidebarSection: FunctionComponent<TOwnProps> = ({
   addNewLinkState,
 }) => {
   return (
-    <div className={'mb-6'}>
+    <div className={'w-full mb-6'}>
       {title && (
         <div
           className={'flex justify-between border-b border-yellow-500 pb-1'}>

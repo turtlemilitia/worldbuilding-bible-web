@@ -44,7 +44,7 @@ const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps
 
   return (
     <div className="relative flex w-full">
-      <div className={`fixed z-50 ${campaign ? 'top-28' : 'top-14'} left-0 pt-5 max-h-underScreen w-1/4`}>
+      <div className={`fixed z-50 ${campaign ? 'top-14' : 'top-8'} left-0 pt-5 max-h-underScreen w-full xl:w-1/4`}>
         <div
           className={`absolute transition-all duration-1000 ${show ? 'top-5 opacity-100' : '-top-14 opacity-0'} w-full px-6`}>
           <FloatingBox>

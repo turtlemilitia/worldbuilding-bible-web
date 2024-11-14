@@ -74,7 +74,7 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
   ])
 
   return (
-    <div className="fixed top-20 w-full z-50">
+    <div className="fixed top-6 w-full z-50">
       <Menu>
         {menuItems.map((menuItem, index) => (
           <CampaignMenuItem menuItem={menuItem} key={index}/>
