@@ -18,6 +18,7 @@ const useNoteFields = (): TUseFields => {
     {
       type: 'list',
       name: 'children',
+      // dialogType: 'note',
       link: (slug) => `/notes/${slug}`,
       label: 'Children',
     }

@@ -57,8 +57,13 @@ const FieldMapper: FunctionComponent<TProps> = ({
       <Fieldset className="antialiased relative my-6">
         <div className="font-light">
           {props.type === 'list' && (
-            <ListField value={currentValue} link={props.link} label={label}
-                       required={required}/>
+            <ListField
+              value={currentValue}
+              link={props.link}
+              label={label}
+              required={required}
+              dialogType={props.dialogType}
+            />
           )}
           {props.type === 'select' && (props.options?.length ?? 0) > 0 && (
             <SelectField
