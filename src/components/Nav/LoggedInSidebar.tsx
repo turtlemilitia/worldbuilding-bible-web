@@ -1,4 +1,4 @@
-import React, { JSX, useMemo } from 'react'
+import React, { JSX, useMemo, useState } from 'react'
 import {
   useCampaignIndexDataManager,
   useCompendiumIndexDataManager,
@@ -8,6 +8,8 @@ import useAuthUserDataManager from '@/hooks/DataManagers/useAuthUserDataManager'
 import isEmpty from '@/utils/isEmpty'
 import SidebarSection from '@/components/Sidebar/SidebarSection'
 import { SidebarItemInterface } from '@/components/Sidebar/Sidebar'
+import { AlignLeftIcon } from 'lucide-react'
+import { clsx } from 'clsx'
 
 const LoggedInSidebar = (): JSX.Element => {
 
@@ -15,6 +17,8 @@ const LoggedInSidebar = (): JSX.Element => {
   const { systems } = useSystemIndexDataManager()
   const { compendia } = useCompendiumIndexDataManager()
   const { campaigns } = useCampaignIndexDataManager()
+
+  const [open, setOpen] = useState<boolean>(false)
 
   const canCreateNewSystems = useMemo(() => {
     return user?.permissions?.some(({ permission, permissionableType }) => {
@@ -84,7 +88,7 @@ const LoggedInSidebar = (): JSX.Element => {
       to: '/markdown-example',
     }, {
       title: 'Logout',
-      to: '/logout'
+      to: '/logout',
     })
     return menuItems
   }, [
@@ -97,11 +101,29 @@ const LoggedInSidebar = (): JSX.Element => {
   ])
 
   return (
-    <div className={'relative flex w-full'}>
-      <SidebarSection
-        items={menuItems}
-      />
-    </div>
+    <>
+      <div
+        className="fixed top-4 left-4 z-[100] text-white cursor-pointer"
+        onClick={() => setOpen(prevState => !prevState)}>
+        <AlignLeftIcon size={25}/>
+      </div>
+      <div
+        className={clsx([
+          'fixed top-0 z-[60]',
+          'pt-14 px-5 py-2',
+          'flex justify-between h-full w-full md:w-96 items-start',
+          'bg-stone-950 text-stone-300',
+          "transition-all duration-500",
+          open ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0",
+          "border-r border-r-amber-500"
+        ])}>
+        <div className={'relative flex w-full'}>
+          <SidebarSection
+            items={menuItems}
+          />
+        </div>
+      </div>
+    </>
   )
 }
 

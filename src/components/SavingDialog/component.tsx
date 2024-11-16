@@ -7,7 +7,7 @@ const SavingDialog: FunctionComponent<TSavingDialogProps> = ({ saving }) => {
   return (
 
     <div className="relative flex w-full">
-      <div className={`fixed z-10 top-0 right-0 pt-5`}>
+      <div className={`fixed z-[110] top-0 right-0 pt-5`}>
         <div
           className={`transition-all duration-1000 ${saving ? 'top-0 opacity-100' : '-top-10 opacity-0'} w-full px-6`}>
           <div className={`rounded-full shadow-md shadow-stone-950 border border-opacity-30 border-stone-400 bg-stone-400 bg-opacity-10 p-2 backdrop-blur-sm cursor-pointer flex flex-row`}>

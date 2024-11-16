@@ -1,4 +1,4 @@
-import React, { FunctionComponent, JSX, useMemo } from 'react'
+import React, { FunctionComponent, JSX } from 'react'
 import clsx from 'clsx'
 import FieldMapper from '../../components/Forms/Fields/FieldMapper'
 import { FloatingBox } from '../FloatingBox'
@@ -45,7 +45,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
           {canHaveProfileImage && openProfileImagePicker && (
             <ProfileImage image={profileImage} openPicker={openProfileImagePicker}/>
           )}
-          <ul className="font-serif text-serif-md leading-tight max-h-[50vh] overflow-y-scroll overflow-x-clip">
+          <ul className="font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip">
             {filteredFields.map((props, index) => {
               const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
               return <FieldMapper

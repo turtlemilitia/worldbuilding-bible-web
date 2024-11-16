@@ -13,7 +13,7 @@ const PageTitleField = (props: TProps): JSX.Element => {
   const [showPlaceholder, setShowPlaceholder] = useState(value.trim() === '')
 
   return (
-    <div className="w-full font-display text-7xl relative">
+    <div className="w-full font-display text-5xl md:text-7xl relative">
       {!value && placeholder && showPlaceholder && (
         <div className="absolute z-0 px-6 w-full text-stone-400 text-center">{placeholder}</div>
       )}
