@@ -51,7 +51,7 @@ const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps
   return (
     <>
       <div
-        className="fixed top-4 left-14 z-[100] text-white cursor-pointer 2lg:hidden"
+        className="fixed top-4 left-14 z-[100] text-white cursor-pointer 2xl:hidden"
         onClick={() => setOpen(prevState => !prevState)}>
         <ChevronRightIcon size={25}/>
       </div>
@@ -61,7 +61,7 @@ const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps
           campaign ? 'top-14' : 'top-8', // allow for campaign bar
           "transition-all duration-500",
           open ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0",
-          'xlg:translate-x-0',
+          '2xl:translate-x-0 2xl:opacity-100',
           `left-0 pt-5 max-h-underScreen w-full 2xl:w-1/4`
         )}>
           <div
