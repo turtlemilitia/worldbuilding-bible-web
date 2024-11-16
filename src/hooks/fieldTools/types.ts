@@ -121,6 +121,7 @@ export type TField = {
   type: 'dialog'
 } | {
   type: 'list'
+  dialogType?: TDialogTypes
   link?: (id: number | string) => string,
 } | {
   type: 'select'

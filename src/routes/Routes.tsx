@@ -51,6 +51,7 @@ import Scene from '../pages/Campaign/Scene'
 import SceneWrapper from '../components/SceneWrapper'
 import MarkdownExample from '@/pages/MarkdownExample'
 import Quests from '@/pages/Campaign/Quests'
+import Logout from '@/pages/Logout'
 
 const Routes = (): JSX.Element => {
 
@@ -264,6 +265,10 @@ const Routes = (): JSX.Element => {
         {
           path: '/profile',
           element: <>TODO: User Profile</>,
+        },
+        {
+          path: '/logout',
+          element: <Logout/>
         },
         {
           path: '*',

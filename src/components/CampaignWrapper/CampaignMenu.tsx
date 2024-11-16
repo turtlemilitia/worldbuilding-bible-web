@@ -6,6 +6,7 @@ import useAuthUserDataManager
   from '../../hooks/DataManagers/useAuthUserDataManager'
 import { MenuItemInterface } from '../Nav/MenuItemInterface'
 import SearchCampaign from '@/components/CampaignWrapper/SearchCampaign'
+import { clsx } from 'clsx'
 
 type TProps = {
   campaign: TCampaign
@@ -74,7 +75,12 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
   ])
 
   return (
-    <div className="fixed top-20 w-full z-50">
+    <div className={clsx([
+      "relative z-50 top-14 w-full",
+      "md:top-3 md:w-[calc(100%-12rem)]",
+      "mx-auto",
+      "overflow-x-scroll no-scrollbar"
+    ])}>
       <Menu>
         {menuItems.map((menuItem, index) => (
           <CampaignMenuItem menuItem={menuItem} key={index}/>

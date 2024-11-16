@@ -37,8 +37,8 @@ const PostDialog = <T extends TGenericPost, > ({
       onClose={() => setIsOpen(false)}
       className="relative z-50"
     >
-      <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <FloatingBox color={'dark'} className={'w-full lg:w-2/3 min-h-64 max-h-full max-w-6xl p-12 bg-cover bg-center'} style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none', }}>
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <FloatingBox color={'dark'} className={'w-full 2xl:w-2/3 max-w-6xl min-h-64 max-h-full p-12 bg-cover bg-center'} style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none', }}>
           <LoadingWrapper loading={form.loading} opacity={'100'} positioning={'absolute'}>
             {!form.loading && (
               <Dialog.Panel>
@@ -55,7 +55,7 @@ const PostDialog = <T extends TGenericPost, > ({
                 </Dialog.Title>
                 <Dialog.Description className="flex flex-wrap lg:flex-row-reverse justify-center">
                   {!isEmpty(form.fields) && (
-                    <div className="w-full md:w-96 px-6">
+                    <div className="w-full xl:w-96 px-6">
                       <InfoBar
                         key={form.data?.id}
                         loading={form.loading || !form.fields.length}
@@ -66,7 +66,7 @@ const PostDialog = <T extends TGenericPost, > ({
                       />
                     </div>
                   )}
-                  <div className={`w-full md:w-3/4 px-6 lg:flex-1`}>
+                  <div className={`w-full xl:w-3/4 px-6 lg:flex-1`}>
                     {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
                     {(form.canEdit) && (
                       <FormToolbar
