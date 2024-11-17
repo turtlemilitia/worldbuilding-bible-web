@@ -175,7 +175,7 @@ const Routes = (): JSX.Element => {
       children: [
         {
           path: '/',
-          element: <>TODO: Dashboard</>,
+          element: <div className={'min-h-screen flex items-center justify-center'}>TODO: Dashboard</div>,
         },
         {
           path: '/markdown-example',
