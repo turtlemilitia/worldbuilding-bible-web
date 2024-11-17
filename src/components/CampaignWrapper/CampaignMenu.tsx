@@ -22,7 +22,7 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
   const menuItems = useMemo(() => {
     const items: MenuItemInterface[] = [
       {
-        title: 'The Campaign',
+        title: 'Campaign',
         to: `/campaigns/${campaign.slug}`,
       },
     ]
@@ -79,7 +79,7 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
       "relative z-50 top-14 w-full",
       "md:top-3 md:w-[calc(100%-12rem)]",
       "mx-auto",
-      "overflow-x-scroll no-scrollbar"
+      "h-10 overflow-y-hidden overflow-x-scroll no-scrollbar"
     ])}>
       <Menu>
         {menuItems.map((menuItem, index) => (
