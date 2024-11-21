@@ -32,7 +32,7 @@ const SidebarItem: FunctionComponent<TProps> = ({ item }: TProps): JSX.Element =
 
   const [loadingChildren, setLoadingChildren] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
-  const [open, setOpen] = useState<boolean>(startOpen ?? false)
+  const [open, setOpen] = useState<boolean>(startOpen ?? true)
 
   const handleOpenChildren = () => {
     if (!open) {
