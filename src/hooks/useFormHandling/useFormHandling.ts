@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import equal from 'fast-deep-equal/react'
@@ -6,6 +6,8 @@ import { TGenericPostBasic } from '@/types'
 import { TFormHandling } from './types'
 import { isEmpty } from 'lodash'
 import { readyDataForRequest } from '@/utils/dataUtils'
+
+const MAX_RETRIES = 3
 
 type TProps<T, R> = {
   fetchOnMount?: boolean;
@@ -62,6 +64,8 @@ const useFormHandling = <T, R> ({
   const [saving, setSaving] = useState(false)
   const [data, setData] = useState<T>()
 
+  const retryCount = useRef(0)
+
   // Fetch data on mount
   useEffect(() => {
     if (!isNew && fetchOnMount) {
@@ -95,17 +99,30 @@ const useFormHandling = <T, R> ({
   const handleOnFetch = () => {
     setLoading(true)
     resetErrors()
-    onFetch()
-      .then((apiData) => {
-        onFetched && onFetched(apiData)
-      })
-      .catch(handleResponseErrors)
-      .finally(() => {
-        setLoading(false)
-      })
+
+    const fetchData = () => {
+      onFetch()
+        .then((apiData) => {
+          onFetched && onFetched(apiData)
+          setLoading(false)
+          retryCount.current = 0 // Reset retry count on success
+        })
+        .catch((err) => {
+          handleResponseErrors(err)
+          if (retryCount.current < MAX_RETRIES) {
+            retryCount.current += 1
+            const delay = Math.pow(2, retryCount.current) * 1000 // Exponential backoff
+            setTimeout(fetchData, delay)
+          } else {
+            console.error('Fetch failed. Try again.')
+          }
+        })
+    }
+
+    fetchData()
   }
 
-  const processedData = useCallback((data: T | undefined): R|{} => {
+  const processedData = useCallback((data: T | undefined): R | {} => {
     return (data && !isEmpty(data))
       ? (mapData ? mapData(data) : readyDataForRequest(data))
       : {}
