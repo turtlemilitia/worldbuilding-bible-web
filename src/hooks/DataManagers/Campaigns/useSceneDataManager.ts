@@ -1,6 +1,6 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { sceneSlice } from '../../../reducers/campaign/scene/sceneSlice'
-import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
+import { sceneSlice } from '@/reducers/campaign/scene/sceneSlice'
+import { campaignSlice } from '@/reducers/campaign/campaignSlice'
 import sceneService, { TSceneRequest } from '../../../services/ApiService/Campaigns/SceneService'
 import {
   hasNotesAttachableDataManager,
@@ -12,8 +12,8 @@ import {
   useLocationableDataManager,
   hasLocationsAttachableDataManager,
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { TCampaign, TScene } from '../../../types'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
+import { TCampaign, TScene } from '@/types'
 
 type TSceneDataManager = TChildDataManager<TCampaign, TScene, TSceneRequest> & {
   campaign?: TCampaign,

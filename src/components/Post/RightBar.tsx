@@ -8,11 +8,11 @@ const RightBar: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <div
-        className="fixed top-4 right-4 z-[100] text-white cursor-pointer xl:hidden"
+      <button
+        className="fixed top-4 right-4 z-[110] text-white cursor-pointer xl:hidden"
         onClick={() => setOpen(prevState => !prevState)}>
         <ChevronLeftIcon size={25}/>
-      </div>
+      </button>
       <div className={clsx([
         'fixed z-20 top-0 right-0 w-full xl:w-1/3 2xl:w-1/4 h-full',
         'overflow-x-visible overflow-y-scroll no-scrollbar',
