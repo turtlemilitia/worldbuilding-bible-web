@@ -18,7 +18,7 @@ const SearchCampaign = () => {
   return <>
     <Button onClick={() => setOpenSearchDialog(true)} variant={'ghost'}
             size={'small_icon'}>
-      <SearchIcon size={16}/>
+      <SearchIcon  className={'w-5 h-5'}/>
       <SearchDialog isOpen={openSearchDialog} setIsOpen={setOpenSearchDialog} onSelect={handleOnSelect}/>
     </Button>
   </>

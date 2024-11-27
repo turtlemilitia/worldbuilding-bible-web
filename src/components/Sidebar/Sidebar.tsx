@@ -51,9 +51,9 @@ const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps
   return (
     <>
       <div
-        className="fixed top-4 left-14 z-[100] text-white cursor-pointer 2xl:hidden"
+        className="fixed top-4 left-14 z-[100] text-white cursor-pointer xl:hidden"
         onClick={() => setOpen(prevState => !prevState)}>
-        <ChevronRightIcon size={25}/>
+        <ChevronRightIcon className={'h-6 w-6'}/>
       </div>
       <div className="relative flex w-full">
         <div className={clsx(
@@ -61,8 +61,8 @@ const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps
           campaign ? 'top-14' : 'top-8', // allow for campaign bar
           "transition-all duration-500",
           open ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0",
-          '2xl:translate-x-0 2xl:opacity-100',
-          `left-0 pt-5 max-h-underScreen w-full 2xl:w-1/4`
+          'xl:translate-x-0 xl:opacity-100',
+          `left-0 pt-5 max-h-underScreen w-full xl:w-1/4`
         )}>
           <div
             className={`absolute transition-all duration-1000 ${show

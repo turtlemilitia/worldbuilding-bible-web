@@ -38,14 +38,14 @@ const PostDialog = <T extends TGenericPost, > ({
       className="relative z-50"
     >
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <FloatingBox color={'dark'} className={'w-full 2xl:w-2/3 max-w-6xl min-h-64 max-h-full p-12 bg-cover bg-center'} style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none', }}>
+        <FloatingBox color={'dark'} className={'w-full xl:w-2/3 max-w-6xl min-h-64 max-h-full p-12 bg-cover bg-center'} style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none', }}>
           <LoadingWrapper loading={form.loading} opacity={'100'} positioning={'absolute'}>
             {!form.loading && (
               <Dialog.Panel>
                 <Dialog.Title className={'w-full px-6 mb-4'}>
                   <FloatingBox>
                     <Button className={'absolute top-5 right-5'}
-                            onClick={() => setIsOpen(false)}><XIcon/></Button>
+                            onClick={() => setIsOpen(false)}><XIcon className={'h-6 w-6'}/></Button>
                     <PageTitleField value={form.data?.name || ''}
                                     onChange={(value) => form.onFieldChange('name', value)}
                                     placeholder={'Name'}

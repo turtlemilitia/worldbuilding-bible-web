@@ -11,13 +11,13 @@ const MusicPlayer: FunctionComponent = () => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <ActivityIcon width={15} height={15}/>
+      <ActivityIcon className={'h-5 w-5'}/>
       <div className={`${hovered ? 'w-80' : 'w-0'} transition-width duration-1000 whitespace-nowrap overflow-hidden flex justify-between`}>
         <div className="pl-2">Jakob Ahlbom - When It Rains It Pours</div>
         <div className="flex flex-row gap-2">
-          <SkipBackIcon size={15}/>
-          <PlayIcon size={15}/>
-          <SkipForwardIcon size={15}/>
+          <SkipBackIcon className={'h-5 w-5'}/>
+          <PlayIcon className={'h-5 w-5'}/>
+          <SkipForwardIcon className={'h-5 w-5'}/>
         </div>
       </div>
     </div>

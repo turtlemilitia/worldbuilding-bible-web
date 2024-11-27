@@ -24,7 +24,7 @@ const EncounterSidebar: FunctionComponent<TEncounterSidebarProps> = ({ campaign 
         onClick={() => setOrderBy(
           prevState => prevState !== 'location' ? 'location' : null)}
       >
-        <MapPinIcon size={20} className="inline-block"/>
+        <MapPinIcon className="inline-block h-5 w-5"/>
       </Button>,
     )
   }

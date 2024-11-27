@@ -20,7 +20,7 @@ const ImageDataDialog: FunctionComponent<TImageDataDialogProps> = ({ open, onClo
 
               <form>
                 <div className="my-2 flex justify-end gap-2">
-                  <button type="button" onClick={onClose}><XIcon size={20}/></button>
+                  <button type="button" onClick={onClose}><XIcon className={'h-6 w-6'}/></button>
                 </div>
                 <div className="my-2">
                   <TextField onChange={(value) => onChange('name', value)} value={name}/>

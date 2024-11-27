@@ -34,7 +34,7 @@ const ListAddName: FunctionComponent<TListAddProps> = ({ label, required, value,
                      onChange={(e) => setTextValue(e.target.value)} disabled={disabled}/>
               {!disabled && (
                 <button type="button" className="outline-none" onClick={handleOnSubmit}>
-                  <PlusIcon className="text-stone-300" size={15}/>
+                  <PlusIcon className={'text-stone-300 h-5 w-5'}/>
                 </button>
               )}
             </div>

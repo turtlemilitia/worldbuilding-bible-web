@@ -45,7 +45,7 @@ const MenuItem: FunctionComponent<TProps> = ({ menuItem, className = '', activeC
         className="relative py-2 "
         aria-expanded={showDropdown ? 'true' : 'false'}
         onClick={() => setShowDropdown((prev) => !prev)}>
-        {title} <ChevronDownIcon size={20} className={`inline-block ${match ? '-rotate-90' : ''} ${className}`}/> {activeChild ? <NavLink to={activeChild.to} className={`${activeClassName} ${className}`}>{activeChild.title}</NavLink> : ''}
+        {title} <ChevronDownIcon className={`w-5 h-5 inline-block ${match ? '-rotate-90' : ''} ${className}`}/> {activeChild ? <NavLink to={activeChild.to} className={`${activeClassName} ${className}`}>{activeChild.title}</NavLink> : ''}
         <Dropdown menuItems={children} show={showDropdown}/>
       </button>
     </li>

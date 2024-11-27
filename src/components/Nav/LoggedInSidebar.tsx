@@ -105,7 +105,7 @@ const LoggedInSidebar = (): JSX.Element => {
       <div
         className="fixed top-4 left-4 z-[100] text-white cursor-pointer"
         onClick={() => setOpen(prevState => !prevState)}>
-        <AlignLeftIcon size={25}/>
+        <AlignLeftIcon className={'w-6 h-6'}/>
       </div>
       <div
         className={clsx([

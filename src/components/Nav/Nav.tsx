@@ -17,7 +17,7 @@ const Nav = (): JSX.Element => {
         <Link
           className="fixed top-4 right-4 z-[100] text-white cursor-pointer"
           to={'/login'}>
-          <KeyIcon size={25}/>
+          <KeyIcon className={'h-6 w-6'}/>
         </Link>
       )}
     </header>

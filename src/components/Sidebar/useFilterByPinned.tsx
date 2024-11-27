@@ -13,7 +13,7 @@ const useFilterByPinned = () => {
       className={'block text-stone-300 text-center content-center'}
       onClick={() => setPinnedOnly(prevState => !prevState)}
     >
-      <PinIcon size={20} className="inline-block"/>
+      <PinIcon className="h-5 w-5 inline-block"/>
     </Button>
   )
 

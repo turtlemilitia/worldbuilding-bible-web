@@ -64,7 +64,7 @@ const CampaignFavourites: FunctionComponent = () => {
       leaveFrom={'top-0 opacity-100'}
       leaveTo={'-top-10 opacity-0'}
     >
-      <div className="flex-1 items-end space-y-4 mb-4 text-center xl:text-right">
+      <div className="flex-1 items-end space-y-4 mb-4 text-center lg:text-right">
         {!!user?.characters?.length && (
           <div className={'flex-1 space-y-2'}>
             {user.characters.map(({ slug, name }, index) => {

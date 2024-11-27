@@ -55,18 +55,18 @@ const ImageThumbnail: FunctionComponent<TImageThumbnailProps> = ({
                 <div className="absolute bottom-0 w-full flex justify-end">
                   <button type="button" className="p-1 hover:text-burnOrange"
                           onClick={() => setShowFields(true)}>
-                    <PencilIcon size={15}/>
+                    <PencilIcon className={'h-5 w-5'}/>
                   </button>
                   {canBeSaved() && (
                     <button type="button" className="p-1 hover:text-burnOrange"
                             onClick={() => onSave(data)}>
-                      <SaveIcon size={15}/>
+                      <SaveIcon className={'h-5 w-5'}/>
                     </button>
                   )}
                   {id && (
                     <button type="button" className="p-1 hover:text-burnOrange"
                             onClick={() => onDelete(uniqueId, id)}>
-                      <TrashIcon size={15}/>
+                      <TrashIcon className={'h-5 w-5'}/>
                     </button>
                   )}
                 </div>

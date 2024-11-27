@@ -13,7 +13,7 @@ const useFilterByPinned = () => {
       className={'block text-stone-300 text-center content-center'}
       onClick={() => setPublicOnly(prevState => !prevState)}
     >
-      <KeyIcon size={20} className="inline-block"/>
+      <KeyIcon className="h-5 w-5 inline-block"/>
     </Button>
   )
 

@@ -6,8 +6,8 @@ const EditorsWrapper: React.FunctionComponent<PropsWithChildren> = ({
 }): JSX.Element => {
   return (
     <div className={clsx([
-      "relative block w-full xl:w-2/3 2xl:w-2/4 max-w-4xl",
-      "m-auto xl:ml-4 2xl:m-auto px-3"
+      "relative block w-full lg:w-2/3 xl:w-2/4 xl:max-w-4xl",
+      "m-auto lg:ml-4 xl:m-auto px-3"
     ])}>
       {children}
     </div>

@@ -44,7 +44,7 @@ const QuestSidebar: FunctionComponent<TQuestSidebarProps> = React.memo(
           onClick={() => setOrderBy(
             prevState => prevState !== 'location' ? 'location' : null)}
         >
-          <MapPinIcon size={20} className="inline-block"/>
+          <MapPinIcon className="w-5 h-5 inline-block"/>
         </Button>,
         <PinnedOnlyButton/>,
         <PublicOnlyButton/>,
