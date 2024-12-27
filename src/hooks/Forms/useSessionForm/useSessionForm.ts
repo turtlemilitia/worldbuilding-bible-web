@@ -18,7 +18,7 @@ const useSessionForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TSession>): TForm<TSession> => {
 
-  const include = useMemo(() => 'scenes;quests;encounters', [])
+  const include = useMemo(() => 'scenes;quests;encounters;notes', [])
 
   const manager = useSessionDataManager()
 
