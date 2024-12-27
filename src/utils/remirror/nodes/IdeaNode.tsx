@@ -3,7 +3,7 @@ import {
   AlertTriangle,
   BrushIcon,
   CalendarIcon,
-  CoinsIcon,
+  CoinsIcon, CompassIcon,
   DicesIcon,
   DramaIcon,
   EyeOffIcon,
@@ -32,7 +32,8 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
       <input type='checkbox' className='hidden'/>
       <label className={`flex items-center justify-center w-4 h-4`}>
         { type === 'd' && <BrushIcon className="text-amber-500"/>}
-        { type === 'D' && <DramaIcon className="text-amber-600"/>}
+        { type === 'D' && <DramaIcon className="text-amber-500"/>}
+        { type === 'e' && <CompassIcon className="text-amber-500"/>}
         { type === 'h' && <CalendarIcon className="text-emerald-600"/>}
         { type === 'i' && <InfoIcon className="text-blue-500"/>}
         { type === 'I' && <LightbulbIcon className="text-amber-500"/>}
@@ -43,11 +44,11 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
         { type === 'p' && <PenIcon className="text-blue-500"/>}
         { type === 'P' && <FingerprintIcon className="text-blue-500"/>}
         { type === 'r' && <DicesIcon className="text-amber-500"/>}
-        { type === 's' && <SwordsIcon className="text-amber-600"/>}
+        { type === 's' && <SwordsIcon className="text-amber-500"/>}
         { type === 'S' && <EyeOffIcon className="text-red-800"/>}
-        { type === 'w' && <WandIcon className="text-amber-500"/>}
+        { type === 'w' && <WandIcon className="text-emerald-600"/>}
         { type === '?' && <HelpCircleIcon className="text-fuchsia-500"/>}
-        { type === '!' && <AlertTriangle className="text-amber-500"/>}
+        { type === '!' && <AlertTriangle className="text-amber-600"/>}
         { type === '"' && <QuoteIcon className="text-emerald-600"/>}
         { type === '*' && <StarIcon className="text-amber-500"/>}
         { type === '$' && <CoinsIcon className="text-emerald-600"/>}
