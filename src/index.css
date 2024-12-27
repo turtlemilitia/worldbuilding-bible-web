@@ -13,7 +13,7 @@
 .remirror-theme h4,
 .remirror-theme h5,
 .remirror-theme h6 {
-    @apply mt-4 mb-2 border-b font-sans-serif tracking-wider
+    @apply mt-4 mb-2 border-b tracking-wider
 }
 .remirror-theme h1 {
     @apply text-4xl text-burnOrange border-burnOrange
