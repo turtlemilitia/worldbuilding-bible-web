@@ -14,12 +14,12 @@ const boxVariants = cva(
           glass: 'bg-stone-400 bg-opacity-5 backdrop-blur-sm text-stone-300',
           transparent: 'bg-stone-400 bg-opacity-10 text-stone-300',
           dark: 'bg-stone-800 bg-opacity-50 backdrop-blur-md text-stone-300',
-          solid: ' bg-stone-800 text-stone-300',
+          solid: ' bg-stone-900 text-stone-300',
         },
         border: {
           glass: 'border-opacity-30 border-stone-400',
           dark: 'border-opacity-80 border-stone-600',
-          yellow: 'border-yellow-500'
+          yellow: 'border-yellow-600'
         }
       },
       defaultVariants: {

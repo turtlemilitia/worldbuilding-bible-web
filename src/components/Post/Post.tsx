@@ -19,7 +19,7 @@ import ProfileImagePicker from "../ProfileImagePicker";
 //  <TopMenu>
 //  <CampaignMenu> -> in wrapper
 //  <WrapMenu> -> left sidebar -> in wrapper
-//    - Compendium -> all, Campaign -> Quests, Sessions, Encounters
+//    - [ ] Compendium -> all, Campaign -> Quests, Sessions, Encounters
 //  <Main Body>
 //    - [ ] <Title>
 //      - [ ] <Slug>
@@ -98,7 +98,7 @@ const Post = <T extends TGenericPost> ({
             onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
           />
           {!form.loading && (
-            <FloatingBox color={'solid'}>
+            <FloatingBox color={'solid'} border={'yellow'}>
               <Editor
                 key={form.data?.id}
                 initialValue={form.data?.content}
