@@ -6,7 +6,7 @@ import { useNoteForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  noteId: TNote['slug'];
+  noteId: TNote['id'];
   onCreated?: (data: TNote) => any
   onUpdated?: (data: TNote) => any
   onDeleted?: (id: string|number) => any

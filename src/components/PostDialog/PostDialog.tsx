@@ -82,7 +82,7 @@ const PostDialog = <T extends TGenericPost, > ({
                         playerCharacterHandler={form.playerCharacterHandler}
                         permissionHandler={form.permissionHandler}
                         onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
-                        link={!form.isNew ? form.link : ''}
+                        link={!form.isNew ? form.link() : ''}
                       />
                     )}
                     <FloatingBox color={'solid'} className={'max-h-[calc(100vh/2)] overflow-scroll'}>

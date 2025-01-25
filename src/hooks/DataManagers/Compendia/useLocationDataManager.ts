@@ -16,18 +16,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import LocationService, { TLocationRequest } from '../../../services/ApiService/Compendia/LocationService'
 import { locationSlice } from '../../../reducers/compendium/location/locationSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationRequest> & {
+export type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationRequest> & {
   compendium?: TCompendium,
   location?: TLocation,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasScenesAttachableDataManager & hasCharactersAttachableDataManager
 
-const useLocationDataManager = (): TLocationDataManager => {
+const useLocationDataManager = (compendiumId?: number, id?: number): TLocationDataManager => {
   const manager = useChildDataManager(
-    'location',
-    'compendium',
-    locationSlice,
-    compendiumSlice,
+    'locations',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     LocationService,
   )
   return {

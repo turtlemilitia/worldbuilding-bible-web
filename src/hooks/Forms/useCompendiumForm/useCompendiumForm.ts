@@ -9,7 +9,7 @@ import useLink from '@/hooks/useLink'
 export const compendiumIncludes = 'creator;notes;characters;concepts;currencies;deities;deities.pantheon;factions;items;languages;locations;locations.parent;naturalResources;pantheons;pantheons.religion;planes;religions;species;spells;stories';
 
 type TOwnProps = {
-  compendiumId: TCompendium['slug'];
+  compendiumId?: TCompendium['id'];
 }
 const useCompendiumForm = ({
   compendiumId,
@@ -19,9 +19,9 @@ const useCompendiumForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TCompendium>): TForm<TCompendium> => {
 
-  const manager = useCompendiumDataManager()
+  const manager = useCompendiumDataManager(compendiumId)
 
-  const { fields } = useCompendiumFields()
+  const { fields } = useCompendiumFields(manager)
 
   const include = useMemo(() => `${compendiumIncludes};images`, [])
 
@@ -41,7 +41,7 @@ const useCompendiumForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('compendia', compendiumId)
+    link: compendiumId ? useLink('compendia', compendiumId) : ''
   })
 }
 

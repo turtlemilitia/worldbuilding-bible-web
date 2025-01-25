@@ -12,18 +12,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import PantheonService, { TPantheonRequest } from '../../../services/ApiService/Compendia/PantheonService'
 import { pantheonSlice } from '../../../reducers/compendium/pantheon/pantheonSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TPantheonDataManager = TChildDataManager<TCompendium, TPantheon, TPantheonRequest> & {
+export type TPantheonDataManager = TChildDataManager<TCompendium, TPantheon, TPantheonRequest> & {
   compendium?: TCompendium,
   pantheon?: TPantheon,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const usePantheonDataManager = (): TPantheonDataManager => {
+const usePantheonDataManager = (compendiumId?: number, id?: number): TPantheonDataManager => {
   const manager = useChildDataManager(
-    'pantheon',
-    'compendium',
-    pantheonSlice,
-    compendiumSlice,
+    'pantheons',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     PantheonService,
   )
   return {

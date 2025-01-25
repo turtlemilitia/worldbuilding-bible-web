@@ -12,18 +12,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import LanguageService, { TLanguageRequest } from '../../../services/ApiService/Compendia/LanguageService'
 import { languageSlice } from '../../../reducers/compendium/language/languageSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TLanguageDataManager = TChildDataManager<TCompendium, TLanguage, TLanguageRequest> & {
+export type TLanguageDataManager = TChildDataManager<TCompendium, TLanguage, TLanguageRequest> & {
   compendium?: TCompendium,
   language?: TLanguage,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useLanguageDataManager = (): TLanguageDataManager => {
+const useLanguageDataManager = (compendiumId?: number, id?: number): TLanguageDataManager => {
   const manager = useChildDataManager(
-    'language',
-    'compendium',
-    languageSlice,
-    compendiumSlice,
+    'languages',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     LanguageService,
   )
   return {

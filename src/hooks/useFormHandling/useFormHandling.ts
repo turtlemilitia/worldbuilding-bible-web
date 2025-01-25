@@ -11,7 +11,7 @@ const MAX_RETRIES = 3
 
 type TProps<T, R> = {
   fetchOnMount?: boolean;
-  id: string | number | 'new'
+  id?: number;
   isNew: boolean,
   mapData: (data: T) => R;
   canEdit: boolean;

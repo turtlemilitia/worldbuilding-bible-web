@@ -12,18 +12,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import CurrencyService, { TCurrencyRequest } from '../../../services/ApiService/Compendia/CurrencyService'
 import { currencySlice } from '../../../reducers/compendium/currency/currencySlice'
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TCurrencyDataManager = TChildDataManager<TCompendium, TCurrency, TCurrencyRequest> & {
+export type TCurrencyDataManager = TChildDataManager<TCompendium, TCurrency, TCurrencyRequest> & {
   compendium?: TCompendium,
   currency?: TCurrency,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useCurrencyDataManager = (): TCurrencyDataManager => {
+const useCurrencyDataManager = (compendiumId?: number, id?: number): TCurrencyDataManager => {
   const manager = useChildDataManager(
-    'currency',
-    'compendium',
-    currencySlice,
-    compendiumSlice,
+    'currencies',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     CurrencyService,
   )
   return {

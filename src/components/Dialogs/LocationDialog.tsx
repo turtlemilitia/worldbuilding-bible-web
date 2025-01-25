@@ -6,7 +6,7 @@ import { useLocationForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  locationId: TLocation['slug'];
+  locationId: TLocation['id'];
   onCreated?: (data: TLocation) => any
   onUpdated?: (data: TLocation) => any
   onDeleted?: (id: string|number) => any

@@ -12,6 +12,7 @@ import { userSlice } from '../../../reducers/auth/userSlice'
 import { TChildDataManager, useChildDataManager } from '../useChildDataManager'
 import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
 import campaignUserService from '../../../services/ApiService/User/CampaignUserService'
+import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 
 type TUserDataManager = TChildDataManager<TCampaign, TUser, TUserRequest> & {
   campaign?: TCampaign,
@@ -21,13 +22,14 @@ type TUserDataManager = TChildDataManager<TCampaign, TUser, TUserRequest> & {
 /**
  * This is a read only data manager, so we're not
  */
-const useUserDataManager = (): TUserDataManager => {
+const useUserDataManager = (campaignId?: number, id?: number): TUserDataManager => {
 
   const manager = useChildDataManager(
-    'user',
-    'campaign',
-    userSlice,
-    campaignSlice,
+    'users',
+    'campaigns',
+    campaignId,
+    id,
+    campaignsIndexSlice,
     campaignUserService
   )
 

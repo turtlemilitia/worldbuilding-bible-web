@@ -1,4 +1,4 @@
-import { TDeity } from '@/types'
+import { TCompendium, TDeity } from '@/types'
 import { TDeityRequest } from '@/services/ApiService/Compendia/DeityService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '@/components/Post/types'
@@ -8,9 +8,11 @@ import useDeityFields from '../useDeityForm/useDeityFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  deityId: TDeity['slug'];
+  compendiumId?: TCompendium['id'];
+  deityId?: TDeity['id'];
 }
 const useDeityForm = ({
+  compendiumId,
   deityId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useDeityForm = ({
 
   const include = useMemo(() => 'pantheon:id,slug,name;notes', [])
 
-  const manager = useDeityDataManager()
+  const manager = useDeityDataManager(compendiumId, deityId)
 
-  const { fields } = useDeityFields()
+  const { fields } = useDeityFields(manager)
 
   const mapData = (data: TDeity): TDeityRequest => ({
     name: data.name,
@@ -41,7 +43,7 @@ const useDeityForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('deities', deityId)
+    link: deityId ? useLink('deities', deityId) : ''
   })
 }
 

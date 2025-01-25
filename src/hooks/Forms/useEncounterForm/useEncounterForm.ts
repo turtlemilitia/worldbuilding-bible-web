@@ -1,4 +1,4 @@
-import { TEncounter } from '@/types'
+import { TCampaign, TCompendium, TEncounter } from '@/types'
 import { TEncounterRequest } from '@/services/ApiService/Campaigns/EncounterService'
 import { useCallback, useMemo } from 'react'
 import { TForm, TUseFormProps } from '@/components/Post/types'
@@ -8,15 +8,16 @@ import useEncounterFields from './useEncounterFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  encounterId: TEncounter['slug'];
+  campaignId?: TCampaign['id'];
+  encounterId?: TEncounter['id'];
 }
-const useEncounterForm = ({ encounterId, onFetched, onCreated, onUpdated, onDeleted }: TOwnProps & TUseFormProps<TEncounter>): TForm<TEncounter> => {
+const useEncounterForm = ({ campaignId, encounterId, onFetched, onCreated, onUpdated, onDeleted }: TOwnProps & TUseFormProps<TEncounter>): TForm<TEncounter> => {
 
   const include = useMemo(() => 'type;notes;quests;locations;characters', [])
 
-  const manager = useEncounterDataManager();
+  const manager = useEncounterDataManager(campaignId, encounterId);
 
-  const { fields } = useEncounterFields();
+  const { fields } = useEncounterFields(manager);
 
   const mapData = useCallback((data: any): TEncounterRequest => ({
     name: data.name,
@@ -36,7 +37,7 @@ const useEncounterForm = ({ encounterId, onFetched, onCreated, onUpdated, onDele
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('encounters', encounterId)
+    link: encounterId ? useLink('encounters', encounterId) : ''
   })
 }
 

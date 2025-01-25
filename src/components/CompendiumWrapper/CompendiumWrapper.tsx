@@ -4,32 +4,26 @@ import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
 import { useCompendiumDataManager } from '../../hooks/DataManagers'
 import { compendiumIncludes } from '@/hooks/Forms/useCompendiumForm/useCompendiumForm'
-import { useCampaignDataManager } from '@/hooks/DataManagers'
 import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
+import { fixId } from '@/utils/dataUtils'
 
 const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
+  const { compendiumId } = useParams() as { compendiumId: string }
   const { setLoading } = usePostDataManager()
-  const { campaign } = useCampaignDataManager()
-  const { compendium, view, clearData } = useCompendiumDataManager()
+  const id = fixId(compendiumId);
+  const { compendium, view } = useCompendiumDataManager(id)
   const {setDefaultBackgroundImage, clearDefaultBackgroundImage} = usePostDataManager()
-  const { compendiumId } = useParams() as { compendiumId: string } // router
 
   useEffect(() => {
     if (
-      compendiumId !== 'new'
-      && (!compendium || compendium?.slug !== compendiumId) // if it's been loaded as part of the campaign
+      id && (!compendium || compendium?.id !== id) // if it's been loaded as part of the campaign
     ) {
-      setLoading({ [compendiumId]: true })
-      view(compendiumId, { include: `${compendiumIncludes};images` }).
-        then(() => setLoading({ [compendiumId]: false }))
+      setLoading({ [id]: true })
+      view(id, { include: `${compendiumIncludes};images` })
+        .then(() => setLoading({ [id]: false }))
     }
-    return () => {
-      if (!campaign) {
-        clearData(compendiumId)
-      }
-    }
-  }, [compendiumId])
+  }, [id])
 
 
   useEffect(() => {
@@ -47,7 +41,7 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
         <CompendiumSidebar compendium={compendium}/>
       )}
       <div className="relative w-full">
-        {(compendiumId === 'new' || compendium) && (
+        {(id || compendium) && (
           <Outlet/>
         )}
       </div>

@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import SessionSidebar from './SessionSidebar'
-import { useCampaignDataManager } from '../../hooks/DataManagers'
 import { TGenericPostBasic, TSession } from '@/types'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 const SessionWrapper: FunctionComponent = () => {
 
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
 
   const { sessionId } = useParams();
   const navigate = useNavigate();

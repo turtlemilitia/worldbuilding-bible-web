@@ -1,7 +1,7 @@
-import { TCharacter } from '../../../types'
-import { TCharacterRequest } from '../../../services/ApiService/Compendia/CharacterService'
+import { TCharacter, TCompendium } from '@/types'
+import { TCharacterRequest } from '@/services/ApiService/Compendia/CharacterService'
 import { useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import { useCharacterDataManager } from '../../DataManagers'
 import useCharacterFields from '../useCharacterForm/useCharacterFields'
 import { usePostForm } from '../index'
@@ -9,9 +9,11 @@ import usePlayerCharacterHandler from '../../usePlayerCharacterHandler'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  characterId: TCharacter['slug'];
+  compendiumId?: TCompendium['id'];
+  characterId?: TCharacter['id'];
 }
 const useCharacterForm = ({
+  compendiumId,
   characterId,
   onFetched,
   onCreated,
@@ -21,9 +23,9 @@ const useCharacterForm = ({
 
   const include = useMemo(() => 'species;languages;factions;notes;encounters;quests;scenes;locations', [])
 
-  const manager = useCharacterDataManager()
+  const manager = useCharacterDataManager(compendiumId, characterId)
 
-  const { fields } = useCharacterFields()
+  const { fields } = useCharacterFields(manager)
 
   const mapData = (data: any): TCharacterRequest => ({
     name: data.name,
@@ -45,7 +47,7 @@ const useCharacterForm = ({
       onCreated,
       onUpdated,
       onDeleted,
-      link: useLink('characters', characterId)
+      link: characterId ? useLink('characters', characterId) : ''
     }),
     playerCharacterHandler: usePlayerCharacterHandler({ manager })
   }

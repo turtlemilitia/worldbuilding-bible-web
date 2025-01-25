@@ -12,18 +12,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import NaturalResourceService, { TNaturalResourceRequest } from '../../../services/ApiService/Compendia/NaturalResourceService'
 import { naturalResourceSlice } from '../../../reducers/compendium/naturalResource/naturalResourceSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TNaturalResourceDataManager = TChildDataManager<TCompendium, TNaturalResource, TNaturalResourceRequest> & {
+export type TNaturalResourceDataManager = TChildDataManager<TCompendium, TNaturalResource, TNaturalResourceRequest> & {
   compendium?: TCompendium,
   naturalResource?: TNaturalResource,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useNaturalResourceDataManager = (): TNaturalResourceDataManager => {
+const useNaturalResourceDataManager = (compendiumId?: number, id?: number): TNaturalResourceDataManager => {
   const manager = useChildDataManager(
-    'naturalResource',
-    'compendium',
-    naturalResourceSlice,
-    compendiumSlice,
+    'naturalResources',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     NaturalResourceService,
   )
   return {

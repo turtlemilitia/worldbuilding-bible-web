@@ -1,7 +1,8 @@
 import { SidebarItemInterface } from '../../components/Sidebar/Sidebar';
+import { TCampaign } from '@/types'
 
 export type TUseCampaignsMappingProps = {
-  campaignId: string;
+  campaignId: TCampaign['id'];
 }
 
 export type TUseCampaignsMapping = (props: TUseCampaignsMappingProps) => {

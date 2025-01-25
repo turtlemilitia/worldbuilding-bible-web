@@ -6,6 +6,7 @@ import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import useUserDataManager from './DataManagers/Campaigns/useUserDataManager'
 import { hasPermissionsAttachableDataManager } from './DataManagers/useAttachableDataManager'
 import { TGenericPostBasic } from '@/types'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TProps<TEntity> = {
   manager: TDataManager<TEntity, any> & Partial<hasPermissionsAttachableDataManager>
@@ -13,8 +14,8 @@ type TProps<TEntity> = {
 const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TPermissionHandler => {
 
   const { user: authUser } = useAuthUserDataManager()
-  const { campaign, permissions: campaignPermissionsDataManager, } = useCampaignDataManager()
-  const { permissions: userPermissionsDataManager } = useUserDataManager()
+  const { campaign, permissions: campaignPermissionsDataManager, } = useCurrentCampaign()
+  const { permissions: userPermissionsDataManager } = useUserDataManager(campaign?.id)
 
   const handleOnPermissionSelected = useCallback(async (values: (TSelectOption & { type: 'campaign' | 'user' })[]) => {
     if (!campaign) {
@@ -27,7 +28,7 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
     const addPermissionToCampaign = values.some(value => {
       return value.type === 'campaign' && value.id === campaign.id
     })
-    const permissionAddedToCampaign = campaign?.permissions.find(permission => {
+    const permissionAddedToCampaign = campaign?.permissions?.find(permission => {
       return permission.permissionableType === manager.entityName && permission.permissionableId === manager.entity?.id
     })
     if (addPermissionToCampaign && !permissionAddedToCampaign) {
@@ -40,7 +41,7 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
       promises.push(campaignPermissionsDataManager.detach(campaign.slug, permissionAddedToCampaign.id))
     }
     if (!addPermissionToCampaign) {
-      campaign.users.forEach((user) => {
+      campaign.users?.forEach((user) => {
         if (!manager.entity) {
           return
         }
@@ -72,7 +73,7 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
     if (campaign?.permissions && campaign.permissions.some(permission => permission.permissionableType === manager.entityName && permission.permissionableId === manager.entity?.id)) {
       values.push({ ...campaign, type: 'campaign' })
     }
-    campaign?.users.forEach((user) => {
+    campaign?.users?.forEach((user) => {
       if (user.permissions?.some(permission => permission.permissionableType === manager.entityName && permission.permissionableId === manager.entity?.id)) {
         values.push({ ...user, type: 'user' })
       }
@@ -84,7 +85,7 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
     if (!campaign) {
       return []
     }
-    const users: TPermissionForOption[] = campaign.users.map((user) => ({
+    const users: TPermissionForOption[] = campaign.users?.map((user) => ({
       id: user.id,
       name: user.name,
       type: 'user',

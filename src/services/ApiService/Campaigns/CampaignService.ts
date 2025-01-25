@@ -29,12 +29,12 @@ const CampaignService = {
   ...createNotableService('campaigns'),
   ...createPinnableService('campaigns'),
   ...createPermissionableService('campaigns'),
-  createInvitation: (slug: TCampaign['slug'], data: TCampaignInvitationStoreRequest): Promise<AxiosResponse<{ data: TInvitationResponse }>> => {
+  createInvitation: (id: TCampaign['id'], data: TCampaignInvitationStoreRequest): Promise<AxiosResponse<{ data: TInvitationResponse }>> => {
 
-    return api.post(`/api/campaigns/${slug}/invitations`, data)
+    return api.post(`/api/campaigns/${id}/invitations`, data)
 
   },
-  downloadSummary: async (id: string) => {
+  downloadSummary: async (id: number) => {
     try {
       const response = await api.get(`/api/campaigns/${id}/download`, {
         responseType: 'blob',

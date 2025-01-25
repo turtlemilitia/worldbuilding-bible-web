@@ -45,9 +45,9 @@ const LoggedInSidebar = (): JSX.Element => {
         startOpen: true,
         addNewLink: canCreateNewSystems ? '/systems/new' : undefined,
         children: [
-          ...systems?.map(({ slug, name }) => ({
+          ...systems?.map(({ id, slug, name }) => ({
             title: name,
-            to: `/systems/${slug}`,
+            to: `/systems/${id}/${slug}`,
           })) || [],
         ],
       })
@@ -59,9 +59,9 @@ const LoggedInSidebar = (): JSX.Element => {
         startOpen: true,
         addNewLink: canCreateNewCompendia ? '/compendia/new' : undefined,
         children: [
-          ...compendia?.map(({ slug, name }) => ({
+          ...compendia?.map(({ id, slug, name }) => ({
             title: name,
-            to: `/compendia/${slug}`,
+            to: `/compendia/${id}/${slug}`,
           })) || [],
         ],
       })
@@ -73,9 +73,9 @@ const LoggedInSidebar = (): JSX.Element => {
         startOpen: true,
         addNewLink: canCreateNewCampaigns ? '/campaigns/new' : undefined,
         children: [
-          ...campaigns?.map(({ slug, name }) => ({
+          ...campaigns?.map(({ id, slug, name }) => ({
             title: name,
-            to: `/campaigns/${slug}`,
+            to: `/campaigns/${id}/${slug}`,
           })) || [],
         ],
       })

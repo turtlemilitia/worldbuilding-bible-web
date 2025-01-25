@@ -4,6 +4,7 @@ import { TEntitySliceState } from '../../reducers/createEntitySlice'
 import { TAttachableApi } from '../../services/ApiService/createAttachableService'
 import { useAppDispatch } from '../../hooks'
 import {
+  Identifiable,
   TCharacter,
   TEncounter,
   TFaction,
@@ -13,7 +14,7 @@ import {
   TPermission,
   TPin,
   TQuest,
-  TScene
+  TScene,
 } from '../../types'
 import { TNotableApi, TNoteAttachRequest, TNoteAttachResponse } from '../../services/ApiService/createNotableService'
 import { TQuestableApi, TQuestAttachRequest, TQuestAttachResponse } from '../../services/ApiService/createQuestableService'
@@ -65,8 +66,9 @@ export type TAttachableDataManager<TAttached, TRequest> = {
 
 export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages' | 'characters' | 'favourites' | 'pins' | 'scenes' | 'permissions' | 'locations';
 
-export const useAttachableDataManager = <TEntity, TAttached extends { id: number | string }, TAttachRequest, TAttachResponse extends TAttached> (
+export const useAttachableDataManager = <TEntity, TAttached extends Identifiable, TAttachRequest, TAttachResponse extends TAttached> (
   attachedName: TOneOfAttachableNames,
+  // todo this needs id ti send id in requests
   slice: Slice<TEntitySliceState<TEntity>>,
   api: TAttachableApi<TAttachRequest, TAttachResponse>,
 ): TAttachableDataManager<TAttached, TAttachRequest> => {

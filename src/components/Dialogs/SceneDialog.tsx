@@ -6,7 +6,7 @@ import { useSceneForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  sceneId: TScene['slug'];
+  sceneId: TScene['id'];
   onCreated?: (data: TScene) => any
   onUpdated?: (data: TScene) => any
   onDeleted?: (id: string|number) => any

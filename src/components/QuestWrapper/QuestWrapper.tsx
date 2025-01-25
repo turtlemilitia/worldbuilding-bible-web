@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import QuestSidebar from './QuestSidebar'
-import { useCampaignDataManager } from '../../hooks/DataManagers'
 import useQuestTypeIndexDataManager from '../../hooks/DataManagers/Campaigns/useQuestTypeIndexDataManager'
 import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
 import bgImage from '@/assets/images/quests.png'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 const QuestWrapper: FunctionComponent = () => {
 
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
   const { questTypes } = useQuestTypeIndexDataManager()
 
   const { setDefaultBackgroundImage, clearDefaultBackgroundImage } = usePostDataManager()

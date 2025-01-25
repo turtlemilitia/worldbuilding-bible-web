@@ -1,4 +1,4 @@
-import { TPantheon } from '@/types'
+import { TCompendium, TPantheon } from '@/types'
 import { TPantheonRequest } from '@/services/ApiService/Compendia/PantheonService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '@/components/Post/types'
@@ -8,9 +8,11 @@ import usePantheonFields from '../usePantheonForm/usePantheonFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  pantheonId: TPantheon['slug'];
+  compendiumId?: TCompendium['id'];
+  pantheonId?: TPantheon['id'];
 }
 const usePantheonForm = ({
+  compendiumId,
   pantheonId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const usePantheonForm = ({
 
   const include = useMemo(() => 'religion:id,slug,name;notes', [])
 
-  const manager = usePantheonDataManager()
+  const manager = usePantheonDataManager(compendiumId, pantheonId)
 
-  const { fields } = usePantheonFields()
+  const { fields } = usePantheonFields(manager)
 
   const mapData = (data: TPantheon): TPantheonRequest => ({
     name: data.name,
@@ -41,7 +43,7 @@ const usePantheonForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('pantheons', pantheonId)
+    link: pantheonId ? useLink('pantheons', pantheonId) : ''
   })
 }
 

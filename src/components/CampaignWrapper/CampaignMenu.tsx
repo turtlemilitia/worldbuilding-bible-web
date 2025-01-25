@@ -23,55 +23,56 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
     const items: MenuItemInterface[] = [
       {
         title: 'Campaign',
-        to: `/campaigns/${campaign.slug}`,
+        to: `/campaigns/${campaign.id}/${campaign.slug}`,
       },
     ]
     if (campaign.compendium) {
       items.push({
         title: 'Compendium',
-        to: `/campaigns/${campaign.slug}/compendia/${campaign.compendium?.slug}`,
+        to: `/campaigns/${campaign.id}/${campaign.slug}/compendia/${campaign.compendium?.id}/${campaign.compendium?.slug}`,
         hide: !campaign.compendium,
       })
     }
-    if (isGamemaster || campaign.scenes.length > 0) {
+    if (isGamemaster || (campaign.scenes && campaign.scenes.length > 0)) {
       items.push({
         title: 'Scenes',
-        to: `/campaigns/${campaign.slug}/scenes`,
+        to: `/campaigns/${campaign.id}/${campaign.slug}/scenes`,
       })
     }
 
-    if (isGamemaster || campaign.quests.length > 0) {
+    if (isGamemaster || (campaign.quests && campaign.quests.length > 0)) {
       items.push({
         title: 'Quests',
-        to: `/campaigns/${campaign.slug}/quests`,
+        to: `/campaigns/${campaign.id}/${campaign.slug}/quests`,
       })
     }
 
-    if (isGamemaster || campaign.encounters.length > 0) {
+    if (isGamemaster || (campaign.encounters && campaign.encounters.length > 0)) {
       items.push({
         title: 'Encounters',
-        to: `/campaigns/${campaign.slug}/encounters`,
+        to: `/campaigns/${campaign.id}/${campaign.slug}/encounters`,
       })
     }
-    if (isGamemaster || campaign.sessions.length > 0) {
+    if (isGamemaster || (campaign.sessions && campaign.sessions.length > 0)) {
       items.push({
         title: 'Sessions',
-        to: `/campaigns/${campaign.slug}/sessions`,
+        to: `/campaigns/${campaign.id}/${campaign.slug}/sessions`,
       })
     }
     items.push({
       title: 'Notes',
-      to: `/campaigns/${campaign.slug}/notes`,
+      to: `/campaigns/${campaign.id}/${campaign.slug}/notes`,
     })
     return items
   }, [
+    campaign.id,
     campaign.slug,
     campaign.compendium,
     isGamemaster,
-    campaign.scenes.length,
-    campaign.quests.length,
-    campaign.encounters.length,
-    campaign.sessions.length
+    campaign.scenes,
+    campaign.quests,
+    campaign.encounters,
+    campaign.sessions,
   ])
 
   return (

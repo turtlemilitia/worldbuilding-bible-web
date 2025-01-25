@@ -32,3 +32,4 @@ export type TOptionList = Identifiable & Named
 export type TTypesAllowed = TGenericPost & TPlayerTools & TCanHaveImages
 
 export type TTypesAllowedString = 'compendium'|'location'|'character'|'concept'|'campaign'|'session'|'system'
+export type TTypesPlural = 'compendia'|'locations'|'characters'|'concepts'|'campaigns'|'sessions'|'systems'

@@ -12,18 +12,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import PlaneService, { TPlaneRequest } from '../../../services/ApiService/Compendia/PlaneService'
 import { planeSlice } from '../../../reducers/compendium/plane/planeSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TPlaneDataManager = TChildDataManager<TCompendium, TPlane, TPlaneRequest> & {
+export type TPlaneDataManager = TChildDataManager<TCompendium, TPlane, TPlaneRequest> & {
   compendium?: TCompendium,
   plane?: TPlane,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const usePlaneDataManager = (): TPlaneDataManager => {
+const usePlaneDataManager = (compendiumId?: number, id?: number): TPlaneDataManager => {
   const manager = useChildDataManager(
-    'plane',
-    'compendium',
-    planeSlice,
-    compendiumSlice,
+    'planes',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     PlaneService,
   )
   return {

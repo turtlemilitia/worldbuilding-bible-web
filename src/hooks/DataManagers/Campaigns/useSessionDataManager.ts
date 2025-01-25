@@ -15,8 +15,9 @@ import {
 import {useImageableDataManager, hasImageableDataManager} from '../useImageableDataManager'
 import {TCampaign, TSession} from '../../../types'
 import {TSessionRequest} from '../../../services/ApiService/Campaigns/SessionService'
+import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 
-type TSessionDataManager =
+export type TSessionDataManager =
     TChildDataManager<TCampaign, TSession, TSessionRequest>
     & {
     campaign?: TCampaign,
@@ -28,12 +29,13 @@ type TSessionDataManager =
     & hasEncountersAttachableDataManager
     & hasQuestsAttachableDataManager
 
-const useSessionDataManager = (): TSessionDataManager => {
+const useSessionDataManager = (campaignId?: number, id?: number): TSessionDataManager => {
     const manager = useChildDataManager(
-        'session',
-        'campaign',
-        sessionSlice,
-        campaignSlice,
+        'sessions',
+        'campaigns',
+        campaignId,
+        id,
+        campaignsIndexSlice,
         sessionService,
     )
     return {

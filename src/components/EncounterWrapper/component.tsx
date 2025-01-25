@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import EncounterSidebar from './EncounterSidebar'
-import { useCampaignDataManager } from '../../hooks/DataManagers'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 const EncounterWrapper: FunctionComponent = () => {
 
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
 
   const { encounterId } = useParams();
   const navigate = useNavigate();
@@ -16,9 +16,9 @@ const EncounterWrapper: FunctionComponent = () => {
       return;
     }
     if (campaign.encounters?.length > 0) {
-      navigate(`/campaigns/${campaign.slug}/encounters/${campaign.encounters[0]?.slug}`)
+      navigate(`/campaigns/${campaign.id}/${campaign.slug}/encounters/${campaign.encounters[0]?.id}/${campaign.encounters[0]?.slug}`)
     } else {
-      navigate(`/campaigns/${campaign.slug}/encounters/new`)
+      navigate(`/campaigns/${campaign.id}/${campaign.slug}/encounters/new`)
     }
 
   }, [campaign?.slug])

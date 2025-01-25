@@ -6,7 +6,7 @@ import { useLanguageForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  languageId: TLanguage['slug'];
+  languageId: TLanguage['id'];
   onCreated?: (data: TLanguage) => any
   onUpdated?: (data: TLanguage) => any
   onDeleted?: (id: string|number) => any

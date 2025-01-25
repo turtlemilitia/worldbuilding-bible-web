@@ -3,7 +3,7 @@ import CampaignService from '../../../services/ApiService/Campaigns/CampaignServ
 import { campaignsIndexSlice } from '../../../reducers/campaign/campaignsIndexSlice'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
-type TCampaignIndexDataManager = TIndexDataManager<TCampaign> & {
+export type TCampaignIndexDataManager = TIndexDataManager<TCampaign> & {
   campaigns?: TCampaign[]
 }
 

@@ -3,7 +3,7 @@ import SystemService from '../../../services/ApiService/Systems/SystemService'
 import { systemsIndexSlice } from '../../../reducers/system/systemsIndexSlice'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
-type TSystemIndexDataManager = TIndexDataManager<TSystem> & {
+export type TSystemIndexDataManager = TIndexDataManager<TSystem> & {
   systems?: TSystem[]
 }
 

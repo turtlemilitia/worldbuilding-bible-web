@@ -6,7 +6,7 @@ import { useFactionForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  factionId: TFaction['slug'];
+  factionId: TFaction['id'];
   onCreated?: (data: TFaction) => any
   onUpdated?: (data: TFaction) => any
   onDeleted?: (id: string|number) => any

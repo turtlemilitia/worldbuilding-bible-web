@@ -12,15 +12,15 @@ import {
   usePinnableDataManager, hasPermissionsAttachableDataManager, usePermissionableDataManager
 } from '../useAttachableDataManager'
 
-type TCampaignDataManager = TDataManager<TCampaign, TCampaignRequest> & {
+export type TCampaignDataManager = TDataManager<TCampaign, TCampaignRequest> & {
   campaign?: TCampaign,
-  createInvitation: (slug: string, email: string) => Promise<any>
+  createInvitation: (email: string) => (Promise<any> | null)
 } & hasNotesAttachableDataManager & hasImageableDataManager & hasPinsAttachableDataManager & hasPermissionsAttachableDataManager
 
-const useCampaignDataManager = (): TCampaignDataManager => {
+const useCampaignDataManager = (id?: number): TCampaignDataManager => {
   const manager = useDataManager(
-    'campaign',
-    campaignSlice,
+    'campaigns',
+    id,
     campaignsIndexSlice,
     CampaignService,
   )
@@ -32,11 +32,11 @@ const useCampaignDataManager = (): TCampaignDataManager => {
     images: useImageableDataManager(campaignSlice, campaignService.images),
     pins: usePinnableDataManager(campaignSlice, campaignService.pins),
     permissions: usePermissionableDataManager(campaignSlice, campaignService.permissions),
-    createInvitation: (slug: string, email: string) => CampaignService.createInvitation(slug, { email }).
+    createInvitation: (email: string) => id ? CampaignService.createInvitation(id, { email }).
       then((response) => {
         const newInvitationData = response.data.data;
-        manager.setChildData('invitations', newInvitationData)
-      })
+        manager.setChildData(id, 'invitations', newInvitationData)
+      }) : null
   }
 }
 

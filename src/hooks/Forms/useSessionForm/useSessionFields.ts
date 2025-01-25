@@ -1,6 +1,10 @@
 import { noteField, numberField, textField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
-import { useNoteIndexDataManager, useSessionDataManager } from '../../DataManagers'
+import {
+  TSessionDataManager,
+  useNoteIndexDataManager,
+  useSessionDataManager,
+} from '../../DataManagers'
 import {
   datePickerField,
   encounterField,
@@ -9,9 +13,8 @@ import {
 } from '../../fieldTools/fieldTools'
 import { useMemo } from 'react'
 
-const useSessionFields = (): TUseFields => {
+const useSessionFields = (manager: TSessionDataManager): TUseFields => {
 
-  const manager = useSessionDataManager();
   const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = useMemo(() => {

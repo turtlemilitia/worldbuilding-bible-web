@@ -24,7 +24,7 @@ export const campaignIncludes = [
 ].join(';');
 
 type TOwnProps = {
-  campaignId: TCampaign['slug'];
+  campaignId?: TCampaign['id'];
 }
 const useCampaignForm = ({
   campaignId,
@@ -34,9 +34,9 @@ const useCampaignForm = ({
   onDeleted,
 }: TOwnProps & TUseFormProps<TCampaign>): TForm<TCampaign> => {
 
-  const manager = useCampaignDataManager()
+  const manager = useCampaignDataManager(campaignId)
 
-  const { fields } = useCampaignFields(campaignId);
+  const { fields } = useCampaignFields(manager);
 
   const mapData = useCallback((data: TCampaign): TCampaignRequest => ({
     name: data.name,
@@ -56,7 +56,7 @@ const useCampaignForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('campaigns', campaignId)
+    link: campaignId ? useLink('campaigns', campaignId) : ''
   })
 }
 

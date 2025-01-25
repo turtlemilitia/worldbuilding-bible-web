@@ -3,7 +3,7 @@ import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import { encounterTypesIndexSlice } from '../../../reducers/encounterType/encounterTypesIndexSlice'
 import EncounterTypeService from '../../../services/ApiService/Campaigns/EncounterTypeService'
 
-type TEncounterTypeIndexDataManager = TIndexDataManager<TEncounterType> & {
+export type TEncounterTypeIndexDataManager = TIndexDataManager<TEncounterType> & {
   encounterTypes?: TEncounterType[]
 }
 

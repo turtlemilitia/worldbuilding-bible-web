@@ -6,7 +6,7 @@ import { useQuestForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  questId: TQuest['slug'];
+  questId: TQuest['id'];
   onCreated?: (data: TQuest) => any
   onUpdated?: (data: TQuest) => any
   onDeleted?: (id: string|number) => any

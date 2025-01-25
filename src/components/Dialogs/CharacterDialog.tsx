@@ -6,7 +6,7 @@ import { useCharacterForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  characterId: TCharacter['slug'];
+  characterId: TCharacter['id'];
   onCreated?: (data: TCharacter) => any
   onUpdated?: (data: TCharacter) => any
   onDeleted?: (id: string|number) => any

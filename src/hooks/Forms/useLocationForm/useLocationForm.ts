@@ -1,4 +1,4 @@
-import { TLocation } from '../../../types'
+import { TCompendium, TLocation } from '../../../types'
 import { TLocationRequest } from '../../../services/ApiService/Compendia/LocationService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import useLocationFields from '../useLocationForm/useLocationFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  locationId: TLocation['slug'];
+  compendiumId?: TCompendium['id'];
+  locationId?: TLocation['id'];
 }
 const useLocationForm = ({
+  compendiumId,
   locationId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useLocationForm = ({
 
   const include = useMemo(() => 'parent;type;governmentType;children;notes;encounters;quests;scenes;characters', [])
 
-  const manager = useLocationDataManager()
+  const manager = useLocationDataManager(compendiumId, locationId)
 
-  const { fields } = useLocationFields()
+  const { fields } = useLocationFields(manager)
 
   const mapData = (data: any): TLocationRequest => ({
     name: data.name,
@@ -46,7 +48,7 @@ const useLocationForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('locations', locationId)
+    link: locationId ? useLink('locations', locationId) : ''
   })
 }
 

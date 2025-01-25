@@ -8,10 +8,11 @@ const Item: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { itemId } = useParams() as { itemId: string } // router
+  const { compendiumId, itemId } = useParams() as { compendiumId: string, itemId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = useItemForm({
+    compendiumId,
     itemId,
     onCreated: (data) => {
       navigate(`${compendiumPath}/items/${data.slug}`)

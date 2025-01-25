@@ -3,19 +3,18 @@ import { TLocation } from '@/types'
 import { TUseFields } from '@/components/Post/types'
 import { useMemo } from 'react'
 import {
-  useCampaignDataManager,
+  TLocationDataManager,
   useGovernmentTypeIndexDataManager,
-  useLocationDataManager,
   useLocationTypeIndexDataManager,
-  useNoteIndexDataManager
+  useNoteIndexDataManager,
 } from '@/hooks/DataManagers'
 import {characterField, encounterField, multiSelectField, questField, sceneField} from '../../fieldTools/fieldTools'
 import useUrlFormatter from '../../useUrlFormatter'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
-const useLocationFields = (): TUseFields => {
+const useLocationFields = (manager: TLocationDataManager): TUseFields => {
 
-  const manager = useLocationDataManager()
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
   const { notes } = useNoteIndexDataManager()
   const { locationTypes } = useLocationTypeIndexDataManager()
   const { governmentTypes } = useGovernmentTypeIndexDataManager()

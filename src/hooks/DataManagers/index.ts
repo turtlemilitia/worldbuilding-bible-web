@@ -7,36 +7,38 @@ import {
 import { useChildDataManager } from './useChildDataManager'
 import { useDataManager, TDataManager } from './useDataManager'
 import { useImageableDataManager, hasImageableDataManager } from './useImageableDataManager'
-import useCampaignDataManager from './Campaigns/useCampaignDataManager'
-import useCompendiumDataManager from './Compendia/useCompendiumDataManager'
-import useEncounterDataManager from './Campaigns/useEncounterDataManager'
-import useSceneDataManager from './Campaigns/useSceneDataManager'
-import useSessionDataManager from './Campaigns/useSessionDataManager'
-import useQuestDataManager from './Campaigns/useQuestDataManager'
-import useCharacterDataManager from './Compendia/useCharacterDataManager'
-import useConceptDataManager from './Compendia/useConceptDataManager'
-import useCurrencyDataManager from './Compendia/useCurrencyDataManager'
-import useDeityDataManager from './Compendia/useDeityDataManager'
-import useFactionDataManager from './Compendia/useFactionDataManager'
-import useItemDataManager from './Compendia/useItemDataManager'
-import useLanguageDataManager from './Compendia/useLanguageDataManager'
-import useLocationDataManager from './Compendia/useLocationDataManager'
-import useNaturalResourceDataManager from './Compendia/useNaturalResourceDataManager'
-import usePantheonDataManager from './Compendia/usePantheonDataManager'
-import usePlaneDataManager from './Compendia/usePlaneDataManager'
-import useReligionDataManager from './Compendia/useReligionDataManager'
-import useSpeciesDataManager from './Compendia/useSpeciesDataManager'
-import useSpellDataManager from './Compendia/useSpellDataManager'
-import useStoryDataManager from './Compendia/useStoryDataManager'
-import useCampaignIndexDataManager from './Campaigns/useCampaignIndexDataManager'
-import useCompendiumIndexDataManager from './Compendia/useCompendiumIndexDataManager'
-import useImageTypeIndexDataManager from './Images/useImageTypeIndexDataManager'
-import useSystemIndexDataManager from './Systems/useSystemIndexDataManager'
-import useGovernmentTypeIndexDataManager from './Compendia/useGovernmentTypeIndexDataManager'
-import useLocationTypeIndexDataManager from './Compendia/useLocationTypeIndexDataManager'
-import useQuestTypeIndexDataManager from './Campaigns/useQuestTypeIndexDataManager'
-import useEncounterTypeIndexDataManager from './Campaigns/useEncounterTypeIndexDataManager'
-import useNoteIndexDataManager from '@/hooks/DataManagers/Notes/useNoteIndexDataManager'
+import useCampaignDataManager, {TCampaignDataManager} from './Campaigns/useCampaignDataManager'
+import useCompendiumDataManager, {TCompendiumDataManager} from './Compendia/useCompendiumDataManager'
+import useEncounterDataManager, {TEncounterDataManager} from './Campaigns/useEncounterDataManager'
+import useSceneDataManager, {TSceneDataManager} from './Campaigns/useSceneDataManager'
+import useSessionDataManager, {TSessionDataManager} from './Campaigns/useSessionDataManager'
+import useQuestDataManager, {TQuestDataManager} from './Campaigns/useQuestDataManager'
+import useCharacterDataManager, {TCharacterDataManager} from './Compendia/useCharacterDataManager'
+import useConceptDataManager, {TConceptDataManager} from './Compendia/useConceptDataManager'
+import useCurrencyDataManager, {TCurrencyDataManager} from './Compendia/useCurrencyDataManager'
+import useDeityDataManager, {TDeityDataManager} from './Compendia/useDeityDataManager'
+import useFactionDataManager, {TFactionDataManager} from './Compendia/useFactionDataManager'
+import useItemDataManager, {TItemDataManager} from './Compendia/useItemDataManager'
+import useLanguageDataManager, {TLanguageDataManager} from './Compendia/useLanguageDataManager'
+import useLocationDataManager, {TLocationDataManager} from './Compendia/useLocationDataManager'
+import useNaturalResourceDataManager, {TNaturalResourceDataManager} from './Compendia/useNaturalResourceDataManager'
+import usePantheonDataManager, {TPantheonDataManager} from './Compendia/usePantheonDataManager'
+import usePlaneDataManager, {TPlaneDataManager} from './Compendia/usePlaneDataManager'
+import useReligionDataManager, {TReligionDataManager} from './Compendia/useReligionDataManager'
+import useSpeciesDataManager, {TSpeciesDataManager} from './Compendia/useSpeciesDataManager'
+import useSpellDataManager, {TSpellDataManager} from './Compendia/useSpellDataManager'
+import useStoryDataManager, {TStoryDataManager} from './Compendia/useStoryDataManager'
+import useCampaignIndexDataManager, {TCampaignIndexDataManager} from './Campaigns/useCampaignIndexDataManager'
+import useCompendiumIndexDataManager, {TCompendiumIndexDataManager} from './Compendia/useCompendiumIndexDataManager'
+import useImageTypeIndexDataManager, {TImageTypeIndexDataManager} from './Images/useImageTypeIndexDataManager'
+import useSystemIndexDataManager, {TSystemIndexDataManager} from './Systems/useSystemIndexDataManager'
+import useGovernmentTypeIndexDataManager, {TGovernmentTypeIndexDataManager} from './Compendia/useGovernmentTypeIndexDataManager'
+import useLocationTypeIndexDataManager, {TLocationTypeIndexDataManager} from './Compendia/useLocationTypeIndexDataManager'
+import useQuestTypeIndexDataManager, {TQuestTypeIndexDataManager} from './Campaigns/useQuestTypeIndexDataManager'
+import useEncounterTypeIndexDataManager, {TEncounterTypeIndexDataManager} from './Campaigns/useEncounterTypeIndexDataManager'
+import useNoteIndexDataManager, {TNoteIndexDataManager} from '@/hooks/DataManagers/Notes/useNoteIndexDataManager'
+import useNoteDataManager, {TNoteDataManager} from './Notes/useNoteDataManager'
+import useSystemDataManager, { TSystemDataManager } from './Systems/useSystemDataManager'
 
 export {
   useDataManager,
@@ -72,7 +74,9 @@ export {
   useLocationTypeIndexDataManager,
   useQuestTypeIndexDataManager,
   useEncounterTypeIndexDataManager,
-  useNoteIndexDataManager
+  useNoteIndexDataManager,
+  useNoteDataManager,
+  useSystemDataManager
 }
 
 export type {
@@ -80,5 +84,37 @@ export type {
   hasImageableDataManager,
   hasNotesAttachableDataManager,
   hasEncountersAttachableDataManager,
-  hasQuestsAttachableDataManager
+  hasQuestsAttachableDataManager,
+  TCampaignDataManager,
+  TCompendiumDataManager,
+  TEncounterDataManager,
+  TSceneDataManager,
+  TSessionDataManager,
+  TQuestDataManager,
+  TCharacterDataManager,
+  TConceptDataManager,
+  TCurrencyDataManager,
+  TDeityDataManager,
+  TFactionDataManager,
+  TItemDataManager,
+  TLanguageDataManager,
+  TLocationDataManager,
+  TNaturalResourceDataManager,
+  TPantheonDataManager,
+  TPlaneDataManager,
+  TReligionDataManager,
+  TSpeciesDataManager,
+  TSpellDataManager,
+  TStoryDataManager,
+  TCampaignIndexDataManager,
+  TCompendiumIndexDataManager,
+  TImageTypeIndexDataManager,
+  TSystemIndexDataManager,
+  TGovernmentTypeIndexDataManager,
+  TLocationTypeIndexDataManager,
+  TQuestTypeIndexDataManager,
+  TEncounterTypeIndexDataManager,
+  TNoteIndexDataManager,
+  TNoteDataManager,
+  TSystemDataManager,
 }

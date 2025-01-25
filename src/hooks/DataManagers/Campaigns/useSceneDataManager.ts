@@ -14,18 +14,20 @@ import {
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import { TCampaign, TScene } from '@/types'
+import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 
-type TSceneDataManager = TChildDataManager<TCampaign, TScene, TSceneRequest> & {
+export type TSceneDataManager = TChildDataManager<TCampaign, TScene, TSceneRequest> & {
   campaign?: TCampaign,
   scene?: TScene
 } & hasNotesAttachableDataManager & hasImageableDataManager & hasEncountersAttachableDataManager & hasCharactersAttachableDataManager & hasLocationsAttachableDataManager
 
-const useSceneDataManager = (): TSceneDataManager => {
+const useSceneDataManager = (campaignId?: number, id?: number): TSceneDataManager => {
   const manager = useChildDataManager(
-    'scene',
-    'campaign',
-    sceneSlice,
-    campaignSlice,
+    'scenes',
+    'campaigns',
+    campaignId,
+    id,
+    campaignsIndexSlice,
     sceneService,
   )
   return {

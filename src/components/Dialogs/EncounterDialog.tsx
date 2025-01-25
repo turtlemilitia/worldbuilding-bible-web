@@ -6,7 +6,7 @@ import { useEncounterForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  encounterId: TEncounter['slug'];
+  encounterId: TEncounter['id'];
   onCreated?: (data: TEncounter) => any
   onUpdated?: (data: TEncounter) => any
   onDeleted?: (id: string|number) => any

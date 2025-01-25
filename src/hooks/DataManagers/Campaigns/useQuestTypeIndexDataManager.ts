@@ -3,7 +3,7 @@ import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import { questTypesIndexSlice } from '../../../reducers/questType/questTypesIndexSlice'
 import QuestTypeService from '../../../services/ApiService/Campaigns/QuestTypeService'
 
-type TQuestTypeIndexDataManager = TIndexDataManager<TQuestType> & {
+export type TQuestTypeIndexDataManager = TIndexDataManager<TQuestType> & {
   questTypes?: TQuestType[]
 }
 

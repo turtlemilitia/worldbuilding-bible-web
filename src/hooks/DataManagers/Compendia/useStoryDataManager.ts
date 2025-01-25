@@ -12,18 +12,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import StoryService, { TStoryRequest } from '../../../services/ApiService/Compendia/StoryService'
 import { storySlice } from '../../../reducers/compendium/story/storySlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TStoryDataManager = TChildDataManager<TCompendium, TStory, TStoryRequest> & {
+export type TStoryDataManager = TChildDataManager<TCompendium, TStory, TStoryRequest> & {
   compendium?: TCompendium,
   story?: TStory,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useStoryDataManager = (): TStoryDataManager => {
+const useStoryDataManager = (compendiumId?: number, id?: number): TStoryDataManager => {
   const manager = useChildDataManager(
-    'story',
-    'compendium',
-    storySlice,
-    compendiumSlice,
+    'stories',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     StoryService,
   )
   return {

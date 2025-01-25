@@ -9,7 +9,7 @@ import {
   hasImageableDataManager,
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager,
-  TDataManager
+  TDataManager,
 } from '../DataManagers'
 import {
   hasCharactersAttachableDataManager,
@@ -20,7 +20,7 @@ import {
   hasPinsAttachableDataManager,
   hasScenesAttachableDataManager,
   hasLocationsAttachableDataManager,
-  TOneOfAttachableNames
+  TOneOfAttachableNames,
 } from '../DataManagers/useAttachableDataManager'
 import usePinHandler from '../usePinHandler'
 import useFavouriteHandler from '../useFavouriteHandler'
@@ -28,7 +28,7 @@ import useUserPermissionHandler from '../useUserPermissionHandler'
 
 type TProps<T, R> = {
   fetchOnMount?: boolean,
-  id: string | number,
+  id?: number,
   mapData: (payload: T) => R,
   include?: string,
   manager: TDataManager<T, R> & hasImageableDataManager
@@ -53,26 +53,19 @@ const usePostForm = <T extends TGenericPost, R> ({
   onUpdated,
   onDeleted,
   canHaveProfileImage,
-  link
+  link,
 }: TProps<T, R>): TForm<T> => {
 
   const { entity, store, update, destroy, view } = manager
 
-  const isNew = useMemo(() => id === 'new', [id])
-  const canEdit = useMemo(() => isNew || entity?.canUpdate === true, [isNew, entity?.canUpdate])
+  const isNew = useMemo(() => !!id, [id])
+  const canEdit = useMemo(() => isNew || entity?.canUpdate === true,
+    [isNew, entity?.canUpdate])
 
   const imageHandler = useImageSelection<T>({ manager, canHaveProfileImage })
   const pinHandler = usePinHandler<T>({ manager })
   const favouriteHandler = useFavouriteHandler<T>({ manager })
   const permissionHandler = useUserPermissionHandler<T>({ manager })
-
-  useEffect(() => {
-    return () => {
-      if (!manager.isPermanent) {
-        manager.clearData(id)
-      }
-    }
-  }, [id])
 
   const {
     loading,
@@ -86,7 +79,7 @@ const usePostForm = <T extends TGenericPost, R> ({
     onSave,
     onDelete,
 
-    errors
+    errors,
   } = useFormHandling({
     fetchOnMount,
     id,
@@ -94,13 +87,34 @@ const usePostForm = <T extends TGenericPost, R> ({
     mapData,
     canEdit,
 
-    onFetch: () => view(id, { include: `${include ? `${include};` : ''}images` }),
-    onCreate: (data: T) => store(mapData(data), { include }),
-    onUpdate: (data: T) => update(id, mapData(data), { include }),
-    onDelete: () => destroy(id),
-    manyToManyFields: fields?.filter(({ type }) => ['multiSelect', 'asyncMultiSelect'].includes(type))
+    onFetch: () => {
+      if (!id) {
+        throw new Error('Attempted to call onFetch() with a null ID.') // should move this to another place
+      }
+      return view(id, { include: `${include ? `${include};` : ''}images` })
+    },
+    onCreate: (data: T) => {
+      return store(mapData(data), { include })
+    },
+    onUpdate: (data: T) => {
+      if (!id) {
+        throw new Error('Attempted to call onUpdate() with a null ID.') // should move this to another place
+      }
+      return update(id, mapData(data), { include })
+    },
+    onDelete: () => {
+      if (!id) {
+        throw new Error('Attempted to call onDelete() with a null ID.') // should move this to another place
+      }
+      return destroy(id)
+    },
+    manyToManyFields: fields?.filter(
+      ({ type }) => ['multiSelect', 'asyncMultiSelect'].includes(type))
       .map(({ name }) => name as keyof T) || [],
     onAttach: async (name: keyof T, attachedId) => {
+      if (!id) {
+        throw new Error('Attempted to call onAttach() with a null ID.') // should move this to another place
+      }
       switch (name as TOneOfAttachableNames) {
 
         case 'quests':
@@ -130,6 +144,9 @@ const usePostForm = <T extends TGenericPost, R> ({
       }
     },
     onDetach: async (name: keyof T, attachedId) => {
+      if (!id) {
+        throw new Error('Attempted to call onDetach() with a null ID.') // should move this to another place
+      }
       return manager[name as TOneOfAttachableNames]?.detach(id, attachedId)
     },
 
@@ -138,7 +155,7 @@ const usePostForm = <T extends TGenericPost, R> ({
     onUpdated,
     onDeleted,
 
-    persistedData: entity
+    persistedData: entity,
   })
 
   return {
@@ -158,7 +175,7 @@ const usePostForm = <T extends TGenericPost, R> ({
     pinHandler,
     favouriteHandler,
     permissionHandler,
-    link
+    link,
   }
 }
 

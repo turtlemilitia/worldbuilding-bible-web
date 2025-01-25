@@ -33,6 +33,7 @@ const usePostDataManager = () => {
 
   return {
     loading: Object.values(loading).some(value => Boolean(value)),
+    loadingInit: loading.init,
     backgroundImage,
     defaultBackgroundImage,
     setLoading,

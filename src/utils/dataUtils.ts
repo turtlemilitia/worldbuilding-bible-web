@@ -54,3 +54,7 @@ export const mapPlural = (singular: string) => {
       return `${singular}s`
   }
 }
+
+export const fixId = (id: string): number|undefined => {
+  return (id === 'new' || !id) ? undefined : Number(id);
+}

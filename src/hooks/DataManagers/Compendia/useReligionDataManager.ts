@@ -8,22 +8,23 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import ReligionService, { TReligionRequest } from '../../../services/ApiService/Compendia/ReligionService'
-import { religionSlice } from '../../../reducers/compendium/religion/religionSlice'
+import { religionSlice } from '@/reducers/compendium/religion/religionSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TReligionDataManager = TChildDataManager<TCompendium, TReligion, TReligionRequest> & {
+export type TReligionDataManager = TChildDataManager<TCompendium, TReligion, TReligionRequest> & {
   compendium?: TCompendium,
   religion?: TReligion,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useReligionDataManager = (): TReligionDataManager => {
+const useReligionDataManager = (compendiumId?: number, id?: number): TReligionDataManager => {
   const manager = useChildDataManager(
-    'religion',
-    'compendium',
-    religionSlice,
-    compendiumSlice,
+    'religions',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     ReligionService,
   )
   return {

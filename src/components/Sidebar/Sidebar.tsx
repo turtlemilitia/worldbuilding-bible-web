@@ -11,8 +11,8 @@ import {
 } from 'lucide-react'
 import { FloatingBox } from '../FloatingBox'
 import { Link } from 'react-router-dom'
-import { useCampaignDataManager } from '../../hooks/DataManagers'
 import { clsx } from 'clsx'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 export interface SidebarItemInterface {
   id?: string|number;
@@ -42,7 +42,7 @@ const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps
   const [open, setOpen] = useState<boolean>(false)
   const [show, setShow] = useState<boolean>(false)
 
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
 
   useEffect(() => {
     setShow(true)

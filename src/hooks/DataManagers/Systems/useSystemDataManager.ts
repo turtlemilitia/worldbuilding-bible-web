@@ -5,13 +5,13 @@ import systemService, { TSystemRequest } from '../../../services/ApiService/Syst
 import { TSystem } from '../../../types'
 import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
 
-type TSystemDataManager = TDataManager<TSystem, TSystemRequest> & {
+export type TSystemDataManager = TDataManager<TSystem, TSystemRequest> & {
   system?: TSystem
 } & hasImageableDataManager
-const useSystemDataManager = (): TSystemDataManager => {
+const useSystemDataManager = (id: number): TSystemDataManager => {
   const manager = useDataManager(
-    'system',
-    systemSlice,
+    'systems',
+    id,
     systemsIndexSlice,
     systemService
   )

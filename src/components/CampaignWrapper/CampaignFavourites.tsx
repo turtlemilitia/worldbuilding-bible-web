@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useMemo } from 'react'
 import SmallSansSerifText from '../SmallSansSerifText'
-import { useCampaignDataManager } from '../../hooks/DataManagers'
 import { Transition } from '@headlessui/react'
 import useUrlFormatter from '../../hooks/useUrlFormatter'
 import { mapPlural } from '@/utils/dataUtils'
@@ -10,33 +9,34 @@ import { makeLink } from '@/hooks/useLink'
 import FavouriteLink, {
   CampaignFavouriteLink,
 } from '@/components/CampaignWrapper/FavouriteLink'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TCampaignFavouriteItem = (CampaignFavouriteLink & { type: string });
 const CampaignFavourites: FunctionComponent = () => {
 
   const { user } = useAuthUserDataManager()
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
   const { compendiumPath } = useUrlFormatter()
 
   const links = useMemo(() => {
     const list: TCampaignFavouriteItem[] = []
     if (campaign?.pins) {
       list.push(...campaign.pins.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.pinnableType), item.pinnable.slug, compendiumPath, campaign?.slug),
+        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, campaign?.slug),
         name: item.pinnable.name,
         type: item.pinnableType
       })))
     }
     if (user?.pins) {
       list.push(...user.pins.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.pinnableType), item.pinnable.slug, compendiumPath, campaign?.slug),
+        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, campaign?.slug),
         name: item.pinnable.name,
         type: item.pinnableType
       })))
     }
     if (user?.favourites) {
       list.push(...user?.favourites.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.favouritableType), item.favouritable.slug, compendiumPath, campaign?.slug),
+        link: makeLink(mapPlural(item.favouritableType), item.favouritable.id, item.favouritable.slug, compendiumPath, campaign?.slug),
         name: item.favouritable.name,
         type: item.favouritableType
       })))

@@ -3,7 +3,7 @@ import CompendiumService from '../../../services/ApiService/Compendia/Compendium
 import { compendiaIndexSlice } from '../../../reducers/compendium/compendiaIndexSlice'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
-type TCompendiumIndexDataManager = TIndexDataManager<TCompendium> & {
+export type TCompendiumIndexDataManager = TIndexDataManager<TCompendium> & {
   compendia?: TCompendium[]
 }
 

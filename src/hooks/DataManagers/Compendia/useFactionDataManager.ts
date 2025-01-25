@@ -12,18 +12,20 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import FactionService, { TFactionRequest } from '../../../services/ApiService/Compendia/FactionService'
 import { factionSlice } from '../../../reducers/compendium/faction/factionSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TFactionDataManager = TChildDataManager<TCompendium, TFaction, TFactionRequest> & {
+export type TFactionDataManager = TChildDataManager<TCompendium, TFaction, TFactionRequest> & {
   compendium?: TCompendium,
   faction?: TFaction,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useFactionDataManager = (): TFactionDataManager => {
+const useFactionDataManager = (compendiumId?: number, id?: number): TFactionDataManager => {
   const manager = useChildDataManager(
-    'faction',
-    'compendium',
-    factionSlice,
-    compendiumSlice,
+    'factions',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     FactionService,
   )
   return {

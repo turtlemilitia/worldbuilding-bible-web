@@ -1,16 +1,18 @@
-import { TForm, TUseFormProps } from '../../../components/Post/types'
-import { TConcept } from '../../../types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
+import { TCompendium, TConcept } from '@/types'
 import { useCallback, useMemo } from 'react'
-import { TConceptRequest } from '../../../services/ApiService/Compendia/ConceptService'
+import { TConceptRequest } from '@/services/ApiService/Compendia/ConceptService'
 import { usePostForm } from '../index'
 import { useConceptDataManager } from '../../DataManagers'
 import useConceptFields from './useConceptFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  conceptId: TConcept['slug'];
+  compendiumId?: TCompendium['id'];
+  conceptId?: TConcept['id'];
 }
 const useConceptForm = ({
+  compendiumId,
   conceptId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useConceptForm = ({
 
   const include = useMemo(() => '', [])
 
-  const manager = useConceptDataManager()
+  const manager = useConceptDataManager(compendiumId, conceptId)
 
-  const { fields } = useConceptFields()
+  const { fields } = useConceptFields(manager)
 
   const mapData = useCallback((data: any): TConceptRequest => ({
     name: data.name,
@@ -39,7 +41,7 @@ const useConceptForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('concepts', conceptId)
+    link: conceptId ? useLink('concepts', conceptId) : ''
   })
 }
 

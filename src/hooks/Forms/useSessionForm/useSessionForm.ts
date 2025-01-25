@@ -1,16 +1,18 @@
-import { TSession } from '../../../types'
-import { TSessionRequest } from '../../../services/ApiService/Campaigns/SessionService'
+import { TCampaign, TSession } from '@/types'
+import { TSessionRequest } from '@/services/ApiService/Campaigns/SessionService'
 import { useMemo } from 'react'
-import { TForm, TUseFormProps } from '../../../components/Post/types'
+import { TForm, TUseFormProps } from '@/components/Post/types'
 import { useSessionDataManager } from '../../DataManagers'
 import usePostForm from '../usePostForm'
 import useSessionFields from './useSessionFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  sessionId: TSession['slug'];
+  campaignId?: TCampaign['id'];
+  sessionId?: TSession['id'];
 }
 const useSessionForm = ({
+  campaignId,
   sessionId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useSessionForm = ({
 
   const include = useMemo(() => 'scenes;quests;encounters;notes', [])
 
-  const manager = useSessionDataManager()
+  const manager = useSessionDataManager(campaignId, sessionId)
 
-  const { fields } = useSessionFields()
+  const { fields } = useSessionFields(manager)
 
   const mapData = (data: any): TSessionRequest => ({
     name: data.name,
@@ -44,7 +46,7 @@ const useSessionForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: useLink('sessions', sessionId)
+    link: sessionId ? useLink('sessions', sessionId) : ''
   })
 }
 

@@ -23,7 +23,7 @@ import useImageIndexDataManager
 export const ProtectedRoute = (): JSX.Element => {
 
   const { token } = useAppSelector((state: RootState) => state.auth)
-  const { loading, setLoading } = usePostDataManager()
+  const { loading, setLoading, loadingInit } = usePostDataManager()
 
   const authUserDataManager = useAuthUserDataManager()
   const systemIndexDataManager = useSystemIndexDataManager()
@@ -74,7 +74,9 @@ export const ProtectedRoute = (): JSX.Element => {
   return (
     <LoadingWrapper opacity={'100'} loading={loading}
                     loadingText={'Loading...'}>
-      <Outlet/>
+      {!loadingInit && (
+        <Outlet/>
+      )}
     </LoadingWrapper>
   )
 }

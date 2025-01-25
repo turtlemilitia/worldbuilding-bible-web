@@ -3,16 +3,18 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useConceptForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Concept: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { conceptId } = useParams() as { conceptId: string } // router
+  const { compendiumId, conceptId } = useParams() as { compendiumId: string; conceptId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = useConceptForm({
-    conceptId,
+    compendiumId: fixId(compendiumId),
+    conceptId: fixId(conceptId),
     onCreated: (data) => {
       navigate(`${compendiumPath}/concepts/${data.slug}`)
     },

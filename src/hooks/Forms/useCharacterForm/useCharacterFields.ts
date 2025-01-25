@@ -1,18 +1,17 @@
 import { TUseFields } from '@/components/Post/types'
 import useUrlFormatter from '../../useUrlFormatter'
 import {
-  useCampaignDataManager,
-  useCharacterDataManager,
+  TCharacterDataManager,
   useNoteIndexDataManager,
 } from '../../DataManagers'
 import { factionField, languageField, noteField, numberField, selectField, textField, TField } from '../../fieldTools'
 import {encounterField, locationField, questField, sceneField} from '../../fieldTools/fieldTools'
 import { useMemo } from 'react'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
-const useCharacterFields = (): TUseFields => {
+const useCharacterFields = (manager: TCharacterDataManager): TUseFields => {
 
-  const manager = useCharacterDataManager()
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
   const { notes } = useNoteIndexDataManager()
 
   const { compendiumPath } = useUrlFormatter()

@@ -6,7 +6,7 @@ import { useSessionForm } from '../../hooks/Forms'
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  sessionId: TSession['slug'];
+  sessionId: TSession['id'];
   onCreated?: (data: TSession) => any
   onUpdated?: (data: TSession) => any
   onDeleted?: (id: string|number) => any

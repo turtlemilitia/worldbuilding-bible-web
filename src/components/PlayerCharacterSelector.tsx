@@ -3,19 +3,19 @@ import React, { Fragment, useState } from 'react'
 import { CheckIcon, DotIcon, UserIcon, UserPlus2Icon, UserPlusIcon } from 'lucide-react'
 import clsx from 'clsx'
 import { TPlayerCharacterHandler } from './Post/types'
-import { useCampaignDataManager } from '../hooks/DataManagers'
 import { TSelectOption } from './Forms/Fields/FieldMapper'
 import { TCampaign } from '../types'
 import { campaignIncludes } from '../hooks/Forms/useCampaignForm/useCampaignForm'
 import { SmallFloatingBox } from './FloatingBox'
 import LoadingWrapper from './LoadingWrapper'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TProps = {
   handler: TPlayerCharacterHandler
 }
 const PinForSelector = ({ handler }: TProps) => {
 
-  const { campaign, view: refreshCampaign } = useCampaignDataManager()
+  const { campaign, view: refreshCampaign } = useCurrentCampaign()
 
   const [loading, setLoading] = useState(false)
 
@@ -23,7 +23,7 @@ const PinForSelector = ({ handler }: TProps) => {
     setLoading(true)
     handler.handleOnSelectUser(options)
       .then(async () => {
-        await refreshCampaign((campaign as TCampaign).slug, { include: campaignIncludes }) // only until broadcasting is implemented
+        await refreshCampaign((campaign as TCampaign).id, { include: campaignIncludes }) // only until broadcasting is implemented
         setLoading(false)
       })
   }
