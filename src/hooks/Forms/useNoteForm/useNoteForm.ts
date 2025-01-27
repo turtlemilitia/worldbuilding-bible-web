@@ -41,7 +41,7 @@ const useNoteForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: noteId ? useLink('notes', noteId) : ''
+    link: useLink('notes', noteId)
   }), pinHandler: undefined, permissionHandler: undefined}
 }
 

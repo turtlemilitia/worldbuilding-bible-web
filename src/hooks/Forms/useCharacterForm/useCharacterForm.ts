@@ -47,7 +47,7 @@ const useCharacterForm = ({
       onCreated,
       onUpdated,
       onDeleted,
-      link: characterId ? useLink('characters', characterId) : ''
+      link: useLink('characters', characterId)
     }),
     playerCharacterHandler: usePlayerCharacterHandler({ manager })
   }

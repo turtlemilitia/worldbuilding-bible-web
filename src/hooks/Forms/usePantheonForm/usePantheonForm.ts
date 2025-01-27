@@ -43,7 +43,7 @@ const usePantheonForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: pantheonId ? useLink('pantheons', pantheonId) : ''
+    link: useLink('pantheons', pantheonId)
   })
 }
 

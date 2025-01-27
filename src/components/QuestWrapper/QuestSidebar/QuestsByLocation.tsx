@@ -1,18 +1,18 @@
 import SidebarSection from '@/components/Sidebar/SidebarSection'
 import { createNestedArray } from '@/utils/treeUtils'
 import React, { useMemo } from 'react'
-import { TCampaign, TLocation } from '@/types'
+import { TCampaign, TLocation, TQuest } from '@/types'
 import useCampaignsMapping from '@/hooks/useCampaignsMapping'
 import { isEmpty } from 'lodash'
 
 type TOwmProps = {
   campaign: TCampaign;
   addNewLink: string;
-  quests: TCampaign['quests']
+  quests: TQuest[]
 }
 const QuestsByLocation = ({ campaign, addNewLink, quests }: TOwmProps) => {
 
-  const { mapQuest } = useCampaignsMapping({ campaignId: campaign.slug })
+  const { mapQuest } = useCampaignsMapping({ campaignId: campaign.id })
 
   const locations = useMemo(() => {
     // Use a Map to keep track of unique locations by ID

@@ -37,7 +37,7 @@ const useSceneForm = ({ campaignId, sceneId, onFetched, onCreated, onUpdated, on
     onCreated,
     onUpdated,
     onDeleted,
-    link: sceneId ? useLink('scenes', sceneId) : '',
+    link: useLink('scenes', sceneId)
   })
 }
 

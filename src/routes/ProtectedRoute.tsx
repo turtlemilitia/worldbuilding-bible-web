@@ -40,8 +40,8 @@ export const ProtectedRoute = (): JSX.Element => {
   // Here we will be adding the missing items where needed
   useEffect(() => {
     if (token) {
-      authUserDataManager.viewOwn({ include: 'favourites;favourites.favouritable;pins;pins.pinnable;characters;permissions' }).
-        then((user) => {
+      authUserDataManager.viewOwn({ include: 'favourites;favourites.favouritable;pins;pins.pinnable;characters;permissions' })
+        .then((user) => {
           const promises = [
             compendiumIndexDataManager.index(),
             campaignIndexDataManager.index(),

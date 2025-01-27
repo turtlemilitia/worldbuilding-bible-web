@@ -12,7 +12,7 @@ const EncounterWrapper: FunctionComponent = () => {
 
   useEffect(() => {
 
-    if (!campaign?.slug || encounterId) {
+    if (!campaign?.id || encounterId || !campaign.encounters) {
       return;
     }
     if (campaign.encounters?.length > 0) {
@@ -21,11 +21,11 @@ const EncounterWrapper: FunctionComponent = () => {
       navigate(`/campaigns/${campaign.id}/${campaign.slug}/encounters/new`)
     }
 
-  }, [campaign?.slug])
+  }, [campaign?.id, campaign?.encounters])
 
   return (
     <>
-      {campaign && (
+      {campaign && campaign.encounters && (
         <EncounterSidebar campaign={campaign}/>
       )}
       <div className="relative w-full">

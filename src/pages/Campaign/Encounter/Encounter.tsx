@@ -2,6 +2,7 @@ import React, { FunctionComponent, JSX, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useEncounterForm } from '../../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
 
 const Encounter: FunctionComponent = (): JSX.Element => {
 
@@ -11,7 +12,8 @@ const Encounter: FunctionComponent = (): JSX.Element => {
   const { campaignId, encounterId } = useParams() as { campaignId: string, encounterId: string } // router
 
   const form = useEncounterForm({
-    encounterId,
+    campaignId: fixId(campaignId),
+    encounterId: fixId(encounterId),
     onCreated: (data) => {
       navigate(`/campaigns/${campaignId}/encounters/${data.slug}`)
     },

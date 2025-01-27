@@ -13,7 +13,7 @@ type TOwmProps = {
 const QuestsByType = ({ campaign, addNewLink, quests }: TOwmProps) => {
 
   const { questTypes: types } = useQuestTypeIndexDataManager()
-  const { mapQuest } = useCampaignsMapping({ campaignId: campaign.slug })
+  const { mapQuest } = useCampaignsMapping({ campaignId: campaign.id })
 
   return <>
     {types?.filter(type => {

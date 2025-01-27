@@ -42,7 +42,7 @@ const useLanguageForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: languageId ? useLink('languages', languageId) : ''
+    link: useLink('languages', languageId)
   })
 }
 

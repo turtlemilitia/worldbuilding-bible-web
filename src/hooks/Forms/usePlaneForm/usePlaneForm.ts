@@ -42,7 +42,7 @@ const usePlaneForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: planeId ? useLink('planes', planeId) : ''
+    link: useLink('planes', planeId)
   })
 }
 

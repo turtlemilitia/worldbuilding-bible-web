@@ -84,10 +84,19 @@ export const useChildDataManager = <
 
   const dispatch = useAppDispatch()
 
-  const { data } = useAppSelector(state => state[parentName as TParentName]) as { data: TParentEntity[] }
+  const { data } = useAppSelector(state => state[parentName]) as {
+    data: TParentEntity[]
+  }
 
-  const parent = useMemo(() => data?.find(item => item.id === parentId), [data, parentId])
-  const entity = useMemo(() => (parent?.[name] as TEntity[] | undefined)?.find(item => item.id === id), [id, name, parent])
+  const parent = useMemo(() => {
+    return data
+      ?.find(item => item.id === parentId)
+  }, [data, parentId])
+
+  const entity = useMemo(() => {
+    return (parent?.[name] as TEntity[] | undefined)
+      ?.find(item => item.id === id)
+  }, [id, name, parent])
 
   // REDUX MANAGEMENT
   const setData = useCallback((data: TEntity) => {
@@ -97,7 +106,7 @@ export const useChildDataManager = <
     dispatch(parentSlice.actions.setChildData({
       id: parentId,
       field: name,
-      data,
+      child: data,
     }))
   }, [parentId, name, parentSlice])
 
@@ -108,9 +117,9 @@ export const useChildDataManager = <
     dispatch(parentSlice.actions.setChildData({
       id: parentId,
       field: name,
-      data,
+      child: data,
     }))
-  }, [parentId, name, parentSlice, name])
+  }, [parentId, name, parentSlice])
 
   const updateData = useCallback((data: Partial<TEntity>) => {
     if (!parentId) {
@@ -119,9 +128,9 @@ export const useChildDataManager = <
     dispatch(parentSlice.actions.updateChildData({
       id: parentId,
       field: name,
-      data,
+      child: data,
     }))
-  }, [parentId, parentSlice, name])
+  }, [parentId, name, parentSlice])
 
   const removeData = useCallback((id: number) => {
     if (!parentId) {
@@ -132,66 +141,69 @@ export const useChildDataManager = <
       field: name,
       childId: id,
     }))
-  }, [parentId, id, parentSlice])
+  }, [parentId, name, parentSlice])
 
-  const setChildData = useCallback((id: number, field: string, data: Identifiable) => {
-    if (!parentId) {
-      throw new Error('Attempted to call update() with a null ID.')
-    }
-    dispatch(parentSlice.actions.setChildChildData({
-      id: parentId,
-      field: name,
-      childId: id,
-      childField: field,
-      childChild: data,
-    }))
-  }, [parentSlice, id, parentId])
+  const setChildData = useCallback(
+    (id: number, field: string, data: Identifiable) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.setChildChildData({
+        id: parentId,
+        field: name,
+        childId: id,
+        childField: field,
+        childChild: data,
+      }))
+    }, [parentId, name, parentSlice])
 
-  const updateChildData = useCallback((id: number, field: string, data: Identifiable) => {
-    if (!parentId) {
-      throw new Error('Attempted to call update() with a null ID.')
-    }
-    dispatch(parentSlice.actions.updateChildChildData({
-      id: parentId,
-      field: name,
-      childId: id,
-      childField: field,
-      childChild: data,
-    }))
-  }, [parentSlice, parentId, id])
+  const updateChildData = useCallback(
+    (id: number, field: string, data: Identifiable) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.updateChildChildData({
+        id: parentId,
+        field: name,
+        childId: id,
+        childField: field,
+        childChild: data,
+      }))
+    }, [parentId, parentSlice])
 
-  const removeChildData = useCallback((id: number, field: string, childId: number) => {
-    if (!parentId) {
-      throw new Error('Attempted to call update() with a null ID.')
-    }
-    dispatch(parentSlice.actions.removeChildChildData({
-      id: parentId,
-      field: name,
-      childId: id,
-      childField: field,
-      childChildId: childId,
-    }))
-  }, [parentSlice, parentId, id])
+  const removeChildData = useCallback(
+    (id: number, field: string, childId: number) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.removeChildChildData({
+        id: parentId,
+        field: name,
+        childId: id,
+        childField: field,
+        childChildId: childId,
+      }))
+    }, [parentId, parentSlice])
 
   const view = useCallback(
     async (id: number, query: TQueryParams = {}): Promise<TEntity> => {
       if (!parentId) {
-        throw new Error('Attempted to call update() with a null ID.')
+        throw new Error('Attempted to call view() with a null ID.')
       }
       const { data } = await api.view(id, query)
       setData(data.data)
       return data.data
-    }, [id, api])
+    }, [setData, parentId, api])
 
   const store = useCallback(
     async (payload: TRequest, query: TQueryParams = {}) => {
       if (!parentId) {
-        throw new Error('Attempted to call update() with a null parent ID.')
+        throw new Error('Attempted to call store() with a null parent ID.')
       }
       const { data } = await api.store(parentId as number, payload, query)
       addData(data.data)
       return data.data
-    }, [api, parent])
+    }, [addData, parentId, api])
 
   const update = useCallback(async (id: number, payload: Partial<TRequest>, query: TQueryParams = {}) => {
     if (!parentId) {
@@ -200,7 +212,7 @@ export const useChildDataManager = <
     const { data } = await api.update(id, payload, query)
     updateData(data.data)
     return data.data
-  }, [api])
+  }, [updateData, api])
 
   const destroy = useCallback(async (id: number) => {
     if (!parentId) {
@@ -208,7 +220,7 @@ export const useChildDataManager = <
     }
     await api.destroy(id)
     removeData(id)
-  }, [id, api])
+  }, [removeData, api])
 
   return {
     entityName: name,

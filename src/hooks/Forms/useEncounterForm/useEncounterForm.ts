@@ -37,7 +37,7 @@ const useEncounterForm = ({ campaignId, encounterId, onFetched, onCreated, onUpd
     onCreated,
     onUpdated,
     onDeleted,
-    link: encounterId ? useLink('encounters', encounterId) : ''
+    link: useLink('encounters', encounterId)
   })
 }
 

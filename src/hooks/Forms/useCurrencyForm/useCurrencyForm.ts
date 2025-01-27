@@ -42,7 +42,7 @@ const useCurrencyForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: currencyId ? useLink('currencies', currencyId) : ''
+    link: useLink('currencies', currencyId)
   })
 }
 

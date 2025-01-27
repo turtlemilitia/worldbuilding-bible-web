@@ -14,7 +14,7 @@ const Campaign: FunctionComponent = (): JSX.Element => {
   const form = useCampaignForm({
     campaignId: fixId(campaignId),
     onCreated: (data: TCampaign) => {
-      navigate(`/campaigns/${data?.slug}`)
+      navigate(`/campaigns/${data?.id}/${data?.slug}`)
     },
     onDeleted: () => {
       navigate(`/campaigns`)

@@ -9,7 +9,7 @@ import {
   TCampaignRelationships,
   TCompendiumRelationships, TGenericPost,
 } from '@/types'
-import { mapPlural } from '@/utils/dataUtils'
+import { mapPlural, mapSingular } from '@/utils/dataUtils'
 
 export type TDataManager<TEntity, TRequest> = {
   entityName: string;
@@ -37,58 +37,58 @@ export const useDataManager = <TEntity extends TGenericPost, TRequest, TIndexRes
   const dispatch = useAppDispatch()
 
   const { data } = useAppSelector(state => state[name]) as { data: TEntity[] }
-  const entity: TEntity|undefined = useMemo(() => data?.find(item => item.id === id), [id, data])
+  const entity: TEntity|undefined = data?.find(item => item.id === id)
 
   // REDUX MANAGEMENT
   const setData = useCallback((data: TEntity) => {
     dispatch(indexSlice.actions.setOne(data))
-  }, [])
+  }, [indexSlice])
 
   const updateData = useCallback((data: Partial<TEntity>) => {
     dispatch(indexSlice.actions.updateOne(data))
-  }, [])
+  }, [indexSlice])
 
   const removeData = useCallback((id: number) => {
     dispatch(indexSlice.actions.removeOne({ id }))
-  }, [])
+  }, [indexSlice])
 
   const setChildData = useCallback((id: number, field: string, data: Identifiable) => {
     dispatch(indexSlice.actions.setChildData({ id, field, data }))
-  }, [])
+  }, [indexSlice])
 
   const updateChildData = useCallback((id: number, field: string, data: Identifiable) => {
     dispatch(indexSlice.actions.updateChildData({ id, field, data }))
-  }, [])
+  }, [indexSlice])
 
   const removeChildData = useCallback((id: number, field: string, childId: number) => {
     dispatch(indexSlice.actions.removeChildData({ id, field, childId }))
-  }, [])
+  }, [indexSlice])
 
   const view = useCallback(async (id: number, query: TQueryParams = {}): Promise<TEntity> => {
     const { data } = await api.view(id, query)
     setData(data.data)
     return data.data
-  }, [])
+  }, [setData, api])
 
   const store = useCallback(async (payload: TRequest, query: TQueryParams = {}) => {
     const { data } = await api.store(payload, query)
     setData(data.data)
     return data.data
-  }, [])
+  }, [setData, api])
 
   const update = useCallback(async (id: number, payload: Partial<TRequest>, query: TQueryParams = {}) => {
     const { data } = await api.update(id, payload, query)
     updateData(data.data)
     return data.data
-  }, [])
+  }, [updateData, api])
 
   const destroy = useCallback(async (id: number) => {
     await api.destroy(id)
     removeData(id)
-  }, [])
+  }, [removeData, api])
 
   return {
-    entityName: name,
+    entityName: mapSingular(name),
     entity,
     setData,
     updateData,

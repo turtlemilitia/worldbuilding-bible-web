@@ -8,7 +8,7 @@ const usePostDataManager = () => {
 
   const dispatch = useAppDispatch()
 
-  const { loading, backgroundImage, defaultBackgroundImage } = useAppSelector(state => state.post)
+  const { loading, loaded, backgroundImage, defaultBackgroundImage } = useAppSelector(state => state.post)
 
   // REDUX MANAGEMENT
   const setLoading = useCallback((loading: { [id: string]: boolean }) => {
@@ -31,9 +31,19 @@ const usePostDataManager = () => {
     dispatch(slice.actions.setDefaultBackgroundImage(undefined))
   }, [])
 
+  const isLoaded = useCallback((id: string): boolean => {
+    return !!loaded[id]
+  }, [loaded])
+
+  const isLoading = useCallback((id: string): boolean => {
+    return !!loading[id]
+  }, [loading])
+
   return {
     loading: Object.values(loading).some(value => Boolean(value)),
     loadingInit: loading.init,
+    isLoaded,
+    isLoading,
     backgroundImage,
     defaultBackgroundImage,
     setLoading,

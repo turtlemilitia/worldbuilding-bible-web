@@ -42,7 +42,7 @@ const useSpellForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: spellId ? useLink('spells', spellId) : ''
+    link: useLink('spells', spellId)
   })
 }
 

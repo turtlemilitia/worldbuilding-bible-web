@@ -31,12 +31,12 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
     })
     const promises: Promise<void>[] = []
     if (pinToCampaign && !pinnedToCampaign) {
-      promises.push(campaignPinsDataManager.attach(campaign.slug, {
+      promises.push(campaignPinsDataManager.attach(campaign.id, {
         pinnableId: manager.entity.id,
         pinnableType: manager.entityName
       }))
     } else if (!pinToCampaign && pinnedToCampaign) {
-      promises.push(campaignPinsDataManager.detach(campaign.slug, pinnedToCampaign.id))
+      promises.push(campaignPinsDataManager.detach(campaign.id, pinnedToCampaign.id))
     }
     if (!pinToCampaign) {
       campaign.users?.forEach((user) => {

@@ -45,7 +45,7 @@ const useQuestForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: questId ? useLink('quests', questId) : ''
+    link: useLink('quests', questId)
   })
 }
 

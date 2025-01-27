@@ -54,6 +54,22 @@ export const mapPlural = (singular: string) => {
       return `${singular}s`
   }
 }
+export const mapSingular = (singular: string) => {
+  switch (singular) {
+    case 'currencies':
+      return 'currency'
+    case 'deities':
+      return 'deity'
+    case 'species':
+      return 'species'
+    case 'stories':
+      return 'story'
+    case 'compendia':
+      return 'compendium'
+    default:
+      return singular.slice(0, -1)
+  }
+}
 
 export const fixId = (id: string): number|undefined => {
   return (id === 'new' || !id) ? undefined : Number(id);

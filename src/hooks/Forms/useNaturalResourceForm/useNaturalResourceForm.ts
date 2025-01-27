@@ -42,7 +42,7 @@ const useNaturalResourceForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: naturalResourceId ? useLink('natural-resources', naturalResourceId) : ''
+    link: useLink('natural-resources', naturalResourceId)
   })
 }
 

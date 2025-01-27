@@ -42,7 +42,7 @@ const useItemForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: itemId && useLink('items', itemId) || ''
+    link: useLink('items', itemId)
   })
 }
 

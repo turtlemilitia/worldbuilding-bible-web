@@ -42,7 +42,7 @@ const useReligionForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: religionId ? useLink('religions', religionId) : ''
+    link: useLink('religions', religionId)
   })
 }
 

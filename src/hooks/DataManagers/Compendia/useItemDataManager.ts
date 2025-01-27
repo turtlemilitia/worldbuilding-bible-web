@@ -9,9 +9,8 @@ import {
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import ItemService, { TItemRequest } from '../../../services/ApiService/Compendia/ItemService'
-import { itemSlice } from '../../../reducers/compendium/item/itemSlice'
+import { itemSlice } from '@/reducers/compendium/item/itemSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TItemDataManager = TChildDataManager<TCompendium, TItem, TItemRequest> & {

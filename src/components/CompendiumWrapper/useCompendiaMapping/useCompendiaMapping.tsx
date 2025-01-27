@@ -15,7 +15,6 @@ import {
   TSpecies,
   TSpell,
   TStory,
-  TTypesAllowed,
 } from '@/types'
 import { SidebarItemInterface } from '../../Sidebar/Sidebar'
 import {

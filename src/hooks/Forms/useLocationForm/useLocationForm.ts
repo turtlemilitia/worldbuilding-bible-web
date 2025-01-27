@@ -48,7 +48,7 @@ const useLocationForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: locationId ? useLink('locations', locationId) : ''
+    link: useLink('locations', locationId)
   })
 }
 

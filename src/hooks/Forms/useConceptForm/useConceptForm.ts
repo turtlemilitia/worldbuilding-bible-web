@@ -41,7 +41,7 @@ const useConceptForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: conceptId ? useLink('concepts', conceptId) : ''
+    link: useLink('concepts', conceptId)
   })
 }
 

@@ -56,7 +56,7 @@ const useCampaignForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: campaignId ? useLink('campaigns', campaignId) : ''
+    link: useLink('campaigns', campaignId)
   })
 }
 

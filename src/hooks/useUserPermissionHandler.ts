@@ -32,13 +32,13 @@ const useUserPermissionHandler = <T extends TGenericPostBasic> ({ manager }: TPr
       return permission.permissionableType === manager.entityName && permission.permissionableId === manager.entity?.id
     })
     if (addPermissionToCampaign && !permissionAddedToCampaign) {
-      promises.push(campaignPermissionsDataManager.attach(campaign.slug, {
+      promises.push(campaignPermissionsDataManager.attach(campaign.id, {
         permissionableId: manager.entity.id,
         permission: 'view',
         permissionableType: manager.entityName
       }))
     } else if (!addPermissionToCampaign && permissionAddedToCampaign) {
-      promises.push(campaignPermissionsDataManager.detach(campaign.slug, permissionAddedToCampaign.id))
+      promises.push(campaignPermissionsDataManager.detach(campaign.id, permissionAddedToCampaign.id))
     }
     if (!addPermissionToCampaign) {
       campaign.users?.forEach((user) => {

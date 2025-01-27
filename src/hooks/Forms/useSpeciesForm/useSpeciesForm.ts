@@ -42,7 +42,7 @@ const useSpeciesForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: speciesId ? useLink('species', speciesId) : ''
+    link: useLink('species', speciesId)
   })
 }
 

@@ -128,16 +128,16 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           type={dialogType}
           isOpen={!!dialogIsOpen}
           setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
-          id={dialogIsOpen || 'new'}
+          id={dialogIsOpen || undefined}
           onCreated={(data) => {
-            setDialogIsOpen(data.slug)
+            setDialogIsOpen(data.id)
             onChange([...value, data])
           }}
           onUpdated={(data) => {
-            onChange(value.map(single => single.slug === data.slug ? data : single))
+            onChange(value.map(single => single.id === data.id ? data : single))
           }}
           onDeleted={(id) => {
-            onChange(value.filter(single => single.slug !== id))
+            onChange(value.filter(single => single.id !== id))
           }}
         />
       )}

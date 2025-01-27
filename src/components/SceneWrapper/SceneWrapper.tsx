@@ -12,10 +12,10 @@ const SceneWrapper: FunctionComponent = () => {
 
   useEffect(() => {
 
-    if (!campaign?.slug || sceneId) {
+    if (!campaign?.slug || sceneId || !campaign.scenes) {
       return;
     }
-    if (campaign.scenes && campaign.scenes?.length > 0) {
+    if (campaign.scenes?.length > 0) {
       navigate(`/campaigns/${campaign.id}/${campaign.slug}/scenes/${campaign.scenes[0]?.id}/${campaign.scenes[0]?.slug}`)
     } else {
       navigate(`/campaigns/${campaign.id}/${campaign.slug}/scenes/new`)
@@ -25,7 +25,7 @@ const SceneWrapper: FunctionComponent = () => {
 
   return (
     <>
-      {campaign && (
+      {campaign && campaign.scenes && (
         <SceneSidebar campaign={campaign}/>
       )}
       <div className="relative w-full">

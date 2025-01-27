@@ -46,7 +46,7 @@ const useSessionForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: sessionId ? useLink('sessions', sessionId) : ''
+    link: useLink('sessions', sessionId)
   })
 }
 

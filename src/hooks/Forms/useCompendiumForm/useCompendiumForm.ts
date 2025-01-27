@@ -41,7 +41,7 @@ const useCompendiumForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: compendiumId ? useLink('compendia', compendiumId) : ''
+    link: useLink('compendia', compendiumId)
   })
 }
 

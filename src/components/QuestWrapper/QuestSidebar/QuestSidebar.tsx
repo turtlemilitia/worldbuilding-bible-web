@@ -22,6 +22,9 @@ const QuestSidebar: FunctionComponent<TQuestSidebarProps> = React.memo(
 
     const quests = useMemo(() => {
       let quests = campaign.quests;
+      if (!quests) {
+        return [];
+      }
       if (pinnedOnly) {
         quests = quests.filter(quest => isPinned(
           { campaign, entityName: 'quest', entityId: quest.id }))

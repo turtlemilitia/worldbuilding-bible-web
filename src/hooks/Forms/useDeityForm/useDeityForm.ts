@@ -43,7 +43,7 @@ const useDeityForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: deityId ? useLink('deities', deityId) : ''
+    link: useLink('deities', deityId)
   })
 }
 

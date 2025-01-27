@@ -13,7 +13,7 @@ const SessionWrapper: FunctionComponent = () => {
 
   useEffect(() => {
 
-    if (!campaign?.slug || sessionId) {
+    if (!campaign?.slug || sessionId || !campaign.sessions) {
       return;
     }
     if (campaign.sessions?.length > 0) {
@@ -29,7 +29,7 @@ const SessionWrapper: FunctionComponent = () => {
 
   return (
     <>
-      {campaign && (
+      {campaign && campaign.sessions && (
         <SessionSidebar campaign={campaign}/>
       )}
       <div className="relative w-full">

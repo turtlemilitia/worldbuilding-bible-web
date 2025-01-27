@@ -1,6 +1,12 @@
-import { TUseCampaignsMapping } from './types'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { TEncounter, TQuest, TScene, TSession, TTypesAllowed } from '@/types'
+import {
+  TCampaign,
+  TEncounter,
+  TQuest,
+  TScene,
+  TSession,
+  TTypesAllowed,
+} from '@/types'
 import { SidebarItemInterface } from '@/components/Sidebar/Sidebar'
 import { StarIcon, StickyNoteIcon, SwordsIcon, VenetianMaskIcon } from 'lucide-react'
 import React, { useCallback, useMemo } from 'react'
@@ -9,8 +15,13 @@ import {
   useQuestDataManager, useSceneDataManager,
   useSessionDataManager
 } from '../DataManagers'
+import { makeLink } from '@/hooks/useLink'
+import useUrlFormatter from '@/hooks/useUrlFormatter'
 
-const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
+type TProps = {
+  campaignId: TCampaign['id']
+}
+const useCampaignsMapping = ({ campaignId }: TProps) => {
 
   const navigate = useNavigate()
 
@@ -21,7 +32,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
   const { destroy: destroySession } = useSessionDataManager(campaignId)
   const { destroy: destroyScene } = useSceneDataManager(campaignId)
 
-  const prefix = useMemo(() => `/campaigns/${campaignId}`, [campaignId])
+  const { campaignPath: prefix } = useUrlFormatter()
 
   const onDeleted = useCallback((field: string, id: TTypesAllowed['id']) => {
     if (location.pathname.includes(`${prefix}/${field}/${id}`)) {
@@ -32,7 +43,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
   const mapEncounter = useCallback((encounter: TEncounter): SidebarItemInterface => ({
     title: encounter.name,
     done: Boolean(encounter.completedAt),
-    to: `${prefix}/encounters/${encounter.id}`,
+    to: makeLink('encounters', encounter.id, encounter.slug, '', prefix),
     icon: (props) => <SwordsIcon {...props}/>,
     onDelete: encounter.canDelete ? () => destroyEncounter(encounter.id)
       .then(() => onDeleted('encounters', encounter.id)) : undefined
@@ -41,7 +52,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
   const mapQuest = useCallback((quest: TQuest): SidebarItemInterface => ({
     title: quest.name,
     done: Boolean(quest.completedAt),
-    to: `${prefix}/quests/${quest.id}`,
+    to: makeLink('quests', quest.id, quest.slug, '', prefix),
     icon: (props) => <StarIcon {...props}/>,
     addNewLink: quest.canUpdate ? `${prefix}/quests/new` : '',
     addNewLinkState: { type: quest.type.id, parent: quest.id },
@@ -52,7 +63,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
 
   const mapSession = useCallback((session: TSession): SidebarItemInterface => ({
     title: session.name,
-    to: `${prefix}/sessions/${session.id}`,
+    to: makeLink('sessions', session.id, session.slug, '', prefix),
     icon: (props) => <StickyNoteIcon {...props}/>,
     onDelete: session.canDelete ? () => destroySession(session.id)
       .then(() => onDeleted('sessions', session.id)) : undefined
@@ -61,7 +72,7 @@ const useCampaignsMapping: TUseCampaignsMapping = ({ campaignId }) => {
   const mapScene = useCallback((scene: TScene): SidebarItemInterface => ({
     title: scene.name,
     done: Boolean(scene.completedAt),
-    to: `${prefix}/scenes/${scene.id}`,
+    to: makeLink('scenes', scene.id, scene.slug, '', prefix),
     icon: (props) => <VenetianMaskIcon {...props}/>,
     onDelete: scene.canDelete ? () => destroyScene(scene.id)
       .then(() => onDeleted('scenes', scene.id)) : undefined

@@ -83,7 +83,7 @@ const Routes = (): JSX.Element => {
 
   // Define routes accessible only to authenticated users
   const compendiumRoutes = {
-    path: 'compendia/:compendiumId/:campaignSlug',
+    path: 'compendia/:compendiumId/:compendiumSlug?',
     element: <CompendiumWrapper/>, // sidebar with bestiary, characters, locations, ...
     children: [
       {
@@ -91,67 +91,67 @@ const Routes = (): JSX.Element => {
         element: <Compendium/>,
       },
       {
-        path: 'characters/:characterId/:characterSlug',
+        path: 'characters/:characterId/:characterSlug?',
         element: <Character/>,
       },
       {
-        path: 'concepts/:conceptId/:conceptSlug',
+        path: 'concepts/:conceptId/:conceptSlug?',
         element: <Concept/>,
       },
       {
-        path: 'currencies/:currencyId/:currencySlug',
+        path: 'currencies/:currencyId/:currencySlug?',
         element: <Currency/>,
       },
       {
-        path: 'deities/:deityId/:deitySlug',
+        path: 'deities/:deityId/:deitySlug?',
         element: <Deity/>,
       },
       {
-        path: 'encounters/:encounterId/:encounterSlug',
+        path: 'encounters/:encounterId/:encounterSlug?',
         element: <Encounter/>,
       },
       {
-        path: 'factions/:factionId/:factionSlug',
+        path: 'factions/:factionId/:factionSlug?',
         element: <Faction/>,
       },
       {
-        path: 'items/:itemId/:itemSlug',
+        path: 'items/:itemId/:itemSlug?',
         element: <Item/>,
       },
       {
-        path: 'languages/:languageId/:languageSlug',
+        path: 'languages/:languageId/:languageSlug?',
         element: <Language/>,
       },
       {
-        path: 'locations/:locationId/:locationSlug',
+        path: 'locations/:locationId/:locationSlug?',
         element: <Location/>,
       },
       {
-        path: 'natural-resources/:naturalResourceId-naturalResourceSlug',
+        path: 'natural-resources/:naturalResourceId-naturalResourceSlug?',
         element: <NaturalResource/>,
       },
       {
-        path: 'pantheons/:pantheonId/:pantheonSlug',
+        path: 'pantheons/:pantheonId/:pantheonSlug?',
         element: <Pantheon/>,
       },
       {
-        path: 'planes/:planeId/:planeSlug',
+        path: 'planes/:planeId/:planeSlug?',
         element: <Plane/>,
       },
       {
-        path: 'religions/:religionId/:religionSlug',
+        path: 'religions/:religionId/:religionSlug?',
         element: <Religion/>,
       },
       {
-        path: 'species/:speciesId/:speciesSlug',
+        path: 'species/:speciesId/:speciesSlug?',
         element: <Species/>,
       },
       {
-        path: 'spells/:spellId/:spellSlug',
+        path: 'spells/:spellId/:spellSlug?',
         element: <Spell/>,
       },
       {
-        path: 'stories/:storyId/:storySlug',
+        path: 'stories/:storyId/:storySlug?',
         element: <Story/>,
       },
     ],
@@ -196,7 +196,7 @@ const Routes = (): JSX.Element => {
           path: 'campaigns',
           children: [
             {
-              path: ':campaignId/:campaignSlug',
+              path: ':campaignId/:campaignSlug?',
               element: <CampaignWrapper/>, // sidebar with sessions, encounters, quests, ...
               children: [
                 {

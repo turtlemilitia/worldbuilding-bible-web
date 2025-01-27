@@ -1,8 +1,8 @@
+import { useMemo } from 'react'
 import { TForm } from '@/components/Post/types'
 import useFormHandling from '../useFormHandling'
 import { TGenericPost } from '@/types'
 import { TField } from '../fieldTools'
-import { useEffect, useMemo } from 'react'
 import useImageSelection from '../useImageSelection'
 import {
   hasEncountersAttachableDataManager,
@@ -58,9 +58,8 @@ const usePostForm = <T extends TGenericPost, R> ({
 
   const { entity, store, update, destroy, view } = manager
 
-  const isNew = useMemo(() => !!id, [id])
-  const canEdit = useMemo(() => isNew || entity?.canUpdate === true,
-    [isNew, entity?.canUpdate])
+  const isNew = useMemo(() => !id, [id])
+  const canEdit = useMemo(() => isNew || entity?.canUpdate === true, [isNew, entity?.canUpdate])
 
   const imageHandler = useImageSelection<T>({ manager, canHaveProfileImage })
   const pinHandler = usePinHandler<T>({ manager })

@@ -43,7 +43,7 @@ const useStoryForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: storyId ? useLink('stories', storyId) : ''
+    link: useLink('stories', storyId)
   })
 }
 

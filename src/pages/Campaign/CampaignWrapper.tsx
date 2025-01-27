@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from 'react'
+import React, { JSX, useEffect, useMemo } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import { useCampaignDataManager, } from '../../hooks/DataManagers'
 import CampaignMenu from '../../components/CampaignWrapper/CampaignMenu'
@@ -10,15 +10,17 @@ const CampaignWrapper = (): JSX.Element => {
 
   const { campaignId, compendiumId } = useParams() as { campaignId: string; compendiumId?: string } // router
 
-  const id = fixId(campaignId);
-  const { setLoading } = usePostDataManager()
+  const id = useMemo(() => fixId(campaignId), [campaignId]);
+  const { setLoading, isLoading, isLoaded } = usePostDataManager()
   const { campaign, view } = useCampaignDataManager(id) // redux
 
   useEffect(() => {
-    if (id) {
+    if (id && !isLoading(`campaign:${id}`) && !isLoaded(`campaign:${id}`)) {
       setLoading({ [id]: true })
       view(Number(id), { include: `${campaignIncludes};images` }).
-        then(() => setLoading({ [id]: false }))
+        then(() => {
+          setLoading({ [`campaign:${id}`]: false })
+        })
     }
   }, [id])
 

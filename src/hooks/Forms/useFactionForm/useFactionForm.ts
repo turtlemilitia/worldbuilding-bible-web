@@ -42,7 +42,7 @@ const useFactionForm = ({
     onCreated,
     onUpdated,
     onDeleted,
-    link: factionId ? useLink('factions', factionId) : ''
+    link: useLink('factions', factionId)
   })
 }
 

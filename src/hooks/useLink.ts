@@ -2,7 +2,7 @@ import useUrlFormatter from '@/hooks/useUrlFormatter'
 import { useCampaignDataManager } from '@/hooks/DataManagers'
 import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
-export const makeLink = (entityPath: string, id: number, slug: string, compendiumPath: string, campaignSlug?: string) => {
+export const makeLink = (entityPath: string, id: number, slug: string, compendiumPath: string, campaignPath?: string) => {
 
   let prefix = ''
 
@@ -28,22 +28,25 @@ export const makeLink = (entityPath: string, id: number, slug: string, compendiu
     case 'quests':
     case 'encounters':
     case 'sessions':
-      prefix = `/campaigns/${campaignSlug}`
+      prefix = campaignPath ?? ''
       break
     case 'notes':
-      prefix = `${campaignSlug ? `/campaigns/${campaignSlug}` : ''}`
+      prefix = campaignPath ?? ''
       break
   }
 
   return `${prefix}/${entityPath}/${id}/${slug}`
 }
 
-const useLink = (entityPath: string, id: number, slug?: string): string => {
+const useLink = (entityPath: string, id?: number, slug?: string): string => {
 
-  const { compendiumPath } = useUrlFormatter()
-  const { campaign } = useCurrentCampaign()
+  const { compendiumPath, campaignPath } = useUrlFormatter()
 
-  return makeLink(entityPath, id, slug ?? '', compendiumPath, campaign?.slug)
+  if (!id) {
+    return ''
+  }
+
+  return makeLink(entityPath, id, slug ?? '', compendiumPath, campaignPath)
 }
 
 export default useLink;

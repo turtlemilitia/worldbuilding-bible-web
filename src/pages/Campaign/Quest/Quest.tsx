@@ -2,21 +2,23 @@ import React, { FunctionComponent, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useQuestForm } from '../../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
 
 const Quest: FunctionComponent = () => {
 
   const navigate = useNavigate()
   const location = useLocation();
 
-  const { campaignId, questId } = useParams() as { campaignId: string, questId: string } // router
+  const { campaignId,  campaignSlug,questId } = useParams() as { campaignId: string, campaignSlug: string; questId: string } // router
 
   const form = useQuestForm({
-    questId,
+    campaignId: fixId(campaignId),
+    questId: fixId(questId),
     onCreated: (data) => {
-      navigate(`/campaigns/${campaignId}/quests/${data.slug}`)
+      navigate(`/campaigns/${campaignId}/${campaignSlug}/quests/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/campaigns/${campaignId}/quests`)
+      navigate(`/campaigns/${campaignId}/${campaignSlug}/quests`)
     },
   })
 
