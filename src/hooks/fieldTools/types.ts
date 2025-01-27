@@ -78,7 +78,7 @@ export type TDialogTypes =
 export type TSelectDialogProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any,
-  id: TGenericPostBasic['id'],
+  id?: TGenericPostBasic['id'],
   type: TDialogTypes
   onCreated?: (data: any) => any,
   onUpdated?: (data: any) => any,
