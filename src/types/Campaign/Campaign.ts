@@ -13,19 +13,19 @@ import {
 } from '@/types'
 
 export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
-  gameMaster?: TUser;
+  gameMaster: TUser;
   compendium?: TGenericPost;
-  users?: TUser[];
-  invitations?: TInvitation[];
-  pins?: TPin[]
-  permissions?: TPermission[]
+  users: TUser[];
+  invitations: TInvitation[];
+  pins: TPin[]
+  permissions: TPermission[]
 } & TCampaignRelationships
 
 export type TCampaignRelationships = {
-  sessions?: (TGenericPostBasic & { session_number: TSession['session_number'] })[];
-  encounters?: (TGenericPostBasic & { type: TEncounter['type'], locations: TLocation[] })[];
-  scenes?: (TGenericPostBasic)[];
-  quests?: (TGenericPostBasic & { type: TQuest['type'], locations: TLocation[] })[];
+  sessions: (TGenericPostBasic & { session_number: TSession['session_number'] })[];
+  encounters: (TGenericPostBasic & { type: TEncounter['type'], locations: TLocation[] })[];
+  scenes: (TGenericPostBasic)[];
+  quests: (TGenericPostBasic & { type: TQuest['type'], locations: TLocation[] })[];
 }
 
 export type TQuestType = TOptionList

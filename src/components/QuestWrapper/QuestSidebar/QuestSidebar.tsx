@@ -15,7 +15,7 @@ const QuestSidebar: FunctionComponent<TQuestSidebarProps> = React.memo(
 
     const [orderBy, setOrderBy] = useState<'location' | null>(null)
 
-    const addNewLink = `/campaigns/${campaign.slug}/quests/new`
+    const addNewLink = `/campaigns/${campaign.id}/${campaign.slug}/quests/new`
 
     const {publicOnly, PublicOnlyButton} = useFilterByPublic();
     const {pinnedOnly, PinnedOnlyButton} = useFilterByPinned();

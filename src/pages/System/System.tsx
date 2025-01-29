@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react'
 import Post from '../../components/Post'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSystemForm } from '../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
 
 const System: FunctionComponent = () => {
 
@@ -10,9 +11,9 @@ const System: FunctionComponent = () => {
   const { systemId } = useParams() as { systemId: string }
 
   const form = useSystemForm({
-    systemId,
+    systemId: fixId(systemId),
     onCreated: (data) => {
-      navigate(`/systems/${data.slug}`)
+      navigate(`/systems/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`/systems`)

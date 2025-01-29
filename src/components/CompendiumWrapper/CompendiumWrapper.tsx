@@ -17,9 +17,9 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
 
   useEffect(() => {
     if (id && !isLoading(`compendium:${id}`) && !isLoaded(`compendium:${id}`)) { // if it's been loaded as part of the campaign
-      setLoading({ [id]: true })
+      setLoading({ [`compendium:${id}`]: true })
       view(id, { include: `${compendiumIncludes};images` })
-        .then(() => setLoading({ [id]: false }))
+        .then(() => setLoading({ [`compendium:${id}`]: false }))
     }
   }, [id])
 

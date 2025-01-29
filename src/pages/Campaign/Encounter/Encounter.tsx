@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useEncounterForm } from '../../../hooks/Forms'
 import { fixId } from '@/utils/dataUtils'
+import useUrlFormatter from '@/hooks/useUrlFormatter'
 
 const Encounter: FunctionComponent = (): JSX.Element => {
 
@@ -10,15 +11,16 @@ const Encounter: FunctionComponent = (): JSX.Element => {
   const location = useLocation()
 
   const { campaignId, encounterId } = useParams() as { campaignId: string, encounterId: string } // router
+  const { campaignPath } = useUrlFormatter()
 
   const form = useEncounterForm({
     campaignId: fixId(campaignId),
     encounterId: fixId(encounterId),
     onCreated: (data) => {
-      navigate(`/campaigns/${campaignId}/encounters/${data.slug}`)
+      navigate(`${campaignPath}/encounters/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/campaigns/${campaignId}/encounters`)
+      navigate(`${campaignPath}/encounters`)
     },
   })
 

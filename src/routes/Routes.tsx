@@ -186,7 +186,7 @@ const Routes = (): JSX.Element => {
           element: <SystemsWrapper/>, // sidebar with list of systems
           children: [
             {
-              path: '/systems/:systemId/:systemSlug',
+              path: '/systems/:systemId/:systemSlug?',
               element: <System/>,
             },
           ],
@@ -210,7 +210,7 @@ const Routes = (): JSX.Element => {
                   element: <SceneWrapper/>,
                   children: [
                     {
-                      path: ':sceneId/:sceneSlug',
+                      path: ':sceneId/:sceneSlug?',
                       element: <Scene/>,
                     },
                   ],
@@ -224,7 +224,7 @@ const Routes = (): JSX.Element => {
                       element: <Quests/>,
                     },
                     {
-                      path: ':questId/:questSlug',
+                      path: ':questId/:questSlug?',
                       element: <Quest/>,
                     },
                   ],
@@ -234,7 +234,7 @@ const Routes = (): JSX.Element => {
                   element: <EncounterWrapper/>,
                   children: [
                     {
-                      path: ':encounterId/:encounterSlug',
+                      path: ':encounterId/:encounterSlug?',
                       element: <Encounter/>,
                     },
                   ],
@@ -244,7 +244,7 @@ const Routes = (): JSX.Element => {
                   element: <SessionWrapper/>,
                   children: [
                     {
-                      path: ':sessionId/:sessionSlug',
+                      path: ':sessionId/:sessionSlug?',
                       element: <Session/>,
                     },
                   ],

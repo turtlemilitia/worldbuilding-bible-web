@@ -3,18 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useDeityForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Deity: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { deityId } = useParams() as { deityId: string } // router
+  const { compendiumId, deityId } = useParams() as { compendiumId:string; deityId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = useDeityForm({
-    deityId,
+    compendiumId: fixId(compendiumId),
+    deityId: fixId(deityId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/deities/${data.slug}`)
+      navigate(`${compendiumPath}/deities/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/deities`)

@@ -3,18 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { usePlaneForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Plane: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { planeId } = useParams() as { planeId: string } // router
+  const { compendiumId, planeId } = useParams() as { compendiumId:string; planeId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = usePlaneForm({
-    planeId,
+    compendiumId: fixId(compendiumId),
+    planeId: fixId(planeId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/planes/${data.slug}`)
+      navigate(`${compendiumPath}/planes/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/planes`)

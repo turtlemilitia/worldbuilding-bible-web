@@ -3,18 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useStoryForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Story: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { storyId } = useParams() as { storyId: string } // router
+  const { compendiumId, storyId } = useParams() as { compendiumId:string; storyId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = useStoryForm({
-    storyId,
+    compendiumId: fixId(compendiumId),
+    storyId: fixId(storyId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/stories/${data.slug}`)
+      navigate(`${compendiumPath}/stories/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/stories`)

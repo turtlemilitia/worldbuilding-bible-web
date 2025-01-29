@@ -16,7 +16,7 @@ const CampaignWrapper = (): JSX.Element => {
 
   useEffect(() => {
     if (id && !isLoading(`campaign:${id}`) && !isLoaded(`campaign:${id}`)) {
-      setLoading({ [id]: true })
+      setLoading({ [`campaign:${id}`]: true })
       view(Number(id), { include: `${campaignIncludes};images` }).
         then(() => {
           setLoading({ [`campaign:${id}`]: false })
@@ -26,11 +26,11 @@ const CampaignWrapper = (): JSX.Element => {
 
   return (
     <>
-      {campaign && (
+      {isLoaded(`campaign:${id}`) && campaign && (
         <CampaignMenu campaign={campaign}/>
       )}
       <div className="relative w-full">
-        {(id || campaign) && (
+        {isLoaded(`campaign:${id}`) && (
           <Outlet/>
         )}
       </div>

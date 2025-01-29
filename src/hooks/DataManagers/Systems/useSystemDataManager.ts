@@ -8,7 +8,7 @@ import { useImageableDataManager, hasImageableDataManager } from '../useImageabl
 export type TSystemDataManager = TDataManager<TSystem, TSystemRequest> & {
   system?: TSystem
 } & hasImageableDataManager
-const useSystemDataManager = (id: number): TSystemDataManager => {
+const useSystemDataManager = (id?: number): TSystemDataManager => {
   const manager = useDataManager(
     'systems',
     id,

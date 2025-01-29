@@ -6,15 +6,14 @@ import SidebarSection from '@/components/Sidebar/SidebarSection'
 
 const SessionSidebar: FunctionComponent<TSessionSidebarProps> = ({ campaign }) => {
 
-  const { mapSession } = useCampaignsMapping({ campaignId: campaign.slug })
+  const { mapSession } = useCampaignsMapping({ campaignId: campaign.id })
 
-  const items: SidebarItemInterface[] = campaign.sessions?.map(
-    session => mapSession(session))
+  const items: SidebarItemInterface[] = campaign.sessions?.map(session => mapSession(session))
 
   return (
     <Sidebar
       title={'Sessions'}
-      addNew={`/campaigns/${campaign.slug}/sessions/new`}
+      addNew={`/campaigns/${campaign.id}/${campaign.slug}/sessions/new`}
       canAdd={campaign.canUpdate}
     >
       <SidebarSection items={items}/>

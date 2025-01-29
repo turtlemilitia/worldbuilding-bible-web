@@ -2,20 +2,24 @@ import React, { FunctionComponent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useSessionForm } from '../../../hooks/Forms'
+import useUrlFormatter from '@/hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Session: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
   const { campaignId, sessionId } = useParams() as { campaignId: string, sessionId: string } // router
+  const { campaignPath } = useUrlFormatter()
 
   const form = useSessionForm({
-    sessionId,
+    campaignId: fixId(campaignId),
+    sessionId: fixId(sessionId),
     onCreated: (data) => {
-      navigate(`/campaigns/${campaignId}/sessions/${data.slug}`)
+      navigate(`${campaignPath}/sessions/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/campaigns/${campaignId}/sessions`)
+      navigate(`${campaignPath}/sessions`)
     },
   })
 

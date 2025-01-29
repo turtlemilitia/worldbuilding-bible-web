@@ -65,21 +65,21 @@ const useCompendiaMapping = ({ prefix }: TUseCompendiaMappingProps) => {
 
   const { compendium } = useCurrentCompendium();
 
-  const { destroy: destroyConcept } = useConceptDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroySpecies } = useSpeciesDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyCharacter } = useCharacterDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyLocation } = useLocationDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyItem } = useItemDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyFaction } = useFactionDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyLanguage } = useLanguageDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyReligion } = useReligionDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyPantheon } = usePantheonDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyCurrency } = useCurrencyDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyStory } = useStoryDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyNaturalResource } = useNaturalResourceDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyPlane } = usePlaneDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroyDeity } = useDeityDataManager(compendium?.id) // todo make other function to handle this type of thing
-  const { destroy: destroySpell } = useSpellDataManager(compendium?.id) // todo make other function to handle this type of thing
+  const { destroy: destroyConcept } = useConceptDataManager(compendium?.id)
+  const { destroy: destroySpecies } = useSpeciesDataManager(compendium?.id)
+  const { destroy: destroyCharacter } = useCharacterDataManager(compendium?.id)
+  const { destroy: destroyLocation } = useLocationDataManager(compendium?.id)
+  const { destroy: destroyItem } = useItemDataManager(compendium?.id)
+  const { destroy: destroyFaction } = useFactionDataManager(compendium?.id)
+  const { destroy: destroyLanguage } = useLanguageDataManager(compendium?.id)
+  const { destroy: destroyReligion } = useReligionDataManager(compendium?.id)
+  const { destroy: destroyPantheon } = usePantheonDataManager(compendium?.id)
+  const { destroy: destroyCurrency } = useCurrencyDataManager(compendium?.id)
+  const { destroy: destroyStory } = useStoryDataManager(compendium?.id)
+  const { destroy: destroyNaturalResource } = useNaturalResourceDataManager(compendium?.id)
+  const { destroy: destroyPlane } = usePlaneDataManager(compendium?.id)
+  const { destroy: destroyDeity } = useDeityDataManager(compendium?.id)
+  const { destroy: destroySpell } = useSpellDataManager(compendium?.id)
 
   const onDeleted = (field: string, entity: Identifiable & Sluggable) => {
     if (location.pathname.includes(`${prefix}/${field}/${entity.id}/${entity.slug}`)) {

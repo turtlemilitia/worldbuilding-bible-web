@@ -8,7 +8,7 @@ import { TSystemRequest } from '../../../services/ApiService/Systems/SystemServi
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  systemId: TSystem['id'];
+  systemId?: TSystem['id'];
 }
 const useSystemForm = ({
   systemId,

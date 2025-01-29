@@ -16,7 +16,7 @@ const Concept: FunctionComponent = () => {
     compendiumId: fixId(compendiumId),
     conceptId: fixId(conceptId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/concepts/${data.slug}`)
+      navigate(`${compendiumPath}/concepts/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/concepts`)
