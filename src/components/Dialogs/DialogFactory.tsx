@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { TSelectDialogProps } from '../../hooks/fieldTools/types'
+import { TSelectDialogProps } from '@/hooks/fieldTools/types'
 import NoteDialog from './NoteDialog'
 import EncounterDialog from './EncounterDialog'
 import FactionDialog from './FactionDialog'

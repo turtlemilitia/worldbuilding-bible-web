@@ -49,15 +49,15 @@ const useCharacterFields = (manager: TCharacterDataManager): TUseFields => {
       fields.push(
         sceneField({
           options: campaign?.scenes || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/scenes/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/scenes/${id}`,
         }),
         questField({
           options: campaign?.quests || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/quests/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/quests/${id}`,
         }),
         encounterField({
           options: campaign?.encounters || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/encounters/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/encounters/${id}`,
         }),
       )
     }

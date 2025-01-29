@@ -1,12 +1,15 @@
-import { TFaction } from '../../types'
+import { TFaction } from '@/types'
 import React, { FunctionComponent } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
 import { useFactionForm } from '../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
+import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
 
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  factionId: TFaction['id'];
+  factionId: string | number;
   onCreated?: (data: TFaction) => any
   onUpdated?: (data: TFaction) => any
   onDeleted?: (id: string|number) => any
@@ -20,8 +23,11 @@ const FactionDialog: FunctionComponent<TProps> = ({
   onDeleted
 }) => {
 
+  const { compendium } = useCurrentCompendium();
+
   const form = useFactionForm({
-    factionId,
+    compendiumId: compendium?.id,
+    factionId: fixId(factionId),
     onCreated,
     onUpdated,
     onDeleted: () => {

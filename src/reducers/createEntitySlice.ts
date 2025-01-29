@@ -33,7 +33,7 @@ export const createEntitySlice = <TEntity extends {[key: string]: any, images?: 
         state.data = { ...state.data as Draft<TEntity>, ...action.payload as Partial<Draft<TEntity>> }
       },
       clear: (state, action: PayloadAction<string|number>) => {
-        if (state.data?.slug === action.payload) {
+        if (state.data?.id === action.payload) {
           state.data = undefined
         }
       },

@@ -184,7 +184,7 @@ const useFormHandling = <T, R> ({
         attachEntityPromises.push(...entitiesToAttach.map(entity => onAttach(key, entity.id)) || [])
       }
       if (entitiesToDetach && onDetach) {
-        detachEntityPromises.push(...entitiesToDetach.map(entity => onDetach(key, entity.slug)) || [])
+        detachEntityPromises.push(...entitiesToDetach.map(entity => onDetach(key, entity.id)) || [])
       }
     })
     return Promise.all([

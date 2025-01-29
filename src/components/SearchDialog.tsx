@@ -59,7 +59,7 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
                 {compendium[path as keyof TCompendiumRelationships]?.map((entity, i) => (
                     <CommandItem
                       key={i}
-                      onSelect={() => onSelect(`${compendiumPath}/${kebabCase(path)}/${entity.slug}`)}
+                      onSelect={() => onSelect(`${compendiumPath}/${kebabCase(path)}/${entity.id}/${entity.slug}`)}
                     >
                       {entity.name}
                     </CommandItem>

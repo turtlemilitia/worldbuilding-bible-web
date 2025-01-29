@@ -1,12 +1,14 @@
 import { TEncounter } from '../../types'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
 import { useEncounterForm } from '../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  encounterId: TEncounter['id'];
+  encounterId: string | number;
   onCreated?: (data: TEncounter) => any
   onUpdated?: (data: TEncounter) => any
   onDeleted?: (id: string|number) => any
@@ -20,8 +22,15 @@ const EncounterDialog: FunctionComponent<TProps> = ({
   onDeleted
 }) => {
 
+  const { campaign } = useCurrentCampaign();
+
+  useEffect(() => {
+    console.log({ campaign, encounterId })
+  }, [campaign, encounterId])
+
   const form = useEncounterForm({
-    encounterId,
+    campaignId: campaign?.id,
+    encounterId: fixId(encounterId),
     onCreated,
     onUpdated,
     onDeleted: () => {

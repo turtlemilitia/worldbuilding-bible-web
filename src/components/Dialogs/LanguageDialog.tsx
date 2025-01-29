@@ -2,14 +2,16 @@ import { TLanguage } from '../../types'
 import React, { FunctionComponent } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
 import { useLanguageForm } from '../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
+import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
 
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  languageId: TLanguage['id'];
+  languageId: string | number;
   onCreated?: (data: TLanguage) => any
   onUpdated?: (data: TLanguage) => any
-  onDeleted?: (id: string|number) => any
+  onDeleted?: (id: string | number) => any
 }
 const LanguageDialog: FunctionComponent<TProps> = ({
   isOpen,
@@ -17,18 +19,21 @@ const LanguageDialog: FunctionComponent<TProps> = ({
   languageId,
   onCreated,
   onUpdated,
-  onDeleted
+  onDeleted,
 }) => {
 
+  const { compendium } = useCurrentCompendium()
+
   const form = useLanguageForm({
-    languageId,
+    compendiumId: compendium?.id,
+    languageId: fixId(languageId),
     onCreated,
     onUpdated,
     onDeleted: () => {
       setIsOpen(false)
       onDeleted && onDeleted(languageId)
     },
-  });
+  })
 
   return (
     <PostDialog

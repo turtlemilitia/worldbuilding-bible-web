@@ -53,15 +53,13 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           <>
             {value && value.length > 0 ? (
               <ul>
-                {value.map(({ id, name, slug, completedAt }: TSelectOption & Partial<Completable>) => {
+                {value.map(({ id, name, completedAt }: TSelectOption & Partial<Completable>) => {
                   const displayName = completedAt ? <span className={'line-through'}>{name}</span> : name
                   return (
                     <li key={id} className="py-1">
-                      {(dialogType && slug) ? <Button
-                          onClick={() => setDialogIsOpen(
-                            slug as string)}>{displayName}</Button>
-                        : (link && slug ? <Link
-                            to={link(slug as string)}>{displayName}</Link>
+                      {(dialogType && id) ? <Button
+                          onClick={() => setDialogIsOpen(id as string)}>{displayName}</Button>
+                        : (link && id ? <Link to={link(id as string)}>{displayName}</Link>
                           : displayName)}
                     </li>
                   )
@@ -128,7 +126,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           type={dialogType}
           isOpen={!!dialogIsOpen}
           setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
-          id={dialogIsOpen || undefined}
+          id={dialogIsOpen}
           onCreated={(data) => {
             setDialogIsOpen(data.id)
             onChange([...value, data])

@@ -30,7 +30,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({
 }) => {
 
   const [options, setOptions] = useState<TSelectOption[]>([])
-  const [dialogIsOpen, setDialogIsOpen] = useState<number | 'new' | false>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<string | number | 'new' | false>(false)
 
   const handleSearch = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 3) {
@@ -51,7 +51,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({
                 {value.map((item) => (
                   <li key={item.id} className="py-1">
                     {(dialogType && item.id) ? <Button
-                        onClick={() => setDialogIsOpen(item.id as number)}>{item.name}</Button>
+                        onClick={() => setDialogIsOpen(item.id)}>{item.name}</Button>
                       : (link && item.id ? <Link to={link(item.id as number)}>{item.name}</Link>
                         : item.name)}
                   </li>
@@ -114,7 +114,7 @@ const MultipleAsyncSelectField: FunctionComponent<TProp> = ({
           type={dialogType}
           isOpen={!!dialogIsOpen}
           setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
-          id={dialogIsOpen || 'new'}
+          id={dialogIsOpen}
           onCreated={(data) => {
             onChange([...value, data])
           }}

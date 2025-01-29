@@ -2,11 +2,12 @@ import { TNote } from '../../types'
 import React, { FunctionComponent } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
 import { useNoteForm } from '../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
 
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  noteId: TNote['id'];
+  noteId: string | number;
   onCreated?: (data: TNote) => any
   onUpdated?: (data: TNote) => any
   onDeleted?: (id: string|number) => any
@@ -21,7 +22,7 @@ const NoteDialog: FunctionComponent<TProps> = ({
 }) => {
 
   const form = useNoteForm({
-    noteId,
+    noteId: fixId(noteId),
     onCreated,
     onUpdated,
     onDeleted: () => {

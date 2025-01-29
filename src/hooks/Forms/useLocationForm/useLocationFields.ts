@@ -61,7 +61,10 @@ const useLocationFields = (manager: TLocationDataManager): TUseFields => {
             name: 'children',
             label: 'Child Locations',
             options: manager.compendium.locations || [],
-            link: (id: string | number) => `${compendiumPath}/locations/${manager.location?.children?.find((child: TLocation) => child.slug === id)?.slug || ''}`,
+            link: (id: string | number) => {
+              const location = manager.location?.children?.find((child: TLocation) => child.id === id)
+              return `${compendiumPath}/locations/${location?.id || ''}/${location?.slug || ''}`
+            },
           })
         )
       }
@@ -76,15 +79,15 @@ const useLocationFields = (manager: TLocationDataManager): TUseFields => {
       fields.push(
         sceneField({
           options: campaign?.scenes || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/scenes/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/scenes/${id}`,
         }),
         questField({
           options: campaign?.quests || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/quests/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/quests/${id}`,
         }),
         encounterField({
           options: campaign?.encounters || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/encounters/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/encounters/${id}`,
         }),
       )
     }

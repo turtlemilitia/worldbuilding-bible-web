@@ -38,7 +38,7 @@ const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler
         promises.push(userCharactersDataManager.attach(user.id, { characterId: manager.character.id, }))
       }
       if (!addToUser && addedToUser) {
-        promises.push(userCharactersDataManager.detach(user.id, addedToUser.slug))
+        promises.push(userCharactersDataManager.detach(user.id, addedToUser.id))
       }
     })
     return Promise.all(promises)
