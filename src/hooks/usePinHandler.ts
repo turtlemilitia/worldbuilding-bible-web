@@ -75,7 +75,7 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
       }
     })
     return values
-  }, [campaign, manager.entity?.id, manager.entityName])
+  }, [campaign?.pins, campaign?.users, manager.entity?.id, manager.entityName])
 
   const permittedUsers = useMemo(() => {
     if (!campaign?.users) {
@@ -89,7 +89,7 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
         return permission.permissionableId === manager.entity?.id
       })
     }) ?? []
-  }, [campaign?.users])
+  }, [campaign?.permissions, campaign?.users])
 
   const options: TPinForOption[] = useMemo(() => {
     if (!campaign) {

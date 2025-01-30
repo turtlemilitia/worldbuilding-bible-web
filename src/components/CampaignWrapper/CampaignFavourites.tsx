@@ -22,21 +22,21 @@ const CampaignFavourites: FunctionComponent = () => {
     const list: TCampaignFavouriteItem[] = []
     if (campaign?.pins) {
       list.push(...campaign.pins.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, campaign?.slug),
+        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, `/campaigns/${campaign?.id}/${campaign?.slug}`),
         name: item.pinnable.name,
         type: item.pinnableType
       })))
     }
     if (user?.pins) {
       list.push(...user.pins.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, campaign?.slug),
+        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, `/campaigns/${campaign?.id}/${campaign?.slug}`),
         name: item.pinnable.name,
         type: item.pinnableType
       })))
     }
     if (user?.favourites) {
       list.push(...user?.favourites.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.favouritableType), item.favouritable.id, item.favouritable.slug, compendiumPath, campaign?.slug),
+        link: makeLink(mapPlural(item.favouritableType), item.favouritable.id, item.favouritable.slug, compendiumPath, `/campaigns/${campaign?.id}/${campaign?.slug}`),
         name: item.favouritable.name,
         type: item.favouritableType
       })))

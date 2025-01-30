@@ -28,6 +28,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useCallback, useMemo } from 'react'
 import { TDataManager } from './useDataManager'
 import { TIndexSliceState } from '@/reducers/createIndexSlice'
+import { mapSingular } from '@/utils/dataUtils'
 
 export type TChildDataManager<TParentEntity, TEntity, TRequest> =
   TDataManager<TEntity, TRequest>
@@ -239,7 +240,7 @@ export const useChildDataManager = <
   }, [removeData, api])
 
   return {
-    entityName: name,
+    entityName: mapSingular(name),
     parent,
     entity,
     setData,
