@@ -24,8 +24,8 @@ const useCompendiumDataManager = (id?: number): TCompendiumDataManager => {
     compendium: manager.entity,
     isPermanent: true,
     ownsCompendium: !!authUser && !!manager.entity && (authUser?.id === manager.entity?.creator?.id),
-    notes: useAttachableDataManager('notes', compendiumSlice, compendiumService.notes),
-    images: useImageableDataManager(compendiumSlice, compendiumService.images)
+    notes: useAttachableDataManager('notes', manager, compendiumService.notes),
+    images: useImageableDataManager(manager, compendiumService.images)
   }
 }
 

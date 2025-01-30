@@ -17,8 +17,8 @@ const QuestsByType = ({ campaign, addNewLink, quests }: TOwmProps) => {
 
   return <>
     {types?.filter(type => {
-      return campaign.canUpdate ||
-        quests?.find(quest => quest.type.id === type.id)
+      return campaign.canUpdate
+        || quests?.find(quest => quest.type.id === type.id)
     }).map(type => (
       <SidebarSection
         title={`${type.name} Quests`}

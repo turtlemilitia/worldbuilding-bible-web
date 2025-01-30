@@ -32,10 +32,10 @@ const useSpellDataManager = (compendiumId?: number, id?: number): TSpellDataMana
     ...manager,
     compendium: manager.parent,
     spell: manager.entity,
-    notes: useNotableDataManager(spellSlice, SpellService.notes),
-    quests: useQuestableDataManager(spellSlice, SpellService.quests),
-    encounters: useEncounterableDataManager(spellSlice, SpellService.encounters),
-    images: useImageableDataManager(spellSlice, SpellService.images)
+    notes: useNotableDataManager(manager, SpellService.notes),
+    quests: useQuestableDataManager(manager, SpellService.quests),
+    encounters: useEncounterableDataManager(manager, SpellService.encounters),
+    images: useImageableDataManager(manager, SpellService.images)
   }
 }
 

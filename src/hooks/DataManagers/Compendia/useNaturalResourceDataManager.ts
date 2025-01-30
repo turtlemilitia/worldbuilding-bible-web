@@ -32,10 +32,10 @@ const useNaturalResourceDataManager = (compendiumId?: number, id?: number): TNat
     ...manager,
     compendium: manager.parent,
     naturalResource: manager.entity,
-    notes: useNotableDataManager(naturalResourceSlice, NaturalResourceService.notes),
-    quests: useQuestableDataManager(naturalResourceSlice, NaturalResourceService.quests),
-    encounters: useEncounterableDataManager(naturalResourceSlice, NaturalResourceService.encounters),
-    images: useImageableDataManager(naturalResourceSlice, NaturalResourceService.images)
+    notes: useNotableDataManager(manager, NaturalResourceService.notes),
+    quests: useQuestableDataManager(manager, NaturalResourceService.quests),
+    encounters: useEncounterableDataManager(manager, NaturalResourceService.encounters),
+    images: useImageableDataManager(manager, NaturalResourceService.images)
   }
 }
 

@@ -1,9 +1,8 @@
 import { useDataManager, TDataManager } from '../useDataManager'
-import { systemSlice } from '../../../reducers/system/systemSlice'
-import { systemsIndexSlice } from '../../../reducers/system/systemsIndexSlice'
+import { systemsIndexSlice } from '@/reducers/system/systemsIndexSlice'
 import systemService, { TSystemRequest } from '../../../services/ApiService/Systems/SystemService'
-import { TSystem } from '../../../types'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
+import { TSystem } from '@/types'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 
 export type TSystemDataManager = TDataManager<TSystem, TSystemRequest> & {
   system?: TSystem
@@ -18,7 +17,7 @@ const useSystemDataManager = (id?: number): TSystemDataManager => {
   return {
     system: manager.entity,
     ...manager,
-    images: useImageableDataManager(systemSlice, systemService.images)
+    images: useImageableDataManager(manager, systemService.images)
   }
 }
 

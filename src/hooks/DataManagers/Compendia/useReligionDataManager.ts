@@ -31,10 +31,10 @@ const useReligionDataManager = (compendiumId?: number, id?: number): TReligionDa
     ...manager,
     compendium: manager.parent,
     religion: manager.entity,
-    notes: useNotableDataManager(religionSlice, ReligionService.notes),
-    quests: useQuestableDataManager(religionSlice, ReligionService.quests),
-    encounters: useEncounterableDataManager(religionSlice, ReligionService.encounters),
-    images: useImageableDataManager(religionSlice, ReligionService.images)
+    notes: useNotableDataManager(manager, ReligionService.notes),
+    quests: useQuestableDataManager(manager, ReligionService.quests),
+    encounters: useEncounterableDataManager(manager, ReligionService.encounters),
+    images: useImageableDataManager(manager, ReligionService.images)
   }
 }
 

@@ -32,10 +32,10 @@ const useDeityDataManager = (compendiumId?: number, id?: number): TDeityDataMana
     ...manager,
     compendium: manager.parent,
     deity: manager.entity,
-    notes: useNotableDataManager(deitySlice, DeityService.notes),
-    quests: useQuestableDataManager(deitySlice, DeityService.quests),
-    encounters: useEncounterableDataManager(deitySlice, DeityService.encounters),
-    images: useImageableDataManager(deitySlice, DeityService.images)
+    notes: useNotableDataManager(manager, DeityService.notes),
+    quests: useQuestableDataManager(manager, DeityService.quests),
+    encounters: useEncounterableDataManager(manager, DeityService.encounters),
+    images: useImageableDataManager(manager, DeityService.images)
   }
 }
 

@@ -32,10 +32,10 @@ const useStoryDataManager = (compendiumId?: number, id?: number): TStoryDataMana
     ...manager,
     compendium: manager.parent,
     story: manager.entity,
-    notes: useNotableDataManager(storySlice, StoryService.notes),
-    quests: useQuestableDataManager(storySlice, StoryService.quests),
-    encounters: useEncounterableDataManager(storySlice, StoryService.encounters),
-    images: useImageableDataManager(storySlice, StoryService.images)
+    notes: useNotableDataManager(manager, StoryService.notes),
+    quests: useQuestableDataManager(manager, StoryService.quests),
+    encounters: useEncounterableDataManager(manager, StoryService.encounters),
+    images: useImageableDataManager(manager, StoryService.images)
   }
 }
 

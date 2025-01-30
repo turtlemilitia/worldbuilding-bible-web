@@ -36,7 +36,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
 }) => {
 
   const [query, setQuery] = useState('')
-  const [dialogIsOpen, setDialogIsOpen] = useState<string | false>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<number | 'new' | false>(false)
 
   const filteredOptions =
     query === ''
@@ -58,8 +58,8 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
                   return (
                     <li key={id} className="py-1">
                       {(dialogType && id) ? <Button
-                          onClick={() => setDialogIsOpen(id as string)}>{displayName}</Button>
-                        : (link && id ? <Link to={link(id as string)}>{displayName}</Link>
+                          onClick={() => setDialogIsOpen(id)}>{displayName}</Button>
+                        : (link && id ? <Link to={link(id)}>{displayName}</Link>
                           : displayName)}
                     </li>
                   )

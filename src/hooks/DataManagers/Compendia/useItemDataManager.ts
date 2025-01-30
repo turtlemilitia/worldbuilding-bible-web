@@ -31,10 +31,10 @@ const useItemDataManager = (compendiumId?: number, id?: number): TItemDataManage
     ...manager,
     compendium: manager.parent,
     item: manager.entity,
-    notes: useNotableDataManager(itemSlice, ItemService.notes),
-    quests: useQuestableDataManager(itemSlice, ItemService.quests),
-    encounters: useEncounterableDataManager(itemSlice, ItemService.encounters),
-    images: useImageableDataManager(itemSlice, ItemService.images)
+    notes: useNotableDataManager(manager, ItemService.notes),
+    quests: useQuestableDataManager(manager, ItemService.quests),
+    encounters: useEncounterableDataManager(manager, ItemService.encounters),
+    images: useImageableDataManager(manager, ItemService.images)
   }
 }
 

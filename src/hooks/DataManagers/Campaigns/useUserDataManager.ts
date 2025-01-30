@@ -8,9 +8,7 @@ import {
   useFavouritableDataManager, usePermissionableDataManager,
   usePinnableDataManager
 } from '../useAttachableDataManager'
-import { userSlice } from '../../../reducers/auth/userSlice'
 import { TChildDataManager, useChildDataManager } from '../useChildDataManager'
-import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
 import campaignUserService from '../../../services/ApiService/User/CampaignUserService'
 import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 
@@ -37,10 +35,10 @@ const useUserDataManager = (campaignId?: number, id?: number): TUserDataManager 
     ...manager,
     campaign: manager.parent,
     user: manager.entity,
-    characters: useCharacterableDataManager(userSlice, userService.characters),
-    favourites: useFavouritableDataManager(userSlice, userService.favourites),
-    pins: usePinnableDataManager(userSlice, userService.pins),
-    permissions: usePermissionableDataManager(userSlice, userService.permissions)
+    characters: useCharacterableDataManager(manager, userService.characters),
+    favourites: useFavouritableDataManager(manager, userService.favourites),
+    pins: usePinnableDataManager(manager, userService.pins),
+    permissions: usePermissionableDataManager(manager, userService.permissions)
   }
 }
 

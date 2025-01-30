@@ -32,10 +32,10 @@ const usePantheonDataManager = (compendiumId?: number, id?: number): TPantheonDa
     ...manager,
     compendium: manager.parent,
     pantheon: manager.entity,
-    notes: useNotableDataManager(pantheonSlice, PantheonService.notes),
-    quests: useQuestableDataManager(pantheonSlice, PantheonService.quests),
-    encounters: useEncounterableDataManager(pantheonSlice, PantheonService.encounters),
-    images: useImageableDataManager(pantheonSlice, PantheonService.images)
+    notes: useNotableDataManager(manager, PantheonService.notes),
+    quests: useQuestableDataManager(manager, PantheonService.quests),
+    encounters: useEncounterableDataManager(manager, PantheonService.encounters),
+    images: useImageableDataManager(manager, PantheonService.images)
   }
 }
 

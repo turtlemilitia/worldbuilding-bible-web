@@ -1,5 +1,4 @@
 import noteService, { TNoteRequest } from '@/services/ApiService/Notes/NoteService'
-import { noteSlice } from '@/reducers/note/noteSlice'
 import {
   useImageableDataManager,
   hasImageableDataManager,
@@ -23,7 +22,7 @@ const useNoteDataManager = (id?: number): TNoteDataManager => {
   return {
     ...manager,
     note: manager.entity,
-    images: useImageableDataManager(noteSlice, noteService.images)
+    images: useImageableDataManager(manager, noteService.images)
   }
 
 }

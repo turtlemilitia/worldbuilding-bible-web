@@ -36,12 +36,12 @@ const useLocationDataManager = (compendiumId?: number, id?: number): TLocationDa
     ...manager,
     compendium: manager.parent,
     location: manager.entity,
-    characters: useCharacterableDataManager(locationSlice, LocationService.characters),
-    notes: useNotableDataManager(locationSlice, LocationService.notes),
-    quests: useQuestableDataManager(locationSlice, LocationService.quests),
-    encounters: useEncounterableDataManager(locationSlice, LocationService.encounters),
-    scenes: useSceneableDataManager(locationSlice, LocationService.scenes),
-    images: useImageableDataManager(locationSlice, LocationService.images)
+    characters: useCharacterableDataManager(manager, LocationService.characters),
+    notes: useNotableDataManager(manager, LocationService.notes),
+    quests: useQuestableDataManager(manager, LocationService.quests),
+    encounters: useEncounterableDataManager(manager, LocationService.encounters),
+    scenes: useSceneableDataManager(manager, LocationService.scenes),
+    images: useImageableDataManager(manager, LocationService.images)
   }
 }
 

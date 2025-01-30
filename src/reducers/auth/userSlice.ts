@@ -1,4 +1,4 @@
-import { TUser } from '../../types'
+import { TUser } from '@/types'
 import createEntitySlice from '../createEntitySlice'
 
 export const userSlice = createEntitySlice<TUser>('user')

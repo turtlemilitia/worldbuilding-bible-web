@@ -1,10 +1,8 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TCampaign, TQuest } from '../../../types'
+import { TCampaign, TQuest } from '@/types'
 import questService, { TQuestRequest } from '../../../services/ApiService/Campaigns/QuestService'
-import { useAttachableDataManager, hasNotesAttachableDataManager } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { questSlice } from '../../../reducers/campaign/quest/questSlice'
-import { campaignSlice } from '../../../reducers/campaign/campaignSlice'
+import { useAttachableDataManager, hasNotesAttachableDataManager } from '@/hooks/DataManagers'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 
 export type TQuestDataManager = TChildDataManager<TCampaign, TQuest, TQuestRequest> & {
@@ -25,8 +23,8 @@ const useQuestDataManager = (campaignId?: number, id?: number): TQuestDataManage
     ...manager,
     campaign: manager.parent,
     quest: manager.entity as TQuest|undefined,
-    notes: useAttachableDataManager('notes', questSlice, questService.notes),
-    images: useImageableDataManager(questSlice, questService.images)
+    notes: useAttachableDataManager('notes', manager, questService.notes),
+    images: useImageableDataManager(manager, questService.images)
   }
 }
 

@@ -32,10 +32,10 @@ const useCurrencyDataManager = (compendiumId?: number, id?: number): TCurrencyDa
     ...manager,
     compendium: manager.parent,
     currency: manager.entity,
-    notes: useNotableDataManager(currencySlice, CurrencyService.notes),
-    quests: useQuestableDataManager(currencySlice, CurrencyService.quests),
-    encounters: useEncounterableDataManager(currencySlice, CurrencyService.encounters),
-    images: useImageableDataManager(currencySlice, CurrencyService.images)
+    notes: useNotableDataManager(manager, CurrencyService.notes),
+    quests: useQuestableDataManager(manager, CurrencyService.quests),
+    encounters: useEncounterableDataManager(manager, CurrencyService.encounters),
+    images: useImageableDataManager(manager, CurrencyService.images)
   }
 }
 

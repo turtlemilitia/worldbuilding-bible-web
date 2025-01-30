@@ -1,6 +1,6 @@
-import { TCampaign } from '../../../types'
+import { TCampaign } from '@/types'
 import CampaignService from '../../../services/ApiService/Campaigns/CampaignService'
-import { campaignsIndexSlice } from '../../../reducers/campaign/campaignsIndexSlice'
+import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
 export type TCampaignIndexDataManager = TIndexDataManager<TCampaign> & {

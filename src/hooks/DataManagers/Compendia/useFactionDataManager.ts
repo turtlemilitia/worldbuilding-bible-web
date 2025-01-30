@@ -32,10 +32,10 @@ const useFactionDataManager = (compendiumId?: number, id?: number): TFactionData
     ...manager,
     compendium: manager.parent,
     faction: manager.entity,
-    notes: useNotableDataManager(factionSlice, FactionService.notes),
-    quests: useQuestableDataManager(factionSlice, FactionService.quests),
-    encounters: useEncounterableDataManager(factionSlice, FactionService.encounters),
-    images: useImageableDataManager(factionSlice, FactionService.images)
+    notes: useNotableDataManager(manager, FactionService.notes),
+    quests: useQuestableDataManager(manager, FactionService.quests),
+    encounters: useEncounterableDataManager(manager, FactionService.encounters),
+    images: useImageableDataManager(manager, FactionService.images)
   }
 }
 

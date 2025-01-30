@@ -7,11 +7,12 @@ import { TIndexSliceState } from '@/reducers/createIndexSlice'
 import {
   Identifiable,
   TCampaignRelationships,
-  TCompendiumRelationships, TGenericPost,
+  TCompendiumRelationships, TGenericPost, TImage,
 } from '@/types'
 import { mapPlural, mapSingular } from '@/utils/dataUtils'
 
 export type TDataManager<TEntity, TRequest> = {
+  setImage(id: number, data: TImage, imageType: string): unknown
   entityName: string;
   entity?: TEntity,
   isPermanent?: boolean,
@@ -87,6 +88,10 @@ export const useDataManager = <TEntity extends TGenericPost, TRequest, TIndexRes
     removeData(id)
   }, [removeData, api])
 
+  const setImage = useCallback((id: number, data: TImage, imageType: string) => {
+    dispatch(indexSlice.actions.setImage({ id, data, imageType }))
+  }, [indexSlice])
+
   return {
     entityName: mapSingular(name),
     entity,
@@ -96,6 +101,7 @@ export const useDataManager = <TEntity extends TGenericPost, TRequest, TIndexRes
     setChildData,
     updateChildData,
     removeChildData,
+    setImage,
     view,
     store,
     update,

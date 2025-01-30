@@ -12,7 +12,7 @@ import DatePickerWithPresets from '@/components/DatePicker'
 import ListAddUsers from '@/pages/Campaign/ListAddUsers'
 
 export type TSelectOption = {
-  id: string | number,
+  id: number,
   slug?: string,
   name: string
   label?: string | JSX.Element

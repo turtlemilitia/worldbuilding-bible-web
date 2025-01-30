@@ -1,6 +1,4 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { sceneSlice } from '@/reducers/campaign/scene/sceneSlice'
-import { campaignSlice } from '@/reducers/campaign/campaignSlice'
 import sceneService, { TSceneRequest } from '../../../services/ApiService/Campaigns/SceneService'
 import {
   hasNotesAttachableDataManager,
@@ -33,11 +31,11 @@ const useSceneDataManager = (campaignId?: number, id?: number): TSceneDataManage
   return {
     ...manager,
     scene: manager.entity,
-    notes: useNotableDataManager(sceneSlice, sceneService.notes),
-    encounters: useEncounterableDataManager(sceneSlice, sceneService.encounters),
-    characters: useCharacterableDataManager(sceneSlice, sceneService.characters),
-    locations: useLocationableDataManager(sceneSlice, sceneService.locations),
-    images: useImageableDataManager(sceneSlice, sceneService.images)
+    notes: useNotableDataManager(manager, sceneService.notes),
+    encounters: useEncounterableDataManager(manager, sceneService.encounters),
+    characters: useCharacterableDataManager(manager, sceneService.characters),
+    locations: useLocationableDataManager(manager, sceneService.locations),
+    images: useImageableDataManager(manager, sceneService.images)
   }
 }
 

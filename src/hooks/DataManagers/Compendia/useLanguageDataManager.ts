@@ -32,10 +32,10 @@ const useLanguageDataManager = (compendiumId?: number, id?: number): TLanguageDa
     ...manager,
     compendium: manager.parent,
     language: manager.entity,
-    notes: useNotableDataManager(languageSlice, LanguageService.notes),
-    quests: useQuestableDataManager(languageSlice, LanguageService.quests),
-    encounters: useEncounterableDataManager(languageSlice, LanguageService.encounters),
-    images: useImageableDataManager(languageSlice, LanguageService.images)
+    notes: useNotableDataManager(manager, LanguageService.notes),
+    quests: useQuestableDataManager(manager, LanguageService.quests),
+    encounters: useEncounterableDataManager(manager, LanguageService.encounters),
+    images: useImageableDataManager(manager, LanguageService.images)
   }
 }
 

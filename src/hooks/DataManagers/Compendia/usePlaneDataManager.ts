@@ -32,10 +32,10 @@ const usePlaneDataManager = (compendiumId?: number, id?: number): TPlaneDataMana
     ...manager,
     compendium: manager.parent,
     plane: manager.entity,
-    notes: useNotableDataManager(planeSlice, PlaneService.notes),
-    quests: useQuestableDataManager(planeSlice, PlaneService.quests),
-    encounters: useEncounterableDataManager(planeSlice, PlaneService.encounters),
-    images: useImageableDataManager(planeSlice, PlaneService.images)
+    notes: useNotableDataManager(manager, PlaneService.notes),
+    quests: useQuestableDataManager(manager, PlaneService.quests),
+    encounters: useEncounterableDataManager(manager, PlaneService.encounters),
+    images: useImageableDataManager(manager, PlaneService.images)
   }
 }
 

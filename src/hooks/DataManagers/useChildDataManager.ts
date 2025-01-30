@@ -9,7 +9,7 @@ import {
   TDeity,
   TEncounter,
   TFaction,
-  TGenericPostBasic,
+  TGenericPostBasic, TImage,
   TItem,
   TLanguage,
   TLocation,
@@ -185,6 +185,20 @@ export const useChildDataManager = <
       }))
     }, [parentId, parentSlice])
 
+  const setImage = useCallback(
+    (id: number, data: TImage, imageType: string) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.setChildImage({
+        id: parentId,
+        field: name,
+        childId: id,
+        data,
+        imageType,
+      }))
+    }, [parentId, parentSlice])
+
   const view = useCallback(
     async (id: number, query: TQueryParams = {}): Promise<TEntity> => {
       if (!parentId) {
@@ -205,7 +219,9 @@ export const useChildDataManager = <
       return data.data
     }, [addData, parentId, api])
 
-  const update = useCallback(async (id: number, payload: Partial<TRequest>, query: TQueryParams = {}) => {
+  const update = useCallback(async (
+    id: number, payload: Partial<TRequest>,
+    query: TQueryParams = {}) => {
     if (!parentId) {
       throw new Error('Attempted to call update() with a null ID.')
     }
@@ -236,5 +252,6 @@ export const useChildDataManager = <
     store,
     update,
     destroy,
+    setImage,
   }
 }

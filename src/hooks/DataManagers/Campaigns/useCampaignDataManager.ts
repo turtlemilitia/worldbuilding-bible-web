@@ -2,7 +2,6 @@ import { useDataManager, TDataManager } from '../useDataManager'
 import { TCampaign } from '@/types'
 import CampaignService, { TCampaignRequest } from '../../../services/ApiService/Campaigns/CampaignService'
 import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
-import { campaignSlice } from '@/reducers/campaign/campaignSlice'
 import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 import campaignService from '../../../services/ApiService/Campaigns/CampaignService'
 import {
@@ -28,10 +27,10 @@ const useCampaignDataManager = (id?: number): TCampaignDataManager => {
     ...manager,
     campaign: manager.entity,
     isPermanent: true,
-    notes: useAttachableDataManager('notes', campaignSlice, campaignService.notes),
-    images: useImageableDataManager(campaignSlice, campaignService.images),
-    pins: usePinnableDataManager(campaignSlice, campaignService.pins),
-    permissions: usePermissionableDataManager(campaignSlice, campaignService.permissions),
+    notes: useAttachableDataManager('notes', manager, campaignService.notes),
+    images: useImageableDataManager(manager, campaignService.images),
+    pins: usePinnableDataManager(manager, campaignService.pins),
+    permissions: usePermissionableDataManager(manager, campaignService.permissions),
     createInvitation: (email: string) => id ? CampaignService.createInvitation(id, { email }).
       then((response) => {
         const newInvitationData = response.data.data;

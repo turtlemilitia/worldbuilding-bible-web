@@ -32,10 +32,10 @@ const useConceptDataManager = (compendiumId?: number, id?: number): TConceptData
     ...manager,
     compendium: manager.parent,
     concept: manager.entity,
-    notes: useNotableDataManager(conceptSlice, ConceptService.notes),
-    quests: useQuestableDataManager(conceptSlice, ConceptService.quests),
-    encounters: useEncounterableDataManager(conceptSlice, ConceptService.encounters),
-    images: useImageableDataManager(conceptSlice, ConceptService.images)
+    notes: useNotableDataManager(manager, ConceptService.notes),
+    quests: useQuestableDataManager(manager, ConceptService.quests),
+    encounters: useEncounterableDataManager(manager, ConceptService.encounters),
+    images: useImageableDataManager(manager, ConceptService.images)
   }
 }
 
