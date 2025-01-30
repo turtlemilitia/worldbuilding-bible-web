@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TFaction, TCompendium } from '../../../types'
+import { TFaction, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,10 +8,8 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import FactionService, { TFactionRequest } from '../../../services/ApiService/Compendia/FactionService'
-import { factionSlice } from '../../../reducers/compendium/faction/factionSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TFactionDataManager = TChildDataManager<TCompendium, TFaction, TFactionRequest> & {

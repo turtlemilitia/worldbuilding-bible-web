@@ -1,6 +1,6 @@
-import { TCompendium } from '../../../types'
+import { TCompendium } from '@/types'
 import CompendiumService from '../../../services/ApiService/Compendia/CompendiumService'
-import { compendiaIndexSlice } from '../../../reducers/compendium/compendiaIndexSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
 export type TCompendiumIndexDataManager = TIndexDataManager<TCompendium> & {

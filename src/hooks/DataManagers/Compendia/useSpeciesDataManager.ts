@@ -9,7 +9,6 @@ import {
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import SpeciesService, { TSpeciesRequest } from '../../../services/ApiService/Compendia/SpeciesService'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 

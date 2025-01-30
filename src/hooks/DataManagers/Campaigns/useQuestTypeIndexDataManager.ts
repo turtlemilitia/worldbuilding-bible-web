@@ -1,6 +1,6 @@
-import { TQuestType } from '../../../types'
+import { TQuestType } from '@/types'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
-import { questTypesIndexSlice } from '../../../reducers/questType/questTypesIndexSlice'
+import { questTypesIndexSlice } from '@/reducers/questType/questTypesIndexSlice'
 import QuestTypeService from '../../../services/ApiService/Campaigns/QuestTypeService'
 
 export type TQuestTypeIndexDataManager = TIndexDataManager<TQuestType> & {

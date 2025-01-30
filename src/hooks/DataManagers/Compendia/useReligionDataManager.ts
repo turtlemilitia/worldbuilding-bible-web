@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TReligion, TCompendium } from '../../../types'
+import { TReligion, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -10,7 +10,6 @@ import {
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import ReligionService, { TReligionRequest } from '../../../services/ApiService/Compendia/ReligionService'
-import { religionSlice } from '@/reducers/compendium/religion/religionSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TReligionDataManager = TChildDataManager<TCompendium, TReligion, TReligionRequest> & {

@@ -1,10 +1,9 @@
 import { useDataManager, TDataManager } from '../useDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
-import { compendiaIndexSlice } from '../../../reducers/compendium/compendiaIndexSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 import compendiumService, { TCompendiumRequest } from '../../../services/ApiService/Compendia/CompendiumService'
-import { TCompendium } from '../../../types'
-import { useAttachableDataManager, hasNotesAttachableDataManager } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
+import { TCompendium } from '@/types'
+import { useAttachableDataManager, hasNotesAttachableDataManager } from '@/hooks/DataManagers'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import useAuthUserDataManager from '../useAuthUserDataManager'
 
 export type TCompendiumDataManager = TDataManager<TCompendium, TCompendiumRequest> & {

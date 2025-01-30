@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TLocation, TCompendium } from '../../../types'
+import { TLocation, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -12,10 +12,8 @@ import {
   hasScenesAttachableDataManager,
   hasCharactersAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import LocationService, { TLocationRequest } from '../../../services/ApiService/Compendia/LocationService'
-import { locationSlice } from '../../../reducers/compendium/location/locationSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationRequest> & {

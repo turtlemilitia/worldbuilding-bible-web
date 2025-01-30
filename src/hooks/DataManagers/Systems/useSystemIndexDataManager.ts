@@ -1,6 +1,6 @@
-import { TSystem } from '../../../types'
+import { TSystem } from '@/types'
 import SystemService from '../../../services/ApiService/Systems/SystemService'
-import { systemsIndexSlice } from '../../../reducers/system/systemsIndexSlice'
+import { systemsIndexSlice } from '@/reducers/system/systemsIndexSlice'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 
 export type TSystemIndexDataManager = TIndexDataManager<TSystem> & {

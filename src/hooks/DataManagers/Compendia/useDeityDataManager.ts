@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TDeity, TCompendium } from '../../../types'
+import { TDeity, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,10 +8,8 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import DeityService, { TDeityRequest } from '../../../services/ApiService/Compendia/DeityService'
-import { deitySlice } from '../../../reducers/compendium/deity/deitySlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TDeityDataManager = TChildDataManager<TCompendium, TDeity, TDeityRequest> & {

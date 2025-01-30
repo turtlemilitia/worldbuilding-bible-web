@@ -12,7 +12,6 @@ import {
 import { mapPlural, mapSingular } from '@/utils/dataUtils'
 
 export type TDataManager<TEntity, TRequest> = {
-  setImage(id: number, data: TImage, imageType: string): unknown
   entityName: string;
   entity?: TEntity,
   isPermanent?: boolean,
@@ -26,6 +25,7 @@ export type TDataManager<TEntity, TRequest> = {
   store: (payload: TRequest, query?: TQueryParams) => Promise<TEntity>,
   update: (id: number, payload: Partial<TRequest>, query?: TQueryParams) => Promise<TEntity>,
   destroy: (id: number) => Promise<any>,
+  setImage: (id: number, data: TImage, imageType: string) => any
 }
 
 export const useDataManager = <TEntity extends TGenericPost, TRequest, TIndexResponse, TResponse extends TEntity> (

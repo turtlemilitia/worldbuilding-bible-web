@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TLanguage, TCompendium } from '../../../types'
+import { TLanguage, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,10 +8,8 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import LanguageService, { TLanguageRequest } from '../../../services/ApiService/Compendia/LanguageService'
-import { languageSlice } from '../../../reducers/compendium/language/languageSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TLanguageDataManager = TChildDataManager<TCompendium, TLanguage, TLanguageRequest> & {

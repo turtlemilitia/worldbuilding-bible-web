@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TPlane, TCompendium } from '../../../types'
+import { TPlane, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,10 +8,8 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import PlaneService, { TPlaneRequest } from '../../../services/ApiService/Compendia/PlaneService'
-import { planeSlice } from '../../../reducers/compendium/plane/planeSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TPlaneDataManager = TChildDataManager<TCompendium, TPlane, TPlaneRequest> & {

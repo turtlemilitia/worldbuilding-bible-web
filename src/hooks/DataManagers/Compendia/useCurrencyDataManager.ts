@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TCurrency, TCompendium } from '../../../types'
+import { TCurrency, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,10 +8,8 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import CurrencyService, { TCurrencyRequest } from '../../../services/ApiService/Compendia/CurrencyService'
-import { currencySlice } from '../../../reducers/compendium/currency/currencySlice'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TCurrencyDataManager = TChildDataManager<TCompendium, TCurrency, TCurrencyRequest> & {

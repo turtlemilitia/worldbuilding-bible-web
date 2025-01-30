@@ -1,4 +1,4 @@
-import { TCampaign, TUser } from '../../../types'
+import { TCampaign, TUser } from '@/types'
 import userService, { TUserRequest } from '../../../services/ApiService/User/UserService'
 import {
   hasCharactersAttachableDataManager,

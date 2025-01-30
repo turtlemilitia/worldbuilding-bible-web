@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TItem, TCompendium } from '../../../types'
+import { TItem, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,9 +8,8 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import ItemService, { TItemRequest } from '../../../services/ApiService/Compendia/ItemService'
-import { itemSlice } from '@/reducers/compendium/item/itemSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TItemDataManager = TChildDataManager<TCompendium, TItem, TItemRequest> & {

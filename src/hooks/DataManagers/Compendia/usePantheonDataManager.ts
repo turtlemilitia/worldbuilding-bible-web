@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TPantheon, TCompendium } from '../../../types'
+import { TPantheon, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,10 +8,8 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import PantheonService, { TPantheonRequest } from '../../../services/ApiService/Compendia/PantheonService'
-import { pantheonSlice } from '../../../reducers/compendium/pantheon/pantheonSlice'
 import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TPantheonDataManager = TChildDataManager<TCompendium, TPantheon, TPantheonRequest> & {
