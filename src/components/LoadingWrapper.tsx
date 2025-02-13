@@ -52,7 +52,7 @@ const LoadingWrapper: FunctionComponent<LoadingWrapperProps> = ({
 }): JSX.Element => {
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <Transition
         show={loading}
         as={Fragment}

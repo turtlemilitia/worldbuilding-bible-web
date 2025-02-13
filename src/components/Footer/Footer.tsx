@@ -9,7 +9,7 @@ const Footer: React.FunctionComponent = (): JSX.Element => {
   const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
   return (
-    <div className="py-2 text-white text-xs">
+    <div className="absolute bottom-0 w-full text-white text-xs">
       <div className="flex justify-between px-5">
         {token && (
           <MusicPlayer/>

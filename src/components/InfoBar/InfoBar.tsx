@@ -4,9 +4,19 @@ import FieldMapper from '../../components/Forms/Fields/FieldMapper'
 import { FloatingBox } from '../FloatingBox'
 import { TTypesAllowed } from '@/types'
 import ProfileImage from '../ProfileImage'
-import { Transition } from '@headlessui/react'
+import {
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Transition,
+} from '@headlessui/react'
 import { TField } from '@/hooks/fieldTools'
 import isEmpty from '@/utils/isEmpty'
+import SubPosts from './SubPosts'
+import SansSerifText from '@/components/SmallSansSerifText'
+import { StickyNoteIcon } from 'lucide-react'
 
 type TProps<T> = {
   onChange: (key: string, value: any) => void;
@@ -27,13 +37,15 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
   canHaveProfileImage = false,
   openProfileImagePicker,
   disabled,
-  loading
+  loading,
 }): JSX.Element => {
 
   const filteredFields = fields.filter((props) => {
     const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
-    return props.name === 'notes' || !(disabled && isEmpty(currentValue))
+    return (props.name === 'notes' || !(disabled && isEmpty(currentValue)))
   })
+  const nonEditorFields = fields.filter((props) => props.type !== 'editor')
+  const editorFields = fields.filter((props) => props.type === 'editor')
 
   return (
     <Transition show={!loading && filteredFields.length > 0}>
@@ -41,13 +53,19 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
         `transition-all duration-1000`,
         'data-[closed]:-top-10 data-[closed]:opacity-0',
       ])}>
-        <FloatingBox className={`${canHaveProfileImage && openProfileImagePicker ? 'mt-32' : ''}`}>
+        <FloatingBox className={`${canHaveProfileImage && openProfileImagePicker
+          ? 'mt-32'
+          : ''}`}>
           {canHaveProfileImage && openProfileImagePicker && (
-            <ProfileImage image={profileImage} openPicker={openProfileImagePicker}/>
+            <ProfileImage image={profileImage}
+                          openPicker={openProfileImagePicker}/>
           )}
-          <ul className="font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip">
-            {filteredFields.map((props, index) => {
-              const currentValue = data ? data[props.name as keyof TTypesAllowed] : null
+          <ul
+            className="font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip grid grid-cols-1 md:grid-cols-2 gap-4">
+            {nonEditorFields.map((props, index) => {
+              const currentValue = data
+                ? data[props.name as keyof TTypesAllowed]
+                : null
               return <FieldMapper
                 key={index}
                 currentValue={currentValue}
@@ -58,6 +76,41 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
             })}
           </ul>
         </FloatingBox>
+        <TabGroup className={'flex mt-5 gap-4'}>
+          <TabList>
+            {editorFields.map(({ Icon }, index) => {
+              return <Tab
+                className={clsx(
+                  'flex items-center justify-center',
+                  'h-8 w-8',
+                  'mb-2',
+                  'border border-opacity-30 border-stone-400',
+                  'rounded-full',
+                  'text-stone-400',
+                  'bg-stone-400 bg-opacity-10 backdrop-blur-sm',
+                  'transition-all ease-in-out duration-500',
+                  'data-[hover]:border-yellow-500',
+                  'data-[selected]:shadow-md data-[selected]:shadow-stone-950',
+                  'data-[selected]:bg-yellow-500 data-[selected]:bg-opacity-50',
+                  'outline-none'
+                )}
+              ><Icon size={15}/></Tab>
+            })}
+          </TabList>
+          <TabPanels>
+            {editorFields.map((props, index) => {
+              const currentValue = data
+                ? data[props.name as keyof TTypesAllowed]
+                : null
+              return <TabPanel><SubPosts
+                {...props}
+                currentValue={currentValue}
+                onChange={onChange}
+                disabled={disabled}
+              /></TabPanel>
+            })}
+          </TabPanels>
+        </TabGroup>
       </div>
     </Transition>
   )

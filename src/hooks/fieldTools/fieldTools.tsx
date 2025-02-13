@@ -2,7 +2,7 @@ import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import {
   TAsyncMultiSelectFieldFn,
   TDatepickerField,
-  TDatePickerFieldProps, TMultiSelectField,
+  TDatePickerFieldProps, TMultiEditorFieldProps, TMultiSelectField,
   TMultiSelectFieldProps,
   TNumberFieldFn,
   TSelectFieldFn,
@@ -10,6 +10,13 @@ import {
   TTextFieldFn,
 } from './types'
 import { Completable, TEncounter, TQuest, TScene } from '@/types'
+import {
+  BadgeIcon,
+  PenIcon,
+  StarsIcon,
+  StickyNoteIcon,
+  SwordIcon,
+} from 'lucide-react'
 
 export const textField: TTextFieldFn = (props) => ({
   ...props,
@@ -27,6 +34,10 @@ export const multiSelectField = (props: TMultiSelectFieldProps): TMultiSelectFie
   ...props,
   type: 'multiSelect',
 })
+export const multiEditorField = (props: TMultiEditorFieldProps): TMultiSelectField => ({
+  ...props,
+  type: 'editor',
+})
 export const asyncMultiSelectField: TAsyncMultiSelectFieldFn = (props) => ({
   ...props,
   type: 'asyncMultiSelect',
@@ -42,13 +53,14 @@ export const noteField = ({
   required,
   options,
   link,
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'notes',
   label: 'Notes',
   required,
   options,
   link,
   dialogType: 'note',
+  Icon: PenIcon
 })
 
 export const sessionField = ({
@@ -61,7 +73,7 @@ export const sessionField = ({
   required,
   options,
   link,
-  dialogType: 'session',
+  dialogType: 'session'
 })
 
 export const crossOutCompleted = (options: (TSelectOption & Completable)[]) => {
@@ -76,39 +88,42 @@ export const sceneField = ({
   required,
   options,
   link,
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'scenes',
   label: 'Scenes',
   required,
   options: crossOutCompleted(options as TScene[]),
   link,
-  dialogType: 'scene'
+  dialogType: 'scene',
+  Icon: StarsIcon
 })
 
 export const questField = ({
   required,
   options,
   link,
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'quests',
   label: 'Quests',
   required,
   options: crossOutCompleted(options as TQuest[]),
   link,
-  dialogType: 'quest'
+  dialogType: 'quest',
+  Icon: BadgeIcon
 })
 
 export const encounterField = ({
   required,
   options,
   link,
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'encounters',
   label: 'Encounters',
   required,
   options: crossOutCompleted(options as TEncounter[]),
   link,
-  dialogType: 'encounter'
+  dialogType: 'encounter',
+  Icon: SwordIcon
 })
 
 // other generic fields

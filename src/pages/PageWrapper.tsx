@@ -12,10 +12,10 @@ const PageWrapper = (): JSX.Element => {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen font-sans-serif">
+      <div className="fixed h-screen w-full font-sans-serif">
         <div className="-z-10 fixed w-full h-full bg-cover bg-no-repeat bg-center"
              style={{ backgroundImage: `url(${backgroundImage ?? defaultBackgroundImage ?? bgImage})` }}/>
-        <div className="bg-stone-950/50 min-h-screen">
+        <div className="bg-stone-950/50 h-full">
           <Nav/>
           <Outlet/>
           <Footer/>

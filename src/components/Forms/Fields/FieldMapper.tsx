@@ -54,7 +54,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
 }) => {
   return (
     <li>
-      <Fieldset className="antialiased relative my-6">
+      <Fieldset className="antialiased relative mt-3">
         <div className="font-light">
           {props.type === 'list' && (
             <ListField

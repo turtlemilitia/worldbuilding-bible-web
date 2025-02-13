@@ -14,10 +14,10 @@ const useNoteFields = (manager: TNoteDataManager): TUseFields => {
       options: notes || []
     }),
     {
-      type: 'list',
+      type: 'editor',
       name: 'children',
-      // dialogType: 'note',
-      link: (slug) => `/notes/${slug}`,
+      dialogType: 'note',
+      link: (id) => `/notes/${id}`,
       label: 'Children',
     }
   ], [notes])

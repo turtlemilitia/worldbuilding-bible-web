@@ -1,6 +1,7 @@
 import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import { FunctionComponent } from 'react'
 import { TGenericPostBasic, TUser } from '@/types'
+import { LucideIcon } from 'lucide-react'
 
 type TGenericFieldParams = {
   name: string,
@@ -30,7 +31,7 @@ export type TSelectField = TGenericFieldParams & {
   options: TSelectOption[],
 }
 export type TMultiSelectField = TGenericFieldParams & {
-  type: 'multiSelect',
+  type: 'multiSelect' | 'editor',
   options: TSelectOption[],
 }
 export type TSelectFieldFn = (props: {
@@ -92,24 +93,15 @@ export type TMultiSelectFieldProps = {
   link?: TAsyncMultiSelectField['link'],
   dialogType?: TDialogTypes
 }
+export type TMultiEditorFieldProps = TMultiSelectFieldProps & {
+  Icon: LucideIcon
+}
 
 export type TSelectFieldProps = {
   required?: TMultiSelectField['required'],
   options: TMultiSelectField['options']
   link?: TAsyncMultiSelectField['link']
 }
-
-export type TFactionFieldFn = <TEntity> (props: {
-  required?: TMultiSelectField['required'],
-  options: TMultiSelectField['options'],
-  link?: TAsyncMultiSelectField['link']
-}) => TMultiSelectField
-
-export type TLanguageFieldFn = <TEntity> (props: {
-  required?: TMultiSelectField['required'],
-  options: TMultiSelectField['options'],
-  link?: TAsyncMultiSelectField['link']
-}) => TMultiSelectField
 
 export type TField = {
   name: string,
@@ -144,6 +136,10 @@ export type TField = {
   Callback: FunctionComponent,
 } | {
   type: 'listAdd',
+} | {
+  type: 'editor',
+  link?: (id: number) => string,
+  Icon: LucideIcon
 } | {
   type: 'listAddUsers',
   users: TUser[],

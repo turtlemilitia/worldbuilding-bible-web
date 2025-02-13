@@ -38,11 +38,11 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
       {compendium && (
         <CompendiumSidebar compendium={compendium}/>
       )}
-      <div className="relative w-full">
+      <>
         {(id || compendium) && (
           <Outlet/>
         )}
-      </div>
+      </>
     </>
   )
 }

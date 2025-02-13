@@ -29,7 +29,7 @@ const CampaignWrapper = (): JSX.Element => {
       {isLoaded(`campaign:${id}`) && campaign && (
         <CampaignMenu campaign={campaign}/>
       )}
-      <div className="relative w-full">
+      <div className="relative w-full h-[calc(100%-35px)]">
         {isLoaded(`campaign:${id}`) && (
           <Outlet/>
         )}
