@@ -1,3 +1,5 @@
+import { TCanHaveImages, TImage } from '@/types'
+
 export const filterOutArrays = (data: object): Partial<object> => {
   return Object.keys(data).reduce((result, key) => {
     if (!Array.isArray(data[key as keyof object])) {
@@ -73,6 +75,11 @@ export const mapSingular = (singular: string) => {
     default:
       return singular.slice(0, -1)
   }
+}
+
+export const getImageForEntity = (entity: TCanHaveImages, type: 'cover' | 'profile'): TImage | undefined => {
+  return entity?.images
+    ?.find(image => image.pivot?.type?.name.toLowerCase() === type)
 }
 
 export const fixId = (id: string | number | 'new'): number | undefined => {

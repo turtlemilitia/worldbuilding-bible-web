@@ -53,15 +53,16 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
         `transition-all duration-1000`,
         'data-[closed]:-top-10 data-[closed]:opacity-0',
       ])}>
-        <FloatingBox className={`${canHaveProfileImage && openProfileImagePicker
-          ? 'mt-32'
-          : ''}`}>
+        <FloatingBox className={clsx([
+          canHaveProfileImage && openProfileImagePicker ? 'mt-32' : '',
+          'max-w-xl ml-auto',
+        ])}>
           {canHaveProfileImage && openProfileImagePicker && (
             <ProfileImage image={profileImage}
                           openPicker={openProfileImagePicker}/>
           )}
           <ul
-            className="font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip grid grid-cols-1 md:grid-cols-2 gap-4">
+            className="font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip gap-4">
             {nonEditorFields.map((props, index) => {
               const currentValue = data
                 ? data[props.name as keyof TTypesAllowed]
@@ -76,8 +77,8 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
             })}
           </ul>
         </FloatingBox>
-        <TabGroup className={'flex mt-5 gap-4'}>
-          <TabList>
+        <TabGroup className={'relative mt-5 gap-4'}>
+          <TabList className={'absolute top-0 left-0'}>
             {editorFields.map(({ Icon }, index) => {
               return <Tab
                 className={clsx(
@@ -92,22 +93,26 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
                   'data-[hover]:border-yellow-500',
                   'data-[selected]:shadow-md data-[selected]:shadow-stone-950',
                   'data-[selected]:bg-yellow-500 data-[selected]:bg-opacity-50',
-                  'outline-none'
+                  'outline-none',
                 )}
               ><Icon size={15}/></Tab>
             })}
           </TabList>
-          <TabPanels>
+          <TabPanels className={'ml-16'}>
             {editorFields.map((props, index) => {
               const currentValue = data
                 ? data[props.name as keyof TTypesAllowed]
                 : null
-              return <TabPanel><SubPosts
-                {...props}
-                currentValue={currentValue}
-                onChange={onChange}
-                disabled={disabled}
-              /></TabPanel>
+              return (
+                <TabPanel>
+                  <SubPosts
+                    {...props}
+                    currentValue={currentValue}
+                    onChange={onChange}
+                    disabled={disabled}
+                  />
+                </TabPanel>
+              )
             })}
           </TabPanels>
         </TabGroup>

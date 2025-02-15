@@ -54,14 +54,14 @@ function EncounterSubPost ({ encounterId }: { encounterId: number }) {
 
 const SubPosts = ({ currentValue, dialogType }: TProps) => {
   return <TabGroup>
-    <TabList className={'flex gap-4'}>
+    <TabList className={'h-10 overflow-y-hidden overflow-x-scroll no-scrollbar pl-1 -ml-1 -mr-6 pr-6 flex space-x-4'}>
       {currentValue?.map((option, index) => {
         return <Tab
           className={clsx(
             'block py-2 p-4 pr-3',
             'h-8',
             'border border-transparent',
-            'rounded-full',
+            'rounded-full text-nowrap',
             'text-white',
             'transition-all ease-in-out duration-500','data-[hover]:border-yellow-500',
             'data-[hover]:bg-stone-400 data-[hover]:bg-opacity-10 data-[hover]:backdrop-blur-sm',

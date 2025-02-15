@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from 'react'
-import BoxWithTitle from '../BoxWithTitle'
+import BoxWithTitle from '@/components/BoxWithTitle'
 import {
   useLoaderData,
   useLocation,

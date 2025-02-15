@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { hasImageableDataManager, TDataManager } from './DataManagers'
 import { TCanHaveImages, TGenericPostBasic } from '../types'
 import useImageTypeIndexDataManager from './DataManagers/Images/useImageTypeIndexDataManager'
+import { getImageForEntity } from '@/utils/dataUtils'
 
 type TProps<TEntity> = {
   manager: TDataManager<TEntity, any> & hasImageableDataManager
@@ -19,7 +20,7 @@ const useImageSelection = <TEntity extends TGenericPostBasic & TCanHaveImages> (
     return manager.images.attach(manager.entity.id, { image_id: id, type_id: typeId }, imageType)
   }, [manager.entity, imageTypes])
 
-  const getImage = useCallback((type: 'cover' | 'profile') => manager.entity?.images?.find(image => image.pivot?.type?.name.toLowerCase() === type)?.original, [manager.entity?.images])
+  const getImage = useCallback((type: 'cover' | 'profile') => manager.entity && getImageForEntity(manager.entity, type)?.original, [manager.entity?.images])
 
   return { getImage, handleOnImageSelected, canHaveProfileImage }
 }

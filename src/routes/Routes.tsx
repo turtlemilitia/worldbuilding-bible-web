@@ -52,6 +52,7 @@ import SceneWrapper from '../components/SceneWrapper'
 import MarkdownExample from '@/pages/MarkdownExample'
 import Quests from '@/pages/Campaign/Quests'
 import Logout from '@/pages/Logout'
+import Dashboard from '@/pages/Dashboard'
 
 const Routes = (): JSX.Element => {
 
@@ -175,7 +176,7 @@ const Routes = (): JSX.Element => {
       children: [
         {
           path: '/',
-          element: <div className={'min-h-screen flex items-center justify-center'}>TODO: Dashboard</div>,
+          element: <Dashboard/>,
         },
         {
           path: '/markdown-example',

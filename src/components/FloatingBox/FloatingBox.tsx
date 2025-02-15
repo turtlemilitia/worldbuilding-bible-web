@@ -15,6 +15,7 @@ const boxVariants = cva(
           transparent: 'bg-stone-400 bg-opacity-10 text-stone-300',
           dark: 'bg-stone-800 bg-opacity-50 backdrop-blur-md text-stone-300',
           solid: ' bg-stone-900 text-stone-300',
+          image: 'bg-cover'
         },
         border: {
           glass: 'border-opacity-30 border-stone-400',
