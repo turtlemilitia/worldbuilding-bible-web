@@ -108,7 +108,7 @@ const usePostForm = <T extends TGenericPost, R> ({
       return destroy(id)
     },
     manyToManyFields: fields?.filter(
-      ({ type }) => ['multiSelect', 'asyncMultiSelect'].includes(type))
+      ({ type }) => ['multiSelect', 'asyncMultiSelect', 'editor'].includes(type))
       .map(({ name }) => name as keyof T) || [],
     onAttach: async (name: keyof T, attachedId) => {
       if (!id) {

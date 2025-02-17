@@ -13,6 +13,7 @@ import Label from './Label'
 import Dialog from '../../Dialogs'
 import { TDialogTypes } from '@/hooks/fieldTools/types'
 import { Completable } from '@/types'
+import { FloatingBox } from '@/components/FloatingBox'
 
 type TProp = {
   label: string;
@@ -20,7 +21,7 @@ type TProp = {
   value?: TSelectOption[];
   onChange: (value: TSelectOption[]) => any;
   options: (TSelectOption)[];
-  link?: (id: number | string) => string;
+  link?: (id: number) => string;
   disabled?: boolean;
   dialogType?: TDialogTypes;
 }
@@ -95,25 +96,28 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
                   leaveTo="opacity-0"
                 >
                   <ComboboxOptions
-                    className="absolute z-20 left-0 top-full mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    {!filteredOptions.length && (
-                      <li className="py-1 text-stone-600">No results found.</li>
-                    )}
-                    {filteredOptions.map((option) => (
-                      <ComboboxOption
-                        key={option.id}
-                        value={option}
-                        as={Fragment}
-                      >
-                        {({ focus, selected }) => (
-                          <li className={`py-1 flex justify-between cursor-pointer`}>
-                            {option.label ?? option.name}
-                            {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
-                            {!selected && focus && <DotIcon className="text-stone-300 h-5 w-5"/>}
-                          </li>
-                        )}
-                      </ComboboxOption>
-                    ))}
+                    anchor={'top end'}
+                    className="outline-none h-96">
+                    <FloatingBox color={'solid'}>
+                      {!filteredOptions.length && (
+                        <li className="py-1 text-stone-600">No results found.</li>
+                      )}
+                      {filteredOptions.map((option) => (
+                        <ComboboxOption
+                          key={option.id}
+                          value={option}
+                          as={Fragment}
+                        >
+                          {({ focus, selected }) => (
+                            <li className={`py-1 flex justify-between cursor-pointer`}>
+                              {option.label ?? option.name}
+                              {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
+                              {!selected && focus && <DotIcon className="text-stone-300 h-5 w-5"/>}
+                            </li>
+                          )}
+                        </ComboboxOption>
+                      ))}
+                    </FloatingBox>
                   </ComboboxOptions>
                 </Transition>
                 </>

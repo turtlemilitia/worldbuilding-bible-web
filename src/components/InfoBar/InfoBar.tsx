@@ -15,8 +15,6 @@ import {
 import { TField } from '@/hooks/fieldTools'
 import isEmpty from '@/utils/isEmpty'
 import SubPosts from './SubPosts'
-import SansSerifText from '@/components/SmallSansSerifText'
-import { StickyNoteIcon } from 'lucide-react'
 
 type TProps<T> = {
   onChange: (key: string, value: any) => void;
@@ -27,6 +25,7 @@ type TProps<T> = {
   openProfileImagePicker?: () => any;
   disabled?: boolean
   loading: boolean
+  showSubPosts?: boolean;
 }
 
 const InfoBar: FunctionComponent<TProps<any>> = ({
@@ -38,6 +37,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
   openProfileImagePicker,
   disabled,
   loading,
+  showSubPosts = false,
 }): JSX.Element => {
 
   const filteredFields = fields.filter((props) => {
@@ -62,7 +62,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
                           openPicker={openProfileImagePicker}/>
           )}
           <ul
-            className="font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip gap-4">
+            className="grid font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip gap-4">
             {nonEditorFields.map((props, index) => {
               const currentValue = data
                 ? data[props.name as keyof TTypesAllowed]
@@ -77,45 +77,47 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
             })}
           </ul>
         </FloatingBox>
-        <TabGroup className={'relative mt-5 gap-4'}>
-          <TabList className={'absolute top-0 left-0'}>
-            {editorFields.map(({ Icon }, index) => {
-              return <Tab
-                className={clsx(
-                  'flex items-center justify-center',
-                  'h-8 w-8',
-                  'mb-2',
-                  'border border-opacity-30 border-stone-400',
-                  'rounded-full',
-                  'text-stone-400',
-                  'bg-stone-400 bg-opacity-10 backdrop-blur-sm',
-                  'transition-all ease-in-out duration-500',
-                  'data-[hover]:border-yellow-500',
-                  'data-[selected]:shadow-md data-[selected]:shadow-stone-950',
-                  'data-[selected]:bg-yellow-500 data-[selected]:bg-opacity-50',
-                  'outline-none',
-                )}
-              ><Icon size={15}/></Tab>
-            })}
-          </TabList>
-          <TabPanels className={'ml-16'}>
-            {editorFields.map((props, index) => {
-              const currentValue = data
-                ? data[props.name as keyof TTypesAllowed]
-                : null
-              return (
-                <TabPanel>
-                  <SubPosts
-                    {...props}
-                    currentValue={currentValue}
-                    onChange={onChange}
-                    disabled={disabled}
-                  />
-                </TabPanel>
-              )
-            })}
-          </TabPanels>
-        </TabGroup>
+        {showSubPosts && (
+          <TabGroup className={'relative mt-5 gap-4'}>
+            <TabList className={'absolute top-0 left-0'}>
+              {editorFields.map(({ Icon }, index) => {
+                return <Tab
+                  className={clsx(
+                    'flex items-center justify-center',
+                    'h-8 w-8',
+                    'mb-2',
+                    'border border-opacity-30 border-stone-400',
+                    'rounded-full',
+                    'text-stone-200',
+                    'bg-stone-400 bg-opacity-10 backdrop-blur-sm',
+                    'transition-all ease-in-out duration-500',
+                    'data-[hover]:border-yellow-500',
+                    'data-[selected]:shadow-md data-[selected]:shadow-stone-950',
+                    'data-[selected]:bg-yellow-500 data-[selected]:bg-opacity-50',
+                    'outline-none',
+                  )}
+                ><Icon size={15}/></Tab>
+              })}
+            </TabList>
+            <TabPanels className={'ml-16'}>
+              {editorFields.map((props, index) => {
+                const currentValue = data
+                  ? data[props.name as keyof TTypesAllowed]
+                  : null
+                return (
+                  <TabPanel key={index}>
+                    <SubPosts
+                      {...props}
+                      value={currentValue}
+                      onChange={onChange}
+                      disabled={disabled}
+                    />
+                  </TabPanel>
+                )
+              })}
+            </TabPanels>
+          </TabGroup>
+        )}
       </div>
     </Transition>
   )

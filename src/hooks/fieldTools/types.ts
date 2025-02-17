@@ -43,7 +43,7 @@ export type TSelectFieldFn = (props: {
 
 type TAsyncMultiSelectField = TGenericFieldParams & {
   type: 'asyncMultiSelect',
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
   search: (term: string) => Promise<TSelectOption[]>
 }
 export type TAsyncMultiSelectFieldFn = (props: {
@@ -114,21 +114,21 @@ export type TField = {
 } | {
   type: 'list'
   dialogType?: TDialogTypes
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
 } | {
   type: 'select'
   options?: TSelectOption[],
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
 } | {
   type: 'multiSelect'
   dialogType?: TDialogTypes
   options?: TSelectOption[],
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
 } | {
   type: 'asyncMultiSelect' | 'asyncSelect'
   dialogType?: TDialogTypes
   options?: TSelectOption[],
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
   search: (term: string) => Promise<TSelectOption[]>
 } | TDatepickerField
   | {
@@ -138,7 +138,9 @@ export type TField = {
   type: 'listAdd',
 } | {
   type: 'editor',
+  dialogType?: TDialogTypes
   link?: (id: number) => string,
+  options?: TSelectOption[],
   Icon: LucideIcon
 } | {
   type: 'listAddUsers',

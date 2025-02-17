@@ -14,7 +14,7 @@ type TProp = {
   value?: TSelectOption[];
   onChange: (value: TSelectOption[]) => any;
   search: (term: string) => Promise<TSelectOption[]>;
-  link?: (id: number | string) => string;
+  link?: (id: number) => string;
   disabled?: boolean;
   dialogType?: TDialogTypes;
 }

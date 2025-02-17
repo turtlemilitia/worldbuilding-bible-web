@@ -111,10 +111,10 @@ const Post = <T extends TGenericPost> ({
             openProfileImagePicker={() => setProfileImagePickerOpen(true)}
             canHaveProfileImage={form.imageHandler.canHaveProfileImage}
             disabled={!form.canEdit}
+            showSubPosts={true}
           />
         </RightBar>
       </form>
-      <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
       <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
     </>
   )

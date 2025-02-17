@@ -26,8 +26,8 @@ type TProps<T, R> = {
   onUpdated?: (data: T) => any
   onDeleted?: () => any
   manyToManyFields?: (keyof T)[]
-  onAttach?: (name: keyof T, id: number | string) => Promise<any>
-  onDetach?: (name: keyof T, id: number | string) => Promise<any>
+  onAttach?: (name: keyof T, id: number) => Promise<any>
+  onDetach?: (name: keyof T, id: number) => Promise<any>
 
   // persisted data
   persistedData?: T,
