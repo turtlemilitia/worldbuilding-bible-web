@@ -69,7 +69,7 @@ const Sidebar = ({ title, addNew, canAdd = false, filters, children }: TOwnProps
               ? 'top-5 opacity-100'
               : '-top-14 opacity-0'} w-full px-6`}>
             <FloatingBox>
-              <div className="max-h-underScreen overflow-y-auto">
+              <div className="max-h-underScreen overflow-y-auto no-scrollbar">
                 <div className="flex justify-between mb-4">
                   <h2
                     className="text-xl font-sans-serif tracking-widest uppercase content-center text-stone-400">{title}</h2>

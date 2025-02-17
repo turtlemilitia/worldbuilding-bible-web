@@ -28,7 +28,7 @@ const SceneWrapper: FunctionComponent = () => {
       {campaign && campaign.scenes && (
         <SceneSidebar campaign={campaign}/>
       )}
-      <div className="relative w-full">
+      <div className="relative w-full h-full">
         <Outlet/>
       </div>
     </>

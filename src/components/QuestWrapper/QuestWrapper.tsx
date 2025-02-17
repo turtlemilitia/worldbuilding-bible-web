@@ -26,7 +26,7 @@ const QuestWrapper: FunctionComponent = () => {
       {campaign && campaign.quests && questTypes && (
         <QuestSidebar campaign={campaign}/>
       )}
-      <div className="relative w-full">
+      <div className="relative w-full h-full">
         <Outlet/>
       </div>
     </>

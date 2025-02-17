@@ -163,7 +163,7 @@ const Routes = (): JSX.Element => {
     element: <NotesWrapper/>,
     children: [
       {
-        path: ':noteId/:noteSlug',
+        path: ':noteId/:noteSlug?',
         element: <Note/>,
       }
     ],
