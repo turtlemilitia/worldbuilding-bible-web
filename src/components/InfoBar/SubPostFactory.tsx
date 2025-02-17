@@ -13,6 +13,7 @@ export function SubPostFactory ({ dialogType, value, ...props }: {
   dialogType?: TDialogTypes,
   value: TSelectOption,
   unlink: () => any,
+  disabled?: boolean,
 }) {
   switch (dialogType) {
     case 'note':

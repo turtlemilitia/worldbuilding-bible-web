@@ -16,8 +16,9 @@ import { Link } from 'react-router-dom'
 
 type TProps = {
   unlink: () => any,
+  disabled?: boolean,
 }
-export const SubPost = <T extends TGenericPost, > ({ form, unlink }: TPostProps<T> & TProps): JSX.Element => {
+export const SubPost = <T extends TGenericPost, > ({ form, unlink, disabled }: TPostProps<T> & TProps): JSX.Element => {
   return <>
     <div className={'flex'}>
       <input
@@ -27,11 +28,17 @@ export const SubPost = <T extends TGenericPost, > ({ form, unlink }: TPostProps<
       />
       <div className={'flex items-center gap-4'}>
         <Link to={!form.isNew ? form.link : ''}>
-          <SmallFloatingBox hover><ExternalLinkIcon className="stroke-stone-400 h-5 w-5"/></SmallFloatingBox>
+          <SmallFloatingBox hover>
+            <ExternalLinkIcon className="stroke-stone-400 h-5 w-5"/>
+          </SmallFloatingBox>
         </Link>
-        <Button onClick={unlink}>
-          <SmallFloatingBox hover><UnlinkIcon className="stroke-stone-400 h-5 w-5"/></SmallFloatingBox>
-        </Button>
+        {!disabled &&
+          <Button onClick={unlink}>
+            <SmallFloatingBox hover>
+              <UnlinkIcon className="stroke-stone-400 h-5 w-5"/>
+            </SmallFloatingBox>
+          </Button>
+        }
       </div>
     </div>
     <FloatingBox color={'solid'} border={'yellow'}>

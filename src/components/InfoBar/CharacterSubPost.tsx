@@ -6,6 +6,7 @@ import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
 type TProps = {
   characterId: number,
   unlink: () => any,
+  disabled?: boolean,
 }
 export function CharacterSubPost ({ characterId, ...props }: TProps) {
   const { compendium } = useCurrentCompendium()

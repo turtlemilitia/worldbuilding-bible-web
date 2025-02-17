@@ -6,6 +6,7 @@ import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
 type TProps = {
   locationId: number,
   unlink: () => any,
+  disabled?: boolean,
 }
 export function LocationSubPost ({ locationId, ...props }: TProps) {
   const { compendium } = useCurrentCompendium()

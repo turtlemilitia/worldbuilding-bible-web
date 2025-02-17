@@ -110,7 +110,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
                       {...props}
                       value={currentValue}
                       onChange={onChange}
-                      disabled={disabled}
+                      disabled={disabled || props.options == undefined}
                     />
                   </TabPanel>
                 )

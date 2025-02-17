@@ -6,6 +6,7 @@ import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
 type TProps = {
   factionId: number,
   unlink: () => any,
+  disabled?: boolean,
 }
 export function FactionSubPost ({ factionId, ...props }: TProps) {
   const { compendium } = useCurrentCompendium()

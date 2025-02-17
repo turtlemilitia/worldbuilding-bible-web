@@ -5,6 +5,7 @@ import { SubPost } from '@/components/InfoBar/SubPost'
 type TProps = {
   noteId: number,
   unlink: () => any,
+  disabled?: boolean,
 }
 export function NoteSubPost ({ noteId, ...props }: TProps) {
   const form = useNoteForm({ noteId })

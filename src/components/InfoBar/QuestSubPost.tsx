@@ -6,6 +6,7 @@ import React from 'react'
 type TProps = {
   questId: number,
   unlink: () => any,
+  disabled?: boolean,
 }
 export function QuestSubPost ({ questId, ...props }: TProps) {
   const { campaign } = useCurrentCampaign()

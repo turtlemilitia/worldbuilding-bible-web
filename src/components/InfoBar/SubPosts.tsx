@@ -67,24 +67,25 @@ const SubPosts = (props: TProps) => {
               ? <span className={'line-through'}>{option.name}</span>
               : option.name}</SansSerifText></Tab>
           })}
-
-          <Popover>
-            <PopoverButton
-              className={'outline-none'}><SmallFloatingBox><PlusIcon size={13}/></SmallFloatingBox></PopoverButton>
-            <PopoverPanel anchor={'bottom end'}>
-              <MultipleSelectSubPost
-                label={label}
-                required={required}
-                value={value}
-                onChange={(value) => onChange(name, value)}
-                link={props.link}
-                options={options || []}
-                dialogType={dialogType}
-                disabled={disabled && name !== 'notes'}
-                onCreated={() => setSelectedIndex(value.length)}
-              />
-            </PopoverPanel>
-          </Popover>
+          {!disabled && (
+            <Popover>
+              <PopoverButton
+                className={'outline-none'}><SmallFloatingBox><PlusIcon size={13}/></SmallFloatingBox></PopoverButton>
+              <PopoverPanel anchor={'bottom end'}>
+                <MultipleSelectSubPost
+                  label={label}
+                  required={required}
+                  value={value}
+                  onChange={(value) => onChange(name, value)}
+                  link={props.link}
+                  options={options || []}
+                  dialogType={dialogType}
+                  disabled={disabled && name !== 'notes'}
+                  onCreated={() => setSelectedIndex(value.length)}
+                />
+              </PopoverPanel>
+            </Popover>
+          )}
         </TabList>
         <TabPanels>
           {value?.map(post => (
@@ -93,6 +94,7 @@ const SubPosts = (props: TProps) => {
                 dialogType={dialogType}
                 value={post}
                 unlink={() => onChange(name, value.filter(item => item.id !== post.id))}
+                disabled={disabled}
               />
             </TabPanel>
           ))}

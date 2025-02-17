@@ -6,6 +6,7 @@ import React from 'react'
 type TProps = {
   encounterId: number,
   unlink: () => any,
+  disabled?: boolean,
 }
 export function EncounterSubPost ({ encounterId, ...props }: TProps) {
   const { campaign } = useCurrentCampaign()

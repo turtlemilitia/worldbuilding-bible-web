@@ -33,7 +33,7 @@ const CampaignWrapper = (): JSX.Element => {
   }, [id])
 
   useEffect(() => {
-    if (campaign?.compendium?.slug) {
+    if (campaign?.compendium?.id) {
       const compendiumId = campaign?.compendium?.id
       setLoading({ [compendiumId]: true })
       viewCompendium(compendiumId, { include: compendiumIncludes }).

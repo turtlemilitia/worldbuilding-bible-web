@@ -6,6 +6,7 @@ import React from 'react'
 type TProps = {
   sceneId: number,
   unlink: () => any,
+  disabled?: boolean,
 }
 export function SceneSubPost ({ sceneId, ...props }: TProps) {
   const { campaign } = useCurrentCampaign()
