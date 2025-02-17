@@ -11,11 +11,11 @@ import {
 } from './types'
 import { Completable, TEncounter, TQuest, TScene } from '@/types'
 import {
-  BadgeIcon,
-  PenIcon,
+  BadgeIcon, DramaIcon, ListIcon, MapPinIcon,
+  PenIcon, StarIcon,
   StarsIcon,
   StickyNoteIcon,
-  SwordIcon,
+  SwordIcon, UserIcon,
 } from 'lucide-react'
 
 export const textField: TTextFieldFn = (props) => ({
@@ -67,13 +67,14 @@ export const sessionField = ({
   required,
   options,
   link,
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'sessions',
   label: 'Sessions',
   required,
   options,
   link,
-  dialogType: 'session'
+  dialogType: 'session',
+  Icon: ListIcon
 })
 
 export const crossOutCompleted = (options: (TSelectOption & Completable)[]) => {
@@ -95,7 +96,7 @@ export const sceneField = ({
   options: crossOutCompleted(options as TScene[]),
   link,
   dialogType: 'scene',
-  Icon: StarsIcon
+  Icon: DramaIcon
 })
 
 export const questField = ({
@@ -109,7 +110,7 @@ export const questField = ({
   options: crossOutCompleted(options as TQuest[]),
   link,
   dialogType: 'quest',
-  Icon: BadgeIcon
+  Icon: StarIcon
 })
 
 export const encounterField = ({
@@ -131,13 +132,14 @@ export const factionField = ({
   required,
   options,
   link
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'factions',
   label: 'Factions',
   required,
   options,
   link,
-  dialogType: 'faction'
+  dialogType: 'faction',
+  Icon: BadgeIcon
 })
 
 // other generic fields
@@ -145,26 +147,28 @@ export const locationField = ({
   required,
   options,
   link
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'locations',
   label: 'Locations',
   required,
   options,
   link,
-  dialogType: 'location'
+  dialogType: 'location',
+  Icon: MapPinIcon
 })
 
 export const characterField = ({
   required,
   options,
   link
-}: TSelectFieldProps) => multiSelectField({
+}: TSelectFieldProps) => multiEditorField({
   name: 'characters',
   label: 'Characters',
   required,
   options,
   link,
-  dialogType: 'character'
+  dialogType: 'character',
+  Icon: UserIcon
 })
 
 export const languageField = ({

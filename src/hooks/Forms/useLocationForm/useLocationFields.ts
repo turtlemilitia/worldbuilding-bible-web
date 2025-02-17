@@ -8,9 +8,17 @@ import {
   useLocationTypeIndexDataManager,
   useNoteIndexDataManager,
 } from '@/hooks/DataManagers'
-import {characterField, encounterField, multiSelectField, questField, sceneField} from '../../fieldTools/fieldTools'
+import {
+  characterField,
+  encounterField,
+  multiEditorField,
+  multiSelectField,
+  questField,
+  sceneField,
+} from '../../fieldTools/fieldTools'
 import useUrlFormatter from '../../useUrlFormatter'
 import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
+import { NetworkIcon } from 'lucide-react'
 
 const useLocationFields = (manager: TLocationDataManager): TUseFields => {
 
@@ -57,14 +65,16 @@ const useLocationFields = (manager: TLocationDataManager): TUseFields => {
       )
       if (manager.location) {
         fields.push(
-          multiSelectField({
+          multiEditorField({
             name: 'children',
             label: 'Child Locations',
             options: manager.compendium.locations || [],
+            dialogType: 'location',
             link: (id: string | number) => {
               const location = manager.location?.children?.find((child: TLocation) => child.id === id)
               return `${compendiumPath}/locations/${location?.id || ''}/${location?.slug || ''}`
             },
+            Icon: NetworkIcon
           })
         )
       }

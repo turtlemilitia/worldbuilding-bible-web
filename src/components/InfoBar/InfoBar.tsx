@@ -78,7 +78,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
           </ul>
         </FloatingBox>
         {showSubPosts && (
-          <TabGroup className={'relative mt-5 gap-4'}>
+          <TabGroup className={'relative mt-5 gap-4 min-h-96'}>
             <TabList className={'absolute top-0 left-0'}>
               {editorFields.map(({ Icon }, index) => {
                 return <Tab
