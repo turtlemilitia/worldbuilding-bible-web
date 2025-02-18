@@ -1,13 +1,17 @@
 import { noteField, selectField, TField } from '../../fieldTools'
 import { TUseFields } from '@/components/Post/types'
-import { useNoteIndexDataManager, useQuestDataManager, useQuestTypeIndexDataManager } from '../../DataManagers'
+import {
+  TQuestDataManager,
+  useNoteIndexDataManager,
+  useQuestDataManager,
+  useQuestTypeIndexDataManager,
+} from '../../DataManagers'
 import { useMemo } from 'react'
 import { datePickerField } from '@/hooks/fieldTools/fieldTools'
 
-const useQuestFields = (): TUseFields => {
+const useQuestFields = (manager: TQuestDataManager): TUseFields => {
 
   const { questTypes: types } = useQuestTypeIndexDataManager()
-  const manager = useQuestDataManager();
   const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = useMemo(() => {
@@ -24,7 +28,7 @@ const useQuestFields = (): TUseFields => {
       })
     ]
 
-    if (manager.campaign?.quests.length) {
+    if (manager.campaign?.quests?.length) {
       fields.push(
         selectField({
           name: 'parent',

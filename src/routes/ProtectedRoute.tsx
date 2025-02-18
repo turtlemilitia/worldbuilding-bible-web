@@ -23,7 +23,7 @@ import useImageIndexDataManager
 export const ProtectedRoute = (): JSX.Element => {
 
   const { token } = useAppSelector((state: RootState) => state.auth)
-  const { loading, setLoading } = usePostDataManager()
+  const { loading, setLoading, loadingInit } = usePostDataManager()
 
   const authUserDataManager = useAuthUserDataManager()
   const systemIndexDataManager = useSystemIndexDataManager()
@@ -40,8 +40,8 @@ export const ProtectedRoute = (): JSX.Element => {
   // Here we will be adding the missing items where needed
   useEffect(() => {
     if (token) {
-      authUserDataManager.viewOwn({ include: 'favourites;favourites.favouritable;pins;pins.pinnable;characters;permissions' }).
-        then((user) => {
+      authUserDataManager.viewOwn({ include: 'favourites;favourites.favouritable;pins;pins.pinnable;characters;permissions' })
+        .then((user) => {
           const promises = [
             compendiumIndexDataManager.index(),
             campaignIndexDataManager.index(),
@@ -74,7 +74,9 @@ export const ProtectedRoute = (): JSX.Element => {
   return (
     <LoadingWrapper opacity={'100'} loading={loading}
                     loadingText={'Loading...'}>
-      <Outlet/>
+      {!loadingInit && (
+        <Outlet/>
+      )}
     </LoadingWrapper>
   )
 }

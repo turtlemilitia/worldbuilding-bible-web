@@ -1,4 +1,4 @@
-import { TQuest } from '@/types'
+import { TCampaign, TQuest } from '@/types'
 import { TQuestRequest } from '@/services/ApiService/Campaigns/QuestService'
 import { useCallback, useMemo } from 'react'
 import { TForm, TUseFormProps } from '@/components/Post/types'
@@ -8,9 +8,11 @@ import useQuestFields from './useQuestFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  questId: TQuest['slug'];
+  campaignId?: TCampaign['id']
+  questId?: TQuest['id'];
 }
 const useQuestForm = ({
+  campaignId,
   questId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useQuestForm = ({
 
   const include = useMemo(() => 'type;parent;notes;locations', [])
 
-  const manager = useQuestDataManager()
+  const manager = useQuestDataManager(campaignId, questId)
 
-  const { fields } = useQuestFields()
+  const { fields } = useQuestFields(manager)
 
   const mapData = useCallback((data: TQuest): TQuestRequest => ({
     name: data.name,

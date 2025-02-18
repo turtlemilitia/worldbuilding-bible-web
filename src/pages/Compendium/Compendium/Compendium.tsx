@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '@/components/Post'
 import { TCompendium } from '@/types'
 import { useCompendiumForm } from '@/hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
 
 const Compendium: FunctionComponent = () => {
 
@@ -11,9 +12,9 @@ const Compendium: FunctionComponent = () => {
   const {compendiumId} = useParams() as { compendiumId: string } // router
 
   const form = useCompendiumForm({
-    compendiumId,
+    compendiumId: fixId(compendiumId),
     onCreated: (data: TCompendium) => {
-      navigate(`/compendia/${data.slug}`)
+      navigate(`/compendia/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`/`)

@@ -1,22 +1,26 @@
 import { noteField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
-import { useConceptDataManager, useNoteIndexDataManager } from '../../DataManagers'
+import {
+  TConceptDataManager,
+  useConceptDataManager,
+  useNoteIndexDataManager,
+} from '../../DataManagers'
 import { useMemo } from 'react'
 
-const useConceptFields = (): TUseFields => {
+const useConceptFields = (manager: TConceptDataManager): TUseFields => {
 
-  const manager = useConceptDataManager()
+  const { concept } = manager;
   const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = useMemo(() => {
     const fields: TField[] = []
-    if (manager.concept && notes) {
+    if (concept && notes) {
       fields.push(noteField({
         options: notes,
       }));
     }
     return fields;
-  }, [manager.concept, notes])
+  }, [concept, notes])
 
   return { fields }
 }

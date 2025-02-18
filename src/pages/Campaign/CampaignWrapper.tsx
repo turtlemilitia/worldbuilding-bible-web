@@ -1,63 +1,53 @@
-import React, { JSX, useEffect } from 'react'
+import React, { JSX, useEffect, useMemo } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import {
-  useCampaignDataManager,
-  useCompendiumDataManager,
-} from '../../hooks/DataManagers'
+import { useCampaignDataManager, } from '../../hooks/DataManagers'
 import CampaignMenu from '../../components/CampaignWrapper/CampaignMenu'
 import { campaignIncludes } from '@/hooks/Forms/useCampaignForm/useCampaignForm'
 import {
   compendiumIncludes,
 } from '@/hooks/Forms/useCompendiumForm/useCompendiumForm'
 import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
+import { fixId } from '@/utils/dataUtils'
+import { useCompendiumDataManager } from '@/hooks/DataManagers'
 
 const CampaignWrapper = (): JSX.Element => {
 
-  const { setLoading } = usePostDataManager()
-  const { campaign, view, clearData } = useCampaignDataManager() // redux
+  const { campaignId, compendiumId } = useParams() as { campaignId: string; compendiumId?: string } // router
+
+  const id = useMemo(() => fixId(campaignId), [campaignId]);
+  const { setLoading, isLoading, isLoaded } = usePostDataManager()
+  const { campaign, view } = useCampaignDataManager(id) // redux
   const {
     compendium,
     view: viewCompendium,
-    clearData: clearCompendiumData,
   } = useCompendiumDataManager() // redux
 
-  const { campaignId } = useParams() as {
-    campaignId: string;
-    compendiumId?: string
-  } // router
+  useEffect(() => {
+    if (id && !isLoading(`campaign:${id}`) && !isLoaded(`campaign:${id}`)) {
+      setLoading({ [`campaign:${id}`]: true })
+      view(Number(id), { include: `${campaignIncludes};images` }).
+        then(() => {
+          setLoading({ [`campaign:${id}`]: false })
+        })
+    }
+  }, [id])
 
   useEffect(() => {
-    if (campaignId !== 'new') {
-      setLoading({ [campaignId]: true })
-      view(campaignId, { include: `${campaignIncludes};images` }).
-        then(() => setLoading({ [campaignId]: false }))
-    }
-    return () => {
-      clearData(campaignId)
-    }
-  }, [campaignId])
-
-  useEffect(() => {
-    if (campaign?.compendium?.slug) {
-      const compendiumId = campaign?.compendium?.slug
+    if (campaign?.compendium?.id) {
+      const compendiumId = campaign?.compendium?.id
       setLoading({ [compendiumId]: true })
       viewCompendium(compendiumId, { include: compendiumIncludes }).
-        then(() => setLoading({ [compendiumId]: false }))
+      then(() => setLoading({ [compendiumId]: false }))
     }
-    return () => {
-      if (compendium) {
-        clearCompendiumData(compendium?.slug)
-      }
-    }
-  }, [campaign?.compendium?.slug])
+  }, [campaign?.compendium?.id])
 
   return (
     <>
-      {campaign && (
+      {isLoaded(`campaign:${id}`) && campaign && (
         <CampaignMenu campaign={campaign}/>
       )}
-      <div className="relative w-full">
-        {(campaignId === 'new' || campaign) && (
+      <div className="relative w-full h-[calc(100%-35px)]">
+        {isLoaded(`campaign:${id}`) && (
           <Outlet/>
         )}
       </div>

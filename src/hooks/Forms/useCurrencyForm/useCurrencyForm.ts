@@ -1,4 +1,4 @@
-import { TCurrency } from '../../../types'
+import { TCompendium, TCurrency } from '../../../types'
 import { TCurrencyRequest } from '../../../services/ApiService/Compendia/CurrencyService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import { usePostForm } from '../index'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  currencyId: TCurrency['slug'];
+  compendiumId?: TCompendium['id'];
+  currencyId?: TCurrency['id'];
 }
 const useCurrencyForm = ({
+  compendiumId,
   currencyId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useCurrencyForm = ({
 
   const include = useMemo(() => 'notes', [])
 
-  const manager = useCurrencyDataManager()
+  const manager = useCurrencyDataManager(compendiumId, currencyId)
 
-  const { fields } = useCurrencyFields()
+  const { fields } = useCurrencyFields(manager)
 
   const mapData = (data: any): TCurrencyRequest => ({
     name: data.name,

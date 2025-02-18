@@ -1,4 +1,4 @@
-import { TPlane } from '../../../types'
+import { TCompendium, TPlane } from '../../../types'
 import { TPlaneRequest } from '../../../services/ApiService/Compendia/PlaneService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import usePlaneFields from '../usePlaneForm/usePlaneFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  planeId: TPlane['slug'];
+  compendiumId?: TCompendium['id'];
+  planeId?: TPlane['id'];
 }
 const usePlaneForm = ({
+  compendiumId,
   planeId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const usePlaneForm = ({
 
   const include = useMemo(() => 'notes', [])
 
-  const manager = usePlaneDataManager()
+  const manager = usePlaneDataManager(compendiumId, planeId)
 
-  const { fields } = usePlaneFields()
+  const { fields } = usePlaneFields(manager)
 
   const mapData = (data: any): TPlaneRequest => ({
     name: data.name,

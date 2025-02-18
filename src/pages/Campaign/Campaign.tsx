@@ -1,8 +1,9 @@
 import React, { FunctionComponent, JSX } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../components/Post'
-import { TCampaign } from '../../types'
+import { TCampaign } from '@/types'
 import { useCampaignForm } from '../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
 
 const Campaign: FunctionComponent = (): JSX.Element => {
 
@@ -11,9 +12,9 @@ const Campaign: FunctionComponent = (): JSX.Element => {
   const { campaignId } = useParams() as { campaignId: string }
 
   const form = useCampaignForm({
-    campaignId,
+    campaignId: fixId(campaignId),
     onCreated: (data: TCampaign) => {
-      navigate(`/campaigns/${data?.slug}`)
+      navigate(`/campaigns/${data?.id}/${data?.slug}`)
     },
     onDeleted: () => {
       navigate(`/campaigns`)

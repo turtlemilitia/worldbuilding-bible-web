@@ -3,18 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useFactionForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Faction: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { factionId } = useParams() as { factionId: string } // router
+  const { compendiumId, factionId } = useParams() as { compendiumId:string; factionId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = useFactionForm({
-    factionId,
+    compendiumId: fixId(compendiumId),
+    factionId: fixId(factionId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/factions/${data.slug}`)
+      navigate(`${compendiumPath}/factions/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/factions`)

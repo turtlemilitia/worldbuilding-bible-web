@@ -1,6 +1,4 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { sceneSlice } from '@/reducers/campaign/scene/sceneSlice'
-import { campaignSlice } from '@/reducers/campaign/campaignSlice'
 import sceneService, { TSceneRequest } from '../../../services/ApiService/Campaigns/SceneService'
 import {
   hasNotesAttachableDataManager,
@@ -14,28 +12,30 @@ import {
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import { TCampaign, TScene } from '@/types'
+import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 
-type TSceneDataManager = TChildDataManager<TCampaign, TScene, TSceneRequest> & {
+export type TSceneDataManager = TChildDataManager<TCampaign, TScene, TSceneRequest> & {
   campaign?: TCampaign,
   scene?: TScene
 } & hasNotesAttachableDataManager & hasImageableDataManager & hasEncountersAttachableDataManager & hasCharactersAttachableDataManager & hasLocationsAttachableDataManager
 
-const useSceneDataManager = (): TSceneDataManager => {
+const useSceneDataManager = (campaignId?: number, id?: number): TSceneDataManager => {
   const manager = useChildDataManager(
-    'scene',
-    'campaign',
-    sceneSlice,
-    campaignSlice,
+    'scenes',
+    'campaigns',
+    campaignId,
+    id,
+    campaignsIndexSlice,
     sceneService,
   )
   return {
     ...manager,
     scene: manager.entity,
-    notes: useNotableDataManager(sceneSlice, sceneService.notes),
-    encounters: useEncounterableDataManager(sceneSlice, sceneService.encounters),
-    characters: useCharacterableDataManager(sceneSlice, sceneService.characters),
-    locations: useLocationableDataManager(sceneSlice, sceneService.locations),
-    images: useImageableDataManager(sceneSlice, sceneService.images)
+    notes: useNotableDataManager(manager, sceneService.notes),
+    encounters: useEncounterableDataManager(manager, sceneService.encounters),
+    characters: useCharacterableDataManager(manager, sceneService.characters),
+    locations: useLocationableDataManager(manager, sceneService.locations),
+    images: useImageableDataManager(manager, sceneService.images)
   }
 }
 

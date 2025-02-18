@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import BoxWithTitle from '../components/BoxWithTitle'
+import BoxWithTitle from '../components/BoxWithTitle/BoxWithTitle'
 import LoginForm from '../components/LoginForm'
 import { RedirectRoute } from '@/routes/RedirectRoute'
 

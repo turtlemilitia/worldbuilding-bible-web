@@ -1,12 +1,15 @@
 import { noteField, TField } from '../../fieldTools'
 import { TUseFields } from '@/components/Post/types'
-import { useFactionDataManager, useNoteIndexDataManager } from '../../DataManagers'
+import {
+  TFactionDataManager,
+  useFactionDataManager,
+  useNoteIndexDataManager,
+} from '../../DataManagers'
 import { multiSelectField } from '../../fieldTools/fieldTools'
 import { useMemo } from 'react'
 
-const useFactionFields = (): TUseFields => {
+const useFactionFields = (manager: TFactionDataManager): TUseFields => {
 
-  const manager = useFactionDataManager()
   const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = useMemo(() => {

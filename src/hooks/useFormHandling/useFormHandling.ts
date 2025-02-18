@@ -11,7 +11,7 @@ const MAX_RETRIES = 3
 
 type TProps<T, R> = {
   fetchOnMount?: boolean;
-  id: string | number | 'new'
+  id?: number;
   isNew: boolean,
   mapData: (data: T) => R;
   canEdit: boolean;
@@ -26,8 +26,8 @@ type TProps<T, R> = {
   onUpdated?: (data: T) => any
   onDeleted?: () => any
   manyToManyFields?: (keyof T)[]
-  onAttach?: (name: keyof T, id: number | string) => Promise<any>
-  onDetach?: (name: keyof T, id: number | string) => Promise<any>
+  onAttach?: (name: keyof T, id: number) => Promise<any>
+  onDetach?: (name: keyof T, id: number) => Promise<any>
 
   // persisted data
   persistedData?: T,
@@ -184,7 +184,7 @@ const useFormHandling = <T, R> ({
         attachEntityPromises.push(...entitiesToAttach.map(entity => onAttach(key, entity.id)) || [])
       }
       if (entitiesToDetach && onDetach) {
-        detachEntityPromises.push(...entitiesToDetach.map(entity => onDetach(key, entity.slug)) || [])
+        detachEntityPromises.push(...entitiesToDetach.map(entity => onDetach(key, entity.id)) || [])
       }
     })
     return Promise.all([

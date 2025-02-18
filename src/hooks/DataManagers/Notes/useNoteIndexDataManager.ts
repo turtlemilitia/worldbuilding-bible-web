@@ -3,7 +3,7 @@ import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import NoteService from '@/services/ApiService/Notes/NoteService'
 import { notesIndexSlice } from '@/reducers/note/notesIndexSlice'
 
-type TNoteIndexDataManager = TIndexDataManager<TNote> & {
+export type TNoteIndexDataManager = TIndexDataManager<TNote> & {
   notes?: TNote[]
 }
 

@@ -13,7 +13,7 @@ import {
 } from '@/types'
 
 export type TCampaign = TGenericPost & TPlayerTools & TCanHaveImages & TCanHaveNotes & {
-  gameMaster?: TUser;
+  gameMaster: TUser;
   compendium?: TGenericPost;
   users: TUser[];
   invitations: TInvitation[];

@@ -11,12 +11,12 @@ type TProps = {
   label: string
   required?: boolean
   value?: TSelectOption[];
-  link?: (id: number | string) => string
+  link?: (id: number) => string
   dialogType?: TDialogTypes;
 }
 const ListField: FunctionComponent<TProps> = ({ value, link, required, label, dialogType }) => {
 
-  const [dialogIsOpen, setDialogIsOpen] = useState<string | false>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<number | 'new' | false>(false)
 
   return (
     <Field>
@@ -27,16 +27,12 @@ const ListField: FunctionComponent<TProps> = ({ value, link, required, label, di
         className={'w-full flex justify-between py-2 px-4 rounded-lg bg-stone-700 bg-opacity-50 focus:bg-stone-800'}>
         {value && value.length > 0 ? (
           <ul>
-            {value.map(({ id, name, slug }: TSelectOption & Partial<Completable>) => {
-              console.log({dialogType, slug})
+            {value.map(({ id, name }: TSelectOption & Partial<Completable>) => {
               return (
                 <li key={id} className="py-1">
-                  {(dialogType && slug) ? <Button
-                      onClick={() => setDialogIsOpen(
-                        slug as string)}>{name}</Button>
-                    : (link && slug ? <Link
-                        to={link(slug as string)}>{name}</Link>
-                      : name)}
+                  {(dialogType && id)
+                    ? <Button onClick={() => setDialogIsOpen(id)}>{name}</Button>
+                    : ((link && id) ? <Link to={link(id)}>{name}</Link> : name)}
                 </li>
               )
             })}

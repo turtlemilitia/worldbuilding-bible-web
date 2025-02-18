@@ -51,7 +51,8 @@ const SelectField: FunctionComponent<TProp> = ({ value, onChange, options, disab
               leaveTo="opacity-0"
             >
               <Combobox.Options
-                className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 text-stone-200 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                anchor={'bottom'}
+                className="absolute z-20 mt-1 max-h-56 overflow-auto rounded-md bg-stone-800 text-stone-200 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 {filteredOptions.map((option) => (
                   <Combobox.Option
                     key={option?.id}

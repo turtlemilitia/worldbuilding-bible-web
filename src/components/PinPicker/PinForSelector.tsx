@@ -3,19 +3,19 @@ import React, { Fragment, useState } from 'react'
 import { SmallFloatingBox } from '../FloatingBox'
 import { CheckIcon, DotIcon, PinIcon } from 'lucide-react'
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
-import { useCampaignDataManager } from '../../hooks/DataManagers'
 import clsx from 'clsx'
 import { TPinHandler } from '../Post/types'
 import LoadingWrapper from '../LoadingWrapper'
-import { campaignIncludes } from '../../hooks/Forms/useCampaignForm/useCampaignForm'
-import { TCampaign } from '../../types'
+import { campaignIncludes } from '@/hooks/Forms/useCampaignForm/useCampaignForm'
+import { TCampaign } from '@/types'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TProps = {
   handler: TPinHandler
 }
 const PinForSelector = ({ handler }: TProps) => {
 
-  const { campaign, view: refreshCampaign } = useCampaignDataManager()
+  const { campaign, view: refreshCampaign } = useCurrentCampaign()
 
   const [loading, setLoading] = useState(false)
 
@@ -23,7 +23,7 @@ const PinForSelector = ({ handler }: TProps) => {
     setLoading(true)
     handler.handleOnPinSelected(options)
      .then(async () => {
-       await refreshCampaign((campaign as TCampaign).slug, {include: campaignIncludes}) // only until broadcasting is implemented
+       await refreshCampaign((campaign as TCampaign).id, {include: campaignIncludes}) // only until broadcasting is implemented
        setLoading(false)
      })
   }

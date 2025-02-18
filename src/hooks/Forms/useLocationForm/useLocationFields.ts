@@ -3,19 +3,26 @@ import { TLocation } from '@/types'
 import { TUseFields } from '@/components/Post/types'
 import { useMemo } from 'react'
 import {
-  useCampaignDataManager,
+  TLocationDataManager,
   useGovernmentTypeIndexDataManager,
-  useLocationDataManager,
   useLocationTypeIndexDataManager,
-  useNoteIndexDataManager
+  useNoteIndexDataManager,
 } from '@/hooks/DataManagers'
-import {characterField, encounterField, multiSelectField, questField, sceneField} from '../../fieldTools/fieldTools'
+import {
+  characterField,
+  encounterField,
+  multiEditorField,
+  multiSelectField,
+  questField,
+  sceneField,
+} from '../../fieldTools/fieldTools'
 import useUrlFormatter from '../../useUrlFormatter'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
+import { NetworkIcon } from 'lucide-react'
 
-const useLocationFields = (): TUseFields => {
+const useLocationFields = (manager: TLocationDataManager): TUseFields => {
 
-  const manager = useLocationDataManager()
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
   const { notes } = useNoteIndexDataManager()
   const { locationTypes } = useLocationTypeIndexDataManager()
   const { governmentTypes } = useGovernmentTypeIndexDataManager()
@@ -58,11 +65,16 @@ const useLocationFields = (): TUseFields => {
       )
       if (manager.location) {
         fields.push(
-          multiSelectField({
+          multiEditorField({
             name: 'children',
             label: 'Child Locations',
             options: manager.compendium.locations || [],
-            link: (id: string | number) => `${compendiumPath}/locations/${manager.location?.children?.find((child: TLocation) => child.slug === id)?.slug || ''}`,
+            dialogType: 'location',
+            link: (id: string | number) => {
+              const location = manager.location?.children?.find((child: TLocation) => child.id === id)
+              return `${compendiumPath}/locations/${location?.id || ''}/${location?.slug || ''}`
+            },
+            Icon: NetworkIcon
           })
         )
       }
@@ -77,15 +89,15 @@ const useLocationFields = (): TUseFields => {
       fields.push(
         sceneField({
           options: campaign?.scenes || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/scenes/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/scenes/${id}`,
         }),
         questField({
           options: campaign?.quests || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/quests/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/quests/${id}`,
         }),
         encounterField({
           options: campaign?.encounters || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/encounters/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/encounters/${id}`,
         }),
       )
     }

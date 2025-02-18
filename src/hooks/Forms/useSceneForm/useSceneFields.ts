@@ -1,10 +1,7 @@
 import { noteField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
-import {
-  useSceneDataManager,
-  useNoteIndexDataManager,
-  useCampaignDataManager,
-  useCompendiumDataManager,
+import { useNoteIndexDataManager,
+  TSceneDataManager,
 } from '@/hooks/DataManagers'
 import { useMemo } from 'react'
 import {
@@ -12,14 +9,13 @@ import {
   encounterField,
   locationField,
 } from '../../fieldTools/fieldTools'
+import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
 
-const useSceneFields = (): TUseFields => {
+const useSceneFields = (manager: TSceneDataManager): TUseFields => {
 
-  const { campaign } = useCampaignDataManager()
-  const { compendium } = useCompendiumDataManager()
+  const { campaign } = manager;
+  const { compendium } = useCurrentCompendium()
   const { notes } = useNoteIndexDataManager()
-
-  const manager = useSceneDataManager()
 
   const fields: TField[] = useMemo(() => {
     const fields: TField[] = [

@@ -1,7 +1,8 @@
 import { TField } from '../../fieldTools'
 import {TUseFields} from "../../../components/Post/types";
+import { TSystemDataManager } from '@/hooks/DataManagers'
 
-const useSystemFields = (): TUseFields => {
+const useSystemFields = (manager: TSystemDataManager): TUseFields => {
 
   const fields: TField[] = []
 

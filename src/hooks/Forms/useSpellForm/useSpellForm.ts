@@ -1,4 +1,4 @@
-import { TSpell } from '../../../types'
+import { TCompendium, TSpell } from '../../../types'
 import { TSpellRequest } from '../../../services/ApiService/Compendia/SpellService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import useSpellFields from '../useSpellForm/useSpellFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  spellId: TSpell['slug'];
+  compendiumId?: TCompendium['id'];
+  spellId?: TSpell['id'];
 }
 const useSpellForm = ({
+  compendiumId,
   spellId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useSpellForm = ({
 
   const include = useMemo(() => 'notes', [])
 
-  const manager = useSpellDataManager()
+  const manager = useSpellDataManager(compendiumId, spellId)
 
-  const { fields } = useSpellFields()
+  const { fields } = useSpellFields(manager)
 
   const mapData = (data: any): TSpellRequest => ({
     name: data.name,

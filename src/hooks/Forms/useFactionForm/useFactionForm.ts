@@ -1,4 +1,4 @@
-import { TFaction } from '../../../types'
+import { TCompendium, TFaction } from '../../../types'
 import { TFactionRequest } from '../../../services/ApiService/Compendia/FactionService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import useFactionFields from '../useFactionForm/useFactionFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  factionId: TFaction['slug'];
+  compendiumId?: TCompendium['id'];
+  factionId?: TFaction['id'];
 }
 const useFactionForm = ({
+  compendiumId,
   factionId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useFactionForm = ({
 
   const include = useMemo(() => 'notes', [])
 
-  const manager = useFactionDataManager()
+  const manager = useFactionDataManager(compendiumId, factionId)
 
-  const { fields } = useFactionFields()
+  const { fields } = useFactionFields(manager)
 
   const mapData = (data: any): TFactionRequest => ({
     name: data.name,

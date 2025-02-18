@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Post from '../../components/Post'
 import { useNoteForm } from '../../hooks/Forms'
 import { TNote } from '@/types'
+import { fixId } from '@/utils/dataUtils'
 
 const Note: FunctionComponent = () => {
 
@@ -12,9 +13,9 @@ const Note: FunctionComponent = () => {
   const { noteId } = useParams() as { noteId: string } // router
 
   const form = useNoteForm({
-    noteId,
+    noteId: fixId(noteId),
     onCreated: (data: TNote) => {
-      navigate(`/notes/${data.slug}`)
+      navigate(`/notes/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`/notes`)

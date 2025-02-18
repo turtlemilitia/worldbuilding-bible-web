@@ -1,16 +1,19 @@
 import { noteField, selectField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
-import { useCompendiumIndexDataManager, useNoteIndexDataManager, } from '../../DataManagers'
+import {
+  TCampaignDataManager,
+  useCompendiumIndexDataManager,
+  useNoteIndexDataManager,
+} from '../../DataManagers'
 import CampaignService from "../../../services/ApiService/Campaigns/CampaignService";
 import {Button} from '@/components/Forms/Fields/Button';
-import { useCampaignDataManager } from '@/hooks/DataManagers'
 import { useMemo } from 'react'
 import useAuthUserDataManager from '@/hooks/DataManagers/useAuthUserDataManager'
 
-const useCampaignFields = (campaignId: string): TUseFields => {
+const useCampaignFields = (manager: TCampaignDataManager): TUseFields => {
 
   const { user } = useAuthUserDataManager()
-  const { campaign, createInvitation } = useCampaignDataManager()
+  const { campaign, createInvitation } = manager;
   const { compendia } = useCompendiumIndexDataManager()
   const { notes}  = useNoteIndexDataManager()
 
@@ -42,18 +45,18 @@ const useCampaignFields = (campaignId: string): TUseFields => {
         label: 'Invite a new player',
         type: 'listAddUsers',
         users: campaign.users,
-        onSubmit: (email) => createInvitation(campaign.slug, email)
+        onSubmit: (email) => createInvitation(email)
       });
     }
 
-    if (campaignId) {
+    if (campaign) {
       fields.push({
         label: "Download",
         name: "",
         type: 'callback',
         Callback: () => {
           return <Button
-            onClick={() => CampaignService.downloadSummary(campaignId)}
+            onClick={() => CampaignService.downloadSummary(campaign.id)}
             className={'w-full'}>
             Download Campaign Data
           </Button>
@@ -61,7 +64,7 @@ const useCampaignFields = (campaignId: string): TUseFields => {
       })
     }
     return fields
-  }, [campaignId, isGamemaster, compendia, notes, campaign, createInvitation])
+  }, [isGamemaster, compendia, notes, campaign, createInvitation])
 
   return { fields }
 }

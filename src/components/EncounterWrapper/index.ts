@@ -1,3 +1,3 @@
-import EncounterWrapper from './component'
+import EncounterWrapper from './EncounterWrapper'
 
 export default EncounterWrapper;

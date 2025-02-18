@@ -14,9 +14,9 @@ const RightBar: FunctionComponent<PropsWithChildren> = ({ children }) => {
         <ChevronLeftIcon className={'h-6 w-6'}/>
       </button>
       <div className={clsx([
-        'fixed z-20 top-0 right-0 w-full lg:w-1/3 xl:w-1/4 h-full',
+        'fixed lg:relative z-20 top-0 right-0 w-full lg:w-1/2 h-full',
         'overflow-x-visible overflow-y-scroll no-scrollbar',
-        'pb-5 px-6 pt-24 lg:pt-14',
+        'pb-10 px-6 pt-24 lg:pt-14',
         'transition-all duration-500',
         open ? 'translate-x-0' : 'translate-x-full',
         'lg:translate-x-0',

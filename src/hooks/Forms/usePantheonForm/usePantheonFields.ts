@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
 import { noteField, selectField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
-import { usePantheonDataManager, useNoteIndexDataManager } from '@/hooks/DataManagers'
+import { useNoteIndexDataManager, TPantheonDataManager } from '@/hooks/DataManagers'
 
-const usePantheonFields = (): TUseFields => {
+const usePantheonFields = (manager : TPantheonDataManager): TUseFields => {
 
-  const manager = usePantheonDataManager()
   const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = useMemo(() => {

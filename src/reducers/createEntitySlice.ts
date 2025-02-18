@@ -1,12 +1,12 @@
 import { createSlice, Draft, PayloadAction, Slice } from '@reduxjs/toolkit'
-import { TGenericPostBasic, TImage } from '../types'
+import { Identifiable, TGenericPostBasic, TImage } from '../types'
 
 export type TEntitySliceState<T> = {
   data?: T
   fetching: boolean
 }
 
-export const createEntitySlice = <TEntity extends {[key: string]: any, images?: TImage[]}> (name: string) => {
+export const createEntitySlice = <TEntity extends Identifiable & {[key: string]: any, images?: TImage[]}> (name: string) => {
   type TChildActionProps = {
     field: 'characters'|'concepts'|'factions'|'items'|'languages'|'locations'|'species'|'images'|'notes'
     data: { [key: string]: any };
@@ -32,8 +32,8 @@ export const createEntitySlice = <TEntity extends {[key: string]: any, images?: 
       update: (state, action: PayloadAction<Partial<TEntity>>) => {
         state.data = { ...state.data as Draft<TEntity>, ...action.payload as Partial<Draft<TEntity>> }
       },
-      clear: (state, action: PayloadAction<string|number>) => {
-        if (state.data?.slug === action.payload) {
+      clear: (state, action: PayloadAction<number>) => {
+        if (state.data?.id === action.payload) {
           state.data = undefined
         }
       },

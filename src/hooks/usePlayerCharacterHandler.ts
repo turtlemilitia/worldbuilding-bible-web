@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react'
 import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import useUserDataManager from './DataManagers/Campaigns/useUserDataManager'
 import { TCharacterDataManager } from './DataManagers/Compendia/useCharacterDataManager'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TProps = {
   manager: TCharacterDataManager
@@ -12,8 +13,8 @@ type TProps = {
 const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler => {
 
   const { user: authUser } = useAuthUserDataManager()
-  const { campaign, } = useCampaignDataManager()
-  const { characters: userCharactersDataManager } = useUserDataManager()
+  const { campaign, } = useCurrentCampaign()
+  const { characters: userCharactersDataManager } = useUserDataManager(campaign?.id)
 
   const handleOnSelectUser = useCallback(async (values: TSelectOption[]) => {
     if (!campaign) {
@@ -23,7 +24,7 @@ const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler
       return
     }
     const promises: Promise<void>[] = []
-    campaign.users.forEach((user) => {
+    campaign.users?.forEach((user) => {
       if (!manager.character) {
         return
       }
@@ -37,7 +38,7 @@ const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler
         promises.push(userCharactersDataManager.attach(user.id, { characterId: manager.character.id, }))
       }
       if (!addToUser && addedToUser) {
-        promises.push(userCharactersDataManager.detach(user.id, addedToUser.slug))
+        promises.push(userCharactersDataManager.detach(user.id, addedToUser.id))
       }
     })
     return Promise.all(promises)
@@ -45,7 +46,7 @@ const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler
 
   const values = useMemo(() => {
     const values: TSelectOption[] = []
-    campaign?.users.forEach((user) => {
+    campaign?.users?.forEach((user) => {
       if (user.characters?.some(character => character.id === manager.character?.id)) {
         values.push({ ...user })
       }
@@ -57,7 +58,7 @@ const usePlayerCharacterHandler = ({ manager }: TProps): TPlayerCharacterHandler
     if (!campaign?.users) {
       return []
     }
-    if (campaign.permissions.some(permission => permission.permissionableId === manager.entity?.id)) {
+    if (campaign.permissions?.some(permission => permission.permissionableId === manager.entity?.id)) {
       return campaign.users;
     }
     return campaign.users.filter((user) => {

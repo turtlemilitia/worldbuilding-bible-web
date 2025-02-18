@@ -1,18 +1,17 @@
 import { TUseFields } from '@/components/Post/types'
 import useUrlFormatter from '../../useUrlFormatter'
 import {
-  useCampaignDataManager,
-  useCharacterDataManager,
+  TCharacterDataManager,
   useNoteIndexDataManager,
 } from '../../DataManagers'
 import { factionField, languageField, noteField, numberField, selectField, textField, TField } from '../../fieldTools'
 import {encounterField, locationField, questField, sceneField} from '../../fieldTools/fieldTools'
 import { useMemo } from 'react'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
-const useCharacterFields = (): TUseFields => {
+const useCharacterFields = (manager: TCharacterDataManager): TUseFields => {
 
-  const manager = useCharacterDataManager()
-  const { campaign } = useCampaignDataManager()
+  const { campaign } = useCurrentCampaign()
   const { notes } = useNoteIndexDataManager()
 
   const { compendiumPath } = useUrlFormatter()
@@ -50,15 +49,15 @@ const useCharacterFields = (): TUseFields => {
       fields.push(
         sceneField({
           options: campaign?.scenes || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/scenes/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/scenes/${id}`,
         }),
         questField({
           options: campaign?.quests || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/quests/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/quests/${id}`,
         }),
         encounterField({
           options: campaign?.encounters || [],
-          link: (id: string | number) => `/campaigns/${campaign?.slug}/encounters/${id}`,
+          link: (id: string | number) => `/campaigns/${campaign?.id}/${campaign?.slug}/encounters/${id}`,
         }),
       )
     }

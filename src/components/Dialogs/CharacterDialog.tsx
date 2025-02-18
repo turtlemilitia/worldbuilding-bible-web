@@ -2,11 +2,13 @@ import { TCharacter } from '../../types'
 import React, { FunctionComponent } from 'react'
 import PostDialog from '../PostDialog/PostDialog'
 import { useCharacterForm } from '../../hooks/Forms'
+import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
+import { fixId } from '@/utils/dataUtils'
 
 type TProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any;
-  characterId: TCharacter['slug'];
+  characterId: string | number;
   onCreated?: (data: TCharacter) => any
   onUpdated?: (data: TCharacter) => any
   onDeleted?: (id: string|number) => any
@@ -20,8 +22,11 @@ const CharacterDialog: FunctionComponent<TProps> = ({
   onDeleted
 }) => {
 
+  const { compendium } = useCurrentCompendium()
+
   const form = useCharacterForm({
-    characterId,
+    compendiumId: compendium?.id,
+    characterId: fixId(characterId),
     onCreated,
     onUpdated,
     onDeleted: () => {

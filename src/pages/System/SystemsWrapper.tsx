@@ -21,7 +21,7 @@ const SystemsWrapper = (): JSX.Element => {
             }))}/>
         </Sidebar>
       )}
-      <div className="relative w-full">
+      <div className="relative w-full h-full">
         <Outlet/>
       </div>
     </>

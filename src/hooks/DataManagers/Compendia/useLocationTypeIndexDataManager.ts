@@ -1,9 +1,9 @@
-import { TLocationType } from '../../../types'
+import { TLocationType } from '@/types'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import LocationTypeService from '../../../services/ApiService/Compendia/LocationTypeService'
-import { locationTypesIndexSlice } from '../../../reducers/locationType/locationTypesIndexSlice'
+import { locationTypesIndexSlice } from '@/reducers/locationType/locationTypesIndexSlice'
 
-type TLocationTypeIndexDataManager = TIndexDataManager<TLocationType> & {
+export type TLocationTypeIndexDataManager = TIndexDataManager<TLocationType> & {
   locationTypes?: TLocationType[]
 }
 

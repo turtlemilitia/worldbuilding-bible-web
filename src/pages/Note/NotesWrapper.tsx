@@ -13,6 +13,7 @@ import {
 import SidebarSection from '@/components/Sidebar/SidebarSection'
 import { createNestedArray } from '@/utils/treeUtils'
 import { TNote } from '@/types'
+import { makeLink } from '@/hooks/useLink'
 
 const NotesWrapper = (): JSX.Element => {
 
@@ -28,7 +29,7 @@ const NotesWrapper = (): JSX.Element => {
   useEffect(() => {
     if (!noteId) {
       if (notes?.length > 0) {
-        navigate(`${prefix}/notes/${notes[0]?.slug}`)
+        navigate(`${prefix}/notes/${notes[0]?.id}/${notes[0]?.slug}`)
       } else {
         navigate(`${prefix}/notes/new`)
       }
@@ -41,11 +42,11 @@ const NotesWrapper = (): JSX.Element => {
 
   const mapNote = (note: TNote): SidebarItemInterface => ({
     title: note.name,
-    to: `${prefix}/notes/${note.slug}`,
+    to: makeLink('notes', note.id, note.slug, '', prefix),
     addNewLink: `${prefix}/notes/new`,
     addNewLinkState: { parent: note },
     icon: (props: LucideProps) => <PenBoxIcon {...props}/>,
-    onDelete: () => destroyNote(note.slug).then(() => onDeleted()),
+    onDelete: () => destroyNote(note.id).then(() => onDeleted()),
     children: note.children?.map(subNote => mapNote(subNote)),
   })
 
@@ -62,7 +63,7 @@ const NotesWrapper = (): JSX.Element => {
               map((note) => mapNote(note))
           }/>
       </Sidebar>
-      <div className="relative w-full">
+      <div className="relative w-full h-full">
         <Outlet/>
       </div>
     </>

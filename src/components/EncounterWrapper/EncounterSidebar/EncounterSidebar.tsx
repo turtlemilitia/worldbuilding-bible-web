@@ -12,7 +12,7 @@ const EncounterSidebar: FunctionComponent<TEncounterSidebarProps> = ({ campaign 
 
   const [orderBy, setOrderBy] = useState<'location' | null>(null)
 
-  const addNewLink = `/campaigns/${campaign.slug}/encounters/new`
+  const addNewLink = `/campaigns/${campaign.id}/${campaign.slug}/encounters/new`
 
   const filters = []
   if (campaign.canUpdate) {

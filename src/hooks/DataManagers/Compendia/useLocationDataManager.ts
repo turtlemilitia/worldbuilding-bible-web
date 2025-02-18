@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TLocation, TCompendium } from '../../../types'
+import { TLocation, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -12,34 +12,34 @@ import {
   hasScenesAttachableDataManager,
   hasCharactersAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import LocationService, { TLocationRequest } from '../../../services/ApiService/Compendia/LocationService'
-import { locationSlice } from '../../../reducers/compendium/location/locationSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationRequest> & {
+export type TLocationDataManager = TChildDataManager<TCompendium, TLocation, TLocationRequest> & {
   compendium?: TCompendium,
   location?: TLocation,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasScenesAttachableDataManager & hasCharactersAttachableDataManager
 
-const useLocationDataManager = (): TLocationDataManager => {
+const useLocationDataManager = (compendiumId?: number, id?: number): TLocationDataManager => {
   const manager = useChildDataManager(
-    'location',
-    'compendium',
-    locationSlice,
-    compendiumSlice,
+    'locations',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     LocationService,
   )
   return {
     ...manager,
     compendium: manager.parent,
     location: manager.entity,
-    characters: useCharacterableDataManager(locationSlice, LocationService.characters),
-    notes: useNotableDataManager(locationSlice, LocationService.notes),
-    quests: useQuestableDataManager(locationSlice, LocationService.quests),
-    encounters: useEncounterableDataManager(locationSlice, LocationService.encounters),
-    scenes: useSceneableDataManager(locationSlice, LocationService.scenes),
-    images: useImageableDataManager(locationSlice, LocationService.images)
+    characters: useCharacterableDataManager(manager, LocationService.characters),
+    notes: useNotableDataManager(manager, LocationService.notes),
+    quests: useQuestableDataManager(manager, LocationService.quests),
+    encounters: useEncounterableDataManager(manager, LocationService.encounters),
+    scenes: useSceneableDataManager(manager, LocationService.scenes),
+    images: useImageableDataManager(manager, LocationService.images)
   }
 }
 

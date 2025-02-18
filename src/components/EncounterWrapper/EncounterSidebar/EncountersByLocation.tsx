@@ -12,7 +12,7 @@ type TOwmProps = {
 }
 const EncountersByLocation = ({ campaign, addNewLink, encounters }: TOwmProps) => {
 
-  const { mapEncounter } = useCampaignsMapping({ campaignId: campaign.slug })
+  const { mapEncounter } = useCampaignsMapping({ campaignId: campaign.id })
 
   const locations = useMemo(() => {
     // Use a Map to keep track of unique locations by ID

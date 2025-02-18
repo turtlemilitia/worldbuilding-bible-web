@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TItem, TCompendium } from '../../../types'
+import { TItem, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,32 +8,32 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import ItemService, { TItemRequest } from '../../../services/ApiService/Compendia/ItemService'
-import { itemSlice } from '../../../reducers/compendium/item/itemSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TItemDataManager = TChildDataManager<TCompendium, TItem, TItemRequest> & {
+export type TItemDataManager = TChildDataManager<TCompendium, TItem, TItemRequest> & {
   compendium?: TCompendium,
   item?: TItem,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useItemDataManager = (): TItemDataManager => {
+const useItemDataManager = (compendiumId?: number, id?: number): TItemDataManager => {
   const manager = useChildDataManager(
-    'item',
-    'compendium',
-    itemSlice,
-    compendiumSlice,
+    'items',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     ItemService,
   )
   return {
     ...manager,
     compendium: manager.parent,
     item: manager.entity,
-    notes: useNotableDataManager(itemSlice, ItemService.notes),
-    quests: useQuestableDataManager(itemSlice, ItemService.quests),
-    encounters: useEncounterableDataManager(itemSlice, ItemService.encounters),
-    images: useImageableDataManager(itemSlice, ItemService.images)
+    notes: useNotableDataManager(manager, ItemService.notes),
+    quests: useQuestableDataManager(manager, ItemService.quests),
+    encounters: useEncounterableDataManager(manager, ItemService.encounters),
+    images: useImageableDataManager(manager, ItemService.images)
   }
 }
 

@@ -1,4 +1,4 @@
-import { TSpecies } from '../../../types'
+import { TCompendium, TSpecies } from '../../../types'
 import { TSpeciesRequest } from '../../../services/ApiService/Compendia/SpeciesService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import useSpeciesFields from '../useSpeciesForm/useSpeciesFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  speciesId: TSpecies['slug'];
+  compendiumId?: TCompendium['id'];
+  speciesId?: TSpecies['id'];
 }
 const useSpeciesForm = ({
+  compendiumId,
   speciesId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useSpeciesForm = ({
 
   const include = useMemo(() => 'notes', [])
 
-  const manager = useSpeciesDataManager()
+  const manager = useSpeciesDataManager(compendiumId, speciesId)
 
-  const { fields } = useSpeciesFields()
+  const { fields } = useSpeciesFields(manager)
 
   const mapData = (data: any): TSpeciesRequest => ({
     name: data.name,

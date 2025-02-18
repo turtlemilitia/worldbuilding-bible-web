@@ -1,6 +1,7 @@
 import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import { FunctionComponent } from 'react'
 import { TGenericPostBasic, TUser } from '@/types'
+import { LucideIcon } from 'lucide-react'
 
 type TGenericFieldParams = {
   name: string,
@@ -30,7 +31,7 @@ export type TSelectField = TGenericFieldParams & {
   options: TSelectOption[],
 }
 export type TMultiSelectField = TGenericFieldParams & {
-  type: 'multiSelect',
+  type: 'multiSelect' | 'editor',
   options: TSelectOption[],
 }
 export type TSelectFieldFn = (props: {
@@ -42,7 +43,7 @@ export type TSelectFieldFn = (props: {
 
 type TAsyncMultiSelectField = TGenericFieldParams & {
   type: 'asyncMultiSelect',
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
   search: (term: string) => Promise<TSelectOption[]>
 }
 export type TAsyncMultiSelectFieldFn = (props: {
@@ -78,7 +79,7 @@ export type TDialogTypes =
 export type TSelectDialogProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any,
-  id: TGenericPostBasic['slug'],
+  id: string | number,
   type: TDialogTypes
   onCreated?: (data: any) => any,
   onUpdated?: (data: any) => any,
@@ -92,24 +93,15 @@ export type TMultiSelectFieldProps = {
   link?: TAsyncMultiSelectField['link'],
   dialogType?: TDialogTypes
 }
+export type TMultiEditorFieldProps = TMultiSelectFieldProps & {
+  Icon: LucideIcon
+}
 
 export type TSelectFieldProps = {
   required?: TMultiSelectField['required'],
   options: TMultiSelectField['options']
   link?: TAsyncMultiSelectField['link']
 }
-
-export type TFactionFieldFn = <TEntity> (props: {
-  required?: TMultiSelectField['required'],
-  options: TMultiSelectField['options'],
-  link?: TAsyncMultiSelectField['link']
-}) => TMultiSelectField
-
-export type TLanguageFieldFn = <TEntity> (props: {
-  required?: TMultiSelectField['required'],
-  options: TMultiSelectField['options'],
-  link?: TAsyncMultiSelectField['link']
-}) => TMultiSelectField
 
 export type TField = {
   name: string,
@@ -122,21 +114,21 @@ export type TField = {
 } | {
   type: 'list'
   dialogType?: TDialogTypes
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
 } | {
   type: 'select'
   options?: TSelectOption[],
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
 } | {
   type: 'multiSelect'
   dialogType?: TDialogTypes
   options?: TSelectOption[],
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
 } | {
   type: 'asyncMultiSelect' | 'asyncSelect'
   dialogType?: TDialogTypes
   options?: TSelectOption[],
-  link?: (id: number | string) => string,
+  link?: (id: number) => string,
   search: (term: string) => Promise<TSelectOption[]>
 } | TDatepickerField
   | {
@@ -144,6 +136,12 @@ export type TField = {
   Callback: FunctionComponent,
 } | {
   type: 'listAdd',
+} | {
+  type: 'editor',
+  dialogType?: TDialogTypes
+  link?: (id: number) => string,
+  options?: TSelectOption[],
+  Icon: LucideIcon
 } | {
   type: 'listAddUsers',
   users: TUser[],

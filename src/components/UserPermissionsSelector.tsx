@@ -3,18 +3,18 @@ import React, { Fragment, useState } from 'react'
 import { CheckIcon, DotIcon, KeyIcon } from 'lucide-react'
 import clsx from 'clsx'
 import { TPermissionForOption, TPermissionHandler } from './Post/types'
-import { useCampaignDataManager } from '../hooks/DataManagers'
 import { TCampaign } from '../types'
 import { campaignIncludes } from '../hooks/Forms/useCampaignForm/useCampaignForm'
 import { SmallFloatingBox } from './FloatingBox'
 import LoadingWrapper from './LoadingWrapper'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TProps = {
   handler: TPermissionHandler
 }
 const UserPermissionsSelector = ({ handler }: TProps) => {
 
-  const { campaign, view: refreshCampaign } = useCampaignDataManager()
+  const { campaign, view: refreshCampaign } = useCurrentCampaign()
 
   const [loading, setLoading] = useState(false)
 
@@ -22,7 +22,7 @@ const UserPermissionsSelector = ({ handler }: TProps) => {
     setLoading(true)
     handler.handleOnPermissionSelected(options)
       .then(async () => {
-        await refreshCampaign((campaign as TCampaign).slug, { include: campaignIncludes }) // only until broadcasting is implemented
+        await refreshCampaign((campaign as TCampaign).id, { include: campaignIncludes }) // only until broadcasting is implemented
         setLoading(false)
       })
   }

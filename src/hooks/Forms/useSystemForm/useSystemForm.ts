@@ -8,7 +8,7 @@ import { TSystemRequest } from '../../../services/ApiService/Systems/SystemServi
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  systemId: TSystem['slug'];
+  systemId?: TSystem['id'];
 }
 const useSystemForm = ({
   systemId,
@@ -20,9 +20,9 @@ const useSystemForm = ({
 
   const include = useMemo(() => '', [])
 
-  const manager = useSystemDataManager()
+  const manager = useSystemDataManager(systemId)
 
-  const { fields } = useSystemFields()
+  const { fields } = useSystemFields(manager)
 
   const mapData = (data: any): TSystemRequest => ({
     name: data.name,

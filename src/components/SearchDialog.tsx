@@ -9,12 +9,11 @@ import {
   CommandSeparator,
 } from '@/components/Command'
 import useUrlFormatter from '@/hooks/useUrlFormatter'
-import {
-  useCampaignDataManager,
-  useCompendiumDataManager, useNoteIndexDataManager,
-} from '@/hooks/DataManagers'
+import { useNoteIndexDataManager, } from '@/hooks/DataManagers'
 import { kebabCase, startCase } from 'lodash'
 import { TCampaignRelationships, TCompendiumRelationships } from '@/types'
+import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TOwnProps = {
   isOpen: boolean
@@ -27,8 +26,8 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
   onSelect,
 }) => {
 
-  const { campaign } = useCampaignDataManager()
-  const { compendium } = useCompendiumDataManager()
+  const { campaign } = useCurrentCampaign()
+  const { compendium } = useCurrentCompendium()
   const { notes } = useNoteIndexDataManager()
   const { compendiumPath } = useUrlFormatter()
 
@@ -57,9 +56,10 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
               'stories',
             ].map((path) => (
               <CommandGroup heading={startCase(path)}>
-                {compendium[path as keyof TCompendiumRelationships]?.map(entity => (
+                {compendium[path as keyof TCompendiumRelationships]?.map((entity, i) => (
                     <CommandItem
-                      onSelect={() => onSelect(`${compendiumPath}/${kebabCase(path)}/${entity.slug}`)}
+                      key={i}
+                      onSelect={() => onSelect(`${compendiumPath}/${kebabCase(path)}/${entity.id}/${entity.slug}`)}
                     >
                       {entity.name}
                     </CommandItem>

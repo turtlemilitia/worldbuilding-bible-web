@@ -1,11 +1,10 @@
 import { selectField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
 import { useMemo } from 'react'
-import {
-  useNoteIndexDataManager,
-} from '@/hooks/DataManagers'
+import { TNoteDataManager, useNoteIndexDataManager } from '@/hooks/DataManagers'
+import { NetworkIcon, PenIcon } from 'lucide-react'
 
-const useNoteFields = (): TUseFields => {
+const useNoteFields = (manager: TNoteDataManager): TUseFields => {
 
   const { notes } = useNoteIndexDataManager()
 
@@ -16,11 +15,12 @@ const useNoteFields = (): TUseFields => {
       options: notes || []
     }),
     {
-      type: 'list',
+      type: 'editor',
       name: 'children',
-      // dialogType: 'note',
-      link: (slug) => `/notes/${slug}`,
+      dialogType: 'note',
+      link: (id) => `/notes/${id}`,
       label: 'Children',
+      Icon: NetworkIcon
     }
   ], [notes])
 

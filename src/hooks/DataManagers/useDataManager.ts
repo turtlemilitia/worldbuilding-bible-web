@@ -1,10 +1,15 @@
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { TApi, TQueryParams } from '@/services/ApiService/types'
 import { Slice } from '@reduxjs/toolkit'
 import { TEntitySliceState } from '@/reducers/createEntitySlice'
 import { TIndexSliceState } from '@/reducers/createIndexSlice'
-import { Identifiable } from '@/types'
+import {
+  Identifiable,
+  TCampaignRelationships,
+  TCompendiumRelationships, TGenericPost, TImage,
+} from '@/types'
+import { mapPlural, mapSingular } from '@/utils/dataUtils'
 
 export type TDataManager<TEntity, TRequest> = {
   entityName: string;
@@ -12,109 +17,91 @@ export type TDataManager<TEntity, TRequest> = {
   isPermanent?: boolean,
   setData: (data: TEntity) => any,
   updateData: (data: Partial<TEntity>) => any,
-  removeData: (id: string | number) => any,
-  clearData: (id: string | number) => any,
-  setChildData: (field: string, data: Identifiable) => any,
-  updateChildData: (field: string, data: Identifiable) => any,
-  removeChildData: (field: string, id: string | number) => any,
-  view: (id: string | number, query?: TQueryParams) => Promise<TEntity>,
+  removeData: (id: number) => any,
+  setChildData: (id: number, field: string, data: Identifiable) => any,
+  updateChildData: (id: number, field: string, data: Identifiable) => any,
+  removeChildData: (id: number, field: string, childId: number) => any,
+  view: (id: number, query?: TQueryParams) => Promise<TEntity>,
   store: (payload: TRequest, query?: TQueryParams) => Promise<TEntity>,
-  update: (id: string | number, payload: Partial<TRequest>, query?: TQueryParams) => Promise<TEntity>,
-  destroy: (id: string | number) => Promise<any>,
+  update: (id: number, payload: Partial<TRequest>, query?: TQueryParams) => Promise<TEntity>,
+  destroy: (id: number) => Promise<any>,
+  setImage: (id: number, data: TImage, imageType: string) => any
 }
 
-export const useDataManager = <TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
-  name: 'campaign' | 'compendium' | 'note' | 'system' | 'authUser',
-  slice: Slice<TEntitySliceState<TEntity>>,
+export const useDataManager = <TEntity extends TGenericPost, TRequest, TIndexResponse, TResponse extends TEntity> (
+  name: 'campaigns' | 'compendia' | 'notes' | 'systems',
+  id: number | undefined,
   indexSlice: Slice<TIndexSliceState<TEntity>>,
   api: TApi<TRequest, TIndexResponse, TResponse>,
 ): TDataManager<TEntity, TRequest> => {
 
   const dispatch = useAppDispatch()
 
-  const { data: entity, fetching } = useAppSelector(state => state[name]) as { data?: TEntity, fetching: boolean }
+  const { data } = useAppSelector(state => state[name]) as { data: TEntity[] }
+  const entity: TEntity|undefined = data?.find(item => item.id === id)
 
   // REDUX MANAGEMENT
   const setData = useCallback((data: TEntity) => {
-    dispatch(slice.actions.set(data))
     dispatch(indexSlice.actions.setOne(data))
-  }, [])
+  }, [indexSlice])
 
   const updateData = useCallback((data: Partial<TEntity>) => {
-    dispatch(slice.actions.update(data))
     dispatch(indexSlice.actions.updateOne(data))
-  }, [])
+  }, [indexSlice])
 
-  const removeData = useCallback((id: string | number) => {
-    clearData(id)
-    dispatch(indexSlice.actions.removeOne({ field: name, id }))
-  }, [])
+  const removeData = useCallback((id: number) => {
+    dispatch(indexSlice.actions.removeOne({ id }))
+  }, [indexSlice])
 
-  const clearData = useCallback((id: string | number) => {
-    dispatch(slice.actions.clear(id))
-  }, [])
+  const setChildData = useCallback((id: number, field: string, data: Identifiable) => {
+    dispatch(indexSlice.actions.setChildData({ id, field, data }))
+  }, [indexSlice])
 
-  const setChildData = useCallback((field: string, data: Identifiable) => {
-    dispatch(slice.actions.setChildData({ field, data }))
-  }, [slice])
+  const updateChildData = useCallback((id: number, field: string, data: Identifiable) => {
+    dispatch(indexSlice.actions.updateChildData({ id, field, data }))
+  }, [indexSlice])
 
-  const updateChildData = useCallback((field: string, data: Identifiable) => {
-    dispatch(slice.actions.updateChildData({ field, data }))
-  }, [slice])
+  const removeChildData = useCallback((id: number, field: string, childId: number) => {
+    dispatch(indexSlice.actions.removeChildData({ id, field, childId }))
+  }, [indexSlice])
 
-  const removeChildData = useCallback((field: string, id: string | number) => {
-    dispatch(slice.actions.removeChildData({ field, id }))
-  }, [slice])
-
-  const view = useCallback(async (id: string | number, query: TQueryParams = {}): Promise<TEntity> => {
-    if (fetching) {
-      // Wait until the current fetching operation is complete
-      await new Promise<void>((resolve) => {
-        const checkFetching = () => {
-          if (!fetching) {
-            resolve()
-          } else {
-            setTimeout(checkFetching, 100) // check every 100ms
-          }
-        }
-        checkFetching()
-      })
-      return entity as TEntity
-    }
-    dispatch(slice.actions.setFetching(true))
+  const view = useCallback(async (id: number, query: TQueryParams = {}): Promise<TEntity> => {
     const { data } = await api.view(id, query)
     setData(data.data)
-    dispatch(slice.actions.setFetching(false))
     return data.data
-  }, [])
+  }, [setData, api])
 
   const store = useCallback(async (payload: TRequest, query: TQueryParams = {}) => {
     const { data } = await api.store(payload, query)
     setData(data.data)
     return data.data
-  }, [])
+  }, [setData, api])
 
-  const update = useCallback(async (id: string | number, payload: Partial<TRequest>, query: TQueryParams = {}) => {
+  const update = useCallback(async (id: number, payload: Partial<TRequest>, query: TQueryParams = {}) => {
     const { data } = await api.update(id, payload, query)
     updateData(data.data)
     return data.data
-  }, [])
+  }, [updateData, api])
 
-  const destroy = useCallback(async (id: string | number) => {
+  const destroy = useCallback(async (id: number) => {
     await api.destroy(id)
     removeData(id)
-  }, [])
+  }, [removeData, api])
+
+  const setImage = useCallback((id: number, data: TImage, imageType: string) => {
+    dispatch(indexSlice.actions.setImage({ id, data, imageType }))
+  }, [indexSlice])
 
   return {
-    entityName: name,
+    entityName: mapSingular(name),
     entity,
     setData,
     updateData,
     removeData,
-    clearData,
     setChildData,
     updateChildData,
     removeChildData,
+    setImage,
     view,
     store,
     update,

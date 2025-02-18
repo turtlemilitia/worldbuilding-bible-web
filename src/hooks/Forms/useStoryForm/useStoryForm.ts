@@ -1,4 +1,4 @@
-import { TStory } from '../../../types'
+import { TCompendium, TStory } from '../../../types'
 import { TStoryRequest } from '../../../services/ApiService/Compendia/StoryService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -9,9 +9,11 @@ import useUrlFormatter from '@/hooks/useUrlFormatter'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  storyId: TStory['slug'];
+  compendiumId?: TCompendium['id'];
+  storyId?: TStory['id'];
 }
 const useStoryForm = ({
+  compendiumId,
   storyId,
   onFetched,
   onCreated,
@@ -21,9 +23,9 @@ const useStoryForm = ({
 
   const include = useMemo(() => 'notes;encounters;quests', [])
 
-  const manager = useStoryDataManager()
+  const manager = useStoryDataManager(compendiumId, storyId)
 
-  const { fields } = useStoryFields()
+  const { fields } = useStoryFields(manager)
 
   const mapData = (data: any): TStoryRequest => ({
     name: data.name,

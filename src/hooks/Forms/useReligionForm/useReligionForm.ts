@@ -1,4 +1,4 @@
-import { TReligion } from '../../../types'
+import { TCompendium, TReligion } from '../../../types'
 import { TReligionRequest } from '../../../services/ApiService/Compendia/ReligionService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import useReligionFields from '../useReligionForm/useReligionFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  religionId: TReligion['slug'];
+  compendiumId?: TCompendium['id'];
+  religionId?: TReligion['id'];
 }
 const useReligionForm = ({
+  compendiumId,
   religionId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useReligionForm = ({
 
   const include = useMemo(() => 'notes', [])
 
-  const manager = useReligionDataManager()
+  const manager = useReligionDataManager(compendiumId, religionId)
 
-  const { fields } = useReligionFields()
+  const { fields } = useReligionFields(manager)
 
   const mapData = (data: any): TReligionRequest => ({
     name: data.name,

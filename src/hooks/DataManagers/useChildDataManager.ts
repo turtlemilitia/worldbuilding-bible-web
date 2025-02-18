@@ -1,102 +1,258 @@
 import { TChildApi, TQueryParams } from '@/services/ApiService/types'
-import { Identifiable, TGenericPostBasic } from '@/types'
-import { TEntitySliceState } from '@/reducers/createEntitySlice'
+import {
+  Identifiable,
+  TCampaign,
+  TCharacter,
+  TCompendium,
+  TConcept,
+  TCurrency,
+  TDeity,
+  TEncounter,
+  TFaction,
+  TGenericPostBasic, TImage,
+  TItem,
+  TLanguage,
+  TLocation,
+  TNaturalResource,
+  TPantheon,
+  TPlane,
+  TQuest, TReligion,
+  TScene,
+  TSession,
+  TSpecies,
+  TSpell,
+  TStory, TUser,
+} from '@/types'
 import { Slice } from '@reduxjs/toolkit'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { TDataManager } from './useDataManager'
-import { mapPlural } from '@/utils/dataUtils'
+import { TIndexSliceState } from '@/reducers/createIndexSlice'
+import { mapSingular } from '@/utils/dataUtils'
 
-export type TChildDataManager<TParentEntity, TEntity, TRequest> = TDataManager<TEntity, TRequest> & {
+export type TChildDataManager<TParentEntity, TEntity, TRequest> =
+  TDataManager<TEntity, TRequest>
+  & {
   parent?: TParentEntity
 }
+type TChildEntities<T extends 'campaigns' | 'compendia'> =
+  T extends 'campaigns' ? {
+      sessions: TSession
+      encounters: TEncounter
+      scenes: TScene
+      quests: TQuest
+      users: TUser
+    }
+    : T extends 'compendia' ? {
+        characters: TCharacter
+        concepts: TConcept
+        currencies: TCurrency
+        deities: TDeity
+        factions: TFaction
+        items: TItem
+        languages: TLanguage
+        locations: TLocation
+        naturalResources: TNaturalResource
+        pantheons: TPantheon
+        planes: TPlane
+        religions: TReligion
+        species: TSpecies
+        spells: TSpell
+        stories: TStory
+      }
+      : never
+type TParentByName<N extends 'campaigns' | 'compendia'> =
+  N extends 'campaigns' ? TCampaign
+    : N extends 'compendia' ? TCompendium
+      : never
 
-export const useChildDataManager = <TParentEntity, TEntity, TRequest, TIndexResponse, TResponse extends TEntity> (
-  name: 'quest' | 'encounter' | 'session' | 'note' | 'character' | 'concept' | 'currency' | 'deity' | 'faction' | 'item' | 'language' | 'location' | 'naturalResource' | 'pantheon' | 'plane' | 'religion' | 'species' | 'spell' | 'story' | 'user' | 'scene',
-  parentName: 'campaign' | 'compendium',
-  slice: Slice<TEntitySliceState<TEntity>>,
-  parentSlice: Slice<TEntitySliceState<TParentEntity>>,
+export const useChildDataManager = <
+  TParentName extends 'campaigns' | 'compendia',
+  TName extends Extract<keyof TChildEntities<TParentName>, string> & keyof TParentEntity,
+  TParentEntity extends TParentByName<TParentName>,
+  TEntity extends TChildEntities<TParentName>[TName] & Identifiable,
+  TRequest,
+  TIndexResponse,
+  TResponse extends TEntity,
+> (
+  name: TName,
+  parentName: TParentName,
+  parentId: number | undefined,
+  id: number | undefined,
+  parentSlice: Slice<TIndexSliceState<TParentEntity>>,
   api: TChildApi<TRequest, TIndexResponse, TResponse>,
 ): TChildDataManager<TParentEntity, TEntity, TRequest> => {
 
   const dispatch = useAppDispatch()
 
-  const { data: parent } = useAppSelector(state => state[parentName]) as { data?: TParentEntity & TGenericPostBasic }
-  const { data: entity } = useAppSelector(state => state[name]) as { data?: TEntity & TGenericPostBasic }
+  const { data } = useAppSelector(state => state[parentName]) as {
+    data: TParentEntity[]
+  }
+
+  const parent = useMemo(() => {
+    return data
+      ?.find(item => item.id === parentId)
+  }, [data, parentId])
+
+  const entity = useMemo(() => {
+    return (parent?.[name] as TEntity[] | undefined)
+      ?.find(item => item.id === id)
+  }, [id, name, parent])
 
   // REDUX MANAGEMENT
   const setData = useCallback((data: TEntity) => {
-    dispatch(slice.actions.set(data))
-  }, [slice])
+    if (!parentId) {
+      throw new Error('Attempted to call update() with a null ID.')
+    }
+    dispatch(parentSlice.actions.setChildData({
+      id: parentId,
+      field: name,
+      child: data,
+    }))
+  }, [parentId, name, parentSlice])
 
   const addData = useCallback((data: TEntity) => {
-    dispatch(slice.actions.set(data))
-    dispatch(parentSlice.actions.setChildData({ field: mapPlural(name), data }))
-  }, [slice, parentSlice, name])
+    if (!parentId) {
+      throw new Error('Attempted to call update() with a null ID.')
+    }
+    dispatch(parentSlice.actions.setChildData({
+      id: parentId,
+      field: name,
+      child: data,
+    }))
+  }, [parentId, name, parentSlice])
 
   const updateData = useCallback((data: Partial<TEntity>) => {
-    dispatch(slice.actions.update(data))
-    dispatch(parentSlice.actions.updateChildData({ field: mapPlural(name), data }))
-  }, [slice, parentSlice, name])
+    if (!parentId) {
+      throw new Error('Attempted to call update() with a null ID.')
+    }
+    dispatch(parentSlice.actions.updateChildData({
+      id: parentId,
+      field: name,
+      child: data,
+    }))
+  }, [parentId, name, parentSlice])
 
-  const removeData = useCallback((id: string | number) => {
-    clearData(id)
-    dispatch(parentSlice.actions.removeChildData({ field: mapPlural(name), id }))
-  }, [parentSlice])
+  const removeData = useCallback((id: number) => {
+    if (!parentId) {
+      throw new Error('Attempted to call update() with a null ID.')
+    }
+    dispatch(parentSlice.actions.removeChildData({
+      id: parentId,
+      field: name,
+      childId: id,
+    }))
+  }, [parentId, name, parentSlice])
 
-  const clearData = useCallback((id: string | number) => {
-    dispatch(slice.actions.clear(id))
-  }, [slice])
+  const setChildData = useCallback(
+    (id: number, field: string, data: Identifiable) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.setChildChildData({
+        id: parentId,
+        field: name,
+        childId: id,
+        childField: field,
+        childChild: data,
+      }))
+    }, [parentId, name, parentSlice])
 
-  const setChildData = useCallback((field: string, data: Identifiable) => {
-    dispatch(slice.actions.setChildData({ field, data }))
-  }, [slice])
+  const updateChildData = useCallback(
+    (id: number, field: string, data: Identifiable) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.updateChildChildData({
+        id: parentId,
+        field: name,
+        childId: id,
+        childField: field,
+        childChild: data,
+      }))
+    }, [parentId, parentSlice])
 
-  const updateChildData = useCallback((field: string, data: Identifiable) => {
-    dispatch(slice.actions.updateChildData({ field, data }))
-  }, [slice])
+  const removeChildData = useCallback(
+    (id: number, field: string, childId: number) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.removeChildChildData({
+        id: parentId,
+        field: name,
+        childId: id,
+        childField: field,
+        childChildId: childId,
+      }))
+    }, [parentId, parentSlice])
 
-  const removeChildData = useCallback((field: string, id: string | number) => {
-    dispatch(slice.actions.removeChildData({ field, id }))
-  }, [slice])
+  const setImage = useCallback(
+    (id: number, data: TImage, imageType: string) => {
+      if (!parentId) {
+        throw new Error('Attempted to call update() with a null ID.')
+      }
+      dispatch(parentSlice.actions.setChildImage({
+        id: parentId,
+        field: name,
+        childId: id,
+        data,
+        imageType,
+      }))
+    }, [parentId, parentSlice])
 
-  const view = useCallback(async (id: string | number, query: TQueryParams = {}): Promise<TEntity> => {
-    const { data } = await api.view(id, query)
-    setData(data.data)
-    return data.data
-  }, [api])
+  const view = useCallback(
+    async (id: number, query: TQueryParams = {}): Promise<TEntity> => {
+      if (!parentId) {
+        throw new Error('Attempted to call view() with a null ID.')
+      }
+      const { data } = await api.view(id, query)
+      setData(data.data)
+      return data.data
+    }, [setData, parentId, api])
 
-  const store = useCallback(async (payload: TRequest, query: TQueryParams = {}) => {
-    const { data } = await api.store((parent as TGenericPostBasic).slug, payload, query)
-    addData(data.data)
-    return data.data
-  }, [api, parent])
+  const store = useCallback(
+    async (payload: TRequest, query: TQueryParams = {}) => {
+      if (!parentId) {
+        throw new Error('Attempted to call store() with a null parent ID.')
+      }
+      const { data } = await api.store(parentId as number, payload, query)
+      addData(data.data)
+      return data.data
+    }, [addData, parentId, api])
 
-  const update = useCallback(async (id: string | number, payload: Partial<TRequest>, query: TQueryParams = {}) => {
+  const update = useCallback(async (
+    id: number, payload: Partial<TRequest>,
+    query: TQueryParams = {}) => {
+    if (!parentId) {
+      throw new Error('Attempted to call update() with a null ID.')
+    }
     const { data } = await api.update(id, payload, query)
     updateData(data.data)
     return data.data
-  }, [api])
+  }, [updateData, api])
 
-  const destroy = useCallback(async (id: string | number) => {
+  const destroy = useCallback(async (id: number) => {
+    if (!parentId) {
+      throw new Error('Attempted to call destroy() with a null ID.')
+    }
     await api.destroy(id)
     removeData(id)
-  }, [api])
+  }, [removeData, api])
 
   return {
-    entityName: name,
+    entityName: mapSingular(name),
     parent,
     entity,
     setData,
     updateData,
     removeData,
-    clearData,
     setChildData,
     updateChildData,
     removeChildData,
     view,
     store,
     update,
-    destroy
+    destroy,
+    setImage,
   }
 }

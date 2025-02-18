@@ -1,10 +1,11 @@
-import { TDataManager, useCampaignDataManager } from './DataManagers'
+import { TDataManager } from './DataManagers'
 import { TPinForOption, TPinHandler } from '@/components/Post/types'
 import useAuthUserDataManager from './DataManagers/useAuthUserDataManager'
 import { useCallback, useMemo } from 'react'
 import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import { TGenericPostBasic } from '@/types'
 import useUserDataManager from './DataManagers/Campaigns/useUserDataManager'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
 type TProps<TEntity> = {
   manager: TDataManager<TEntity, any>
@@ -12,8 +13,8 @@ type TProps<TEntity> = {
 const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TPinHandler => {
 
   const { user: authUser } = useAuthUserDataManager()
-  const { campaign, pins: campaignPinsDataManager, } = useCampaignDataManager()
-  const { pins: userPinsDataManager } = useUserDataManager()
+  const { campaign, pins: campaignPinsDataManager, } = useCurrentCampaign()
+  const { pins: userPinsDataManager } = useUserDataManager(campaign?.id)
 
   const handleOnPinSelected = useCallback(async (values: (TSelectOption & { type: 'campaign' | 'user' })[]) => {
     if (!campaign) {
@@ -25,20 +26,20 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
     const pinToCampaign = values.some(value => {
       return value.type === 'campaign' && value.id === campaign.id
     })
-    const pinnedToCampaign = campaign?.pins.find(pin => {
+    const pinnedToCampaign = campaign?.pins?.find(pin => {
       return pin.pinnableType === manager.entityName && pin.pinnable.id === manager.entity?.id
     })
     const promises: Promise<void>[] = []
     if (pinToCampaign && !pinnedToCampaign) {
-      promises.push(campaignPinsDataManager.attach(campaign.slug, {
+      promises.push(campaignPinsDataManager.attach(campaign.id, {
         pinnableId: manager.entity.id,
         pinnableType: manager.entityName
       }))
     } else if (!pinToCampaign && pinnedToCampaign) {
-      promises.push(campaignPinsDataManager.detach(campaign.slug, pinnedToCampaign.id))
+      promises.push(campaignPinsDataManager.detach(campaign.id, pinnedToCampaign.id))
     }
     if (!pinToCampaign) {
-      campaign.users.forEach((user) => {
+      campaign.users?.forEach((user) => {
         if (!manager.entity) {
           return
         }
@@ -68,19 +69,19 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
     if (campaign?.pins && campaign.pins.some(pin => pin.pinnableType === manager.entityName && pin.pinnable.id === manager.entity?.id)) {
       values.push({ ...campaign, type: 'campaign' })
     }
-    campaign?.users.forEach((user) => {
+    campaign?.users?.forEach((user) => {
       if (user.pins?.some(pin => pin.pinnableType === manager.entityName && pin.pinnable.id === manager.entity?.id)) {
         values.push({ ...user, type: 'user' })
       }
     })
     return values
-  }, [campaign, manager.entity?.id, manager.entityName])
+  }, [campaign?.pins, campaign?.users, manager.entity?.id, manager.entityName])
 
   const permittedUsers = useMemo(() => {
     if (!campaign?.users) {
       return []
     }
-    if (campaign.permissions.some(permission => permission.permissionableId === manager.entity?.id)) {
+    if (campaign.permissions?.some(permission => permission.permissionableId === manager.entity?.id)) {
       return campaign.users;
     }
     return campaign?.users.filter((user) => {
@@ -88,7 +89,7 @@ const usePinHandler = <T extends TGenericPostBasic> ({ manager }: TProps<T>): TP
         return permission.permissionableId === manager.entity?.id
       })
     }) ?? []
-  }, [campaign?.users])
+  }, [campaign?.permissions, campaign?.users])
 
   const options: TPinForOption[] = useMemo(() => {
     if (!campaign) {

@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { TIndexApi, TQueryParams } from '@/services/ApiService/types'
 import { Slice } from '@reduxjs/toolkit'
 import { TIndexSliceState } from '@/reducers/createIndexSlice'
@@ -52,7 +52,7 @@ export const useIndexDataManager = <TEntity, TIndexResponse extends TEntity[]> (
     setOne,
     updateOne,
     removeOne,
-    index
+    index,
   }
 }
 

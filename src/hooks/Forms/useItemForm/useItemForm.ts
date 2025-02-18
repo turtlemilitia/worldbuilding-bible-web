@@ -1,4 +1,4 @@
-import { TItem } from '@/types'
+import { TCompendium, TItem } from '@/types'
 import { TItemRequest } from '@/services/ApiService/Compendia/ItemService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '@/components/Post/types'
@@ -8,9 +8,11 @@ import { useItemDataManager } from '@/hooks/DataManagers'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  itemId: TItem['slug'];
+  compendiumId?: TCompendium['id'];
+  itemId?: TItem['id'];
 }
 const useItemForm = ({
+  compendiumId,
   itemId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useItemForm = ({
 
   const include = useMemo(() => 'notes;encounters;quests', [])
 
-  const manager = useItemDataManager()
+  const manager = useItemDataManager(compendiumId, itemId)
 
-  const { fields } = useItemFields()
+  const { fields } = useItemFields(manager)
 
   const mapData = (data: any): TItemRequest => ({
     name: data.name,

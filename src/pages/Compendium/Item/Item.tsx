@@ -3,18 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useItemForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Item: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { itemId } = useParams() as { itemId: string } // router
+  const { compendiumId, itemId } = useParams() as { compendiumId: string, itemId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = useItemForm({
-    itemId,
+    compendiumId: fixId(compendiumId),
+    itemId: fixId(itemId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/items/${data.slug}`)
+      navigate(`${compendiumPath}/items/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/items`)

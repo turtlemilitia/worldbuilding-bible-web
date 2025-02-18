@@ -13,6 +13,7 @@ import Label from './Label'
 import Dialog from '../../Dialogs'
 import { TDialogTypes } from '@/hooks/fieldTools/types'
 import { Completable } from '@/types'
+import { FloatingBox } from '@/components/FloatingBox'
 
 type TProp = {
   label: string;
@@ -20,7 +21,7 @@ type TProp = {
   value?: TSelectOption[];
   onChange: (value: TSelectOption[]) => any;
   options: (TSelectOption)[];
-  link?: (id: number | string) => string;
+  link?: (id: number) => string;
   disabled?: boolean;
   dialogType?: TDialogTypes;
 }
@@ -36,7 +37,7 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
 }) => {
 
   const [query, setQuery] = useState('')
-  const [dialogIsOpen, setDialogIsOpen] = useState<string | false>(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState<number | 'new' | false>(false)
 
   const filteredOptions =
     query === ''
@@ -53,15 +54,13 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           <>
             {value && value.length > 0 ? (
               <ul>
-                {value.map(({ id, name, slug, completedAt }: TSelectOption & Partial<Completable>) => {
+                {value.map(({ id, name, completedAt }: TSelectOption & Partial<Completable>) => {
                   const displayName = completedAt ? <span className={'line-through'}>{name}</span> : name
                   return (
                     <li key={id} className="py-1">
-                      {(dialogType && slug) ? <Button
-                          onClick={() => setDialogIsOpen(
-                            slug as string)}>{displayName}</Button>
-                        : (link && slug ? <Link
-                            to={link(slug as string)}>{displayName}</Link>
+                      {(dialogType && id) ? <Button
+                          onClick={() => setDialogIsOpen(id)}>{displayName}</Button>
+                        : (link && id ? <Link to={link(id)}>{displayName}</Link>
                           : displayName)}
                     </li>
                   )
@@ -97,25 +96,28 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
                   leaveTo="opacity-0"
                 >
                   <ComboboxOptions
-                    className="absolute z-20 left-0 top-full mt-1 max-h-56 w-full overflow-auto rounded-md bg-stone-800 px-3 py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    {!filteredOptions.length && (
-                      <li className="py-1 text-stone-600">No results found.</li>
-                    )}
-                    {filteredOptions.map((option) => (
-                      <ComboboxOption
-                        key={option.id}
-                        value={option}
-                        as={Fragment}
-                      >
-                        {({ focus, selected }) => (
-                          <li className={`py-1 flex justify-between cursor-pointer`}>
-                            {option.label ?? option.name}
-                            {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
-                            {!selected && focus && <DotIcon className="text-stone-300 h-5 w-5"/>}
-                          </li>
-                        )}
-                      </ComboboxOption>
-                    ))}
+                    anchor={'top end'}
+                    className="outline-none h-96">
+                    <FloatingBox color={'solid'}>
+                      {!filteredOptions.length && (
+                        <li className="py-1 text-stone-600">No results found.</li>
+                      )}
+                      {filteredOptions.map((option) => (
+                        <ComboboxOption
+                          key={option.id}
+                          value={option}
+                          as={Fragment}
+                        >
+                          {({ focus, selected }) => (
+                            <li className={`py-1 flex justify-between cursor-pointer`}>
+                              {option.label ?? option.name}
+                              {selected && <CheckIcon className="text-stone-300 h-5 w-5"/>}
+                              {!selected && focus && <DotIcon className="text-stone-300 h-5 w-5"/>}
+                            </li>
+                          )}
+                        </ComboboxOption>
+                      ))}
+                    </FloatingBox>
                   </ComboboxOptions>
                 </Transition>
                 </>
@@ -128,16 +130,16 @@ const MultipleSelectField: FunctionComponent<TProp> = ({
           type={dialogType}
           isOpen={!!dialogIsOpen}
           setIsOpen={(isOpen) => setDialogIsOpen(isOpen ? 'new' : false)}
-          id={dialogIsOpen || 'new'}
+          id={dialogIsOpen}
           onCreated={(data) => {
-            setDialogIsOpen(data.slug)
+            setDialogIsOpen(data.id)
             onChange([...value, data])
           }}
           onUpdated={(data) => {
-            onChange(value.map(single => single.slug === data.slug ? data : single))
+            onChange(value.map(single => single.id === data.id ? data : single))
           }}
           onDeleted={(id) => {
-            onChange(value.filter(single => single.slug !== id))
+            onChange(value.filter(single => single.id !== id))
           }}
         />
       )}

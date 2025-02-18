@@ -1,5 +1,5 @@
 import { useChildDataManager, TChildDataManager } from '../useChildDataManager'
-import { TSpell, TCompendium } from '../../../types'
+import { TSpell, TCompendium } from '@/types'
 import {
   useEncounterableDataManager,
   useNotableDataManager,
@@ -8,32 +8,32 @@ import {
   hasNotesAttachableDataManager,
   hasQuestsAttachableDataManager
 } from '../useAttachableDataManager'
-import { useImageableDataManager, hasImageableDataManager } from '../useImageableDataManager'
-import { compendiumSlice } from '../../../reducers/compendium/compendiumSlice'
+import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import SpellService, { TSpellRequest } from '../../../services/ApiService/Compendia/SpellService'
-import { spellSlice } from '../../../reducers/compendium/spell/spellSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
-type TSpellDataManager = TChildDataManager<TCompendium, TSpell, TSpellRequest> & {
+export type TSpellDataManager = TChildDataManager<TCompendium, TSpell, TSpellRequest> & {
   compendium?: TCompendium,
   spell?: TSpell,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager
 
-const useSpellDataManager = (): TSpellDataManager => {
+const useSpellDataManager = (compendiumId?: number, id?: number): TSpellDataManager => {
   const manager = useChildDataManager(
-    'spell',
-    'compendium',
-    spellSlice,
-    compendiumSlice,
+    'spells',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     SpellService,
   )
   return {
     ...manager,
     compendium: manager.parent,
     spell: manager.entity,
-    notes: useNotableDataManager(spellSlice, SpellService.notes),
-    quests: useQuestableDataManager(spellSlice, SpellService.quests),
-    encounters: useEncounterableDataManager(spellSlice, SpellService.encounters),
-    images: useImageableDataManager(spellSlice, SpellService.images)
+    notes: useNotableDataManager(manager, SpellService.notes),
+    quests: useQuestableDataManager(manager, SpellService.quests),
+    encounters: useEncounterableDataManager(manager, SpellService.encounters),
+    images: useImageableDataManager(manager, SpellService.images)
   }
 }
 

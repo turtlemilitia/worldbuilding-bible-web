@@ -3,18 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { usePantheonForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Pantheon: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { pantheonId } = useParams() as { pantheonId: string } // router
+  const { compendiumId, pantheonId } = useParams() as { compendiumId:string; pantheonId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = usePantheonForm({
-    pantheonId,
+    compendiumId: fixId(compendiumId),
+    pantheonId: fixId(pantheonId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/pantheons/${data.slug}`)
+      navigate(`${compendiumPath}/pantheons/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/pantheons`)

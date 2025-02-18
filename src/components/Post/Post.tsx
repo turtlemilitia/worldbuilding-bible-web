@@ -59,14 +59,46 @@ const Post = <T extends TGenericPost> ({
   return (
     <>
       <SavingDialog saving={form.saving}/>
-      <form onSubmit={(e => e.preventDefault())}>
-        <HeaderWrapper page={pageTypeName}>
-          <PageTitleField value={form.data?.name ?? ''}
-                          onChange={(value) => form.onFieldChange('name', value)}
-                          placeholder={'Name'}
-                          canEdit={form.canEdit}
-          />
-        </HeaderWrapper>
+      <form onSubmit={(e => e.preventDefault())}
+            className={'h-full w-full xl:w-3/4 xl:ml-auto lg:flex'}
+      >
+        <div className={'w-full lg:w-1/2 h-full py-10 overflow-scroll no-scrollbar'}>
+          <HeaderWrapper page={pageTypeName}>
+            <PageTitleField value={form.data?.name ?? ''}
+                            onChange={(value) => form.onFieldChange('name', value)}
+                            placeholder={'Name'}
+                            canEdit={form.canEdit}
+            />
+          </HeaderWrapper>
+          <EditorsWrapper>
+            {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
+            <FormToolbar
+              canEdit={form.canEdit}
+              canManuallySave={true}
+              canRefresh={!form.isNew}
+              canDelete={form.canEdit && !form.isNew}
+              onSave={form.onSave}
+              onRefresh={form.onFetch}
+              onDelete={form.onDelete}
+              pinHandler={form.pinHandler}
+              favouriteHandler={form.favouriteHandler}
+              playerCharacterHandler={form.playerCharacterHandler}
+              permissionHandler={form.permissionHandler}
+              onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
+            />
+            {!form.loading && (
+              <FloatingBox color={'solid'} border={'yellow'}>
+                <Editor
+                  key={form.data?.id}
+                  initialValue={form.data?.content}
+                  onChange={(value) => form.onFieldChange('content', value)}
+                  canEdit={form.canEdit}
+                  className={'min-h-40'}
+                />
+              </FloatingBox>
+            )}
+          </EditorsWrapper>
+        </div>
         <RightBar>
           <CampaignQuickLinks/>
           <InfoBar
@@ -79,38 +111,10 @@ const Post = <T extends TGenericPost> ({
             openProfileImagePicker={() => setProfileImagePickerOpen(true)}
             canHaveProfileImage={form.imageHandler.canHaveProfileImage}
             disabled={!form.canEdit}
+            showSubPosts={true}
           />
         </RightBar>
-        <EditorsWrapper>
-          {Object.keys(form.errors).length > 0 && <ErrorBanner errors={form.errors}/>}
-          <FormToolbar
-            canEdit={form.canEdit}
-            canManuallySave={true}
-            canRefresh={!form.isNew}
-            canDelete={form.canEdit && !form.isNew}
-            onSave={form.onSave}
-            onRefresh={form.onFetch}
-            onDelete={form.onDelete}
-            pinHandler={form.pinHandler}
-            favouriteHandler={form.favouriteHandler}
-            playerCharacterHandler={form.playerCharacterHandler}
-            permissionHandler={form.permissionHandler}
-            onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
-          />
-          {!form.loading && (
-            <FloatingBox color={'solid'} border={'yellow'}>
-              <Editor
-                key={form.data?.id}
-                initialValue={form.data?.content}
-                onChange={(value) => form.onFieldChange('content', value)}
-                canEdit={form.canEdit}
-                className={'min-h-40'}
-              />
-            </FloatingBox>
-          )}
-        </EditorsWrapper>
       </form>
-      <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
       <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>
     </>
   )

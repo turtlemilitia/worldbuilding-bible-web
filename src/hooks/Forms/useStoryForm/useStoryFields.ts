@@ -1,11 +1,14 @@
 import { noteField, TField } from '../../fieldTools'
 import {TUseFields} from '@/components/Post/types';
-import { useNoteIndexDataManager, useStoryDataManager } from '../../DataManagers'
+import {
+  TStoryDataManager,
+  useNoteIndexDataManager,
+  useStoryDataManager,
+} from '../../DataManagers'
 import { useMemo } from 'react'
 
-const useStoryFields = (): TUseFields => {
+const useStoryFields = (manager: TStoryDataManager): TUseFields => {
 
-  const manager = useStoryDataManager()
   const { notes } = useNoteIndexDataManager()
 
   const fields: TField[] = useMemo(() => {

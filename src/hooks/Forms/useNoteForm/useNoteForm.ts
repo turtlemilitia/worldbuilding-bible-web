@@ -8,7 +8,7 @@ import useNoteFields from './useNoteFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  noteId: TNote['slug'];
+  noteId?: TNote['id'];
 }
 const useNoteForm = ({
   noteId,
@@ -20,9 +20,9 @@ const useNoteForm = ({
 
   const include = useMemo(() => 'parent:id,slug,name;children:id,slug,name,parent_id', [])
 
-  const manager = useNoteDataManager();
+  const manager = useNoteDataManager(noteId);
 
-  const { fields } = useNoteFields();
+  const { fields } = useNoteFields(manager);
 
   const mapData = useCallback((data: TNote): TNoteRequest => ({
     name: data.name,
@@ -42,7 +42,7 @@ const useNoteForm = ({
     onUpdated,
     onDeleted,
     link: useLink('notes', noteId)
-  }), pinHandler: undefined, permissionHandler: undefined}
+  })}
 }
 
 export default useNoteForm;

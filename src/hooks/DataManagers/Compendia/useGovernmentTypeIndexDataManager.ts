@@ -1,9 +1,9 @@
-import { TLocationGovernmentType } from '../../../types'
+import { TLocationGovernmentType } from '@/types'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
 import GovernmentTypeService from '../../../services/ApiService/Compendia/GovernmentTypeService'
-import { governmentTypesIndexSlice } from '../../../reducers/governmentType/governmentTypesIndexSlice'
+import { governmentTypesIndexSlice } from '@/reducers/governmentType/governmentTypesIndexSlice'
 
-type TGovernmentTypeIndexDataManager = TIndexDataManager<TLocationGovernmentType> & {
+export type TGovernmentTypeIndexDataManager = TIndexDataManager<TLocationGovernmentType> & {
   governmentTypes?: TLocationGovernmentType[]
 }
 

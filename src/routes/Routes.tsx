@@ -52,6 +52,7 @@ import SceneWrapper from '../components/SceneWrapper'
 import MarkdownExample from '@/pages/MarkdownExample'
 import Quests from '@/pages/Campaign/Quests'
 import Logout from '@/pages/Logout'
+import Dashboard from '@/pages/Dashboard'
 
 const Routes = (): JSX.Element => {
 
@@ -72,7 +73,7 @@ const Routes = (): JSX.Element => {
       element: <Register/>,
     },
     {
-      path: '/campaigns/:campaignId/invitations/:token',
+      path: '/campaigns/:campaignId/:campaignSlug/invitations/:token',
       element: <CampaignInvitation/>,
       loader: ({ params }) => CampaignInvitationService.check(
         params.campaignId as string, params.token as string).
@@ -83,7 +84,7 @@ const Routes = (): JSX.Element => {
 
   // Define routes accessible only to authenticated users
   const compendiumRoutes = {
-    path: 'compendia/:compendiumId',
+    path: 'compendia/:compendiumId/:compendiumSlug?',
     element: <CompendiumWrapper/>, // sidebar with bestiary, characters, locations, ...
     children: [
       {
@@ -91,67 +92,67 @@ const Routes = (): JSX.Element => {
         element: <Compendium/>,
       },
       {
-        path: 'characters/:characterId',
+        path: 'characters/:characterId/:characterSlug?',
         element: <Character/>,
       },
       {
-        path: 'concepts/:conceptId',
+        path: 'concepts/:conceptId/:conceptSlug?',
         element: <Concept/>,
       },
       {
-        path: 'currencies/:currencyId',
+        path: 'currencies/:currencyId/:currencySlug?',
         element: <Currency/>,
       },
       {
-        path: 'deities/:deityId',
+        path: 'deities/:deityId/:deitySlug?',
         element: <Deity/>,
       },
       {
-        path: 'encounters/:encounterId',
+        path: 'encounters/:encounterId/:encounterSlug?',
         element: <Encounter/>,
       },
       {
-        path: 'factions/:factionId',
+        path: 'factions/:factionId/:factionSlug?',
         element: <Faction/>,
       },
       {
-        path: 'items/:itemId',
+        path: 'items/:itemId/:itemSlug?',
         element: <Item/>,
       },
       {
-        path: 'languages/:languageId',
+        path: 'languages/:languageId/:languageSlug?',
         element: <Language/>,
       },
       {
-        path: 'locations/:locationId',
+        path: 'locations/:locationId/:locationSlug?',
         element: <Location/>,
       },
       {
-        path: 'natural-resources/:naturalResourceId',
+        path: 'natural-resources/:naturalResourceId-naturalResourceSlug?',
         element: <NaturalResource/>,
       },
       {
-        path: 'pantheons/:pantheonId',
+        path: 'pantheons/:pantheonId/:pantheonSlug?',
         element: <Pantheon/>,
       },
       {
-        path: 'planes/:planeId',
+        path: 'planes/:planeId/:planeSlug?',
         element: <Plane/>,
       },
       {
-        path: 'religions/:religionId',
+        path: 'religions/:religionId/:religionSlug?',
         element: <Religion/>,
       },
       {
-        path: 'species/:speciesId',
+        path: 'species/:speciesId/:speciesSlug?',
         element: <Species/>,
       },
       {
-        path: 'spells/:spellId',
+        path: 'spells/:spellId/:spellSlug?',
         element: <Spell/>,
       },
       {
-        path: 'stories/:storyId',
+        path: 'stories/:storyId/:storySlug?',
         element: <Story/>,
       },
     ],
@@ -162,7 +163,7 @@ const Routes = (): JSX.Element => {
     element: <NotesWrapper/>,
     children: [
       {
-        path: ':noteId',
+        path: ':noteId/:noteSlug?',
         element: <Note/>,
       }
     ],
@@ -175,7 +176,7 @@ const Routes = (): JSX.Element => {
       children: [
         {
           path: '/',
-          element: <div className={'min-h-screen flex items-center justify-center'}>TODO: Dashboard</div>,
+          element: <Dashboard/>,
         },
         {
           path: '/markdown-example',
@@ -186,7 +187,7 @@ const Routes = (): JSX.Element => {
           element: <SystemsWrapper/>, // sidebar with list of systems
           children: [
             {
-              path: '/systems/:systemId',
+              path: '/systems/:systemId/:systemSlug?',
               element: <System/>,
             },
           ],
@@ -196,7 +197,7 @@ const Routes = (): JSX.Element => {
           path: 'campaigns',
           children: [
             {
-              path: ':campaignId',
+              path: ':campaignId/:campaignSlug?',
               element: <CampaignWrapper/>, // sidebar with sessions, encounters, quests, ...
               children: [
                 {
@@ -210,7 +211,7 @@ const Routes = (): JSX.Element => {
                   element: <SceneWrapper/>,
                   children: [
                     {
-                      path: ':sceneId',
+                      path: ':sceneId/:sceneSlug?',
                       element: <Scene/>,
                     },
                   ],
@@ -224,7 +225,7 @@ const Routes = (): JSX.Element => {
                       element: <Quests/>,
                     },
                     {
-                      path: ':questId',
+                      path: ':questId/:questSlug?',
                       element: <Quest/>,
                     },
                   ],
@@ -234,7 +235,7 @@ const Routes = (): JSX.Element => {
                   element: <EncounterWrapper/>,
                   children: [
                     {
-                      path: ':encounterId',
+                      path: ':encounterId/:encounterSlug?',
                       element: <Encounter/>,
                     },
                   ],
@@ -244,7 +245,7 @@ const Routes = (): JSX.Element => {
                   element: <SessionWrapper/>,
                   children: [
                     {
-                      path: ':sessionId',
+                      path: ':sessionId/:sessionSlug?',
                       element: <Session/>,
                     },
                   ],

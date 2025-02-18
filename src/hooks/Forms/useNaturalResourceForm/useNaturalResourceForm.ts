@@ -1,4 +1,4 @@
-import { TNaturalResource } from '../../../types'
+import { TCompendium, TNaturalResource } from '../../../types'
 import { TNaturalResourceRequest } from '../../../services/ApiService/Compendia/NaturalResourceService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import useNaturalResourceFields from '../useNaturalResourceForm/useNaturalResour
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  naturalResourceId: TNaturalResource['slug'];
+  compendiumId?: TCompendium['id'];
+  naturalResourceId?: TNaturalResource['id'];
 }
 const useNaturalResourceForm = ({
+  compendiumId,
   naturalResourceId,
   onFetched,
   onCreated,
@@ -22,7 +24,7 @@ const useNaturalResourceForm = ({
 
   const manager = useNaturalResourceDataManager()
 
-  const { fields } = useNaturalResourceFields()
+  const { fields } = useNaturalResourceFields(manager)
 
   const mapData = (data: any): TNaturalResourceRequest => ({
     name: data.name,

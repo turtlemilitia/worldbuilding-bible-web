@@ -1,4 +1,4 @@
-import { TLanguage } from '../../../types'
+import { TCompendium, TLanguage } from '../../../types'
 import { TLanguageRequest } from '../../../services/ApiService/Compendia/LanguageService'
 import { useMemo } from 'react'
 import { TForm, TUseFormProps } from '../../../components/Post/types'
@@ -8,9 +8,11 @@ import useLanguageFields from '../useLanguageForm/useLanguageFields'
 import useLink from '@/hooks/useLink'
 
 type TOwnProps = {
-  languageId: TLanguage['slug'];
+  compendiumId?: TCompendium['id'];
+  languageId?: TLanguage['id'];
 }
 const useLanguageForm = ({
+  compendiumId,
   languageId,
   onFetched,
   onCreated,
@@ -20,9 +22,9 @@ const useLanguageForm = ({
 
   const include = useMemo(() => 'notes', [])
 
-  const manager = useLanguageDataManager()
+  const manager = useLanguageDataManager(compendiumId, languageId)
 
-  const { fields } = useLanguageFields()
+  const { fields } = useLanguageFields(manager)
 
   const mapData = (data: any): TLanguageRequest => ({
     name: data.name,

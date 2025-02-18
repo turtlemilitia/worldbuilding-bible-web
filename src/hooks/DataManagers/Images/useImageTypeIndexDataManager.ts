@@ -1,9 +1,9 @@
-import { TImageType } from '../../../types'
+import { TImageType } from '@/types'
 import { useIndexDataManager, TIndexDataManager } from '../useIndexDataManager'
-import { imageTypesIndexSlice } from '../../../reducers/imageType/imageTypesIndexSlice'
+import { imageTypesIndexSlice } from '@/reducers/imageType/imageTypesIndexSlice'
 import ImageTypeService from '../../../services/ApiService/Images/ImageTypeService'
 
-type TImageTypeIndexDataManager = TIndexDataManager<TImageType> & {
+export type TImageTypeIndexDataManager = TIndexDataManager<TImageType> & {
   imageTypes?: TImageType[]
 }
 

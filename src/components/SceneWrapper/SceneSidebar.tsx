@@ -9,13 +9,13 @@ export type TSceneSidebarProps = {
 }
 const SceneSidebar: FunctionComponent<TSceneSidebarProps> = ({ campaign }) => {
 
-  const { mapScene } = useCampaignsMapping({ campaignId: campaign.slug })
+  const { mapScene } = useCampaignsMapping({ campaignId: campaign.id })
 
   const items: SidebarItemInterface[] = [...campaign.scenes].sort((a, b) => a.name.localeCompare(b.name)).map(scene => mapScene(scene)) ?? []
 
   return <Sidebar
     title={'Scenes'}
-    addNew={`/campaigns/${campaign.slug}/scenes/new`}
+    addNew={`/campaigns/${campaign.id}/${campaign.slug}/scenes/new`}
     canAdd={campaign.canUpdate}
   >
     <SidebarSection items={items}/>

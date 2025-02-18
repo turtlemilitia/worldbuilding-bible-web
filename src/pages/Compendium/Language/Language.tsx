@@ -3,18 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useLanguageForm } from '../../../hooks/Forms'
 import useUrlFormatter from '../../../hooks/useUrlFormatter'
+import { fixId } from '@/utils/dataUtils'
 
 const Language: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { languageId } = useParams() as { languageId: string } // router
+  const { compendiumId, languageId } = useParams() as { compendiumId:string; languageId: string } // router
   const { compendiumPath } = useUrlFormatter()
 
   const form = useLanguageForm({
-    languageId,
+    compendiumId: fixId(compendiumId),
+    languageId: fixId(languageId),
     onCreated: (data) => {
-      navigate(`${compendiumPath}/languages/${data.slug}`)
+      navigate(`${compendiumPath}/languages/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${compendiumPath}/languages`)

@@ -2,6 +2,8 @@ import React, { FunctionComponent, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Post from '../../../components/Post'
 import { useQuestForm } from '../../../hooks/Forms'
+import { fixId } from '@/utils/dataUtils'
+import useUrlFormatter from '@/hooks/useUrlFormatter'
 
 const Quest: FunctionComponent = () => {
 
@@ -9,14 +11,16 @@ const Quest: FunctionComponent = () => {
   const location = useLocation();
 
   const { campaignId, questId } = useParams() as { campaignId: string, questId: string } // router
+  const { campaignPath } = useUrlFormatter()
 
   const form = useQuestForm({
-    questId,
+    campaignId: fixId(campaignId),
+    questId: fixId(questId),
     onCreated: (data) => {
-      navigate(`/campaigns/${campaignId}/quests/${data.slug}`)
+      navigate(`${campaignPath}/quests/${data.id}/${data.slug}`)
     },
     onDeleted: () => {
-      navigate(`/campaigns/${campaignId}/quests`)
+      navigate(`${campaignPath}/quests`)
     },
   })
 

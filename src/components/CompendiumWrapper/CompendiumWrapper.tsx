@@ -1,35 +1,27 @@
-import React, { FunctionComponent, JSX, useEffect } from 'react'
+import React, { FunctionComponent, JSX, useEffect, useMemo } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
 import { TCompendiaWrapperProps } from './types'
 import CompendiumSidebar from './CompendiumSidebar'
 import { useCompendiumDataManager } from '../../hooks/DataManagers'
 import { compendiumIncludes } from '@/hooks/Forms/useCompendiumForm/useCompendiumForm'
-import { useCampaignDataManager } from '@/hooks/DataManagers'
 import usePostDataManager from '@/hooks/DataManagers/usePostDataManager'
+import { fixId } from '@/utils/dataUtils'
 
 const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Element => {
 
-  const { setLoading } = usePostDataManager()
-  const { campaign } = useCampaignDataManager()
-  const { compendium, view, clearData } = useCompendiumDataManager()
+  const { compendiumId } = useParams() as { compendiumId: string }
+  const { setLoading, isLoading, isLoaded } = usePostDataManager()
+  const id = useMemo(() => fixId(compendiumId), [compendiumId]);
+  const { compendium, view } = useCompendiumDataManager(id)
   const {setDefaultBackgroundImage, clearDefaultBackgroundImage} = usePostDataManager()
-  const { compendiumId } = useParams() as { compendiumId: string } // router
 
   useEffect(() => {
-    if (
-      compendiumId !== 'new'
-      && (!compendium || compendium?.slug !== compendiumId) // if it's been loaded as part of the campaign
-    ) {
-      setLoading({ [compendiumId]: true })
-      view(compendiumId, { include: `${compendiumIncludes};images` }).
-        then(() => setLoading({ [compendiumId]: false }))
+    if (id && !isLoading(`compendium:${id}`) && !isLoaded(`compendium:${id}`)) { // if it's been loaded as part of the campaign
+      setLoading({ [`compendium:${id}`]: true })
+      view(id, { include: `${compendiumIncludes};images` })
+        .then(() => setLoading({ [`compendium:${id}`]: false }))
     }
-    return () => {
-      if (!campaign) {
-        clearData(compendiumId)
-      }
-    }
-  }, [compendiumId])
+  }, [id])
 
 
   useEffect(() => {
@@ -46,11 +38,11 @@ const CompendiumWrapper: FunctionComponent<TCompendiaWrapperProps> = (): JSX.Ele
       {compendium && (
         <CompendiumSidebar compendium={compendium}/>
       )}
-      <div className="relative w-full">
-        {(compendiumId === 'new' || compendium) && (
+      <>
+        {(id || compendium) && (
           <Outlet/>
         )}
-      </div>
+      </>
     </>
   )
 }

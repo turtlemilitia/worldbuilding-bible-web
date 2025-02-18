@@ -17,9 +17,9 @@ export const createApiService = <TRequest, TIndexResponse, TResponse> (pluralNam
     return api.post(`/api/${pluralName}?${new URLSearchParams(query).toString()}`, data)
 
   },
-  update: (slug, data, query = {}) => {
+  update: (id, data, query = {}) => {
 
-    return api.put(`/api/${pluralName}/${slug}?${new URLSearchParams(query).toString()}`, data)
+    return api.put(`/api/${pluralName}/${id}?${new URLSearchParams(query).toString()}`, data)
 
   },
   destroy: (slug) => {

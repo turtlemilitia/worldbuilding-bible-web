@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { TSelectDialogProps } from '../../hooks/fieldTools/types'
+import { TSelectDialogProps } from '@/hooks/fieldTools/types'
 import NoteDialog from './NoteDialog'
 import EncounterDialog from './EncounterDialog'
 import FactionDialog from './FactionDialog'
@@ -11,6 +11,7 @@ import CharacterDialog from "./CharacterDialog";
 import LocationDialog from "./LocationDialog";
 
 const DialogFactory: FunctionComponent<TSelectDialogProps> =  (props) => {
+  debugger;
   switch (props.type) {
     case 'note':
       return <NoteDialog

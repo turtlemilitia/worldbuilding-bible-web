@@ -12,7 +12,7 @@ import DatePickerWithPresets from '@/components/DatePicker'
 import ListAddUsers from '@/pages/Campaign/ListAddUsers'
 
 export type TSelectOption = {
-  id: string | number,
+  id: number,
   slug?: string,
   name: string
   label?: string | JSX.Element
@@ -54,7 +54,7 @@ const FieldMapper: FunctionComponent<TProps> = ({
 }) => {
   return (
     <li>
-      <Fieldset className="antialiased relative my-6">
+      <Fieldset className="antialiased relative mt-3">
         <div className="font-light">
           {props.type === 'list' && (
             <ListField

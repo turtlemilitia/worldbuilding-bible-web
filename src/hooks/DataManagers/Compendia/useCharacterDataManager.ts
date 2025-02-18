@@ -17,35 +17,35 @@ import {
   hasLocationsAttachableDataManager
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
-import { compendiumSlice } from '@/reducers/compendium/compendiumSlice'
 import CharacterService, { TCharacterRequest } from '../../../services/ApiService/Compendia/CharacterService'
-import { characterSlice } from '@/reducers/compendium/character/characterSlice'
+import { compendiaIndexSlice } from '@/reducers/compendium/compendiaIndexSlice'
 
 export type TCharacterDataManager = TChildDataManager<TCompendium, TCharacter, TCharacterRequest> & {
   compendium?: TCompendium,
   character?: TCharacter,
 } & hasImageableDataManager & hasNotesAttachableDataManager & hasQuestsAttachableDataManager & hasEncountersAttachableDataManager & hasFactionsAttachableDataManager & hasLanguagesAttachableDataManager & hasScenesAttachableDataManager & hasLocationsAttachableDataManager
 
-const useCharacterDataManager = (): TCharacterDataManager => {
+const useCharacterDataManager = (compendiumId?: number, id?: number): TCharacterDataManager => {
   const manager = useChildDataManager(
-    'character',
-    'compendium',
-    characterSlice,
-    compendiumSlice,
+    'characters',
+    'compendia',
+    compendiumId,
+    id,
+    compendiaIndexSlice,
     CharacterService,
   )
   return {
     ...manager,
     compendium: manager.parent,
     character: manager.entity,
-    locations: useLocationableDataManager(characterSlice, CharacterService.locations),
-    notes: useNotableDataManager(characterSlice, CharacterService.notes),
-    quests: useQuestableDataManager(characterSlice, CharacterService.quests),
-    encounters: useEncounterableDataManager(characterSlice, CharacterService.encounters),
-    factions: useFactionableDataManager(characterSlice, CharacterService.factions),
-    languages: useLanguageableDataManager(characterSlice, CharacterService.languages),
-    scenes: useSceneableDataManager(characterSlice, CharacterService.scenes),
-    images: useImageableDataManager(characterSlice, CharacterService.images)
+    locations: useLocationableDataManager(manager, CharacterService.locations),
+    notes: useNotableDataManager(manager, CharacterService.notes),
+    quests: useQuestableDataManager(manager, CharacterService.quests),
+    encounters: useEncounterableDataManager(manager, CharacterService.encounters),
+    factions: useFactionableDataManager(manager, CharacterService.factions),
+    languages: useLanguageableDataManager(manager, CharacterService.languages),
+    scenes: useSceneableDataManager(manager, CharacterService.scenes),
+    images: useImageableDataManager(manager, CharacterService.images)
   }
 }
 
