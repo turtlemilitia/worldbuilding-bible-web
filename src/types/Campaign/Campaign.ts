@@ -25,7 +25,7 @@ export type TCampaignRelationships = {
   sessions: (TGenericPostBasic & { session_number: TSession['session_number'] })[];
   encounters: (TGenericPostBasic & { type: TEncounter['type'], locations: TLocation[] })[];
   scenes: (TGenericPostBasic)[];
-  quests: (TGenericPostBasic & { type: TQuest['type'], locations: TLocation[] })[];
+  quests: (TGenericPostBasic & { type: TQuest['type'], locations: TLocation[] } & Completable)[];
 }
 
 export type TQuestType = TOptionList

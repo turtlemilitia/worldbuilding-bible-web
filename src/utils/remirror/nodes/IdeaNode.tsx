@@ -29,7 +29,6 @@ type TProps = {
 const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
   return (
     <span className='flex items-center rounded'>
-      <input type='checkbox' className='hidden'/>
       <label className={`flex items-center justify-center w-4 h-4`}>
         { type === 'd' && <BrushIcon className="text-amber-500"/>}
         { type === 'D' && <DramaIcon className="text-amber-500"/>}

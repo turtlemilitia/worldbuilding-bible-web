@@ -90,7 +90,7 @@ const Post = <T extends TGenericPost> ({
               <FloatingBox color={'solid'} border={'yellow'}>
                 <Editor
                   key={form.data?.id}
-                  initialValue={form.data?.content}
+                  initialValue={form.data?.content ?? ''}
                   onChange={(value) => form.onFieldChange('content', value)}
                   canEdit={form.canEdit}
                   className={'min-h-40'}

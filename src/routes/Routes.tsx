@@ -128,7 +128,7 @@ const Routes = (): JSX.Element => {
         element: <Location/>,
       },
       {
-        path: 'natural-resources/:naturalResourceId-naturalResourceSlug?',
+        path: 'natural-resources/:naturalResourceId/:naturalResourceSlug?',
         element: <NaturalResource/>,
       },
       {
