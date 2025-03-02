@@ -4,95 +4,98 @@
 @tailwind components;
 @tailwind utilities;
 
-.remirror-theme .remirror-editor {
-    @apply min-h-96 focus:outline-none
-}
-.remirror-theme h1,
-.remirror-theme h2,
-.remirror-theme h3,
-.remirror-theme h4,
-.remirror-theme h5,
-.remirror-theme h6 {
+.editor-theme h1,
+.editor-theme h2,
+.editor-theme h3,
+.editor-theme h4,
+.editor-theme h5,
+.editor-theme h6 {
     @apply mt-4 mb-2 border-b tracking-wider
 }
-.remirror-theme h1 {
+.editor-theme h1 {
     @apply text-4xl text-burnOrange border-burnOrange
 }
-.remirror-theme h2 {
+.editor-theme h2 {
     @apply text-3xl text-yellow-700 border-yellow-700
 }
-.remirror-theme h3 {
+.editor-theme h3 {
     @apply text-2xl text-yellow-600 border-yellow-600
 }
-.remirror-theme h4 {
+.editor-theme h4 {
     @apply text-xl text-yellow-500 border-yellow-500
 }
-.remirror-theme h5 {
+.editor-theme h5 {
     @apply text-lg text-yellow-400 border-yellow-400
 }
-.remirror-theme h6 {
+.editor-theme h6 {
     @apply text-base text-yellow-300 border-yellow-300
 }
-.remirror-theme p {
+.editor-theme p {
     @apply my-1
 }
 
-.remirror-theme ul:not([data-idea-list]):not([data-type=taskList]) {
+.editor-theme ul:not([data-idea-list]):not([data-type=taskList]) {
     @apply list-disc ml-6
 }
-.remirror-theme ul[data-type=taskList] > li {
+.editor-theme ul[data-type=taskList] > li {
     @apply flex gap-2
 }
-.remirror-theme ul[data-type=taskList] > li label {
+.editor-theme ul[data-type=taskList] > li label {
     @apply w-4 h-4 my-2.5
 }
-.remirror-theme li[data-idea-list-item] label {
+.editor-theme li[data-idea-list-item] label {
     @apply my-3
 }
-.remirror-theme ul[data-type=taskList] > li input[type=checkbox] {
+.editor-theme ul[data-type=taskList] > li input[type=checkbox] {
     @apply relative float-left mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-sm border border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-red-400 checked:bg-red-400 checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent
 }
-.remirror-theme ol {
+.editor-theme ol {
     @apply list-decimal ml-6
 }
-.remirror-theme b,
-.remirror-theme strong {
+.editor-theme b,
+.editor-theme strong {
     @apply text-burnOrange
 }
-.remirror-theme em,
-.remirror-theme i {
+.editor-theme em,
+.editor-theme i {
     @apply text-emerald-500
 }
-.remirror-theme blockquote {
+.editor-theme blockquote {
     @apply border-x my-2 border-stone-400 p-4 bg-emerald-600 bg-opacity-10 text-stone-300
 }
-.remirror-theme a {
+.editor-theme a {
     @apply text-blue-500 font-bold underline cursor-pointer
 }
-.remirror-theme table {
+.editor-theme table {
     @apply border-collapse m-0 overflow-hidden table-fixed w-full rounded-lg
 }
-.remirror-theme table th, .remirror-theme table td {
+.editor-theme table th, .editor-theme table td {
     @apply relative border border-stone-800 box-border min-w-1 py-2 px-3 align-top
 }
-.remirror-theme table th > *, .remirror-theme table td > * {
+.editor-theme table th > *, .editor-theme table td > * {
     @apply mb-0
 }
-.remirror-theme table th {
+.editor-theme table th {
     @apply bg-stone-700 font-bold text-left
 }
-.remirror-theme table tr {
+.editor-theme table tr {
     @apply bg-stone-500
 }
-.remirror-theme table .selectedCell:after {
+.editor-theme table .selectedCell:after {
     @apply bg-stone-800 content-[''] left-0 right-0 top-0 bottom-0 pointer-events-none absolute z-10 opacity-50
 }
-.remirror-theme table .column-resize-handle {
+.editor-theme table .column-resize-handle {
     @apply bg-emerald-500 -bottom-1 pointer-events-none absolute -right-1 top-0 w-2
 }
-.remirror-theme .tableWrapper {
+.editor-theme .tableWrapper {
     @apply my-1.5 overflow-x-auto
 }
-.remirror-theme &.resize-cursor {
+.editor-theme &.resize-cursor {
     @apply cursor-ew-resize cursor-col-resize
+}
+.editor-theme pre {
+    @apply p-5 rounded-lg bg-stone-500
+}
+.editor-theme code {
+    @apply text-lg
 }

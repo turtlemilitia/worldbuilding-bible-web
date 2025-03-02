@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { EditorContent, useEditor } from '@tiptap/react'
+import {
+  BubbleMenu,
+  EditorContent,
+  FloatingMenu,
+  useEditor,
+} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
@@ -8,7 +13,13 @@ import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
 import { Button } from '@/components/Forms/Fields/Button'
 import SearchDialog from '@/components/SearchDialog'
-import { LinkIcon, TableIcon } from 'lucide-react'
+import {
+  Heading1Icon,
+  Heading2Icon,
+  LinkIcon,
+  ListIcon,
+  TableIcon,
+} from 'lucide-react'
 import { IdeaListItem } from '@/components/Forms/Fields/Editor/IdeaListItem'
 import { IdeaList } from '@/components/Forms/Fields/Editor/IdeaList'
 import { Table } from '@tiptap/extension-table'
@@ -174,14 +185,36 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
   }
 
   return (
-    <div className={`remirror-theme font-serif text-serif-lg ${className}`}>
+    <div className={`editor-theme relative font-serif text-serif-lg ${className}`}>
       <SearchDialog isOpen={openSearchDialog} setIsOpen={setOpenSearchDialog}
                     onSelect={setLink}/>
-      <div className={'flex justify-items-start gap-2'}>
-        <Button size={'sm'} onClick={() => setOpenSearchDialog(true)}><LinkIcon
-          size={15}/></Button>
-        {/* Table options dropdown */}
-        <DropdownMenu>
+      <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}
+                  className={'flex gap-2'}>
+        <Button size={'sm'} onClick={() => setOpenSearchDialog(true)}>
+          <LinkIcon size={15}/>
+        </Button>
+      </BubbleMenu>
+      <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}
+                    className={'flex gap-2'}>
+        <Button size={'sm'} onClick={() => editor.chain()
+          .focus()
+          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+          .run()}>
+          <TableIcon size={15}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
+          <Heading1Icon size={15}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+          <Heading2Icon size={15}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().toggleBulletList().run()}>
+          <ListIcon size={15}/>
+        </Button>
+      </FloatingMenu>
+      {editor.isActive('table') && (
+        <div className={'absolute top-3 right-3 z-10'}>
+          <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="sm">
               <TableIcon size={15}/>
@@ -268,7 +301,8 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+        </div>
+      )}
       <EditorContent editor={editor}/>
     </div>
   )
