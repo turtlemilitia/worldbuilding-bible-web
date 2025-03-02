@@ -3,11 +3,11 @@ import {
   AlertTriangle,
   BrushIcon,
   CalendarIcon,
-  CoinsIcon, CompassIcon,
+  CoinsIcon,
+  CompassIcon,
   DicesIcon,
   DramaIcon,
   EyeOffIcon,
-  FingerprintIcon,
   HeartIcon,
   HelpCircleIcon,
   InfoIcon,
@@ -18,6 +18,7 @@ import {
   MusicIcon,
   PenIcon,
   QuoteIcon,
+  SmileIcon,
   StarIcon,
   SwordsIcon,
   WandIcon,
@@ -41,7 +42,7 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
         { type === 'L' && <LockIcon className="text-red-800"/>}
         { type === 'm' && <MusicIcon className="text-gray-500"/>}
         { type === 'p' && <PenIcon className="text-blue-500"/>}
-        { type === 'P' && <FingerprintIcon className="text-blue-500"/>}
+        { type === 'P' && <SmileIcon className="text-blue-500"/>}
         { type === 'r' && <DicesIcon className="text-amber-500"/>}
         { type === 's' && <SwordsIcon className="text-amber-500"/>}
         { type === 'S' && <EyeOffIcon className="text-red-800"/>}

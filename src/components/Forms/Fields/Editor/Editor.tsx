@@ -196,12 +196,6 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
       </BubbleMenu>
       <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}
                     className={'flex gap-2'}>
-        <Button size={'sm'} onClick={() => editor.chain()
-          .focus()
-          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-          .run()}>
-          <TableIcon size={15}/>
-        </Button>
         <Button size={'sm'} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
           <Heading1Icon size={15}/>
         </Button>
@@ -210,6 +204,9 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         </Button>
         <Button size={'sm'} onClick={() => editor.chain().focus().toggleBulletList().run()}>
           <ListIcon size={15}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
+          <TableIcon size={15}/>
         </Button>
       </FloatingMenu>
       {editor.isActive('table') && (
