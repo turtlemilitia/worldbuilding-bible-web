@@ -2,17 +2,17 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useCallback, useMemo } from 'react'
 import { TApi, TQueryParams } from '@/services/ApiService/types'
 import { Slice } from '@reduxjs/toolkit'
-import { TEntitySliceState } from '@/reducers/createEntitySlice'
 import { TIndexSliceState } from '@/reducers/createIndexSlice'
 import {
   Identifiable,
-  TCampaignRelationships,
-  TCompendiumRelationships, TGenericPost, TImage,
+  TGenericPost,
+  TImage,
+  TTypesAllowedString,
 } from '@/types'
 import { mapPlural, mapSingular } from '@/utils/dataUtils'
 
 export type TDataManager<TEntity, TRequest> = {
-  entityName: string;
+  entityName: TTypesAllowedString;
   entity?: TEntity,
   isPermanent?: boolean,
   setData: (data: TEntity) => any,

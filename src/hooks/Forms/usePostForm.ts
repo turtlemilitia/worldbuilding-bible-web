@@ -56,7 +56,7 @@ const usePostForm = <T extends TGenericPost, R> ({
   link,
 }: TProps<T, R>): TForm<T> => {
 
-  const { entity, store, update, destroy, view } = manager
+  const { entity, entityName, store, update, destroy, view } = manager
 
   const isNew = useMemo(() => !id, [id])
   const canEdit = useMemo(() => isNew || entity?.canUpdate === true, [isNew, entity?.canUpdate])
@@ -159,6 +159,7 @@ const usePostForm = <T extends TGenericPost, R> ({
 
   return {
     isNew,
+    entityName,
     canEdit,
     loading,
     saving,

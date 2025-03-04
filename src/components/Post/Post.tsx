@@ -14,6 +14,7 @@ import CampaignQuickLinks from '../CampaignWrapper/CampaignFavourites'
 import RightBar from './RightBar'
 import usePostDataManager from '../../hooks/DataManagers/usePostDataManager'
 import ProfileImagePicker from "../ProfileImagePicker";
+import { isEmpty } from 'lodash'
 
 // todo
 //  <TopMenu>
@@ -101,18 +102,20 @@ const Post = <T extends TGenericPost> ({
         </div>
         <RightBar>
           <CampaignQuickLinks/>
-          <InfoBar
-            key={form.data?.id}
-            loading={form.loading || !form.fields.length}
-            onChange={form.onFieldChange}
-            data={form.data}
-            fields={form.fields}
-            profileImage={form.imageHandler && form.imageHandler.getImage('profile')}
-            openProfileImagePicker={() => setProfileImagePickerOpen(true)}
-            canHaveProfileImage={form.imageHandler.canHaveProfileImage}
-            disabled={!form.canEdit}
-            showSubPosts={true}
-          />
+          {!isEmpty(form.fields) && (
+            <InfoBar
+              key={form.data?.id}
+              loading={form.loading || !form.fields.length}
+              onChange={form.onFieldChange}
+              data={form.data}
+              fields={form.fields}
+              profileImage={form.imageHandler && form.imageHandler.getImage('profile')}
+              openProfileImagePicker={() => setProfileImagePickerOpen(true)}
+              canHaveProfileImage={!form.isNew && form.imageHandler.canHaveProfileImage}
+              disabled={!form.canEdit}
+              showSubPosts={true}
+            />
+          )}
         </RightBar>
       </form>
       <ProfileImagePicker open={profileImagePickerOpen} onClose={() => setProfileImagePickerOpen(false)} onProfileImageSelected={(id) => form.imageHandler.handleOnImageSelected(id, 'profile')}/>

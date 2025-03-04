@@ -1,5 +1,5 @@
-import {TField} from '@/hooks/fieldTools';
-import {TGenericPost} from '@/types';
+import { TField } from '@/hooks/fieldTools'
+import { TGenericPost, TTypesAllowedString } from '@/types'
 import { TFormHandling } from '@/hooks/useFormHandling/types'
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
 
@@ -15,8 +15,9 @@ export type TUseFormProps<T> = {
   onUpdated?: (data: T) => any
   onDeleted?: () => any
 }
-export type TForm<T> =  TFormHandling<T> & {
+export type TForm<T> = TFormHandling<T> & {
   isNew: boolean
+  entityName: TTypesAllowedString
   fields: TField[]
   // permissions
   // canRefresh?: boolean;
@@ -30,15 +31,20 @@ export type TForm<T> =  TFormHandling<T> & {
   link: string;
 }
 
-export type TPinForOption = TSelectOption & { type: 'user' | 'campaign', disabled?: boolean }
+export type TPinForOption = TSelectOption & {
+  type: 'user' | 'campaign',
+  disabled?: boolean
+}
 export type TImageHandler = {
   handleOnImageSelected: (id: number, imageType: string) => Promise<any>
   canHaveProfileImage?: boolean
-  getImage: (type: ('cover'|'profile')) => string|undefined
+  getImage: (type: ('cover' | 'profile')) => string | undefined
 }
 export type TPinHandler = {
   canPin: boolean
-  handleOnPinSelected: (values: (TSelectOption & {type: 'campaign' | 'user'})[]) => Promise<any>,
+  handleOnPinSelected: (values: (TSelectOption & {
+    type: 'campaign' | 'user'
+  })[]) => Promise<any>,
   options: TPinForOption[]
   values: TPinForOption[]
 }
@@ -54,7 +60,10 @@ export type TPlayerCharacterHandler = {
   canAssign: boolean
 }
 
-export type TPermissionForOption = TSelectOption & { type: 'user' | 'campaign', disabled?: boolean }
+export type TPermissionForOption = TSelectOption & {
+  type: 'user' | 'campaign',
+  disabled?: boolean
+}
 export type TPermissionHandler = {
   handleOnPermissionSelected: (values: TPermissionForOption[]) => Promise<any>
   options: TPermissionForOption[],
@@ -63,9 +72,7 @@ export type TPermissionHandler = {
 }
 
 export type TPostProps<T> = {
-  pageTypeName?: string;
-  contentPlaceholder?: string;
-
-  // form
-  form: TForm<T>;
+  pageTypeName?: string,
+  contentPlaceholder?: string,
+  form: TForm<T>,
 }

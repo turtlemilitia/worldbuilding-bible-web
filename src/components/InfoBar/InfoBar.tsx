@@ -51,7 +51,7 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
     <Transition show={!loading && filteredFields.length > 0}>
       <div className={clsx([
         `transition-all duration-1000`,
-        'data-[closed]:-top-10 data-[closed]:opacity-0',
+        'data-[closed]:-top-10 data-[closed]:opacity-0',,
       ])}>
         <FloatingBox className={clsx([
           canHaveProfileImage && openProfileImagePicker ? 'mt-32' : '',

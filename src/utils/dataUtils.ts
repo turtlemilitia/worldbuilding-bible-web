@@ -1,4 +1,4 @@
-import { TCanHaveImages, TImage } from '@/types'
+import { TCanHaveImages, TImage, TTypesAllowedString } from '@/types'
 
 export const filterOutArrays = (data: object): Partial<object> => {
   return Object.keys(data).reduce((result, key) => {
@@ -73,7 +73,7 @@ export const mapSingular = (singular: string) => {
     case 'compendia':
       return 'compendium'
     default:
-      return singular.slice(0, -1)
+      return singular.slice(0, -1) as TTypesAllowedString
   }
 }
 
