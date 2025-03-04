@@ -20,31 +20,31 @@ export type TPin = {
   pinnableType: 'character'
   pinnable: TCharacter
 } | {
-  pinnableType: 'concepts'
+  pinnableType: 'concept'
   pinnable: TConcept
 } | {
-  pinnableType: 'currencies'
+  pinnableType: 'currency'
   pinnable: TCurrency
 } | {
-  pinnableType: 'deities'
+  pinnableType: 'deity'
   pinnable: TDeity
 } | {
-  pinnableType: 'factions'
+  pinnableType: 'faction'
   pinnable: TFaction
 } | {
-  pinnableType: 'items'
+  pinnableType: 'item'
   pinnable: TItem
 } | {
-  pinnableType: 'languages'
+  pinnableType: 'language'
   pinnable: TLanguage
 } | {
   pinnableType: 'location'
   pinnable: TLocation
 } | {
-  pinnableType: 'naturalResources'
+  pinnableType: 'naturalResource'
   pinnable: TNaturalResource
 } | {
-  pinnableType: 'pantheons'
+  pinnableType: 'pantheon'
   pinnable: TPantheon
 } | {
   pinnableType: 'plane'

@@ -53,30 +53,32 @@ const InfoBar: FunctionComponent<TProps<any>> = ({
         `transition-all duration-1000`,
         'data-[closed]:-top-10 data-[closed]:opacity-0',,
       ])}>
-        <FloatingBox className={clsx([
-          canHaveProfileImage && openProfileImagePicker ? 'mt-32' : '',
-          'max-w-xl ml-auto',
-        ])}>
-          {canHaveProfileImage && openProfileImagePicker && (
-            <ProfileImage image={profileImage}
-                          openPicker={openProfileImagePicker}/>
-          )}
-          <ul
-            className="grid font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip gap-4">
-            {nonEditorFields.map((props, index) => {
-              const currentValue = data
-                ? data[props.name as keyof TTypesAllowed]
-                : null
-              return <FieldMapper
-                key={index}
-                currentValue={currentValue}
-                onChange={onChange}
-                disabled={disabled}
-                {...props}
-              />
-            })}
-          </ul>
-        </FloatingBox>
+        {!isEmpty(nonEditorFields) && (
+          <FloatingBox className={clsx([
+            canHaveProfileImage && openProfileImagePicker ? 'mt-32' : '',
+            'max-w-xl ml-auto',
+          ])}>
+            {canHaveProfileImage && openProfileImagePicker && (
+              <ProfileImage image={profileImage}
+                            openPicker={openProfileImagePicker}/>
+            )}
+            <ul
+              className="grid font-serif text-serif-md leading-tight overflow-y-scroll overflow-x-clip gap-4">
+              {nonEditorFields.map((props, index) => {
+                const currentValue = data
+                  ? data[props.name as keyof TTypesAllowed]
+                  : null
+                return <FieldMapper
+                  key={index}
+                  currentValue={currentValue}
+                  onChange={onChange}
+                  disabled={disabled}
+                  {...props}
+                />
+              })}
+            </ul>
+          </FloatingBox>
+        )}
         {showSubPosts && (
           <TabGroup className={'relative mt-5 gap-4 min-h-96'}>
             <TabList className={'absolute top-0 left-0'}>

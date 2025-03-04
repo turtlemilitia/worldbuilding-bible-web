@@ -9,9 +9,9 @@ import SessionDialog from './SessionDialog'
 import SceneDialog from './SceneDialog'
 import CharacterDialog from "./CharacterDialog";
 import LocationDialog from "./LocationDialog";
+import ItemDialog from '@/components/Dialogs/ItemDialog'
 
 const DialogFactory: FunctionComponent<TSelectDialogProps> =  (props) => {
-  debugger;
   switch (props.type) {
     case 'note':
       return <NoteDialog
@@ -42,6 +42,11 @@ const DialogFactory: FunctionComponent<TSelectDialogProps> =  (props) => {
       return <CharacterDialog
         {...props}
         characterId={props.id}
+      />
+    case 'item':
+      return <ItemDialog
+        {...props}
+        itemId={props.id}
       />
     case 'quest':
       return <QuestDialog

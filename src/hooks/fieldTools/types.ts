@@ -1,6 +1,6 @@
 import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import { FunctionComponent } from 'react'
-import { TGenericPostBasic, TUser } from '@/types'
+import { TTypesAllowedString, TUser } from '@/types'
 import { LucideIcon } from 'lucide-react'
 
 type TGenericFieldParams = {
@@ -66,16 +66,7 @@ export type TDatePickerFieldProps = {
   formatString?: string
 }
 
-export type TDialogTypes =
-  'note'
-  | 'session'
-  | 'quest'
-  | 'encounter'
-  | 'faction'
-  | 'language'
-  | 'scene'
-  | 'character'
-  | 'location';
+export type TDialogTypes = TTypesAllowedString;
 export type TSelectDialogProps = {
   isOpen: boolean,
   setIsOpen: (open: boolean) => any,

@@ -5,7 +5,6 @@ import useUrlFormatter from '../../hooks/useUrlFormatter'
 import { mapPlural } from '@/utils/dataUtils'
 import useAuthUserDataManager
   from '../../hooks/DataManagers/useAuthUserDataManager'
-import { makeLink } from '@/hooks/useLink'
 import FavouriteLink, {
   CampaignFavouriteLink,
 } from '@/components/CampaignWrapper/FavouriteLink'
@@ -22,21 +21,24 @@ const CampaignFavourites: FunctionComponent = () => {
     const list: TCampaignFavouriteItem[] = []
     if (campaign?.pins) {
       list.push(...campaign.pins.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, `/campaigns/${campaign?.id}/${campaign?.slug}`),
+        entityId: item.pinnable.id,
+        slug: item.pinnable.slug,
         name: item.pinnable.name,
         type: item.pinnableType
       })))
     }
     if (user?.pins) {
       list.push(...user.pins.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.pinnableType), item.pinnable.id, item.pinnable.slug, compendiumPath, `/campaigns/${campaign?.id}/${campaign?.slug}`),
+        entityId: item.pinnable.id,
+        slug: item.pinnable.slug,
         name: item.pinnable.name,
         type: item.pinnableType
       })))
     }
     if (user?.favourites) {
       list.push(...user?.favourites.map((item): TCampaignFavouriteItem => ({
-        link: makeLink(mapPlural(item.favouritableType), item.favouritable.id, item.favouritable.slug, compendiumPath, `/campaigns/${campaign?.id}/${campaign?.slug}`),
+        entityId: item.favouritable.id,
+        slug: item.favouritable.slug,
         name: item.favouritable.name,
         type: item.favouritableType
       })))
@@ -67,12 +69,14 @@ const CampaignFavourites: FunctionComponent = () => {
       <div className="flex-1 items-end space-y-4 mb-4 text-center lg:text-right">
         {!!user?.characters?.length && (
           <div className={'flex-1 space-y-2'}>
-            {user.characters.map(({ slug, name }, index) => {
+            {user.characters.map(({ id, slug, name }, index) => {
               return (
                 <FavouriteLink
                   key={index}
-                  link={`${compendiumPath}/characters/${slug}`}
+                  entityId={id}
+                  slug={slug}
                   name={name}
+                  type={'character'}
                   color={'solid'}
                   border={'yellow'}
                 />
@@ -83,12 +87,14 @@ const CampaignFavourites: FunctionComponent = () => {
         {links && links.map(({ type, items }) => (
           <div className={'flex-1 space-y-2'}>
             <SmallSansSerifText size={'xxs'}>{mapPlural(type)}</SmallSansSerifText>
-            {items.map(({ link, name }, index) => {
+            {items.map(({ entityId, slug, name, type }, index) => {
               return (
                 <FavouriteLink
                   key={index}
-                  link={link}
+                  entityId={entityId}
+                  slug={slug}
                   name={name}
+                  type={type}
                   color={'dark'}
                   border={'dark'}
                 />
