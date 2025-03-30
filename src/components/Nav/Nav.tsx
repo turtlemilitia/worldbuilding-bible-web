@@ -1,24 +1,38 @@
 import React, { JSX } from 'react'
-import LoggedInSidebar from './LoggedInSidebar'
 import { useAppSelector } from '@/hooks'
 import { RootState } from '@/store'
-import { KeyIcon } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { HomeIcon, KeyIcon } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Button } from '@/components/Forms/Fields/Button'
 
 const Nav = (): JSX.Element => {
 
   const { token } = useAppSelector((state: RootState) => state.auth) // redux
 
+  const location = useLocation();
+  const navigate = useNavigate()
+
   return (
     <header>
-      {token ? (
-        <LoggedInSidebar/>
-      ) : (
-        <Link
-          className="fixed top-4 right-4 z-[100] text-white cursor-pointer"
-          to={'/login'}>
-          <KeyIcon className={'h-6 w-6'}/>
-        </Link>
+      {token && location.pathname !== '/' && (
+        <Button
+          className="fixed top-3 left-4 z-[100]"
+          onClick={() => navigate('/')}
+          variant={'ghost'}
+          size={'small_icon'}
+        >
+          <HomeIcon className={'h-5 w-5'}/>
+        </Button>
+      )}
+      {!token && location.pathname !== '/login' && (
+        <Button
+          className="fixed top-3 left-4 z-[100]"
+          onClick={() => navigate('/login')}
+          variant={'ghost'}
+          size={'small_icon'}
+        >
+          <KeyIcon className={'h-5 w-5'}/>
+        </Button>
       )}
     </header>
   )

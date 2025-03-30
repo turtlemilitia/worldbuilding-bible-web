@@ -43,8 +43,8 @@ export const ProtectedRoute = (): JSX.Element => {
       authUserDataManager.viewOwn({ include: 'favourites;favourites.favouritable;pins;pins.pinnable;characters;permissions' })
         .then((user) => {
           const promises = [
-            compendiumIndexDataManager.index(),
-            campaignIndexDataManager.index(),
+            compendiumIndexDataManager.index({ include: 'images' }),
+            campaignIndexDataManager.index({ include: 'images' }),
             noteIndexDataManager.index({ include: 'parent:id,slug,name' }),
             imageTypeIndexDataManager.index(),
             governmentTypeIndexDataManager.index(),
@@ -54,7 +54,7 @@ export const ProtectedRoute = (): JSX.Element => {
             imageIndexDataManager.index(),
           ]
           if (user.canViewSystems) {
-            promises.push(systemIndexDataManager.index())
+            promises.push(systemIndexDataManager.index({ include: 'images' }))
           }
           Promise.all(promises).then(() => {
             setLoading({ init: false })
