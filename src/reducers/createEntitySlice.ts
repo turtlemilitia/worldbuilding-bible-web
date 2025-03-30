@@ -9,11 +9,11 @@ export type TEntitySliceState<T> = {
 export const createEntitySlice = <TEntity extends Identifiable & {[key: string]: any, images?: TImage[]}> (name: string) => {
   type TChildActionProps = {
     field: 'characters'|'concepts'|'factions'|'items'|'languages'|'locations'|'species'|'images'|'notes'
-    data: { [key: string]: any };
+    child: { [key: string]: any };
   }
   type TRemoveChildActionProps = {
     field: 'characters'|'concepts'|'factions'|'items'|'languages'|'locations'|'species'|'notes'
-    id: string | number
+    childId: string | number
   }
   type TSetImageActionProps = {
     imageType?: string,
@@ -41,14 +41,15 @@ export const createEntitySlice = <TEntity extends Identifiable & {[key: string]:
         state.fetching = action.payload
       },
       setChildData: (state, action: PayloadAction<TChildActionProps>) => {
+        debugger;
         const field = action.payload.field
         if (state.data) {
           const prevData = state.data as Draft<TEntity> || {};
           state.data = {
             ...prevData,
-            [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.data.id)
-              ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.data.id ? action.payload.data : child)
-              : [...(prevData[field] || []), action.payload.data]
+            [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.child.id)
+              ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.child.id ? action.payload.child : child)
+              : [...(prevData[field] || []), action.payload.child]
           }
         }
       },
@@ -58,9 +59,9 @@ export const createEntitySlice = <TEntity extends Identifiable & {[key: string]:
           const prevData = state.data as Draft<TEntity> || {};
           state.data = {
             ...state.data as Draft<TEntity>,
-            [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.data.id)
-              ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.data.id ? { ...child, ...action.payload.data } : child)
-              : [...(prevData[field] || []), action.payload.data]
+            [field]: prevData[field]?.find((child: TGenericPostBasic) => child.id === action.payload.child.id)
+              ? prevData[field]?.map((child: TGenericPostBasic) => child.id === action.payload.child.id ? { ...child, ...action.payload.child } : child)
+              : [...(prevData[field] || []), action.payload.child]
           }
         }
       },
@@ -69,7 +70,7 @@ export const createEntitySlice = <TEntity extends Identifiable & {[key: string]:
         if (state.data) {
           state.data = {
             ...state.data,
-            [field]: state.data[field]?.filter((child: TGenericPostBasic) => ![child.id, child.slug].includes(action.payload.id))
+            [field]: state.data[field]?.filter((child: TGenericPostBasic) => ![child.id, child.slug].includes(action.payload.childId))
           }
         }
       },

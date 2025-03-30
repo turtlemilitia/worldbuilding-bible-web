@@ -53,12 +53,12 @@ export const useDataManager = <TEntity extends TGenericPost, TRequest, TIndexRes
     dispatch(indexSlice.actions.removeOne({ id }))
   }, [indexSlice])
 
-  const setChildData = useCallback((id: number, field: string, data: Identifiable) => {
-    dispatch(indexSlice.actions.setChildData({ id, field, data }))
+  const setChildData = useCallback((id: number, field: string, child: Identifiable) => {
+    dispatch(indexSlice.actions.setChildData({ id, field, child }))
   }, [indexSlice])
 
-  const updateChildData = useCallback((id: number, field: string, data: Identifiable) => {
-    dispatch(indexSlice.actions.updateChildData({ id, field, data }))
+  const updateChildData = useCallback((id: number, field: string, child: Identifiable) => {
+    dispatch(indexSlice.actions.updateChildData({ id, field, child }))
   }, [indexSlice])
 
   const removeChildData = useCallback((id: number, field: string, childId: number) => {

@@ -1,7 +1,7 @@
 import { authUserSlice } from '@/reducers/auth/authUserSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useCallback } from 'react'
-import { TPermission, TUser } from '@/types'
+import { Identifiable, TPermission, TUser } from '@/types'
 import { TQueryParams } from '@/services/ApiService/types'
 import userService, { TUserRequest } from '../../services/ApiService/User/UserService'
 import {
@@ -50,6 +50,18 @@ const useAuthUserDataManager = (): TAuthUserDataManager => {
       dispatch(slice.actions.clear(id))
     }, [])
 
+    const setChildData = useCallback((id: number, field: string, child: Identifiable) => {
+      dispatch(slice.actions.setChildData({ id, field, child }))
+    }, [slice])
+
+    const updateChildData = useCallback((id: number, field: string, child: Identifiable) => {
+      dispatch(slice.actions.updateChildData({ id, field, child }))
+    }, [slice])
+
+    const removeChildData = useCallback((id: number, field: string, childId: number) => {
+      dispatch(slice.actions.removeChildData({ id, field, childId }))
+    }, [slice])
+
     const viewOwn = useCallback(
       async (query: TQueryParams = {}): Promise<TUser> => {
         const { data } = await api.viewOwn(query)
@@ -91,7 +103,10 @@ const useAuthUserDataManager = (): TAuthUserDataManager => {
       view,
       viewOwn,
       update,
-      hasPermission
+      hasPermission,
+      setChildData,
+      updateChildData,
+      removeChildData,
     }
   }
 
