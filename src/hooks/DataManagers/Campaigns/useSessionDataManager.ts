@@ -8,7 +8,11 @@ import {
     useEncounterableDataManager,
     useNotableDataManager,
     useQuestableDataManager,
-    hasQuestsAttachableDataManager
+    hasQuestsAttachableDataManager,
+    useLocationableDataManager,
+    useCharacterableDataManager,
+    hasCharactersAttachableDataManager,
+    hasLocationsAttachableDataManager,
 } from '../useAttachableDataManager'
 import {useImageableDataManager, hasImageableDataManager} from '../useImageableDataManager'
 import {TCampaign, TSession} from '@/types'
@@ -26,6 +30,8 @@ export type TSessionDataManager =
     & hasScenesAttachableDataManager
     & hasEncountersAttachableDataManager
     & hasQuestsAttachableDataManager
+    & hasLocationsAttachableDataManager
+    & hasCharactersAttachableDataManager
 
 const useSessionDataManager = (campaignId?: number, id?: number): TSessionDataManager => {
     const manager = useChildDataManager(
@@ -44,6 +50,8 @@ const useSessionDataManager = (campaignId?: number, id?: number): TSessionDataMa
         encounters: useEncounterableDataManager(manager, sessionService.encounters),
         scenes: useSceneableDataManager(manager, sessionService.scenes),
         quests: useQuestableDataManager(manager, sessionService.quests),
+        locations: useLocationableDataManager(manager, sessionService.locations),
+        characters: useCharacterableDataManager(manager, sessionService.characters),
         images: useImageableDataManager(manager, sessionService.images)
     }
 }

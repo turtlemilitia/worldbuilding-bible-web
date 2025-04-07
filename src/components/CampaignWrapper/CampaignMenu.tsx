@@ -33,12 +33,12 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
         hide: !campaign.compendium,
       })
     }
-    if (isGamemaster || (campaign.scenes && campaign.scenes.length > 0)) {
-      items.push({
-        title: 'Scenes',
-        to: `/campaigns/${campaign.id}/${campaign.slug}/scenes`,
-      })
-    }
+    // if (isGamemaster || (campaign.scenes && campaign.scenes.length > 0)) {
+    //   items.push({
+    //     title: 'Scenes',
+    //     to: `/campaigns/${campaign.id}/${campaign.slug}/scenes`,
+    //   })
+    // }
 
     if (isGamemaster || (campaign.quests && campaign.quests.length > 0)) {
       items.push({
@@ -49,7 +49,7 @@ const CampaignMenu: FunctionComponent<TProps> = ({ campaign }) => {
 
     if (isGamemaster || (campaign.encounters && campaign.encounters.length > 0)) {
       items.push({
-        title: 'Encounters',
+        title: 'Encounters & Scenes',
         to: `/campaigns/${campaign.id}/${campaign.slug}/encounters`,
       })
     }

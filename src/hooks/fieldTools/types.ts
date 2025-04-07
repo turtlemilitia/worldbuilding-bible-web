@@ -110,12 +110,7 @@ export type TField = {
   type: 'select'
   options?: TSelectOption[],
   link?: (id: number) => string,
-} | {
-  type: 'multiSelect'
-  dialogType?: TDialogTypes
-  options?: TSelectOption[],
-  link?: (id: number) => string,
-} | {
+} | TMultiSelectField | {
   type: 'asyncMultiSelect' | 'asyncSelect'
   dialogType?: TDialogTypes
   options?: TSelectOption[],

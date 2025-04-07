@@ -5,6 +5,12 @@ import { createImageableService } from '../createImageableService'
 import {createSceneableService} from "../createSceneableService";
 import {createEncounterableService} from "../createEncounterableService";
 import {createQuestableService} from "../createQuestableService";
+import {
+  createLocationableService
+} from '@/services/ApiService/createLocationableService'
+import {
+  createCharacterableService
+} from '@/services/ApiService/createCharacterableService'
 
 export interface TSessionRequest {
   name: string;
@@ -25,6 +31,8 @@ const SessionService = {
   ...createSceneableService('sessions'),
   ...createEncounterableService('sessions'),
   ...createQuestableService('sessions'),
+  ...createLocationableService('sessions'),
+  ...createCharacterableService('sessions'),
   ...createImageableService('sessions')
 }
 

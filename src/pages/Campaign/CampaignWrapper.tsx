@@ -33,11 +33,10 @@ const CampaignWrapper = (): JSX.Element => {
   }, [id])
 
   useEffect(() => {
-    if (campaign?.compendium?.id) {
-      const compendiumId = campaign?.compendium?.id
-      setLoading({ [compendiumId]: true })
-      viewCompendium(compendiumId, { include: compendiumIncludes }).
-      then(() => setLoading({ [compendiumId]: false }))
+    if (campaign?.compendium?.id && !isLoading(`compendium:${campaign?.compendium?.id}`) && !isLoaded(`compendium:${campaign?.compendium?.id}`)) { // if it's been loaded as part of the campaign
+      setLoading({ [`compendium:${campaign?.compendium?.id}`]: true })
+      viewCompendium(campaign?.compendium?.id, { include: `${compendiumIncludes};images` })
+        .then(() => setLoading({ [`compendium:${campaign?.compendium?.id}`]: false }))
     }
   }, [campaign?.compendium?.id])
 
