@@ -14,11 +14,12 @@ import TaskList from '@tiptap/extension-task-list'
 import { Button } from '@/components/Forms/Fields/Button'
 import SearchDialog from '@/components/SearchDialog'
 import {
+  BoldIcon,
   Heading1Icon,
-  Heading2Icon,
+  Heading2Icon, ItalicIcon,
   LinkIcon,
   ListIcon,
-  TableIcon,
+  TableIcon, UnderlineIcon, UnlinkIcon,
 } from 'lucide-react'
 import { IdeaListItem } from '@/components/Forms/Fields/Editor/IdeaListItem'
 import { IdeaList } from '@/components/Forms/Fields/Editor/IdeaList'
@@ -174,7 +175,11 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
       editor.chain().focus().extendMarkRange('link').setLink({ href: url })
         .run()
     } catch (e) {
-      alert(e.message)
+      if (e instanceof Error) {
+        alert(e.message)
+      } else {
+        alert(String(e))
+      }
     }
   }, [editor])
 
@@ -192,6 +197,20 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
                   className={'flex gap-2'}>
         <Button size={'sm'} onClick={() => setOpenSearchDialog(true)}>
           <LinkIcon size={15}/>
+        </Button>
+        {editor.isActive('link') && (
+          <Button size="sm" onClick={() => editor.chain().focus().extendMarkRange('link').unsetLink().run()}>
+            <UnlinkIcon size={15}/>
+          </Button>
+        )}
+        <Button size={'sm'} onClick={() => editor.chain().focus().toggleBold().run()}>
+          <BoldIcon size={15} className={'text-burnOrange'}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().toggleItalic().run()}>
+          <ItalicIcon size={15} className={'text-emerald-500'}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().toggleUnderline().run()}>
+          <UnderlineIcon size={15}/>
         </Button>
       </BubbleMenu>
       <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}
