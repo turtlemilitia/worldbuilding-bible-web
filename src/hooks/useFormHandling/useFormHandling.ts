@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useErrorHandling from '../useErrorHandling'
 import useAutosave from '../useAutosave'
 import equal from 'fast-deep-equal/react'
@@ -223,6 +223,9 @@ const useFormHandling = <T, R> ({
     newData: data && mapDataWithManyToMany(data),
   })
 
+  const processedPersistedData = useMemo(() => processedData(persistedData), [persistedData])
+  const processedNewData = useMemo(() => processedData(data), [data])
+
   return {
     errors,
     loading,
@@ -232,7 +235,8 @@ const useFormHandling = <T, R> ({
     onFieldChange: handleOnFieldChange,
     onFetch: handleOnFetch,
     onSave: handleOnSave,
-    onDelete: handleOnDelete
+    onDelete: handleOnDelete,
+    hasDifference: useMemo(() => !equal(processedPersistedData, processedNewData), [processedPersistedData, processedNewData])
   }
 
 }

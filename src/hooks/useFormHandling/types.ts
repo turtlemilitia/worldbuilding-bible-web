@@ -11,4 +11,6 @@ export type TFormHandling<T> = {
   onDelete: () => void;
 
   errors: { [key: string]: string };
+
+  hasDifference: boolean;
 };

@@ -1,4 +1,4 @@
-import React, {JSX, useEffect, useState} from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import PageTitleField from '../Forms/Fields/PageTitleField'
 import EditorsWrapper from './EditorsWrapper'
 import FormToolbar from '../Forms/FormToolbar'
@@ -13,8 +13,9 @@ import { FloatingBox } from '../FloatingBox'
 import CampaignQuickLinks from '../CampaignWrapper/CampaignFavourites'
 import RightBar from './RightBar'
 import usePostDataManager from '../../hooks/DataManagers/usePostDataManager'
-import ProfileImagePicker from "../ProfileImagePicker";
+import ProfileImagePicker from '../ProfileImagePicker'
 import { isEmpty } from 'lodash'
+import { SavingPulse } from '@/components/Post/SavingPulse'
 
 // todo
 //  <TopMenu>
@@ -88,7 +89,8 @@ const Post = <T extends TGenericPost> ({
               onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
             />
             {!form.loading && (
-              <FloatingBox color={'solid'} border={'yellow'}>
+              <FloatingBox color={'solid'} border={'yellow'} className={'relative'}>
+                <SavingPulse saving={form.hasDifference}/>
                 <Editor
                   key={form.data?.id}
                   initialValue={form.data?.content ?? ''}

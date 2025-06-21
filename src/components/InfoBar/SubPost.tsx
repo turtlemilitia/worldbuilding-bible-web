@@ -10,6 +10,7 @@ import {
 import { Button } from '@headlessui/react'
 import Dialog from '@/components/Dialogs'
 import { TDialogTypes } from '@/hooks/fieldTools/types'
+import { SavingPulse } from '@/components/Post/SavingPulse'
 
 type TProps = {
   unlink: () => any,
@@ -42,7 +43,8 @@ export const SubPost = <T extends TGenericPost, > ({ form, unlink, disabled }: T
       </div>
     </div>
     {form.data && (
-      <FloatingBox color={'solid'} border={'yellow'}>
+      <FloatingBox color={'solid'} border={'yellow'} className={'relative'}>
+        <SavingPulse saving={form.hasDifference}/>
         <Editor
           key={form.data.id + (dialogIsOpen ? 1 : 0)}/* This will ensure the editor will update when the dialog is closed */
           initialValue={form.data.content}

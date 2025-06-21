@@ -13,6 +13,7 @@ import { XIcon } from 'lucide-react'
 import LoadingWrapper from '../LoadingWrapper'
 import EditorsWrapper from '@/components/Post/EditorsWrapper'
 import { clsx } from 'clsx'
+import { SavingPulse } from '@/components/Post/SavingPulse'
 
 type TProps<T> = TPostProps<T> & {
   isOpen: boolean,
@@ -89,7 +90,8 @@ const PostDialog = <T extends TGenericPost, > ({
                           link={!form.isNew ? form.link : ''}
                         />
                       )}
-                      <FloatingBox color={'solid'} border={'yellow'}>
+                      <FloatingBox color={'solid'} border={'yellow'} className={'relative'}>
+                        <SavingPulse saving={form.hasDifference}/>
                         <Editor
                           key={form.data?.id}
                           initialValue={form.data?.content ?? ''}

@@ -78,6 +78,7 @@ const usePostForm = <T extends TGenericPost, R> ({
     onSave,
     onDelete,
 
+    hasDifference,
     errors,
   } = useFormHandling({
     fetchOnMount,
@@ -176,6 +177,7 @@ const usePostForm = <T extends TGenericPost, R> ({
     favouriteHandler,
     permissionHandler,
     link,
+    hasDifference,
   }
 }
 
