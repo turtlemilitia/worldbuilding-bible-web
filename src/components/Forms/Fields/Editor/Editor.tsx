@@ -19,7 +19,10 @@ import {
   Heading2Icon, ItalicIcon,
   LinkIcon,
   ListIcon,
-  TableIcon, UnderlineIcon, UnlinkIcon,
+  StrikethroughIcon,
+  TableIcon,
+  UnderlineIcon,
+  UnlinkIcon,
 } from 'lucide-react'
 import { IdeaListItem } from '@/components/Forms/Fields/Editor/IdeaListItem'
 import { IdeaList } from '@/components/Forms/Fields/Editor/IdeaList'
@@ -211,6 +214,9 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         </Button>
         <Button size={'sm'} onClick={() => editor.chain().focus().toggleUnderline().run()}>
           <UnderlineIcon size={15}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().toggleStrike().run()}>
+          <StrikethroughIcon size={15}/>
         </Button>
       </BubbleMenu>
       <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}
