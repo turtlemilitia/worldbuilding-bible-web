@@ -2,6 +2,7 @@ import { TField } from '@/hooks/fieldTools'
 import { TGenericPost, TTypesAllowedString } from '@/types'
 import { TFormHandling } from '@/hooks/useFormHandling/types'
 import { TSelectOption } from '../Forms/Fields/FieldMapper'
+import { TMarkdownHandler } from '@/hooks/useMarkdownHandler'
 
 export type TUseFields = {
   fields: TField[];
@@ -28,6 +29,7 @@ export type TForm<T> = TFormHandling<T> & {
   favouriteHandler: TFavouriteHandler;
   playerCharacterHandler?: TPlayerCharacterHandler;
   permissionHandler?: TPermissionHandler;
+  markdownHandler?: TMarkdownHandler;
   link: string;
 }
 

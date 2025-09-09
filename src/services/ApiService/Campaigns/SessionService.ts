@@ -11,6 +11,9 @@ import {
 import {
   createCharacterableService
 } from '@/services/ApiService/createCharacterableService'
+import {
+  createMarkdownService
+} from '@/services/ApiService/createMarkdownService'
 
 export interface TSessionRequest {
   name: string;
@@ -33,7 +36,8 @@ const SessionService = {
   ...createQuestableService('sessions'),
   ...createLocationableService('sessions'),
   ...createCharacterableService('sessions'),
-  ...createImageableService('sessions')
+  ...createImageableService('sessions'),
+  ...createMarkdownService('sessions')
 }
 
 export default SessionService

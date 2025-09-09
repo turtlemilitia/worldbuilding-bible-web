@@ -18,6 +18,7 @@ import {useImageableDataManager, hasImageableDataManager} from '../useImageableD
 import {TCampaign, TSession} from '@/types'
 import {TSessionRequest} from '@/services/ApiService/Campaigns/SessionService'
 import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
+import { hasMarkdownManager, useMarkdownManager } from '@/hooks/DataManagers'
 
 export type TSessionDataManager =
     TChildDataManager<TCampaign, TSession, TSessionRequest>
@@ -32,6 +33,7 @@ export type TSessionDataManager =
     & hasQuestsAttachableDataManager
     & hasLocationsAttachableDataManager
     & hasCharactersAttachableDataManager
+    & hasMarkdownManager
 
 const useSessionDataManager = (campaignId?: number, id?: number): TSessionDataManager => {
     const manager = useChildDataManager(
@@ -44,6 +46,7 @@ const useSessionDataManager = (campaignId?: number, id?: number): TSessionDataMa
     )
     return {
         ...manager,
+        markdown: useMarkdownManager(sessionService.markdown),
         session: manager.entity,
         campaign: manager.parent,
         notes: useNotableDataManager(manager, sessionService.notes),

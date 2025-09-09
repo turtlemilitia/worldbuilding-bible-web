@@ -1,10 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import {
-  BubbleMenu,
-  EditorContent,
-  FloatingMenu,
-  useEditor,
-} from '@tiptap/react'
+import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
@@ -30,10 +25,13 @@ import { Table } from '@tiptap/extension-table'
 import { TableRow } from '@tiptap/extension-table-row'
 import { TableHeader } from '@tiptap/extension-table-header'
 import { TableCell } from '@tiptap/extension-table-cell'
+import { Typography } from '@tiptap/extension-typography'
 import {
   DropdownMenu, DropdownMenuContent,
   DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/DropdownMenu'
+// @ts-ignore
+import { BubbleMenu, FloatingMenu } from '@tiptap/react/menus'
 
 // Import additional extensions if needed (e.g., TaskList, TaskItem, etc.)
 
@@ -141,6 +139,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
       TableRow,
       TableHeader,
       TableCell,
+      Typography,
       // Add any additional TipTap extensions here (e.g., Callout, TaskList, etc.)
     ],
     content: initialValue,

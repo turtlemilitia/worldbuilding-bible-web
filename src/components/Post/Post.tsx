@@ -86,6 +86,7 @@ const Post = <T extends TGenericPost> ({
               favouriteHandler={form.favouriteHandler}
               playerCharacterHandler={form.playerCharacterHandler}
               permissionHandler={form.permissionHandler}
+              markdownHandler={form.markdownHandler}
               onCoverImageSelected={!form.isNew ? (id) => form.imageHandler.handleOnImageSelected(id, 'cover') : undefined}
             />
             {!form.loading && (

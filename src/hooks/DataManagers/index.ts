@@ -39,6 +39,7 @@ import useEncounterTypeIndexDataManager, {TEncounterTypeIndexDataManager} from '
 import useNoteIndexDataManager, {TNoteIndexDataManager} from '@/hooks/DataManagers/Notes/useNoteIndexDataManager'
 import useNoteDataManager, {TNoteDataManager} from './Notes/useNoteDataManager'
 import useSystemDataManager, { TSystemDataManager } from './Systems/useSystemDataManager'
+import useMarkdownManager, { TMarkdownManager, hasMarkdownManager } from './useMarkdownManager'
 
 export {
   useDataManager,
@@ -76,7 +77,8 @@ export {
   useEncounterTypeIndexDataManager,
   useNoteIndexDataManager,
   useNoteDataManager,
-  useSystemDataManager
+  useSystemDataManager,
+  useMarkdownManager,
 }
 
 export type {
@@ -85,6 +87,7 @@ export type {
   hasNotesAttachableDataManager,
   hasEncountersAttachableDataManager,
   hasQuestsAttachableDataManager,
+  hasMarkdownManager,
   TCampaignDataManager,
   TCompendiumDataManager,
   TEncounterDataManager,
@@ -117,4 +120,5 @@ export type {
   TNoteIndexDataManager,
   TNoteDataManager,
   TSystemDataManager,
+  TMarkdownManager,
 }

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, JSX, SyntheticEvent } from 'react'
 import {
-  ExternalLinkIcon,
+  ExternalLinkIcon, FileOutputIcon,
   RefreshCwIcon,
   SaveIcon,
   StarIcon,
@@ -14,6 +14,7 @@ import { TFavouriteHandler, TPermissionHandler, TPinHandler, TPlayerCharacterHan
 import PlayerCharacterSelector from '../PlayerCharacterSelector'
 import UserPermissionsSelector from '../UserPermissionsSelector'
 import { Link } from 'react-router-dom'
+import { TMarkdownHandler } from '@/hooks/useMarkdownHandler'
 
 type TProps = {
   canEdit?: boolean
@@ -27,6 +28,7 @@ type TProps = {
   favouriteHandler?: TFavouriteHandler,
   playerCharacterHandler?: TPlayerCharacterHandler,
   permissionHandler?: TPermissionHandler,
+  markdownHandler?: TMarkdownHandler,
   onCoverImageSelected?: (imageId: number) => Promise<any>;
   link?: string;
 }
@@ -43,6 +45,7 @@ const FormToolbar: FunctionComponent<TProps> = ({
   favouriteHandler,
   playerCharacterHandler,
   permissionHandler,
+  markdownHandler,
   onCoverImageSelected,
   link
 }: TProps): JSX.Element => {
@@ -62,6 +65,13 @@ const FormToolbar: FunctionComponent<TProps> = ({
 
   return (
     <div className="flex justify-end mb-3 gap-3">
+      {markdownHandler?.canExport && (
+        <Button onClick={markdownHandler.export}>
+          <SmallFloatingBox hover>
+            <FileOutputIcon className={`stroke-stone-400 h-5 w-5`}/>
+          </SmallFloatingBox>
+        </Button>
+      )}
       {permissionHandler?.canAssign && (
         <UserPermissionsSelector handler={permissionHandler}/>
       )}

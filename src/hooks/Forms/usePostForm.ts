@@ -25,6 +25,7 @@ import {
 import usePinHandler from '../usePinHandler'
 import useFavouriteHandler from '../useFavouriteHandler'
 import useUserPermissionHandler from '../useUserPermissionHandler'
+import useMarkdownHandler from '@/hooks/useMarkdownHandler'
 
 type TProps<T, R> = {
   fetchOnMount?: boolean,
@@ -65,6 +66,7 @@ const usePostForm = <T extends TGenericPost, R> ({
   const pinHandler = usePinHandler<T>({ manager })
   const favouriteHandler = useFavouriteHandler<T>({ manager })
   const permissionHandler = useUserPermissionHandler<T>({ manager })
+  const markdownHandler = useMarkdownHandler<T>({ manager })
 
   const {
     loading,
@@ -176,6 +178,7 @@ const usePostForm = <T extends TGenericPost, R> ({
     pinHandler,
     favouriteHandler,
     permissionHandler,
+    markdownHandler,
     link,
     hasDifference,
   }
