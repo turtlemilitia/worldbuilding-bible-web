@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react'
 import { TTypesAllowedString, TUser } from '@/types'
 import { LucideIcon } from 'lucide-react'
 
-type TGenericFieldParams = {
+export type TGenericFieldParams = {
   name: string,
   label: string,
   required?: boolean
@@ -99,7 +99,7 @@ export type TField = {
   label: string
   required?: boolean
 } & ({
-  type: 'text' | 'number' | 'email' | 'password'
+  type: 'text' | 'number' | 'email' | 'password' | 'link'
 } | {
   type: 'dialog'
 } | {

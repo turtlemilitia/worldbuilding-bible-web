@@ -2,7 +2,9 @@ import { TSelectOption } from '@/components/Forms/Fields/FieldMapper'
 import {
   TAsyncMultiSelectFieldFn,
   TDatepickerField,
-  TDatePickerFieldProps, TMultiEditorFieldProps, TMultiSelectField,
+  TDatePickerFieldProps,
+  TMultiEditorFieldProps,
+  TMultiSelectField,
   TMultiSelectFieldProps,
   TNumberFieldFn,
   TSelectFieldFn,
@@ -11,11 +13,13 @@ import {
 } from './types'
 import { Completable, TEncounter, TQuest, TScene } from '@/types'
 import {
-  BadgeIcon, DramaIcon, ListIcon, MapPinIcon,
-  PenIcon, StarIcon,
-  StarsIcon,
-  StickyNoteIcon,
-  SwordIcon, UserIcon,
+  BadgeIcon,
+  DramaIcon,
+  ListIcon,
+  MapPinIcon,
+  StarIcon,
+  SwordIcon,
+  UserIcon,
 } from 'lucide-react'
 
 export const textField: TTextFieldFn = (props) => ({
@@ -46,21 +50,6 @@ export const datePickerField = (props: TDatePickerFieldProps): TDatepickerField 
   ...props,
   type: 'datePicker',
   formatString: props.formatString || 'yyyy-M-d H:m:s'
-})
-
-// other generic fields
-export const noteField = ({
-  required,
-  options,
-  link,
-}: TSelectFieldProps) => multiEditorField({
-  name: 'notes',
-  label: 'Notes',
-  required,
-  options,
-  link,
-  dialogType: 'note',
-  Icon: PenIcon
 })
 
 export const sessionField = ({

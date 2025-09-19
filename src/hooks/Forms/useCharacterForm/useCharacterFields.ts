@@ -8,6 +8,7 @@ import { factionField, languageField, noteField, numberField, selectField, textF
 import {encounterField, locationField, questField, sceneField} from '../../fieldTools/fieldTools'
 import { useMemo } from 'react'
 import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
+import { linkField } from '@/hooks/fieldTools/linkField'
 
 const useCharacterFields = (manager: TCharacterDataManager): TUseFields => {
 
@@ -30,6 +31,11 @@ const useCharacterFields = (manager: TCharacterDataManager): TUseFields => {
           options: manager.compendium.species || [],
           required: true
         }),
+        // re-add this later
+        // linkField({
+        //   name: 'characterSheet',
+        //   label: 'Character Sheet',
+        // }),
         languageField({
           options: manager.compendium.languages || [],
           link: (id: string | number) => `${compendiumPath}/languages/${id}`,

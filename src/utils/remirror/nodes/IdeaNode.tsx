@@ -40,7 +40,7 @@ const IdeaNode: FunctionComponent<TProps> = ({ type = 'i' }): JSX.Element => {
         { type === 'k' && <KeyIcon className="text-yellow-500"/>}
         { type === 'l' && <MapPinIcon className="text-green-600"/>}
         { type === 'L' && <LockIcon className="text-red-800"/>}
-        { type === 'm' && <MusicIcon className="text-gray-500"/>}
+        { type === 'm' && <MusicIcon className="text-amber-400"/>}
         { type === 'p' && <PenIcon className="text-blue-500"/>}
         { type === 'P' && <SmileIcon className="text-blue-500"/>}
         { type === 'r' && <DicesIcon className="text-amber-500"/>}

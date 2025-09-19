@@ -32,6 +32,7 @@ import {
 } from '@/components/DropdownMenu'
 // @ts-ignore
 import { BubbleMenu, FloatingMenu } from '@tiptap/react/menus'
+import InputDialog from '@/components/InputDialog'
 
 // Import additional extensions if needed (e.g., TaskList, TaskItem, etc.)
 
@@ -41,6 +42,18 @@ interface TEditorProps {
   onChange?: (html: string) => void;
   placeholder?: string;
   canEdit?: boolean;
+}
+
+function parseUrl (url: string): string {
+  debugger;
+  if (!url.includes(':')) {
+    url = `https://${url}`
+  }
+  if (url.includes('spotify')) {
+    url = url.replace('https://', 'spotify://')
+    url = url.replace('http://', 'spotify://')
+  }
+  return url
 }
 
 const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange, placeholder, canEdit = true }) => {
@@ -65,12 +78,13 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         // openOnClick: false,
         autolink: true,
         defaultProtocol: 'https',
-        protocols: ['http', 'https'],
+        protocols: ['http', 'https', 'spotify'],
         isAllowedUri: (url, ctx) => {
           try {
             // construct URL
-            const parsedUrl = url.includes(':') ? new URL(url) : new URL(
-              `${ctx.defaultProtocol}://${url}`)
+            const parsedUrl = url.includes(':')
+              ? new URL(url)
+              : new URL(`${ctx.defaultProtocol}://${url}`)
 
             // use default validation
             if (!ctx.defaultValidate(parsedUrl.href)) {
@@ -112,9 +126,11 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         },
         shouldAutoLink: url => {
           try {
+            debugger;
             // construct URL
-            const parsedUrl = url.includes(':') ? new URL(url) : new URL(
-              `https://${url}`)
+            const parsedUrl = url.includes(':')
+              ? new URL(url)
+              : new URL(`https://${url}`)
 
             // only auto-link if the domain is not in the disallowed list
             const disallowedDomains = [
@@ -158,6 +174,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
   }, [editor])
 
   const setLink = useCallback((url: string) => {
+    setOpenLinkDialog(false)
     setOpenSearchDialog(false)
 
     if (!editor) {
@@ -174,7 +191,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
 
     // update link
     try {
-      editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      editor.chain().focus().extendMarkRange('link').setLink({ href: parseUrl(url) })
         .run()
     } catch (e) {
       if (e instanceof Error) {
@@ -185,6 +202,8 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
     }
   }, [editor])
 
+  const [openLinkDialog, setOpenLinkDialog] = useState<boolean>(false)
+  const [initialLinkValue, setInitialLinkValue] = useState<string>('')
   const [openSearchDialog, setOpenSearchDialog] = useState<boolean>(false)
 
   if (!editor) {
@@ -193,11 +212,20 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
 
   return (
     <div className={`editor-theme relative font-serif text-serif-lg ${className}`}>
-      <SearchDialog isOpen={openSearchDialog} setIsOpen={setOpenSearchDialog}
+      <InputDialog isOpen={openLinkDialog}
+                   setIsOpen={setOpenLinkDialog}
+                   onSubmit={setLink}
+                   initValue={initialLinkValue}
+                   onOpenSearch={() => setOpenSearchDialog(true)}/>
+      <SearchDialog isOpen={openSearchDialog}
+                    setIsOpen={setOpenSearchDialog}
                     onSelect={setLink}/>
       <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}
                   className={'flex gap-2'}>
-        <Button size={'sm'} onClick={() => setOpenSearchDialog(true)}>
+        <Button size={'sm'} onClick={() => {
+          setInitialLinkValue(editor.getAttributes('link').href || '')
+          setOpenLinkDialog(true)
+        }}>
           <LinkIcon size={15}/>
         </Button>
         {editor.isActive('link') && (

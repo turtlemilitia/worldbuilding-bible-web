@@ -119,6 +119,17 @@ const FieldMapper: FunctionComponent<TProps> = ({
               disabled={disabled}
             />
           )}
+          {props.type === 'link' && (
+            <TextField
+              label={label}
+              required={required}
+              value={currentValue}
+              onChange={(value) => onChange(name, value)}
+              type={'link'}
+              disabled={disabled}
+              isLink={true}
+            />
+          )}
           {props.type === 'datePicker' && (
             <DatePickerWithPresets
               required={required}
