@@ -46,12 +46,14 @@ interface TEditorProps {
 
 function parseUrl (url: string): string {
   debugger;
-  if (!url.includes(':')) {
+  if (!url.includes(':') && !url.startsWith('/')) {
     url = `https://${url}`
   }
-  if (url.includes('spotify')) {
-    url = url.replace('https://', 'spotify://')
-    url = url.replace('http://', 'spotify://')
+  if (url.includes('open.spotify.com')) {
+    url = url.replace('https://', 'spotify:')
+    url = url.replace('http://', 'spotify:')
+    url = url.replace('open.spotify.com/', '')
+    url = url.replace('/', ':')
   }
   return url
 }
