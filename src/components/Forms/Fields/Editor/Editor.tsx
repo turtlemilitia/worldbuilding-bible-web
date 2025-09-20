@@ -1,3 +1,6 @@
+// This is a client component, required by the useEditor hook.
+'use client'
+
 import React, { useCallback, useEffect, useState } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -11,7 +14,8 @@ import SearchDialog from '@/components/SearchDialog'
 import {
   BoldIcon,
   Heading1Icon,
-  Heading2Icon, ItalicIcon,
+  Heading2Icon,
+  ItalicIcon,
   LinkIcon,
   ListIcon,
   StrikethroughIcon,
@@ -27,12 +31,19 @@ import { TableHeader } from '@tiptap/extension-table-header'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { Typography } from '@tiptap/extension-typography'
 import {
-  DropdownMenu, DropdownMenuContent,
-  DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/DropdownMenu'
 // @ts-ignore
 import { BubbleMenu, FloatingMenu } from '@tiptap/react/menus'
 import InputDialog from '@/components/InputDialog'
+import {
+  CustomLinkExtension,
+} from '@/components/Forms/Fields/Editor/CustomLinkExtension'
+import { useNavigate } from 'react-router-dom'
 
 // Import additional extensions if needed (e.g., TaskList, TaskItem, etc.)
 
@@ -45,7 +56,6 @@ interface TEditorProps {
 }
 
 function parseUrl (url: string): string {
-  debugger;
   if (!url.includes(':') && !url.startsWith('/')) {
     url = `https://${url}`
   }
@@ -59,6 +69,9 @@ function parseUrl (url: string): string {
 }
 
 const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange, placeholder, canEdit = true }) => {
+
+  const navigate = useNavigate()
+
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -70,14 +83,14 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
       IdeaListItem,
       StarterKit.configure({
         italic: {},
+        link: false,
       }),
       TaskList,
       TaskItem.configure({
         nested: true,
       }),
-      Underline,
-      Link.configure({
-        // openOnClick: false,
+      CustomLinkExtension.configure({
+        openOnClick: false,
         autolink: true,
         defaultProtocol: 'https',
         protocols: ['http', 'https', 'spotify'],
@@ -128,7 +141,6 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         },
         shouldAutoLink: url => {
           try {
-            debugger;
             // construct URL
             const parsedUrl = url.includes(':')
               ? new URL(url)
@@ -146,7 +158,8 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
             return false
           }
         },
-
+        isInternal: href => href?.startsWith('/'),
+        onInternalClick: (href) => navigate(href),
       }),
       Placeholder.configure({
         placeholder: placeholder || 'Start typing...',

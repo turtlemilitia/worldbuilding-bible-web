@@ -41,7 +41,6 @@ export const createEntitySlice = <TEntity extends Identifiable & {[key: string]:
         state.fetching = action.payload
       },
       setChildData: (state, action: PayloadAction<TChildActionProps>) => {
-        debugger;
         const field = action.payload.field
         if (state.data) {
           const prevData = state.data as Draft<TEntity> || {};
