@@ -10,6 +10,7 @@ const api = axios.create({
 
 api.defaults.withCredentials = true
 api.defaults.withXSRFToken = true
+api.defaults.headers.common['Accept'] = 'application/json'
 api.interceptors.response.use(
   response => response,
   error => {
