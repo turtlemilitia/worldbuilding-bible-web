@@ -13,6 +13,7 @@ import encounterTypesIndexSlice from './reducers/encounterType/encounterTypesInd
 import authUserSlice from './reducers/auth/authUserSlice'
 import userSlice from './reducers/auth/userSlice'
 import imagesIndexSlice from '@/reducers/image/imagesIndexSlice'
+import musicPlayerSlice from '@/reducers/music/musicPlayerSlice'
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +33,8 @@ export const store = configureStore({
     locationTypes: locationTypesIndexSlice,
     questTypes: questTypesIndexSlice,
     encounterTypes: encounterTypesIndexSlice,
+    // other
+    musicPlayer: musicPlayerSlice
   }
 })
 
