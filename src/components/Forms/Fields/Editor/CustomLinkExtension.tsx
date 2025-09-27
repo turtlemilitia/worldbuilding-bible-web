@@ -5,6 +5,7 @@ import {
   ReactMarkViewRenderer,
 } from '@tiptap/react'
 import { Link as RouterLink } from 'react-router-dom'
+import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
 
 /**
  * This should work but it doesn't. Seems there is a bug on TipTap
@@ -16,10 +17,19 @@ const NewLinkMarkView = (props: MarkViewRendererProps) => {
 
   // Determine if the link is internal or external
   const isInternal = href && href.startsWith("/");
+  const isSpotify = href && href.startsWith("spotify:");
+
+  const {isActive: spotifyPlayerIsActive, play} = useSpotifyPlayer()
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
 
     if (isInternal) return;
+
+    if (isSpotify && spotifyPlayerIsActive) {
+      event.preventDefault()
+      play(href)
+      return true
+    }
 
     // External links: explicitly open (so it "continues on" even inside the editor)
     const targetAttr = event.currentTarget.getAttribute('target') ?? '_blank'

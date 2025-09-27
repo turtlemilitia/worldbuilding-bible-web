@@ -9,8 +9,11 @@ import {
 } from '@/reducers/music/musicPlayerSlice'
 import { useAppDispatch } from '@/hooks'
 import { setSpotifyAccessToken } from '@/reducers/auth/authSlice'
+import { isString } from 'lodash'
 
-export function useSpotifyPlayer(token: string | null) {
+export function useSpotifyPlayer() {
+
+  const token = useSelector((state: RootState) => state.auth.spotifyAccessToken);
 
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
 
@@ -40,7 +43,7 @@ export function useSpotifyPlayer(token: string | null) {
         volume: 0.5,
       });
 
-      console.log('Spotify player created');
+      console.log('Spotify player created', spotifyPlayer);
       setPlayer(spotifyPlayer);
 
       spotifyPlayer.addListener('ready', ({ device_id }: { device_id: string }) => dispatch(setDeviceId(device_id)));
@@ -82,10 +85,33 @@ export function useSpotifyPlayer(token: string | null) {
         body: JSON.stringify({ device_ids: [deviceId], play: true }),
       });
     }
+  }, [deviceId, token, isActive, player]);
+
+  // Play to this device if not active
+  const play = useCallback(async (contextUri?: string) => {
+    if (!isActive || !deviceId || !token) return;
+
+    // allow autoplay
+    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` },
+      body: contextUri && isString(contextUri) ? JSON.stringify({ context_uri: contextUri }) : undefined,
+    });
+
   }, [deviceId, token, isActive]);
 
-  const play = useCallback(() => player.resume(), [player]);
-  const pause = useCallback(() => player.pause(), [player]);
+  // Play to this device if not active
+  const pause = useCallback(async () => {
+    if (!isActive || !deviceId || !token) return;
+
+    // allow autoplay
+    await fetch('https://api.spotify.com/v1/me/player/pause', {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+  }, [deviceId, token, isActive]);
+
   const next = useCallback(() => player.nextTrack(), [player]);
   const previous = useCallback(() => player.previousTrack(), [player]);
 

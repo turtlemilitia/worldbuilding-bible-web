@@ -76,7 +76,7 @@ const MusicPlayer: FunctionComponent = () => {
       onMouseLeave={handleNotHovered}
     >
       <MusicIcon className={'h-5 w-5'} onClick={handleLogin}/>
-      {accessToken && <WebPlayback open={hovered} accessToken={accessToken}/>}
+      {accessToken && <WebPlayback open={hovered}/>}
     </div>
   )
 }

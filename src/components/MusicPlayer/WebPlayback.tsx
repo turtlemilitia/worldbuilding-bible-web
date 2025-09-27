@@ -8,10 +8,9 @@ import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
 
 type TWebPlaybackProps = {
   open: boolean
-  accessToken: string | null
 }
 
-const WebPlayback = ({ open, accessToken }: TWebPlaybackProps) => {
+const WebPlayback = ({ open }: TWebPlaybackProps) => {
 
   const {
     currentTrack,
@@ -22,7 +21,7 @@ const WebPlayback = ({ open, accessToken }: TWebPlaybackProps) => {
     next,
     previous,
     activate,
-  } = useSpotifyPlayer(accessToken)
+  } = useSpotifyPlayer()
 
   return (
     <div className={`${open || isActive ? 'w-128' : 'w-0'} transition-width duration-1000 whitespace-nowrap overflow-hidden flex justify-between`}>
@@ -35,7 +34,7 @@ const WebPlayback = ({ open, accessToken }: TWebPlaybackProps) => {
             <SkipBackIcon className={'h-5 w-5'}/>
           </button>
           {(isPaused) ? (
-            <button className={'h-5 w-5'} onClick={play}>
+            <button className={'h-5 w-5'} onClick={() => play()}>
               <PlayIcon className={'h-5 w-5'}/>
             </button>
           ) : (
