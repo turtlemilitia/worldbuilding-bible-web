@@ -1,10 +1,11 @@
-import TiptapLink, { isAllowedUri, LinkOptions } from '@tiptap/extension-link'
+import TiptapLink, { LinkOptions } from '@tiptap/extension-link'
 import {
   MarkViewContent,
   MarkViewRendererProps, mergeAttributes,
   ReactMarkViewRenderer,
 } from '@tiptap/react'
 import { Link as RouterLink } from 'react-router-dom'
+import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
 
 /**
  * This should work but it doesn't. Seems there is a bug on TipTap
@@ -16,15 +17,33 @@ const NewLinkMarkView = (props: MarkViewRendererProps) => {
 
   // Determine if the link is internal or external
   const isInternal = href && href.startsWith("/");
+  const isSpotify = href && href.startsWith("spotify:");
+
+  const {isActive: spotifyPlayerIsActive, play} = useSpotifyPlayer()
+
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+
+    if (isInternal) return;
+
+    if (isSpotify && spotifyPlayerIsActive) {
+      event.preventDefault()
+      play(href)
+      return true
+    }
+
+    // External links: explicitly open (so it "continues on" even inside the editor)
+    const targetAttr = event.currentTarget.getAttribute('target') ?? '_blank'
+    // Use window.open to guarantee navigation from within the editor context
+    window.open(href, targetAttr)
+    event.preventDefault()
+    return true
+  }
 
   // For internal links, use React's Link component for client-side routing.
   // For external links, use a standard <a> tag.
   if (isInternal) {
     return (
-      <RouterLink
-        to={href}
-        {...mergeAttributes(HTMLAttributes)}
-      >
+      <RouterLink to={href}>
         <MarkViewContent />
       </RouterLink>
     );
@@ -36,67 +55,15 @@ const NewLinkMarkView = (props: MarkViewRendererProps) => {
       href={href}
       {...mergeAttributes(HTMLAttributes)}
       rel="noopener noreferrer nofollow"
+      onClick={handleClick}
     >
       <MarkViewContent />
     </a>
   );
 };
 
-import { Plugin } from '@tiptap/pm/state'
-
-type CustomLinkOptions = {
-  /** decide whether a href should be treated as internal */
-  isInternal?: (href: string) => boolean
-  /** handle internal clicks (e.g., call your router navigate) */
-  onInternalClick?: (href: string, event: MouseEvent) => void
-}
-
-export const CustomLinkExtension = TiptapLink.extend<CustomLinkOptions & LinkOptions>({
-  addOptions() {
-    return {
-      ...this.parent?.(),
-      isInternal: (href: string) => Boolean(href && href.startsWith('/')),
-      onInternalClick: undefined,
-    }
-  },
-
-  // NOTE: Temporarily disable MarkView due to a React MarkView issue where
-  // MarkViewContent renders outside the component for marks (#6743).
-  // When the upstream bug is fixed, you can re-enable the MarkView below.
-  // addMarkView() {
-  //   return ReactMarkViewRenderer(NewLinkMarkView)
-  // },
-
-  addProseMirrorPlugins() {
-    const isInternal = this.options.isInternal!
-    const onInternalClick = this.options.onInternalClick
-
-    return [
-      new Plugin({
-        props: {
-          handleClick: (_view, _pos, event) => {
-            const target = event.target as HTMLElement | null
-            const anchor = target?.closest('a[href]') as HTMLAnchorElement | null
-            if (!anchor) return false
-
-            const href = anchor.getAttribute('href') || ''
-
-            // Only intercept internal links; let external links behave normally
-            if (isInternal(href)) {
-              event.preventDefault()
-              onInternalClick?.(href, event as unknown as MouseEvent)
-              return true
-            }
-
-            // External links: explicitly open (so it "continues on" even inside the editor)
-            const targetAttr = anchor.getAttribute('target') ?? '_blank'
-            // Use window.open to guarantee navigation from within the editor context
-            window.open(href, targetAttr)
-            event.preventDefault()
-            return true
-          },
-        },
-      }),
-    ]
-  },
+export const CustomLinkExtension = TiptapLink.extend<LinkOptions>({
+  addMarkView() {
+    return ReactMarkViewRenderer(NewLinkMarkView)
+  }
 })
