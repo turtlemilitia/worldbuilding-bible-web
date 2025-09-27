@@ -2,7 +2,7 @@ import {
   PauseIcon,
   PlayIcon,
   SkipBackIcon,
-  SkipForwardIcon,
+  SkipForwardIcon, SpeakerIcon,
 } from 'lucide-react'
 import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
 
@@ -21,32 +21,37 @@ const WebPlayback = ({ open, accessToken }: TWebPlaybackProps) => {
     pause,
     next,
     previous,
+    activate,
   } = useSpotifyPlayer(accessToken)
 
   return (
-    <div className={`${open || isActive
-      ? 'w-80'
-      : 'w-0'} transition-width duration-1000 whitespace-nowrap overflow-hidden flex justify-between`}>
-      <div className="pl-2 max-w-96 overflow-hidden">{isActive && currentTrack
+    <div className={`${open || isActive ? 'w-128' : 'w-0'} transition-width duration-1000 whitespace-nowrap overflow-hidden flex justify-between`}>
+      <div className="pl-2 max-w-96 overflow-hidden mt-1">{currentTrack
         ? `${currentTrack.artists?.[0]?.name} - ${currentTrack.name}`
         : ''}</div>
-      <div className="flex flex-row gap-2">
-        <button className={'h-5 w-5'} onClick={previous}>
-          <SkipBackIcon className={'h-5 w-5'}/>
-        </button>
-        {(isPaused || !isActive) ? (
-          <button className={'h-5 w-5'} onClick={play}>
-            <PlayIcon className={'h-5 w-5'}/>
+      {(isActive) ? (
+        <div className="flex flex-row gap-2">
+          <button className={'h-5 w-5'} onClick={previous}>
+            <SkipBackIcon className={'h-5 w-5'}/>
           </button>
-        ) : (
-          <button className={'h-5 w-5'} onClick={pause}>
-            <PauseIcon className={'h-5 w-5'}/>
+          {(isPaused) ? (
+            <button className={'h-5 w-5'} onClick={play}>
+              <PlayIcon className={'h-5 w-5'}/>
+            </button>
+          ) : (
+            <button className={'h-5 w-5'} onClick={pause}>
+              <PauseIcon className={'h-5 w-5'}/>
+            </button>
+          )}
+          <button className={'h-5 w-5'} onClick={next}>
+            <SkipForwardIcon className={'h-5 w-5'}/>
           </button>
-        )}
-        <button className={'h-5 w-5'} onClick={next}>
-          <SkipForwardIcon className={'h-5 w-5'}/>
+        </div>
+      ) : (
+        <button className={'h-5 w-5'} onClick={activate}>
+          <SpeakerIcon className={'h-5 w-5'}/>
         </button>
-      </div>
+      )}
     </div>
   )
 }
