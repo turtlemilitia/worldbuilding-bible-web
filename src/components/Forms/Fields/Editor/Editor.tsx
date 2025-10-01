@@ -13,6 +13,7 @@ import { Button } from '@/components/Forms/Fields/Button'
 import SearchDialog from '@/components/SearchDialog'
 import {
   BoldIcon,
+  EyeOffIcon,
   Heading1Icon,
   Heading2Icon,
   ItalicIcon,
@@ -44,6 +45,7 @@ import {
   CustomLinkExtension,
 } from '@/components/Forms/Fields/Editor/CustomLinkExtension'
 import { useNavigate } from 'react-router-dom'
+import { DMsEyesOnly } from '@/components/Forms/Fields/Editor/DMsEyesOnly'
 
 // Import additional extensions if needed (e.g., TaskList, TaskItem, etc.)
 
@@ -79,6 +81,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
       },
     },
     extensions: [
+      DMsEyesOnly,
       IdeaList,
       IdeaListItem,
       StarterKit.configure({
@@ -260,6 +263,9 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         <Button size={'sm'} onClick={() => editor.chain().focus().toggleStrike().run()}>
           <StrikethroughIcon size={15}/>
         </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().setDmOnly().run()}>
+          <EyeOffIcon size={15}/>
+        </Button>
       </BubbleMenu>
       <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}
                     className={'flex gap-2'}>
@@ -274,6 +280,9 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         </Button>
         <Button size={'sm'} onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
           <TableIcon size={15}/>
+        </Button>
+        <Button size={'sm'} onClick={() => editor.chain().focus().setDmOnly().run()}>
+          <EyeOffIcon size={15}/>
         </Button>
       </FloatingMenu>
       {editor.isActive('table') && (

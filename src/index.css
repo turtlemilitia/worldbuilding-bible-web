@@ -63,6 +63,9 @@
 .editor-theme blockquote {
     @apply border-x my-2 border-stone-400 p-4 bg-emerald-600 bg-opacity-10 text-stone-300
 }
+.editor-theme div[dm-eyes-only] {
+    @apply border-x my-2 border-stone-400 p-4 bg-red-600 bg-opacity-10 text-stone-300
+}
 .editor-theme a {
     @apply text-blue-500 bg-blue-500 bg-opacity-10 border border-blue-500 py-0 px-3 rounded-full cursor-pointer
 }
