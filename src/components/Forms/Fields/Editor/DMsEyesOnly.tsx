@@ -24,7 +24,6 @@ export const inputRegex = /^\s*>\s$/
 
 export const DMsEyesOnly = Node.create({
   name: 'dmsEyesOnly',
-  topNode: true,
   group: 'block',
   content: 'block+',
 
