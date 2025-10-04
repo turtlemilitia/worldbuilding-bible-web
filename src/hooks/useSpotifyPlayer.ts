@@ -9,31 +9,35 @@ import {
 } from '@/reducers/music/musicPlayerSlice'
 import { useAppDispatch } from '@/hooks'
 import { setSpotifyAccessToken } from '@/reducers/auth/authSlice'
-import { isString } from 'lodash'
+import { delay, isString } from 'lodash'
+import spotifyApi from '@/spotifyApi'
 
-export function useSpotifyPlayer() {
+export function useSpotifyPlayer () {
 
-  const token = useSelector((state: RootState) => state.auth.spotifyAccessToken);
+  const token = useSelector(
+    (state: RootState) => state.auth.spotifyAccessToken)
 
-  const [player, setPlayer] = useState<Spotify.Player | null>(null);
+  const [player, setPlayer] = useState<Spotify.Player | null>(null)
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   const {
     isActive,
     isPaused,
     currentTrack,
     deviceId,
-  } = useSelector((state: RootState) => state.musicPlayer);
+  } = useSelector((state: RootState) => state.musicPlayer)
 
   // Load the SDK and create player once
   useEffect(() => {
-    if (!token || document.getElementById('spotify-player')) return;
+    if (!token || document.getElementById('spotify-player')) {
+      return
+    }
 
-    const script = document.createElement('script');
-    script.src = 'https://sdk.scdn.co/spotify-player.js';
-    script.id = 'spotify-player';
-    script.async = true;
+    const script = document.createElement('script')
+    script.src = 'https://sdk.scdn.co/spotify-player.js'
+    script.id = 'spotify-player'
+    script.async = true
     document.body.appendChild(script);
 
     (window as any).onSpotifyWebPlaybackSDKReady = () => {
@@ -41,79 +45,144 @@ export function useSpotifyPlayer() {
         name: 'Worldbuilding Tome',
         getOAuthToken: (cb: Function) => cb(token),
         volume: 0.5,
-      });
+      })
 
-      console.log('Spotify player created', spotifyPlayer);
-      setPlayer(spotifyPlayer);
+      console.log('Spotify player created', spotifyPlayer)
+      setPlayer(spotifyPlayer)
 
-      spotifyPlayer.addListener('ready', ({ device_id }: { device_id: string }) => dispatch(setDeviceId(device_id)));
-      spotifyPlayer.addListener('authentication_error', ({ message }: { message: string }) => {
-        localStorage.removeItem('spotify_access_token');
-        // dispatch action to clear token
-        dispatch(setSpotifyAccessToken(null));
-      });
+      spotifyPlayer.addListener('ready',
+        ({ device_id }: { device_id: string }) => dispatch(
+          setDeviceId(device_id)))
+      spotifyPlayer.addListener('authentication_error',
+        ({ message }: { message: string }) => {
+          localStorage.removeItem('spotify_access_token')
+          // dispatch action to clear token
+          dispatch(setSpotifyAccessToken(null))
+        })
 
       // When playback state changes, update local state
       spotifyPlayer.addListener('player_state_changed', (state: any) => {
-        if (!state) return;
-        dispatch(setCurrentTrack(state.track_window.current_track));
-        dispatch(setIsPaused(state.paused));
-        spotifyPlayer.getCurrentState().then((s: any) => dispatch(setIsActive(!!s)));
-      });
+        if (!state) {
+          return
+        }
+        dispatch(setCurrentTrack(state.track_window.current_track))
+        dispatch(setIsPaused(state.paused))
+        spotifyPlayer.getCurrentState()
+          .then((s: any) => dispatch(setIsActive(!!s)))
+      })
 
       spotifyPlayer.addListener('autoplay_failed', () => {
-        console.log('Autoplay is not allowed by the browser autoplay rules');
-      });
+        console.log('Autoplay is not allowed by the browser autoplay rules')
+      })
 
-      spotifyPlayer.addListener('not_ready', ({ device_id }: { device_id: string }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
+      spotifyPlayer.addListener('not_ready',
+        ({ device_id }: { device_id: string }) => {
+          console.log('Device ID has gone offline', device_id)
+        })
 
-      spotifyPlayer.connect();
-    };
-  }, [token]);
+      spotifyPlayer.connect()
+
+      checkState()
+    }
+  }, [token])
+
+  const checkState = useCallback(() => {
+
+    console.log('Checking state')
+    spotifyApi.get('/me/player')
+      .then(({ data }) => {
+        dispatch(setDeviceId(data.device.id))
+        dispatch(setCurrentTrack(data.item))
+        dispatch(setIsPaused(!data.is_playing))
+      })
+
+  }, [token])
 
   // Helper: transfer playback to this device if not active
-  const activate = useCallback(async () => {
-    if (!deviceId || !token) return;
+  const activate = useCallback(() => {
+    if (!deviceId || !token) {
+      return
+    }
     if (!isActive) {
       // allow autoplay
-      player.activateElement();
-      await fetch('https://api.spotify.com/v1/me/player', {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ device_ids: [deviceId], play: true }),
-      });
+      player.activateElement()
+      spotifyApi.put('/me/player', { device_ids: [deviceId], play: true })
     }
-  }, [deviceId, token, isActive, player]);
+  }, [deviceId, token, isActive, player])
 
   // Play to this device if not active
   const play = useCallback(async (contextUri?: string) => {
-    if (!isActive || !deviceId || !token) return;
+    if (!token) {
+      return
+    }
 
     // allow autoplay
-    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-      method: 'PUT',
-      headers: { Authorization: `Bearer ${token}` },
-      body: contextUri && isString(contextUri) ? JSON.stringify({ context_uri: contextUri }) : undefined,
-    });
+    spotifyApi.put(`/me/player/play${isActive && deviceId ? `?device_id=${deviceId}` : ''}`,
+      contextUri && isString(contextUri) ? { context_uri: contextUri } : {}
+    )
+      .then(() => {
+        dispatch(setIsPaused(false))
 
-  }, [deviceId, token, isActive]);
+        if (!isActive) {
+          delay(checkState, 1000)
+        }
+      })
+
+  }, [deviceId, token, isActive])
 
   // Play to this device if not active
   const pause = useCallback(async () => {
-    if (!isActive || !deviceId || !token) return;
+    if (!token) {
+      return
+    }
+
+    if (isActive) {
+      player.pause()
+      return
+    }
 
     // allow autoplay
-    await fetch('https://api.spotify.com/v1/me/player/pause', {
-      method: 'PUT',
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    spotifyApi.put('/me/player/pause')
+      .then(res => {
+        dispatch(setIsPaused(true))
+      })
 
-  }, [deviceId, token, isActive]);
+  }, [token])
 
-  const next = useCallback(() => player.nextTrack(), [player]);
-  const previous = useCallback(() => player.previousTrack(), [player]);
+  const next = useCallback(() => {
+    if (!token) {
+      return
+    }
+    if (isActive) {
+      return player.nextTrack()
+    }
 
-  return { player, currentTrack, isPaused, isActive, play, pause, next, previous, deviceId, activate };
+    spotifyApi.post('/me/player/next')
+      .then(() => delay(checkState, 1000))
+  }, [player])
+  const previous = useCallback(() => {
+    if (!token) {
+      return
+    }
+    if (isActive) {
+      return player.previousTrack()
+    }
+
+    spotifyApi.post('/me/player/previous')
+      .then(() => delay(checkState, 1000))
+  }, [player])
+
+  return {
+    player,
+    currentTrack,
+    isPaused,
+    isActive,
+    play,
+    pause,
+    next,
+    previous,
+    deviceId,
+    activate,
+    isAuthed: !!token,
+  };
 }
