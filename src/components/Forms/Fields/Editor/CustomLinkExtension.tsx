@@ -17,17 +17,24 @@ const NewLinkMarkView = (props: MarkViewRendererProps) => {
 
   // Determine if the link is internal or external
   const isInternal = href && href.startsWith("/");
-  const isSpotify = href && href.startsWith("spotify:");
+  const isSpotify = href && (href.includes("spotify:") || href.includes("open.spotify.com"));
 
-  const {isActive: spotifyPlayerIsActive, play} = useSpotifyPlayer()
+  const {play, isAuthed: spotifyIsAuthed} = useSpotifyPlayer()
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
 
     if (isInternal) return;
 
-    if (isSpotify && spotifyPlayerIsActive) {
+    if (isSpotify && spotifyIsAuthed) {
       event.preventDefault()
-      play(href)
+      let url = href;
+      if (url.includes('open.spotify.com')) {
+        url = url.replace('https://', 'spotify:')
+        url = url.replace('http://', 'spotify:')
+        url = url.replace('open.spotify.com/', '')
+        url = url.replace('/', ':')
+      }
+      play(url)
       return true
     }
 

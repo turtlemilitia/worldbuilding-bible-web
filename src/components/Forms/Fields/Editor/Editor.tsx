@@ -57,19 +57,6 @@ interface TEditorProps {
   canEdit?: boolean;
 }
 
-function parseUrl (url: string): string {
-  if (!url.includes(':') && !url.startsWith('/')) {
-    url = `https://${url}`
-  }
-  if (url.includes('open.spotify.com')) {
-    url = url.replace('https://', 'spotify:')
-    url = url.replace('http://', 'spotify:')
-    url = url.replace('open.spotify.com/', '')
-    url = url.replace('/', ':')
-  }
-  return url
-}
-
 const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange, placeholder, canEdit = true }) => {
 
   const navigate = useNavigate()
@@ -160,9 +147,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
           } catch {
             return false
           }
-        },
-        isInternal: href => href?.startsWith('/'),
-        onInternalClick: (href) => navigate(href),
+        }
       }),
       Placeholder.configure({
         placeholder: placeholder || 'Start typing...',
@@ -209,7 +194,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
 
     // update link
     try {
-      editor.chain().focus().extendMarkRange('link').setLink({ href: parseUrl(url) })
+      editor.chain().focus().extendMarkRange('link').setLink({ href: url })
         .run()
     } catch (e) {
       if (e instanceof Error) {
