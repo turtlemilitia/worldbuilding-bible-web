@@ -5,7 +5,7 @@ import { RootState } from '@/store'
 import {
   setCurrentTrack, setDeviceId,
   setIsActive,
-  setIsPaused,
+  setIsPaused, setRemoteDeviceId,
 } from '@/reducers/music/musicPlayerSlice'
 import { useAppDispatch } from '@/hooks'
 import { setSpotifyAccessToken } from '@/reducers/auth/authSlice'
@@ -26,6 +26,7 @@ export function useSpotifyPlayer () {
     isPaused,
     currentTrack,
     deviceId,
+    remoteDeviceId,
   } = useSelector((state: RootState) => state.musicPlayer)
 
   // Load the SDK and create player once
@@ -91,7 +92,7 @@ export function useSpotifyPlayer () {
     console.log('Checking state')
     spotifyApi.get('/me/player')
       .then(({ data }) => {
-        dispatch(setDeviceId(data.device.id))
+        dispatch(setRemoteDeviceId(data.device.id))
         dispatch(setCurrentTrack(data.item))
         dispatch(setIsPaused(!data.is_playing))
       })
@@ -116,8 +117,9 @@ export function useSpotifyPlayer () {
       return
     }
 
+    const device = remoteDeviceId || deviceId
     // allow autoplay
-    spotifyApi.put(`/me/player/play${isActive && deviceId ? `?device_id=${deviceId}` : ''}`,
+    spotifyApi.put(`/me/player/play${device ? `?device_id=${device}` : ''}`,
       contextUri && isString(contextUri) ? { context_uri: contextUri } : {}
     )
       .then(() => {
@@ -128,7 +130,7 @@ export function useSpotifyPlayer () {
         }
       })
 
-  }, [deviceId, token, isActive])
+  }, [deviceId, remoteDeviceId, token, isActive])
 
   // Play to this device if not active
   const pause = useCallback(async () => {

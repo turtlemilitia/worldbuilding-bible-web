@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect, useState } from 'react'
-import { MusicIcon } from 'lucide-react'
+import { MusicIcon, RefreshCcwIcon } from 'lucide-react'
 import api from '@/api'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import WebPlayback from '@/components/MusicPlayer/WebPlayback'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store'
@@ -13,6 +13,7 @@ const MusicPlayer: FunctionComponent = () => {
   const location = useLocation()
 
   const [hovered, setHovered] = useState(false)
+  const [searchParams] = useSearchParams()
 
   const accessToken = useSelector((state: RootState) => state.auth.spotifyAccessToken);
   const dispatch = useAppDispatch()
@@ -21,23 +22,42 @@ const MusicPlayer: FunctionComponent = () => {
     if (accessToken) {
       return
     }
-    api.post('/api/spotify/auth/login', {
-      'redirectUrl': window.location.href,
-    })
+    api.post('/api/spotify/auth/login')
       .then(res => {
-        window.open(res.data.url, '_blank')
+        window.open(res.data.url, '_blank', 'noopener,noreferrer')
+      })
+  }
+
+  const handleRefreshToken = () => {
+    const refreshToken = localStorage.getItem('spotify_refresh_token')
+    if (!refreshToken) {
+      console.error('No spotify_refresh_token found in localStorage')
+      return
+    }
+    api.put(`/api/spotify/auth/refresh`, { refreshToken })
+      .then(({ data }) => {
+        localStorage.setItem('spotify_access_token', data.spotify_access_token)
+        if (data.spotify_refresh_token) {
+          localStorage.setItem('spotify_refresh_token', data.spotify_refresh_token)
+        }
+        dispatch(setSpotifyAccessToken(data.spotify_access_token))
+      })
+  }
+
+  const handleCallback = (code: string) => {
+    api.get(`/api/spotify/auth/callback?code=${code}`)
+      .then(({ data }) => {
+        localStorage.setItem('spotify_access_token', data.spotify_access_token)
+        localStorage.setItem('spotify_refresh_token', data.spotify_refresh_token)
+        window.close()
       })
   }
 
   useEffect(() => {
-    if (location.search) { // todo need to change this for searchParams
-      api.get(`/api/spotify/auth/callback${location.search}`)
-        .then(res => {
-          localStorage.setItem('spotify_access_token', res.data.spotify_access_token)
-          window.close()
-        })
+    if (searchParams.get('code')) {
+      handleCallback(searchParams.get('code')!)
     }
-  }, [location.search])
+  }, [searchParams])
 
   useEffect(() => {
     function checkUserData () {
@@ -76,6 +96,7 @@ const MusicPlayer: FunctionComponent = () => {
       onMouseLeave={handleNotHovered}
     >
       <MusicIcon className={'h-5 w-5'} onClick={handleLogin}/>
+      <RefreshCcwIcon className={'h-5 w-5'} onClick={handleRefreshToken}/>
       {accessToken && <WebPlayback open={hovered}/>}
     </div>
   )
