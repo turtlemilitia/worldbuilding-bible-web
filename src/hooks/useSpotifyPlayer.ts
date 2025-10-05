@@ -93,7 +93,7 @@ export function useSpotifyPlayer () {
 
     // allow autoplay
     spotifyApi.put('/me/player/pause')
-      .then(res => {
+      .then(() => {
         dispatch(setIsPaused(true))
       })
 

@@ -5,8 +5,7 @@ import {
   SkipForwardIcon, SpeakerIcon,
 } from 'lucide-react'
 import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
-import { useContext, useEffect } from 'react'
-import { MusicPlayerContext } from '@/pages/MusicPlayerProvider'
+import { useEffect } from 'react'
 
 type TWebPlaybackProps = {
   open: boolean

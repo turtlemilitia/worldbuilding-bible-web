@@ -4,14 +4,24 @@ import {
   MarkViewRendererProps, mergeAttributes,
   ReactMarkViewRenderer,
 } from '@tiptap/react'
-import { Link as RouterLink } from 'react-router-dom'
 import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
+import React, { useState } from 'react'
+import Dialog from '@/components/Dialogs'
+import { Identifiable } from '@/types'
+import { extractDialogTargetFromPath } from '@/utils/pathUtils'
+import { TDialogTypes } from '@/hooks/fieldTools/types'
 
 /**
  * This should work but it doesn't. Seems there is a bug on TipTap
  * For now its disables
  */
 const NewLinkMarkView = (props: MarkViewRendererProps) => {
+
+  const [dialogIsOpen, setDialogIsOpen] = useState<{
+    type: TDialogTypes;
+    id: Identifiable['id'];
+  } | false>(false)
+
   const { HTMLAttributes, mark } = props
   const { href } = mark.attrs
 
@@ -23,7 +33,12 @@ const NewLinkMarkView = (props: MarkViewRendererProps) => {
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
 
-    if (isInternal) return;
+    if (isInternal) {
+      event.preventDefault()
+      const target = extractDialogTargetFromPath(href)
+      setDialogIsOpen(target || false)
+      return true
+    }
 
     if (isSpotify && spotifyIsAuthed) {
       event.preventDefault()
@@ -46,26 +61,26 @@ const NewLinkMarkView = (props: MarkViewRendererProps) => {
     return true
   }
 
-  // For internal links, use React's Link component for client-side routing.
-  // For external links, use a standard <a> tag.
-  if (isInternal) {
-    return (
-      <RouterLink to={href}>
-        <MarkViewContent />
-      </RouterLink>
-    );
-  }
-
   // External link
   return (
-    <a
-      href={href}
-      {...mergeAttributes(HTMLAttributes)}
-      rel="noopener noreferrer nofollow"
-      onClick={handleClick}
-    >
-      <MarkViewContent />
-    </a>
+    <>
+      <a
+        href={href}
+        {...mergeAttributes(HTMLAttributes)}
+        rel="noopener noreferrer nofollow"
+        onClick={handleClick}
+      >
+        <MarkViewContent />
+      </a>
+      {dialogIsOpen && (
+        <Dialog
+          type={dialogIsOpen.type}
+          isOpen={!!dialogIsOpen}
+          setIsOpen={() => setDialogIsOpen(false)}
+          id={dialogIsOpen.id}
+        />
+      )}
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ import React, {
   createContext,
   PropsWithChildren,
   useEffect,
-  useRef, useState,
+  useState,
 } from 'react'
 import { Spotify } from '@/types/Spotify'
 import { useAppDispatch, useAppSelector } from '@/hooks'

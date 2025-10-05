@@ -59,8 +59,6 @@ interface TEditorProps {
 
 const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange, placeholder, canEdit = true }) => {
 
-  const navigate = useNavigate()
-
   const editor = useEditor({
     editorProps: {
       attributes: {
