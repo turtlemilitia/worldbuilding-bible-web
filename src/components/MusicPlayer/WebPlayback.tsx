@@ -5,6 +5,8 @@ import {
   SkipForwardIcon, SpeakerIcon,
 } from 'lucide-react'
 import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
+import { useContext, useEffect } from 'react'
+import { MusicPlayerContext } from '@/pages/MusicPlayerProvider'
 
 type TWebPlaybackProps = {
   open: boolean
@@ -13,6 +15,7 @@ type TWebPlaybackProps = {
 const WebPlayback = ({ open }: TWebPlaybackProps) => {
 
   const {
+    player,
     currentTrack,
     isPaused,
     isActive,
@@ -21,7 +24,14 @@ const WebPlayback = ({ open }: TWebPlaybackProps) => {
     next,
     previous,
     activate,
+    checkState
   } = useSpotifyPlayer()
+
+  useEffect(() => {
+    if (player) {
+      checkState()
+    }
+  }, [player])
 
   return (
     <div className={`${open || !isPaused ? 'w-128' : 'w-0'} transition-width duration-1000 whitespace-nowrap overflow-hidden flex justify-between`}>

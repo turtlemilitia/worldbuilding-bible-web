@@ -54,9 +54,10 @@ export function useSpotifyPlayer () {
     if (!token) {
       return
     }
-    if (!isActive) {
-      // allow autoplay
-      player.activateElement()
+
+    if (isActive && player && !contextUri) {
+      player.resume()
+      return
     }
 
     const device = remoteDeviceId || deviceId
@@ -118,6 +119,7 @@ export function useSpotifyPlayer () {
   }, [token, isActive, player, checkState])
 
   return {
+    player,
     currentTrack,
     isPaused,
     isActive,
