@@ -60,6 +60,11 @@ export function useSpotifyPlayer () {
       return
     }
 
+    if (!isActive) {
+      // allow autoplay
+      player.activateElement()
+    }
+
     const device = remoteDeviceId || deviceId
     // allow autoplay
     spotifyApi.put(`/me/player/play${device ? `?device_id=${device}` : ''}`,
