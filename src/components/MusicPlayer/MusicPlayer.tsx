@@ -10,8 +10,6 @@ import { setSpotifyAccessToken } from '@/reducers/auth/authSlice'
 
 const MusicPlayer: FunctionComponent = () => {
 
-  const location = useLocation()
-
   const [hovered, setHovered] = useState(false)
   const [searchParams] = useSearchParams()
 
@@ -25,22 +23,6 @@ const MusicPlayer: FunctionComponent = () => {
     api.post('/api/spotify/auth/login')
       .then(res => {
         window.open(res.data.url, '_blank', 'noopener,noreferrer')
-      })
-  }
-
-  const handleRefreshToken = () => {
-    const refreshToken = localStorage.getItem('spotify_refresh_token')
-    if (!refreshToken) {
-      console.error('No spotify_refresh_token found in localStorage')
-      return
-    }
-    api.put(`/api/spotify/auth/refresh`, { refreshToken })
-      .then(({ data }) => {
-        localStorage.setItem('spotify_access_token', data.spotify_access_token)
-        if (data.spotify_refresh_token) {
-          localStorage.setItem('spotify_refresh_token', data.spotify_refresh_token)
-        }
-        dispatch(setSpotifyAccessToken(data.spotify_access_token))
       })
   }
 
@@ -96,7 +78,6 @@ const MusicPlayer: FunctionComponent = () => {
       onMouseLeave={handleNotHovered}
     >
       <MusicIcon className={'h-5 w-5'} onClick={handleLogin}/>
-      <RefreshCcwIcon className={'h-5 w-5'} onClick={handleRefreshToken}/>
       {accessToken && <WebPlayback open={hovered}/>}
     </div>
   )
