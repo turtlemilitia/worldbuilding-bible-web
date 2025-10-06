@@ -79,10 +79,10 @@
     @apply mb-0
 }
 .editor-theme table th {
-    @apply bg-stone-700 font-bold text-left
+    @apply bg-stone-500 font-bold text-left bg-opacity-20
 }
 .editor-theme table tr {
-    @apply bg-stone-500
+    @apply bg-stone-400 bg-opacity-20
 }
 .editor-theme table .selectedCell:after {
     @apply bg-stone-800 content-[''] left-0 right-0 top-0 bottom-0 pointer-events-none absolute z-10 opacity-50

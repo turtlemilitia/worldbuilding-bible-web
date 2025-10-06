@@ -269,7 +269,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
         </Button>
       </FloatingMenu>
       {editor.isActive('table') && (
-        <div className={'absolute top-3 right-3 z-10'}>
+        <div className={'sticky top-3 right-3 z-10'}>
           <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="sm">
