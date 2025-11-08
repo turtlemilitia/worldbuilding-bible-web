@@ -13,7 +13,7 @@ import { ImageThumbnail } from './ImageThumbnail'
 import useImageIndexDataManager
   from '@/hooks/DataManagers/Images/useImageIndexDataManager'
 
-const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, onSelected }) => {
+const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, onSelected, ...props }) => {
 
   const { images: remoteImages, setOne, updateOne, removeOne } = useImageIndexDataManager();
 
@@ -155,10 +155,11 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
   }
 
   return (
-    <FloatingBox>
+    <FloatingBox {...props}>
       <LoadingWrapper loading={loading} key="loading-image-picker" colour={'transparent'} positioning={'absolute'}>
+        <div className={'h-full flex flex-col'}>
         {!showFileInput && (
-          <div className="min-w-128 h-128 w-full overflow-scroll">
+          <div className="w-full overflow-scroll">
             <div className="grid grid-cols-4 gap-4">
               {images.map((image, index) => {
                 return (
@@ -198,6 +199,7 @@ const ImagePicker: FunctionComponent<TImagePickerProps> = ({ multiple = true, on
             <ErrorBanner errors={errors}/>
           </div>
         )}
+      </div>
       </LoadingWrapper>
     </FloatingBox>
   )

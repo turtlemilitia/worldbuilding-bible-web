@@ -1,9 +1,8 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import {
-  Popover,
-  PopoverBackdrop,
-  PopoverButton,
-  PopoverPanel,
+  Button,
+  Dialog,
+  DialogPanel,
 } from '@headlessui/react'
 import { SelectImageButton } from './SelectImageButton'
 import { ImagePicker } from './ImagePicker'
@@ -15,19 +14,28 @@ const CoverImagePicker: FunctionComponent<TCoverImagePickerProps> = ({
   onCoverImageSelected,
 }) => {
 
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   return (
-    <Popover>
+    <>
 
-      <PopoverButton className="outline-none">
+      <Button className="outline-none" onClick={() => setDialogOpen(true)}>
         <SelectImageButton/>
-      </PopoverButton>
-      <PopoverBackdrop className="fixed inset-0 bg-black/15" />
-      <PopoverPanel anchor={'bottom'} className="flex flex-col p-4 z-50">
-          <ImagePicker multiple={false}
-                       onSelected={(ids) => onCoverImageSelected(ids[0])}/>
-      </PopoverPanel>
+      </Button>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}
+              className="relative z-50">
+        <div className="fixed inset-0 flex items-center justify-center w-full p-10">
+          <DialogPanel className={'h-full'}>
+            <ImagePicker
+              multiple={false}
+              onSelected={(ids) => onCoverImageSelected(ids[0])}
+              className="relative w-full h-full max-h-full"
+            />
+          </DialogPanel>
+        </div>
+      </Dialog>
 
-    </Popover>
+    </>
   )
 }
 export default CoverImagePicker
