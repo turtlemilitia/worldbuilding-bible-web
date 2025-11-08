@@ -2,7 +2,7 @@ import useUrlFormatter from '@/hooks/useUrlFormatter'
 import { useCampaignDataManager } from '@/hooks/DataManagers'
 import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 
-export const makeLink = (entityPath: string, id: number, slug: string, compendiumPath: string, campaignPath?: string) => {
+export const makeLink = (entityPath: string, id: number, slug: string|undefined|null, compendiumPath: string, campaignPath?: string) => {
 
   let prefix = ''
 
@@ -35,7 +35,7 @@ export const makeLink = (entityPath: string, id: number, slug: string, compendiu
       break
   }
 
-  return `${prefix}/${entityPath}/${id}/${slug}`
+  return `${prefix}/${entityPath}/${id}${slug ? `/${slug}` : ''}`
 }
 
 const useLink = (entityPath: string, id?: number, slug?: string): string => {

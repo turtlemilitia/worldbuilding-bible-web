@@ -4,13 +4,17 @@ import Post from '../../../components/Post'
 import { useSessionForm } from '../../../hooks/Forms'
 import useUrlFormatter from '@/hooks/useUrlFormatter'
 import { fixId } from '@/utils/dataUtils'
+import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
+import { TCampaign } from '@/types'
 
 const Session: FunctionComponent = () => {
 
   const navigate = useNavigate()
 
-  const { campaignId, sessionId } = useParams() as { campaignId: string, sessionId: string } // router
+  const { campaignId, sessionNumber } = useParams() as { campaignId: string, sessionNumber: string } // router
   const { campaignPath } = useUrlFormatter()
+  const { campaign } = useCurrentCampaign()
+  const sessionId = (campaign as TCampaign).sessions.find(session => String(session.session_number) === sessionNumber)?.id as number
 
   const form = useSessionForm({
     campaignId: fixId(campaignId),

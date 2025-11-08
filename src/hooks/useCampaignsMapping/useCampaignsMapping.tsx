@@ -63,7 +63,7 @@ const useCampaignsMapping = ({ campaignId }: TProps) => {
 
   const mapSession = useCallback((session: TSession): SidebarItemInterface => ({
     title: session.name,
-    to: makeLink('sessions', session.id, session.slug, '', prefix),
+    to: makeLink('sessions', session.session_number, null, '', prefix),
     icon: (props) => <StickyNoteIcon {...props}/>,
     onDelete: session.canDelete ? () => destroySession(session.id)
       .then(() => onDeleted('sessions', session.id)) : undefined

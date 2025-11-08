@@ -245,7 +245,7 @@ const Routes = (): JSX.Element => {
                   element: <SessionWrapper/>,
                   children: [
                     {
-                      path: ':sessionId/:sessionSlug?',
+                      path: ':sessionNumber/:sessionSlug?',
                       element: <Session/>,
                     },
                   ],
