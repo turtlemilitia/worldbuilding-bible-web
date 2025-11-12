@@ -9,6 +9,7 @@ const ALLOWED_DIALOG_TYPES: TDialogTypes[] = [
   'location',
   'character',
   'item',
+  'story',
   'quest',
   'session',
   'scene',
