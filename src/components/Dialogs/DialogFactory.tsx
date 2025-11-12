@@ -10,6 +10,7 @@ import SceneDialog from './SceneDialog'
 import CharacterDialog from "./CharacterDialog";
 import LocationDialog from "./LocationDialog";
 import ItemDialog from '@/components/Dialogs/ItemDialog'
+import StoryDialog from '@/components/Dialogs/StoryDialog'
 
 const DialogFactory: FunctionComponent<TSelectDialogProps> =  (props) => {
   switch (props.type) {
@@ -47,6 +48,11 @@ const DialogFactory: FunctionComponent<TSelectDialogProps> =  (props) => {
       return <ItemDialog
         {...props}
         itemId={props.id}
+      />
+    case 'story':
+      return <StoryDialog
+        {...props}
+        storyId={props.id}
       />
     case 'quest':
       return <QuestDialog
