@@ -6,6 +6,7 @@ import useUrlFormatter from '@/hooks/useUrlFormatter'
 import { fixId } from '@/utils/dataUtils'
 import { useCurrentCampaign } from '@/hooks/useCurrentCampaign'
 import { TCampaign } from '@/types'
+import { replace } from 'lodash'
 
 const Session: FunctionComponent = () => {
 
@@ -22,6 +23,9 @@ const Session: FunctionComponent = () => {
     onCreated: (data) => {
       navigate(`${campaignPath}/sessions/${data.session_number}/${data.slug}`)
     },
+    onUpdated: (data) => {
+      navigate(`${campaignPath}/sessions/${data.session_number}/${data.slug}`, { replace: true })
+    },
     onDeleted: () => {
       navigate(`${campaignPath}/sessions`)
     },
@@ -29,7 +33,7 @@ const Session: FunctionComponent = () => {
 
   return (
     <Post
-      pageTypeName={'Session'}
+      pageTypeName={`Session ${sessionNumber}`}
       form={form}
     />
   )
