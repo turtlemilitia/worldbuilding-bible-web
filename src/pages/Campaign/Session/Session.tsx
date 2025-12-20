@@ -20,7 +20,7 @@ const Session: FunctionComponent = () => {
     campaignId: fixId(campaignId),
     sessionId: fixId(sessionId),
     onCreated: (data) => {
-      navigate(`${campaignPath}/sessions/${data.id}/${data.slug}`)
+      navigate(`${campaignPath}/sessions/${data.session_number}/${data.slug}`)
     },
     onDeleted: () => {
       navigate(`${campaignPath}/sessions`)
