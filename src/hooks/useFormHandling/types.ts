@@ -1,4 +1,6 @@
-export type TFormHandling<T> = {
+import { TGenericPost } from '@/types'
+
+export type TFormHandling<T extends TGenericPost> = {
   loading: boolean;
   saving: boolean;
 

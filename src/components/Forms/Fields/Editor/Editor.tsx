@@ -44,8 +44,8 @@ import InputDialog from '@/components/InputDialog'
 import {
   CustomLinkExtension,
 } from '@/components/Forms/Fields/Editor/CustomLinkExtension'
-import { useNavigate } from 'react-router-dom'
 import { DMsEyesOnly } from '@/components/Forms/Fields/Editor/DMsEyesOnly'
+import { NestedEmptyListItemEnterToParentParagraph } from '@/components/Forms/Fields/Editor/NestedListItemEnterHandler'
 
 // Import additional extensions if needed (e.g., TaskList, TaskItem, etc.)
 
@@ -69,6 +69,7 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
       DMsEyesOnly,
       IdeaList,
       IdeaListItem,
+      NestedEmptyListItemEnterToParentParagraph,
       StarterKit.configure({
         italic: {},
         link: false,
@@ -223,48 +224,48 @@ const Editor: React.FC<TEditorProps> = ({ className = '', initialValue, onChange
                     onSelect={setLink}/>
       <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}
                   className={'flex gap-2'}>
-        <Button size={'sm'} onClick={() => {
+        <Button size={'sm'} aria-label="Insert link" onClick={() => {
           setInitialLinkValue(editor.getAttributes('link').href || '')
           setOpenLinkDialog(true)
         }}>
           <LinkIcon size={15}/>
         </Button>
         {editor.isActive('link') && (
-          <Button size="sm" onClick={() => editor.chain().focus().extendMarkRange('link').unsetLink().run()}>
+          <Button size="sm" aria-label="Remove link" onClick={() => editor.chain().focus().extendMarkRange('link').unsetLink().run()}>
             <UnlinkIcon size={15}/>
           </Button>
         )}
-        <Button size={'sm'} onClick={() => editor.chain().focus().toggleBold().run()}>
+        <Button size={'sm'} aria-label="Bold" onClick={() => editor.chain().focus().toggleBold().run()}>
           <BoldIcon size={15} className={'text-burnOrange'}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().toggleItalic().run()}>
+        <Button size={'sm'} aria-label="Italic" onClick={() => editor.chain().focus().toggleItalic().run()}>
           <ItalicIcon size={15} className={'text-emerald-500'}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().toggleUnderline().run()}>
+        <Button size={'sm'} aria-label="Underline" onClick={() => editor.chain().focus().toggleUnderline().run()}>
           <UnderlineIcon size={15}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().toggleStrike().run()}>
+        <Button size={'sm'} aria-label="Strikethrough" onClick={() => editor.chain().focus().toggleStrike().run()}>
           <StrikethroughIcon size={15}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().setDmOnly().run()}>
+        <Button size={'sm'} aria-label="DMs eyes only (bubble)" onClick={() => editor.chain().focus().setDmOnly().run()}>
           <EyeOffIcon size={15}/>
         </Button>
       </BubbleMenu>
       <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}
                     className={'flex gap-2'}>
-        <Button size={'sm'} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
+        <Button size={'sm'} aria-label="Heading 1" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
           <Heading1Icon size={15}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+        <Button size={'sm'} aria-label="Heading 2" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
           <Heading2Icon size={15}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().toggleBulletList().run()}>
+        <Button size={'sm'} aria-label="Bullet list" onClick={() => editor.chain().focus().toggleBulletList().run()}>
           <ListIcon size={15}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
+        <Button size={'sm'} aria-label="Insert table" onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
           <TableIcon size={15}/>
         </Button>
-        <Button size={'sm'} onClick={() => editor.chain().focus().setDmOnly().run()}>
+        <Button size={'sm'} aria-label="DMs eyes only (floating)" onClick={() => editor.chain().focus().setDmOnly().run()}>
           <EyeOffIcon size={15}/>
         </Button>
       </FloatingMenu>

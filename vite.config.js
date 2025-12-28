@@ -37,7 +37,8 @@ export default defineConfig({
         target: "ES2020"
     },
     test: {
-        environment: 'jsdom',
-        globals: true
+        environment: 'happy-dom',
+        globals: true,
+        setupFiles: './src/setupTests.ts'
     }
 });
