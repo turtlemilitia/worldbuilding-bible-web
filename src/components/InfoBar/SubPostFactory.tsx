@@ -8,6 +8,7 @@ import React from 'react'
 import { FactionSubPost } from '@/components/InfoBar/FactionSubPost'
 import { LocationSubPost } from '@/components/InfoBar/LocationSubPost'
 import { CharacterSubPost } from '@/components/InfoBar/CharacterSubPost'
+import { SessionSubPost } from '@/components/InfoBar/SessionSubPost'
 
 export function SubPostFactory ({ dialogType, value, ...props }: {
   dialogType?: TDialogTypes,
@@ -30,6 +31,8 @@ export function SubPostFactory ({ dialogType, value, ...props }: {
       return <LocationSubPost locationId={value.id}  {...props}/>
     case 'character':
       return <CharacterSubPost characterId={value.id}  {...props}/>
+    case 'session':
+      return <SessionSubPost sessionId={value.id}  {...props}/>
     default:
       return <></>
   }

@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 import {
   characterField,
   datePickerField,
-  locationField,
+  locationField, sessionField,
 } from '@/hooks/fieldTools/fieldTools'
 import { useCompendiumDataManager } from '@/hooks/DataManagers'
 import { useCurrentCompendium } from '@/hooks/useCurrentCompendium'
@@ -49,13 +49,20 @@ const useEncounterFields = (manager: TEncounterDataManager): TUseFields => {
         })
       )
     }
+    if (manager.encounter && manager.campaign) {
+      fields.push(
+        sessionField({
+          options: manager.campaign?.sessions || [],
+        })
+      )
+    }
     if (manager.encounter && notes) {
       fields.push(noteField({
         options: notes,
       }));
     }
     return fields;
-  }, [manager.encounter, notes, types, compendium?.characters, compendium?.locations])
+  }, [manager.campaign, manager.encounter, notes, types, compendium?.characters, compendium?.locations])
 
   return { fields }
 }

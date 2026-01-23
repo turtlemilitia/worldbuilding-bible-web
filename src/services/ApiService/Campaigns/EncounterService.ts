@@ -8,6 +8,9 @@ import {
 import {
   createLocationableService
 } from '@/services/ApiService/createLocationableService'
+import {
+  createSessionableService
+} from '@/services/ApiService/createSessionableService'
 
 export type TEncounterRequest = {
   name: string;
@@ -26,6 +29,7 @@ const EncounterService = {
   ...createLocationableService('encounters'),
   ...createNotableService('encounters'),
   ...createImageableService('encounters'),
+  ...createSessionableService('encounters')
 }
 
 export default EncounterService

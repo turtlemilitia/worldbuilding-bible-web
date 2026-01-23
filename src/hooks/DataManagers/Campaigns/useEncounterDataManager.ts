@@ -6,6 +6,7 @@ import {
   useCharacterableDataManager,
   useLocationableDataManager,
   hasCharactersAttachableDataManager, hasLocationsAttachableDataManager,
+  useSessionableDataManager, hasSessionsAttachableDataManager,
 } from '../useAttachableDataManager'
 import { useImageableDataManager, hasImageableDataManager } from '@/hooks/DataManagers'
 import { TCampaign, TEncounter } from '@/types'
@@ -14,7 +15,11 @@ import { campaignsIndexSlice } from '@/reducers/campaign/campaignsIndexSlice'
 export type TEncounterDataManager = TChildDataManager<TCampaign, TEncounter, TEncounterRequest> & {
   campaign?: TCampaign,
   encounter?: TEncounter
-} & hasNotesAttachableDataManager & hasImageableDataManager & hasCharactersAttachableDataManager & hasLocationsAttachableDataManager
+} & hasNotesAttachableDataManager
+  & hasImageableDataManager
+  & hasCharactersAttachableDataManager
+  & hasLocationsAttachableDataManager
+  & hasSessionsAttachableDataManager
 
 const useEncounterDataManager = (campaignId?: number, id?: number): TEncounterDataManager => {
   const manager = useChildDataManager(
@@ -28,8 +33,10 @@ const useEncounterDataManager = (campaignId?: number, id?: number): TEncounterDa
   return {
     ...manager,
     encounter: manager.entity,
+    campaign: manager.parent,
     characters: useCharacterableDataManager(manager, encounterService.characters),
     locations: useLocationableDataManager(manager, encounterService.locations),
+    sessions: useSessionableDataManager(manager, encounterService.sessions),
     notes: useAttachableDataManager('notes', manager, encounterService.notes),
     images: useImageableDataManager(manager, encounterService.images)
   }

@@ -13,7 +13,7 @@ type TOwnProps = {
 }
 const useEncounterForm = ({ campaignId, encounterId, onFetched, onCreated, onUpdated, onDeleted }: TOwnProps & TUseFormProps<TEncounter>): TForm<TEncounter> => {
 
-  const include = useMemo(() => 'type;notes;quests;locations;characters', [])
+  const include = useMemo(() => 'type;notes;quests;sessions;locations;characters', [])
 
   const manager = useEncounterDataManager(campaignId, encounterId);
 

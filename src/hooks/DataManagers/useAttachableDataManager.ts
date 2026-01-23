@@ -11,7 +11,7 @@ import {
   TPermission,
   TPin,
   TQuest,
-  TScene,
+  TScene, TSession,
 } from '@/types'
 import { TNotableApi, TNoteAttachRequest, TNoteAttachResponse } from '@/services/ApiService/createNotableService'
 import { TQuestableApi, TQuestAttachRequest, TQuestAttachResponse } from '@/services/ApiService/createQuestableService'
@@ -53,6 +53,10 @@ import {
   TLocationAttachResponse
 } from '@/services/ApiService/createLocationableService';
 import { TDataManager } from '@/hooks/DataManagers/useDataManager'
+import {
+  TSessionableApi,
+  TSessionAttachRequest, TSessionAttachResponse,
+} from '@/services/ApiService/createSessionableService'
 
 export type TAttachableDataManager<TAttached, TRequest> = {
   attachData: (attachableId: number, entity: TAttached) => any,
@@ -62,7 +66,7 @@ export type TAttachableDataManager<TAttached, TRequest> = {
   detach: (attachableId: number, id: number) => Promise<void>,
 }
 
-export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'languages' | 'characters' | 'favourites' | 'pins' | 'scenes' | 'permissions' | 'locations';
+export type TOneOfAttachableNames = 'notes' | 'quests' | 'encounters' | 'factions' | 'sessions' | 'languages' | 'characters' | 'favourites' | 'pins' | 'scenes' | 'permissions' | 'locations';
 
 export const useAttachableDataManager = <TEntity, TAttached extends Identifiable, TAttachRequest, TAttachResponse extends TAttached> (
   attachedName: TOneOfAttachableNames,
@@ -119,6 +123,13 @@ export const useEncounterableDataManager = <TEntity> (
   parentManager: TDataManager<TEntity, any>,
   api: TEncounterableApi['encounters'],
 ): TEncounterableDataManager => useAttachableDataManager<TEntity, TEncounter, TEncounterAttachRequest, TEncounterAttachResponse>('encounters', parentManager, api)
+
+export type TSessionableDataManager = TAttachableDataManager<TSession, TSessionAttachRequest>
+export type hasSessionsAttachableDataManager = { sessions: TSessionableDataManager }
+export const useSessionableDataManager = <TEntity> (
+  parentManager: TDataManager<TEntity, any>,
+  api: TSessionableApi['sessions'],
+): TSessionableDataManager => useAttachableDataManager<TEntity, TSession, TSessionAttachRequest, TSessionAttachResponse>('sessions', parentManager, api)
 
 export type TSceneableDataManager = TAttachableDataManager<TScene, TSceneAttachRequest>
 export type hasScenesAttachableDataManager = { scenes: TSceneableDataManager }
