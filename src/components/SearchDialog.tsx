@@ -95,7 +95,7 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
           <CommandGroup heading={'Notes'}>
             {notes.map(note => (
               <CommandItem onSelect={() => onSelect(
-                `${campaign ? `/campaigns/${campaign!.slug}` : ''}/notes/${note.slug}`
+                `${campaignPath}/notes/${note.id}/${note.slug}`
               )}>
                 {note.name}
               </CommandItem>
