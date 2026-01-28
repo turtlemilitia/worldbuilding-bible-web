@@ -29,7 +29,7 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
   const { campaign } = useCurrentCampaign()
   const { compendium } = useCurrentCompendium()
   const { notes } = useNoteIndexDataManager()
-  const { compendiumPath } = useUrlFormatter()
+  const { campaignPath, compendiumPath } = useUrlFormatter()
 
   return (
     <CommandDialog isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -82,7 +82,7 @@ const SearchDialog: FunctionComponent<TOwnProps> = ({
                 entity => (
                   <CommandItem
                     onSelect={() => onSelect(
-                      `/campaigns/${campaign.slug}/${path}/${entity.slug}`)}
+                      `${campaignPath}/${kebabCase(path)}/${entity.id}/${entity.slug}`)}
                   >
                     {entity.name}
                   </CommandItem>
